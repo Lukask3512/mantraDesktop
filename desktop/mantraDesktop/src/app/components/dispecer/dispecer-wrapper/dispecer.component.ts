@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {DispecerService} from "../../../services/dispecer.service";
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dispecer',
@@ -7,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DispecerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dispecerService: DispecerService) {
+    this.dispecerService.getDispecers().subscribe(data =>{
+      console.log(data)
+    })
+  }
 
   ngOnInit(): void {
   }
