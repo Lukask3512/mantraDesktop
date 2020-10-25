@@ -1,5 +1,14 @@
-<mat-dialog-content>
-  <mat-form-field>
-    <input placeholder="zadajte daco">
+<div style="position: relative" class="cat-container">
+  <h1 class="header">Pridat vozidlo</h1>
+  <mat-form-field [formGroup]="carForm">
+    <label>ECV</label>
+    <input matInput formControlName="ecv">
+
+    <label>Tel.</label>
+    <input matInput formControlName="phone">
+
   </mat-form-field>
-</mat-dialog-content>
+
+  <button (click)="saveCar()" type="submit" [disabled]="!carForm.valid">+ Pridat</button>
+
+</div>

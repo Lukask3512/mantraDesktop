@@ -20,6 +20,7 @@ import { NewCarComponent } from './components/cars/new-car/new-car.component';
 import { CarsWrapperComponent } from './components/cars/cars-wrapper/cars-wrapper.component';
 import { AddCarDialogComponent } from './components/dialogs/add-car-dialog/add-car-dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     AngularFireDatabaseModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
