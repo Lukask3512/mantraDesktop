@@ -1,6 +1,8 @@
 export default class Route {
-  id: string;
-  phoneNumber: number;
-  aboutRoute: string;
-  status: string;
+  id?: string;
+  carId: string;
+  aboutRoute?: string;
+  status?: string;
+  nameOfTowns: any[];
+  coordinatesOfTowns: string[];
 }

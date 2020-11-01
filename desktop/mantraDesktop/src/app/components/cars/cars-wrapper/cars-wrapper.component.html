@@ -5,6 +5,24 @@
 <!--  </ng-container>-->
 <!--</table>-->
 
+<div class="wrapper">
+<!--<div class="oneCar" *ngFor="let car of this.cars">-->
+<!--  <h3>{{car.ecv}}</h3>-->
+<!--  <h3>{{car.phoneNumber}}</h3>-->
+<!--  <h3>{{car.status}}</h3>-->
+<!--</div>-->
+  <mat-list>
+    <mat-list-item *ngFor="let car of this.cars">
+      <h3 matline>{{car.ecv}}</h3>
+      <p matline>
+        <span>{{car.phoneNumber}}</span>
+        <span>{{car.status}}</span>
+      </p>
+      <button (click)="sendCar(car)" routerLink="/cars/detail">Detail</button>
+    </mat-list-item>
+  </mat-list>
+
+</div>
 
 
 <app-new-car></app-new-car>

@@ -21,6 +21,9 @@ import { CarsWrapperComponent } from './components/cars/cars-wrapper/cars-wrappe
 import { AddCarDialogComponent } from './components/dialogs/add-car-dialog/add-car-dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatTableModule} from "@angular/material/table";
+import {MatListModule} from "@angular/material/list";
+import { CarDetailComponent } from './components/cars/car-detail/car-detail.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -32,19 +35,22 @@ import {MatTableModule} from "@angular/material/table";
     NewDispecerComponent,
     NewCarComponent,
     CarsWrapperComponent,
-    AddCarDialogComponent
+    AddCarDialogComponent,
+    CarDetailComponent
   ],
-  imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
-    AppRoutingModule,
-    MatDialogModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatTableModule,
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        BrowserModule,
+        AppRoutingModule,
+        MatDialogModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatTableModule,
+        MatListModule,
+      DragDropModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
