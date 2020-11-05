@@ -24,8 +24,7 @@ car;
   ngOnInit(): void {
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
-      console.log(car.id)
-      this.routeService.getRoutes(car.id).subscribe(routes => {
+      this.routeService.getRoutes(this.car.id).subscribe(routes => {
         console.log(this.car.ecv);
         console.log(routes);
         this.routes = routes[0];
@@ -40,8 +39,9 @@ car;
     moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
   }
   addTown(){
+    console.log(this.routes)
     console.log(this.addTownForm.get('name').value);
-    this.routes.push(this.addTownForm.get('name').value);
+    this.routesTowns.push(this.addTownForm.get('name').value);
     this.addTownForm.reset();
   }
 
