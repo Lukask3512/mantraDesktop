@@ -4,10 +4,11 @@
   <div class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}}</div>
 </div>
 
-<form [formGroup]="addTownForm">
-  <input formControlName="name" type="text" placeholder="Zadajte mesto...">
-  <button (click)="addTown()">add</button>
-</form>
 
 <button (click)="this.sendToDriver()">Odoslať vodičovi</button>
+
+<app-adresses (placeName)="getAdress($event)"
+              (placeLat)="getLat($event)"
+              (placeLon)="getLon($event)">
+</app-adresses>
 

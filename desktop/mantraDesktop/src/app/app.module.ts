@@ -15,7 +15,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NewCarComponent } from './components/cars/new-car/new-car.component';
 import { CarsWrapperComponent } from './components/cars/cars-wrapper/cars-wrapper.component';
 import { AddCarDialogComponent } from './components/dialogs/add-car-dialog/add-car-dialog.component';
@@ -24,7 +24,9 @@ import {MatTableModule} from "@angular/material/table";
 import {MatListModule} from "@angular/material/list";
 import { CarDetailComponent } from './components/cars/car-detail/car-detail.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
+import { AdressesComponent } from './components/google/adresses/adresses.component';
+import { AgmCoreModule } from '@agm/core';
+import {MatInputModule} from "@angular/material/input";
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,21 +38,32 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     NewCarComponent,
     CarsWrapperComponent,
     AddCarDialogComponent,
-    CarDetailComponent
+    CarDetailComponent,
+    AdressesComponent
   ],
-    imports: [
-        BrowserAnimationsModule,
-        BrowserModule,
-        AppRoutingModule,
-        MatDialogModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireDatabaseModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatTableModule,
-        MatListModule,
-      DragDropModule
-    ],
+  imports: [
+    BrowserAnimationsModule,
+    BrowserModule,
+    AppRoutingModule,
+    MatDialogModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatListModule,
+    DragDropModule,
+    FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
+      libraries: ['places']
+    })
+  ],
+  exports : [
+    MatFormFieldModule,
+    MatInputModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

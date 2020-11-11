@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {FormBuilder} from "@angular/forms";
 import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
 import {DataService} from "../../../data/data.service";
@@ -12,24 +11,33 @@ import {DataService} from "../../../data/data.service";
 })
 export class CarDetailComponent implements OnInit {
   routes;
-  routesTowns = [];
-car;
-  addTownForm;
-  constructor(private formBuilder: FormBuilder, private routeService: RouteService, private dataService: DataService) {
-    this.addTownForm = this.formBuilder.group({
-      name: '',
-    });
+  private routesTowns: string[] = [];
+  private routesLat: string[] = [];
+  private routesLon: string[] = [];
+    car;
+
+  constructor(private routeService: RouteService, private dataService: DataService) {
+
   }
 
   ngOnInit(): void {
+    this.routesTowns = [];
+    this.routesLon = [];
+    this.routesLat = [];
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
       this.routeService.getRoutes(this.car.id).subscribe(routes => {
-        console.log(this.car.ecv);
-        console.log(routes);
         this.routes = routes[0];
-        this.routesTowns = this.routes.nameOfTowns;
-        console.log(this.routes);
+        if (this.routes !== undefined) {
+          this.routesTowns = this.routes.nameOfTowns;
+          this.routesLat = this.routes.coordinatesOfTownsLat;
+          this.routesLon = this.routes.coordinatesOfTownsLon;
+        }
+        if (this.routesTowns === undefined){
+          this.routesTowns = [];
+          this.routesLon = [];
+          this.routesLat = [];
+        }
       });
     });
 
@@ -37,27 +45,40 @@ car;
   }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
   }
-  addTown(){
-    console.log(this.routes)
-    console.log(this.addTownForm.get('name').value);
-    this.routesTowns.push(this.addTownForm.get('name').value);
-    this.addTownForm.reset();
-  }
+
 
   sendToDriver(){
-    const route: Route = {
-      carId: this.car.id,
-      nameOfTowns: this.routesTowns,
-      coordinatesOfTowns: ['sksuak', 'skuska2'],
-      id: this.routes.id
-    };
-    console.log(this.routes.id);
-    if (this.routes.id === undefined){
+
+    if (this.routes === undefined){
+      const route: Route = {
+        carId: this.car.id,
+        nameOfTowns: this.routesTowns,
+        coordinatesOfTownsLat: this.routesLat,
+        coordinatesOfTownsLon: this.routesLon,
+      };
       this.routeService.createRoute(route);
     }else{
-
+      const route: Route = {
+        carId: this.car.id,
+        nameOfTowns: this.routesTowns,
+        coordinatesOfTownsLat: this.routesLat,
+        coordinatesOfTownsLon: this.routesLon,
+        id: this.routes.id,
+      };
       this.routeService.updateRoute(route);
     }
+  }
+
+  getAdress(adress){
+    this.routesTowns.push(adress);
+  }
+  getLat(lat){
+    this.routesLat.push(lat);
+  }
+  getLon(lon){
+    this.routesLon.push(lon);
   }
 }
