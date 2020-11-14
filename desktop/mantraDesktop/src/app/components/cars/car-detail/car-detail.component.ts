@@ -11,9 +11,9 @@ import {DataService} from "../../../data/data.service";
 })
 export class CarDetailComponent implements OnInit {
   routes;
-  private routesTowns: string[] = [];
-  private routesLat: string[] = [];
-  private routesLon: string[] = [];
+   routesTowns: string[] = [];
+   routesLat: string[] = [];
+   routesLon: string[] = [];
     car;
 
   constructor(private routeService: RouteService, private dataService: DataService) {
