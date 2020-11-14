@@ -27,6 +27,14 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { AdressesComponent } from './components/google/adresses/adresses.component';
 import { AgmCoreModule } from '@agm/core';
 import {MatInputModule} from "@angular/material/input";
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// used to create fake backend
+import { fakeBackendProvider } from 'src/login/_helpers/fake-backend';
+import { JwtInterceptor } from 'src/login/_helpers/jwt.interceptor';
+import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
+import { AlertComponent } from 'src/login/alert/alert.component';
+import { HomeComponent } from 'src/login/home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +47,10 @@ import {MatInputModule} from "@angular/material/input";
     CarsWrapperComponent,
     AddCarDialogComponent,
     CarDetailComponent,
-    AdressesComponent
+    AdressesComponent,
+    AppComponent,
+    AlertComponent,
+    HomeComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -55,6 +66,10 @@ import {MatInputModule} from "@angular/material/input";
     MatListModule,
     DragDropModule,
     FormsModule,
+    BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
       libraries: ['places']
@@ -64,7 +79,13 @@ import {MatInputModule} from "@angular/material/input";
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

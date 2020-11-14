@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "mantraDesktop"
+  "defaultProject": "mantraDesktop",
+  "cli": {
+    "analytics": false
+  }
 }
