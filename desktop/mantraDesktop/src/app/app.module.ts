@@ -35,6 +35,7 @@ import { JwtInterceptor } from 'src/login/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
 import { AlertComponent } from 'src/login/alert/alert.component';
 import { HomeComponent } from 'src/login/home/home.component';
+import { ViewComponent } from './components/view.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +51,8 @@ import { HomeComponent } from 'src/login/home/home.component';
     AdressesComponent,
     AppComponent,
     AlertComponent,
-    HomeComponent
+    HomeComponent,
+    ViewComponent
   ],
   imports: [
     BrowserAnimationsModule,

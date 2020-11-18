@@ -8,18 +8,46 @@ import {CarDetailComponent} from './components/cars/car-detail/car-detail.compon
 import { HomeComponent } from 'src/login/home/home.component';
 import { AuthGuard } from 'src/login/_helpers/auth.guard';
 import {LoginComponent} from 'src/login/account/login.component';
+import {ViewComponent} from "./components/view.component";
 
 const accountModule = () => import('src/login/account/account.module').then(x => x.AccountModule);
 const usersModule = () => import('src/login/users/users.module').then(x => x.UsersModule);
 
 
 const routes: Routes = [
-  { path: 'map', component: MapComponent},
-  { path: '', component: DispecerComponent},
-  { path: 'cars', component: CarsWrapperComponent},
-  { path: 'cars/detail', component: CarDetailComponent},
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
+  { path: 'view', component: ViewComponent,
+    children: [{
+    path: 'cars',
+      component: CarsWrapperComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    children: [{
+      path: 'map',
+      component: MapComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    children: [{
+      path: 'cars/detail',
+      component: CarDetailComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    children: [{
+      path: 'map',
+      component: MapComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    children: [{
+      path: 'dispecer',
+      component: DispecerComponent
+    }]
+  },
+
+
+  { path: '', component: LoginComponent },
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
