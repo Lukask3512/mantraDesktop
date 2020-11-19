@@ -21,7 +21,7 @@ export class CarService {
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
+          const id = a.payload.doc['id']
           return {id, ...data};
         });
       })

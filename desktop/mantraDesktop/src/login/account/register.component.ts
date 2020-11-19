@@ -13,7 +13,8 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   loading = false;
   submitted = false;
-
+  email: string;
+  password: string;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -58,4 +59,17 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
         });
   }
-}
+  signup() {
+    this.accountService.signup(this.email, this.password);
+    this.email = this.password = '';
+  }
+
+  login() {
+    this.accountService.login(this.email, this.password);
+    this.email = this.password = '';
+  }
+
+  logout() {
+    this.accountService.logout();
+  }
+  }
