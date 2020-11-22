@@ -33,9 +33,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { fakeBackendProvider } from 'src/login/_helpers/fake-backend';
 import { JwtInterceptor } from 'src/login/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
-import { AlertComponent } from 'src/login/alert/alert.component';
-import { HomeComponent } from 'src/login/home/home.component';
 import { ViewComponent } from './components/view.component';
+import { RegisterComponent} from "../login/account/register.component";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,13 +45,12 @@ import { ViewComponent } from './components/view.component';
     DispecerComponent,
     NewDispecerComponent,
     NewCarComponent,
+    RegisterComponent,
     CarsWrapperComponent,
     AddCarDialogComponent,
     CarDetailComponent,
     AdressesComponent,
     AppComponent,
-    AlertComponent,
-    HomeComponent,
     ViewComponent
   ],
   imports: [

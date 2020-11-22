@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
-import { AlertService } from 'src/login/_services/alert.service';
+
 
 
 
@@ -19,8 +19,7 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService,
-    private alertService: AlertService
+    public accountService: AccountService,
   ) { }
 
   ngOnInit() {
@@ -39,7 +38,7 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
 
     // reset alerts on submit
-    this.alertService.clear();
+
 
     // stop here if form is invalid
     if (this.form.invalid) {

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, ElementRef, NgZone, Output, EventEmitter} from '@angular/core';
-import { MapsAPILoader, MouseEvent } from '@agm/core';
+import { MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-adresses',
@@ -74,7 +74,7 @@ export class AdressesComponent implements OnInit {
   }
 
 
-  markerDragEnd($event: MouseEvent) {
+  markerDragEnd($event: any) {
     console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
