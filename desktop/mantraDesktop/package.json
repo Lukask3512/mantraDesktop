@@ -27,6 +27,7 @@
     "angular-animations": "^0.11.0",
     "bootstrap": "^4.5.3",
     "firebase": "^7.24.0",
+    "ol": "^6.4.3",
     "rxjs": "~6.5.4",
     "save": "^2.4.0",
     "tslib": "^1.10.0",

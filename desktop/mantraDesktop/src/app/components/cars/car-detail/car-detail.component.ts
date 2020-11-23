@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
 import {DataService} from "../../../data/data.service";
+import {Subject} from "rxjs";
+import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component";
 
 @Component({
   selector: 'app-car-detail',
@@ -15,6 +17,10 @@ export class CarDetailComponent implements OnInit {
    routesLat: string[] = [];
    routesLon: string[] = [];
     car;
+
+
+  @ViewChild('child')
+  private child: OpenlayerComponent;
 
   constructor(private routeService: RouteService, private dataService: DataService) {
 
@@ -32,6 +38,7 @@ export class CarDetailComponent implements OnInit {
           this.routesTowns = this.routes.nameOfTowns;
           this.routesLat = this.routes.coordinatesOfTownsLat;
           this.routesLon = this.routes.coordinatesOfTownsLon;
+          this.child.notifyMe(this.routesLat, this.routesLon,this.car);
         }
         if (this.routesTowns === undefined){
           this.routesTowns = [];
@@ -43,6 +50,7 @@ export class CarDetailComponent implements OnInit {
 
 
   }
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
     moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
@@ -77,8 +85,10 @@ export class CarDetailComponent implements OnInit {
   }
   getLat(lat){
     this.routesLat.push(lat);
+    this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
   getLon(lon){
     this.routesLon.push(lon);
+    this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
 }

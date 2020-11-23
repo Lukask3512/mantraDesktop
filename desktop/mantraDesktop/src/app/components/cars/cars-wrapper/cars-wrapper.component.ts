@@ -17,7 +17,7 @@ export class CarsWrapperComponent implements OnInit {
   ngOnInit(): void {
     this.carService.getCars().subscribe(cars => {
       this.cars = cars;
-      console.log(this.cars);
+      console.log(cars)
     });
   }
 

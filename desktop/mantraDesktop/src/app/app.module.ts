@@ -35,6 +35,7 @@ import { JwtInterceptor } from 'src/login/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
 import { ViewComponent } from './components/view.component';
 import { RegisterComponent} from "../login/account/register.component";
+import {ViewModule} from "./components/view.module";
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { RegisterComponent} from "../login/account/register.component";
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
       libraries: ['places']
-    })
+    }),
+    ViewModule
   ],
   exports : [
     MatFormFieldModule,
