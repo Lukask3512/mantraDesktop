@@ -59,7 +59,7 @@
     </button>
 
     <!-- user click this button to login -->
-    <button (click)="login()" [disabled]="!email || !password">
+    <button (click)="login()" [disabled]="!email || !password" routerLink="/view/cars">
       Login
     </button>
   </div>
