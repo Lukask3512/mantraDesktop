@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
@@ -47,6 +47,7 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
   }
+
   signup() {
     this.accountService.signup(this.email, this.password);
     this.email = this.password = '';
