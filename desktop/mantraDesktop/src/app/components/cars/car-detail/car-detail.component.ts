@@ -38,7 +38,12 @@ export class CarDetailComponent implements OnInit {
           this.routesTowns = this.routes.nameOfTowns;
           this.routesLat = this.routes.coordinatesOfTownsLat;
           this.routesLon = this.routes.coordinatesOfTownsLon;
-          this.child.notifyMe(this.routesLat, this.routesLon,this.car);
+          setTimeout(() =>
+            {
+              this.child.notifyMe(this.routesLat, this.routesLon,this.car);
+            },
+            800);
+
         }
         if (this.routesTowns === undefined){
           this.routesTowns = [];
