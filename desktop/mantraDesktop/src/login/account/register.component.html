@@ -59,7 +59,7 @@
     </button>
 
     <!-- user click this button to login -->
-    <button (click)="login()" [disabled]="!email || !password">
+    <button (click)="login()" [disabled]="!email || !password" routerLink="/view/cars">
       Login
     </button>
   </div>
@@ -70,4 +70,4 @@
     Logout
   </button>
 </div>
-<button routerLink="/view/cars">Prejdi bez prihalsenia</button>
+<button routerLink="/view/cars">Prejdi bez prihlasenia</button>
