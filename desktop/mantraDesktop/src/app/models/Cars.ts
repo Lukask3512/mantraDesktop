@@ -3,4 +3,6 @@ export default class Cars {
   ecv: string;
   phoneNumber: number;
   status: string;
+  lattitude?: string;
+  longtitude?: string;
 }

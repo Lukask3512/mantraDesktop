@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
-import { AlertService } from 'src/login/_services/alert.service';
+
 
 
 
@@ -13,13 +13,13 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   loading = false;
   submitted = false;
-
+  email: string;
+  password: string;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService,
-    private alertService: AlertService
+    public accountService: AccountService,
   ) { }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
 
     // reset alerts on submit
-    this.alertService.clear();
+
 
     // stop here if form is invalid
     if (this.form.invalid) {
@@ -46,16 +46,19 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.accountService.register(this.form.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../login'], { relativeTo: this.route });
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
   }
-}
+
+  signup() {
+    this.accountService.signup(this.email, this.password);
+    this.email = this.password = '';
+  }
+
+  login() {
+    this.accountService.login(this.email, this.password);
+    this.email = this.password = '';
+  }
+
+  logout() {
+    this.accountService.logout();
+  }
+  }

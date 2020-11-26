@@ -12,7 +12,6 @@ import Route from "../models/Route";
 export class RouteService {
   private routesCollection: AngularFirestoreCollection<Dispecer>;
   private routes: Observable<Dispecer[]>;
-  routesCollectionRef: AngularFirestoreCollection<Dispecer>;
 
 
   constructor(private afs: AngularFirestore) {
@@ -27,7 +26,7 @@ export class RouteService {
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
+          const id = a.payload.doc['id']
           return {id, ...data};
         });
       })
