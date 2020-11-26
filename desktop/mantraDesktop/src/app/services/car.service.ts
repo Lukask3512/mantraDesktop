@@ -31,4 +31,8 @@ export class CarService {
   createCar(car: Cars){
     return this.afs.collection('cars').add(car);
   }
+
+  deleteCar(carId){
+    return this.carsCollection.doc(carId).delete();
+  }
 }

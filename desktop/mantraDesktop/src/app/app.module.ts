@@ -36,6 +36,9 @@ import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
 import { ViewComponent } from './components/view.component';
 import { RegisterComponent} from "../login/account/register.component";
 import {ViewModule} from "./components/view.module";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSortModule} from "@angular/material/sort";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -76,7 +79,10 @@ import {ViewModule} from "./components/view.module";
       apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
       libraries: ['places']
     }),
-    ViewModule
+    ViewModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule
   ],
   exports : [
     MatFormFieldModule,

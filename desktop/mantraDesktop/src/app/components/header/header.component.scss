@@ -1,9 +1,29 @@
 .header{
-  position: absolute;
-  right: 10%;
-  margin-top: 5%;
+  float: right;
   padding: 10px;
   background: gray;
   color: white;
   border-radius: 7px;
+  margin: {
+    right: 10px;
+    top: 5px;
+    bottom: 5px;
+  };
+}
+.logo{
+  margin: {
+    left: 10px;
+    top: 5px;
+    bottom: 5px;
+  };
+  height: 60px;
+}
+
+.wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+a{
+  color: white;
 }

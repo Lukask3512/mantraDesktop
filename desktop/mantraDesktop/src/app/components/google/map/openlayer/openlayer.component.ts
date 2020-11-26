@@ -42,11 +42,9 @@ export class OpenlayerComponent implements OnInit {
         zoom: 1
       })
     });
-    // console.log(this.latArray)
   }
   addMarker(lat, lon, car){
     var places = [];
-    console.log(car.lattitude)
     if (car.lattitude != undefined){
 
       var carFeature1 = new Feature({
@@ -121,14 +119,14 @@ export class OpenlayerComponent implements OnInit {
 
 
       if (lon.length === 1) {
-        console.log("som tu")
         this.map.getView().setCenter(fromLonLat([lon, lat]))
         this.map.getView().setZoom(8)
       } else {
+        console.log(lon.length - 1)
         this.map.getView().animate({
-          center: fromLonLat(([lon[0], lat[0]])),
+          center: fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])),
           zoom: 8,
-          duration: 250
+          duration: 1000
         })
       }
     }

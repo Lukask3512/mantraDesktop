@@ -1,16 +1,29 @@
-<p>Vozidlo: {{this.car.ecv}}</p>
-
-<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}}</div>
+<div class="center">
+  <h2>Vozidlo: {{this.car.ecv}}</h2>
 </div>
 
+<div class="wrapper">
 
-<button (click)="this.sendToDriver()">Odoslať vodičovi</button>
+
+<div class="routeList">
+
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img (click)="deleteRoute(route)" class="delete" src="assets/logo/delete.svg"></div>
+</div>
+
+<div class="center">
+  <button [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
+</div>
 
 <app-adresses (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
               (placeLon)="getLon($event)">
 </app-adresses>
+</div>
 
-<app-openlayer #child></app-openlayer>
+  <div class="map">
 
+    <app-openlayer #child></app-openlayer>
+  </div>
+
+</div>

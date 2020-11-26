@@ -1,17 +1,17 @@
-<div class="wrap">
+<div class="allWrap" >
 
-  <form [formGroup]="dispecerForm">
+  <form class="wrap" [formGroup]="dispecerForm">
     <label>Zadajte meno</label>
-    <input type="text" formControlName="firstName">
+    <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
 
     <label>Zadajte priezvisko</label>
-    <input type="text" formControlName="lastName">
+    <input type="text" formControlName="lastName" placeholder="Zadajte priezvisko...">
 
     <label>Zadajte email</label>
-    <input type="text" formControlName="email">
+    <input type="text" formControlName="email" placeholder="Zadajte email...">
 
     <label>Zadajte telefone cislo</label>
-    <input type="text" formControlName="phoneNumber">
+    <input type="text" formControlName="phoneNumber" placeholder="Zadajte tel...">
 
     <button (click)="saveDispecer()" type="submit" [disabled]="!dispecerForm.valid">Submit</button>
   </form>

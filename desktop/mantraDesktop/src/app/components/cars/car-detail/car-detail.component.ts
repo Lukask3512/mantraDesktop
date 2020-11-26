@@ -5,6 +5,8 @@ import Route from "../../../models/Route";
 import {DataService} from "../../../data/data.service";
 import {Subject} from "rxjs";
 import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component";
+import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-car-detail',
@@ -17,27 +19,38 @@ export class CarDetailComponent implements OnInit {
    routesLat: string[] = [];
    routesLon: string[] = [];
     car;
-
+  change:boolean;
 
   @ViewChild('child')
   private child: OpenlayerComponent;
 
-  constructor(private routeService: RouteService, private dataService: DataService) {
+  constructor(private routeService: RouteService, private dataService: DataService, private dialog: MatDialog) {
 
   }
 
   ngOnInit(): void {
+    this.change = false;
     this.routesTowns = [];
     this.routesLon = [];
     this.routesLat = [];
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
+      setTimeout(() =>
+        {
+          this.child.notifyMe(this.routesLat, this.routesLon,this.car);
+        },
+        800);
       this.routeService.getRoutes(this.car.id).subscribe(routes => {
         this.routes = routes[0];
+
         if (this.routes !== undefined) {
+          // @ts-ignore
+          this.actuallyCarRoutes = routes[0];
           this.routesTowns = this.routes.nameOfTowns;
           this.routesLat = this.routes.coordinatesOfTownsLat;
           this.routesLon = this.routes.coordinatesOfTownsLon;
+
+
           setTimeout(() =>
             {
               this.child.notifyMe(this.routesLat, this.routesLon,this.car);
@@ -60,6 +73,7 @@ export class CarDetailComponent implements OnInit {
     moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
     moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
     moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
+    this.change = true;
   }
 
 
@@ -83,10 +97,12 @@ export class CarDetailComponent implements OnInit {
       };
       this.routeService.updateRoute(route);
     }
+    this.change = false;
   }
 
   getAdress(adress){
     this.routesTowns.push(adress);
+    this.change = true;
   }
   getLat(lat){
     this.routesLat.push(lat);
@@ -96,4 +112,51 @@ export class CarDetailComponent implements OnInit {
     this.routesLon.push(lon);
     this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
+
+  deleteRoute(routeToDelete){
+    // console.log(this.routesTowns);
+    // console.log(this.routesLat);
+    // console.log(this.routesLon);
+
+    // for (let i = 0; i < this.routesTowns.length; i++){
+    //   if (this.routesTowns[i] == routeToDelete){
+    //    this.routesTowns.splice(i,1);
+    //     this.routesLon.splice(i,1);
+    //     this.routesLat.splice(i,1);
+    //
+    //
+    //
+    //   }
+    // }
+
+
+      const dialogRef = this.dialog.open(DeleteCarDialogComponent, {
+        data: {car: routeToDelete, route: true }
+      });
+      dialogRef.afterClosed().subscribe(value => {
+
+        if (value.event == true){
+          for (let i = 0; i < this.routesTowns.length; i++){
+            if (this.routesTowns[i] == routeToDelete){
+              this.routesTowns.splice(i,1);
+              this.routesLon.splice(i,1);
+              this.routesLat.splice(i,1);
+
+              const route: Route = {
+                carId: this.car.id,
+                nameOfTowns: this.routesTowns,
+                coordinatesOfTownsLat: this.routesLat,
+                coordinatesOfTownsLon: this.routesLon,
+                id: this.routes.id,
+              };
+              this.routeService.updateRoute(route);
+            }
+          }
+        }else {
+          return;
+        }
+      });
+
+  }
+
 }

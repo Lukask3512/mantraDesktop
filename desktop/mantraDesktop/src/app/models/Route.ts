@@ -6,4 +6,5 @@ export default class Route {
   nameOfTowns: any[];
   coordinatesOfTownsLat: string[];
   coordinatesOfTownsLon: string[];
+
 }

@@ -1,3 +1,34 @@
+.routeList{
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1.5;
+  justify-content: center;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+}
+.map{
+  flex-grow: 2;
+}
+
+
+.delete{
+  color: red;
+  cursor: pointer;
+}
+
+
+
+
+
 .example-list {
   width: 500px;
   max-width: 100%;
