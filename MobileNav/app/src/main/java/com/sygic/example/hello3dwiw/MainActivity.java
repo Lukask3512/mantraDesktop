@@ -1,19 +1,43 @@
 package com.sygic.example.hello3dwiw;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.media.JetPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.sygic.aura.ResourceManager;
+import com.sygic.aura.feature.gps.LocationService;
 import com.sygic.aura.utils.PermissionsUtils;
 import com.sygic.sdk.api.ApiNavigation;
 import com.sygic.sdk.api.exception.GeneralException;
@@ -22,53 +46,131 @@ import com.sygic.sdk.api.model.WayPoint;
 import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "hello3dwiw";
 
     private SygicNaviFragment fgm;
 
-
-    private FirebaseAuth mAuth;
-    private FirebaseUser mCurrentUser;
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button mLogoutBtn;
 
+    FusedLocationProviderClient fusedLocationProviderClient;
 
+
+    public Object routeInfo;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED)
-        {
+        if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
             checkSygicResources();
         }
-        mAuth = FirebaseAuth.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
+        } else {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
 
-        mLogoutBtn = findViewById(R.id.logout_btn);
 
-        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //tu sa natahuju veci z databazy -- namiesto R58jNjHSEKcA1M2SBaBL sem pride ID z loginu - podla auta
+        db.collection("route")
+                .whereEqualTo("carId", "R58jNjHSEKcA1M2SBaBL")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //tu pridu data z databazy, z tohto treba vypisat nameOfTowns
+                                Log.e("TAG", document.getId() + " => " + document.getData());
+                                routeInfo = document.getData();
 
-                mAuth.signOut();
-                //sendUserToLogin();
+                            }
+                        } else {
+                            Log.e("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
-            }
-        });
 
     }
 
-//    private void logout (View view){
-//        FirebaseAuth.getInstance().signOut();
-//        startActivity(new Intent(getApplicationContext(),Login.class));
-//        finish();
-//    }
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Timer timer = new Timer();
+        TimerTask doAsynch = new TimerTask() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void run() {
+
+                fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Location> task) {
+                        Location location = task.getResult();
+                        if (location != null) {
+                            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                            try {
+                                List<Address> addresses = geocoder.getFromLocation(
+                                        location.getLatitude(), location.getLongitude(), 1);
+                                Log.e("Error", "" + addresses.get(0).getLatitude());
+                                sendLocationToFire(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Log.e("Error", "se porantalo" + e);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        //tu sa nastavi ako casto sa bude odosielat lokacia
+        timer.schedule(doAsynch, 0, 50000);
+
+    }
+
+
+
+    private void sendLocationToFire(double lat, double lon){
+        Map<String, Object> data = new HashMap<>();
+        data.put("lattitude", lat);
+        data.put("longtitude", lon);
+        db.collection("cars").document("O4x1dP4rq5jg23h1xcxM")
+                .update(data);
+        //len ak by sme chceli odchytavat ci to fakt doslo na firebase ...
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("TAG", "Error adding document", e);
+//                    }
+//                });
+    }
+
 
     private void checkSygicResources() {
         ResourceManager resourceManager = new ResourceManager(this, null);
@@ -97,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         fgm = new SygicNaviFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.sygicmap, fgm).commitAllowingStateLoss();
 
-        final EditText address = (EditText)findViewById(R.id.edit1);
+//        final EditText address = (EditText)findViewById(R.id.edit1);
 
         Button btn = (Button) findViewById(R.id.button1);
         btn.setOnClickListener(new View.OnClickListener() {

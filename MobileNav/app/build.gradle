@@ -31,6 +31,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
@@ -42,5 +43,3 @@ dependencies {
 repositories {
     mavenCentral()
 }
-
-
