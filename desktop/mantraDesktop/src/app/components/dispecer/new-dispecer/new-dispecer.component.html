@@ -1,6 +1,14 @@
 <div class="allWrap" >
 
+
+  <table style="width: 800px" class="fixed">
+    <col width="500px" />
+
+
+    <tr>
+      <th>
   <form class="wrap" [formGroup]="dispecerForm">
+    <label>Pridaj dispečera</label>
     <label>Zadajte meno</label>
     <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
 
@@ -15,5 +23,102 @@
 
     <button (click)="saveDispecer()" type="submit" [disabled]="!dispecerForm.valid">Submit</button>
   </form>
+  </th>
+
+  <th>
+    <table width="300px" class="fixed">
+      <img src="assets/logo/avatar.svg" alt="Avatar" style="width:100px">
+      <col width="100px" />
+      <col width="200px" />
+      <tr>
+        <td>
+          <label>Meno:</label>
+        </td>
+        <td>
+          <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+        </td>
+      <tr>
+        <td>
+          <label>Tel:</label>
+        </td>
+        <td>
+          <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+        </td>
+      <tr>
+        <td>
+          <label>E-mail:</label>
+        </td>
+        <td>
+          <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+        </td>
+      <tr>
+        <td>
+          <label>Status:</label>
+        </td>
+        <td>
+          <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+        </td>
+      </tr>
+      <tr>
+        <table>
+        <td>
+        <button type="submit" onclick="alert('Nic tu needitujem este')">Editovať</button>
+        </td>
+        <td>
+        <button type="submit" onclick="alert('Nic tu nezmazem este')">Vymazať</button>
+        </td>
+        </table>
+      </tr>
+    </table>
+  </th>
+
+      <th>
+        <table width="300px" class="fixed">
+          <img src="assets/logo/avatar.svg" alt="Avatar" style="width:100px">
+          <col width="100px" />
+          <col width="200px" />
+          <tr>
+            <td>
+              <label>Meno:</label>
+            </td>
+            <td>
+              <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+            </td>
+          <tr>
+            <td>
+              <label>Tel:</label>
+            </td>
+            <td>
+              <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+            </td>
+          <tr>
+            <td>
+              <label>E-mail:</label>
+            </td>
+            <td>
+              <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+            </td>
+          <tr>
+            <td>
+              <label>Status:</label>
+            </td>
+            <td>
+              <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
+            </td>
+          </tr>
+          <tr>
+            <table>
+              <td>
+                <button type="submit" onclick="alert('Nic tu needitujem este')">Editovať</button>
+              </td>
+              <td>
+                <button type="submit" onclick="alert('Nic tu nezmazem este')">Vymazať</button>
+              </td>
+            </table>
+          </tr>
+        </table>
+      </th>
+  </tr>
+  </table>
 
 </div>

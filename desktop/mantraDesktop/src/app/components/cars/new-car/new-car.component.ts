@@ -6,7 +6,8 @@ import {AddCarDialogComponent} from "../../dialogs/add-car-dialog/add-car-dialog
 @Component({
   selector: 'app-new-car',
   templateUrl: './new-car.component.html',
-  styleUrls: ['./new-car.component.scss']
+  styleUrls: ['./new-car.component.scss'],
+
 })
 export class NewCarComponent implements OnInit {
 
