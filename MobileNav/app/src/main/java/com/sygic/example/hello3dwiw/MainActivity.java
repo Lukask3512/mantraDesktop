@@ -11,14 +11,19 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.media.JetPlayer;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -28,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,16 +45,20 @@ import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.sygic.aura.ResourceManager;
 import com.sygic.aura.feature.gps.LocationService;
 import com.sygic.aura.utils.PermissionsUtils;
+import com.sygic.example.hello3dwiw.Models.Route;
 import com.sygic.sdk.api.ApiNavigation;
 import com.sygic.sdk.api.exception.GeneralException;
 import com.sygic.sdk.api.model.WayPoint;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,12 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
-
+    private String carId;
     public Object routeInfo;
-
+    public Object routeInfoLon;
+    public Object routeInfoLat;
+    public String[] routeInfo2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
@@ -88,29 +101,125 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
+        Intent intent = getIntent();
+        carId = intent.getExtras().getString("carId");
+        Log.d("TAG", "aweweaewaewaewae." + carId);
 
-
-        //tu sa natahuju veci z databazy -- namiesto R58jNjHSEKcA1M2SBaBL sem pride ID z loginu - podla auta
         db.collection("route")
-                .whereEqualTo("carId", "R58jNjHSEKcA1M2SBaBL")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("carId", carId)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //tu pridu data z databazy, z tohto treba vypisat nameOfTowns
-                                Log.e("TAG", document.getId() + " => " + document.getData());
-                                routeInfo = document.getData();
-
-                            }
-                        } else {
-                            Log.e("TAG", "Error getting documents: ", task.getException());
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("TAG", "Listen failed.", e);
+                            return;
                         }
+
+                        List<String> cities = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : value) {
+                            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
+
+                            linearLayout.removeAllViews();
+                           routeInfo = null;
+                            routeInfoLat = null;
+                            routeInfoLon = null;
+
+                                Log.d("TAG", "Current cites in CA2: " + doc.getData().get("nameOfTowns"));
+                                Log.d("TAG", "Current cites in CA2: " + doc.getData().get("coordinatesOfTownsLat"));
+                                Log.d("TAG", "Current cites in CA2: " + doc.getData().get("coordinatesOfTownsLon"));
+                                routeInfo = doc.getData().get("nameOfTowns");
+                            routeInfoLat = doc.getData().get("coordinatesOfTownsLat");
+                            routeInfoLon = doc.getData().get("coordinatesOfTownsLon");
+
+                            Log.d("TAG", "Hovno " + routeInfo);
+
+
+                            final TextView[] myTextViews = new TextView[((ArrayList<?>) routeInfo).size()];
+
+                            for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++) {
+                                // create a new textview
+                                final TextView rowTextView = new TextView(MainActivity.this);
+
+                                // set some properties of rowTextView or something
+                                rowTextView.setText((String)((ArrayList<?>) routeInfo).get(i));
+                                rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,30f);
+//                                rowTextView.setBackground(getResources().getDrawable(R.drawable.border));
+                                rowTextView.setBackgroundResource(R.drawable.border);
+                                // add the textview to the linearlayout
+                                linearLayout.addView(rowTextView);
+
+                                rowTextView.setId(i);
+                                rowTextView.setOnClickListener(new View.OnClickListener() {
+
+                                    public void onClick(View v) {
+
+                                        String str = rowTextView.getText().toString();
+
+                                        Log.d("TAG", "wuhuuu: " + str);
+                                        findIndexOfTown(str);
+                                    }
+                                });
+
+                                // save a reference to the textview for later
+                                myTextViews[i] = rowTextView;
+                            }
+
+                            Log.d("TAG", "Current cites in CA: " + doc.getData());
+                        }
+
                     }
                 });
 
 
+
+        Button button = (Button) findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            //On click function
+            public void onClick(View view) {
+                carId = null;
+                Intent intent = new Intent(MainActivity.this, LoginPage.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+    }
+
+    private void findIndexOfTown(final String town){
+        Log.e("PRO","Navigujem" + town);
+        for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++){
+            if (((ArrayList<?>) routeInfo).get(i) == town){
+                Log.e("PRO","crash to" + ((ArrayList<?>) routeInfoLat).get(i));
+                final double lattitude =  (double)((ArrayList<?>) routeInfoLat).get(i);
+                final double longtitude = (double)((ArrayList<?>) routeInfoLon).get(i);
+                new Thread() {
+                    public void run() {
+                        try {
+
+                            int flags = 0;
+                            boolean searchAddress = false;
+                            int lat =(int)(lattitude * 100000);
+                            int lon = (int)( longtitude * 100000);
+                            WayPoint wp = new WayPoint("A", lon, lat);
+                            //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
+
+                            ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
+
+
+                            TextView textView = (TextView) findViewById(R.id.textView4);
+                            textView.setText(town);
+                        } catch (GeneralException e) {
+                            e.printStackTrace();
+                            Log.e("Navigation", "Error code:"+ e);
+                        }
+                    }
+                }.start();
+                break;
+            }
+        }
     }
 
     private void getLocation() {
@@ -149,12 +258,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void sendLocationToFire(double lat, double lon){
         Map<String, Object> data = new HashMap<>();
         data.put("lattitude", lat);
         data.put("longtitude", lon);
-        db.collection("cars").document("O4x1dP4rq5jg23h1xcxM")
+        db.collection("cars").document(carId)
                 .update(data);
         //len ak by sme chceli odchytavat ci to fakt doslo na firebase ...
 //                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -202,29 +310,29 @@ public class MainActivity extends AppCompatActivity {
 //        final EditText address = (EditText)findViewById(R.id.edit1);
 
         Button btn = (Button) findViewById(R.id.button1);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread() {
-                    public void run() {
-                        try {
-//                            ApiNavigation.navigateToAddress(address.getText().toString(), false, 0, 5000);
-                            int flags = 0;
-                            boolean searchAddress = false;
-                            int lat =(int)( 49.3010575 * 100000);
-                            int lon = (int)( 20.6898463 * 100000);
-                            WayPoint wp = new WayPoint("A", lon, lat);
-                            //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
-                            Log.e("PRO","Navigujem");
-                            ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
-                        } catch (GeneralException e) {
-                            e.printStackTrace();
-                            Log.e("Navigation", "Error code:"+ e);
-                        }
-                    }
-                }.start();
-            }
-        });
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new Thread() {
+//                    public void run() {
+//                        try {
+////                            ApiNavigation.navigateToAddress(address.getText().toString(), false, 0, 5000);
+//                            int flags = 0;
+//                            boolean searchAddress = false;
+//                            int lat =(int)( 49.3010575 * 100000);
+//                            int lon = (int)( 20.6898463 * 100000);
+//                            WayPoint wp = new WayPoint("A", lon, lat);
+//                            //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
+//                            Log.e("PRO","Navigujem");
+//                            ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
+//                        } catch (GeneralException e) {
+//                            e.printStackTrace();
+//                            Log.e("Navigation", "Error code:"+ e);
+//                        }
+//                    }
+//                }.start();
+//            }
+//        });
 
     }
 
