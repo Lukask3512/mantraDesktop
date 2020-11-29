@@ -17,6 +17,7 @@ export class RouteService {
   constructor(private afs: AngularFirestore) {
     this.routesCollection = this.afs.collection<any>('route');
   }
+
   getRoutes(carId){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;

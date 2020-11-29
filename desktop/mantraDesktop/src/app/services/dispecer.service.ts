@@ -36,6 +36,23 @@ export class DispecerService {
   //   return this.afs.collection<Dispecer>('dispecer').valueChanges();
   // }
 
+  getOneDispecer(email){
+      return this.afs.collection<Dispecer>('dispecers', ref => {
+        let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        query = query.where('email', '==', email);
+        return query;
+      }).snapshotChanges().pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc['id']
+            return {id, ...data};
+          });
+        })
+      );
+
+  }
+
   createDispecer(dispecer: Dispecer){
     return this.afs.collection('dispecers').add(dispecer);
   }

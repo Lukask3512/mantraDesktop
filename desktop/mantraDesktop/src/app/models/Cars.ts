@@ -5,4 +5,5 @@ export default class Cars {
   status: string;
   lattitude?: string;
   longtitude?: string;
+  createdBy: string;
 }

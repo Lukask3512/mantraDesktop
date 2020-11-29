@@ -4,6 +4,9 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import { first } from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
+import {DispecerService} from "../../app/services/dispecer.service";
+import {DataService} from "../../app/data/data.service";
+import Dispecer from "../../app/models/Dispecer";
 
 
 
@@ -15,11 +18,16 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   email: string;
   password: string;
+
+  user:{ photoUrl?: string; phone: number; createdBy?: string; name: string; id: string; email: string; status: boolean }[];
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     public accountService: AccountService,
+    private dispecerService: DispecerService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
@@ -54,7 +62,18 @@ export class RegisterComponent implements OnInit {
   }
 
   login() {
-    this.accountService.login(this.email, this.password);
+    this.accountService.login(this.email, this.password).subscribe(user => {
+      console.log(user.user.email);
+      this.dispecerService.getOneDispecer(user.user.email).subscribe(user => {
+        // @ts-ignore
+        this.user = user[0];
+        this.dataService.setDispecer(this.user);
+        if (user){
+          this.router.navigate(['/view/dispecer']);
+        }
+      })
+
+    });
     this.email = this.password = '';
   }
 

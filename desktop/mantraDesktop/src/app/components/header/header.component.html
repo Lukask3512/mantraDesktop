@@ -6,36 +6,19 @@
   <a routerLink="" class="nav">Moje prepravy</a>
   <a routerLink="/view/map" class="nav">Mapy</a>
 
+  <button routerLink="" (click)="logout()">Logout
+
+  </button>
       <button class="myDropdown" onclick="myFunction()">Moje konto
         <span class="caret"></span>
       </button>
       <div class="dropdown-menu dropdown-content" id="myDropdown">
         <a routerLink="" class="nav">Profil</a>
         <a routerLink="" class="nav">Nastavenia</a>
-        <a routerLink="/register.component.html" class="nav">LogOut</a>
+        <a (click)="logout()" routerLink="" class="nav">LogOut</a>
 
       </div>
 
-<script>
-  /* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-  function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-  }
 
-  // Close the dropdown menu if the user clicks outside of it
-  window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
-      var dropdowns = document.getElementsByClassName("dropdown-content");
-      var i;
-      for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
-      }
-    }
-  }
-</script>
 </nav>
 </div>

@@ -8,35 +8,41 @@ import {CarDetailComponent} from './components/cars/car-detail/car-detail.compon
 
 import {ViewComponent} from "./components/view.component";
 import {RegisterComponent} from "../login/account/register.component";
+import {AuthGuard} from "../login/_helpers/auth.guard";
 
 
 
 const routes: Routes = [
   { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
     children: [{
     path: 'cars',
       component: CarsWrapperComponent
     }]
   },
   { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
     children: [{
       path: 'map',
       component: MapComponent
     }]
   },
   { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
     children: [{
       path: 'cars/detail',
       component: CarDetailComponent
     }]
   },
   { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
     children: [{
       path: 'map',
       component: MapComponent
     }]
   },
   { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
     children: [{
       path: 'dispecer',
       component: DispecerComponent

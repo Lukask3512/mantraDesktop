@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
@@ -37,16 +37,20 @@ export class AccountService {
       });
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Subject<any> {
+    let user = new Subject();
     this.firebaseAuth
       .signInWithEmailAndPassword(email, password)
       .then(value => {
         console.log('Nice, it worked!');
-        console.log(value)
+        console.log(value);
+        user.next(value);
       })
       .catch(err => {
         console.log('Something went wrong:',err.message);
+        user.next(false)
       });
+    return user
   }
 
   logout() {

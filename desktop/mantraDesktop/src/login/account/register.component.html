@@ -54,20 +54,15 @@
     <input type="password" [(ngModel)]="password" placeholder="Enter password"/>
 
     <!-- user click this button to signup -->
-    <button (click)="signup()" [disabled]="!email || !password">
-      Signup
-    </button>
-
+<!--    <button (click)="signup()" [disabled]="!email || !password">-->
+<!--      Signup-->
+<!--    </button>-->
+<p>Master account - email:mantra@mantra.sk  password: 123456</p>
     <!-- user click this button to login -->
-    <button (click)="login()" [disabled]="!email || !password" routerLink="/view/cars">
+    <button (click)="login()" [disabled]="!email || !password" >
       Login
     </button>
   </div>
 
-  <!-- user click this button to logout -->
-  <!-- this button displays only when user is logged-in -->
-  <button (click)="logout()" *ngIf="accountService.user | async">
-    Logout
-  </button>
 </div>
-<button routerLink="/view/cars">Prejdi bez prihlasenia</button>
+

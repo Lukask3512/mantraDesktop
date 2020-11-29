@@ -5,5 +5,5 @@ export default class Dispecer {
   status: boolean;
   photoUrl?: string;
   email: string;
-  myCars?: string[];
+  createdBy?: string;
 }

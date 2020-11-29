@@ -4,6 +4,8 @@ import Dispecer from "../models/Dispecer";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import Cars from "../models/Cars";
+import {DataService} from "../data/data.service";
+import {log} from "util";
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +15,23 @@ export class CarService {
   private cars: Observable<Dispecer[]>;
   carsCollectionRef: AngularFirestoreCollection<Dispecer>;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.carsCollection = this.afs.collection<any>('cars');
   }
   getCars(){
-    return this.afs.collection<Dispecer>('cars').snapshotChanges().pipe(
+    var createdBy;
+    var loggedUser = this.dataService.getDispecer();
+    if (loggedUser.createdBy != 'master'){
+      createdBy = loggedUser.createdBy;
+    }else {
+      createdBy = loggedUser.id;
+    }
+console.log(loggedUser);
+    return this.afs.collection<Dispecer>('cars', ref => {
+      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('createdBy', '==', createdBy); // na upravu stahujem len novsie sporty
+      return query;
+    }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();

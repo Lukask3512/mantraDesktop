@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
+import {DataService} from "../../data/data.service";
+import {AccountService} from "../../../login/_services/account.service";
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -11,7 +13,10 @@ export class HeaderComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
-  constructor(location: Location,  private element: ElementRef, private router: Router) {
+  constructor(location: Location,  private element: ElementRef,
+              private router: Router, private dataService: DataService,
+              private accountService: AccountService
+  ) {
     this.location = location;
   }
 
@@ -30,6 +35,9 @@ export class HeaderComponent implements OnInit {
     }
     return 'Dashboard';
   }
+  logout(){
+    this.dataService.setDispecer(null);
+    this.accountService.logout();
+  }
 
 }
-
