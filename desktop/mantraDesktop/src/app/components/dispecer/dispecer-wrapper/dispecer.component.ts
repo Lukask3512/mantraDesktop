@@ -9,9 +9,10 @@ import { map } from 'rxjs/operators';
 })
 export class DispecerComponent implements OnInit {
 
+  allDispeces;
   constructor(private dispecerService: DispecerService) {
     this.dispecerService.getDispecers().subscribe(data =>{
-      console.log(data)
+      this.allDispeces = data;
     })
   }
 

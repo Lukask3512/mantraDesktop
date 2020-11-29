@@ -1,4 +1,8 @@
 <div class="dispecerWrapper">
+  <div *ngFor="let dispecer of allDispeces">
+    <app-the-dispecer [dispecer]="dispecer"></app-the-dispecer>
+  </div>
+
   <app-new-dispecer></app-new-dispecer>
 
 </div>

@@ -6,12 +6,14 @@ import { OpenlayerComponent } from './google/map/openlayer/openlayer.component';
 //import { RoutesComponent } from 'src/routes/routes.component';
 
 import { DeleteCarDialogComponent } from './dialogs/delete-car-dialog/delete-car-dialog.component';
+import { TheDispecerComponent } from './dispecer/the-dispecer/the-dispecer.component';
 
 
 @NgModule({
-    declarations: [OpenlayerComponent, DeleteCarDialogComponent],
+    declarations: [OpenlayerComponent, DeleteCarDialogComponent, TheDispecerComponent],
     exports: [
-        OpenlayerComponent
+        OpenlayerComponent,
+        TheDispecerComponent
     ],
     imports: [
         CommonModule,
