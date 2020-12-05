@@ -10,10 +10,14 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.media.JetPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,6 +29,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -56,6 +61,7 @@ import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
@@ -87,11 +93,23 @@ public class MainActivity extends AppCompatActivity {
     public Object routeInfoLat;
     public String[] routeInfo2;
 
+    public boolean townsLayoutOpen;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolBar);
+        setSupportActionBar(toolbar);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
             checkSygicResources();
         }
@@ -101,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
+        townsLayoutOpen = true;
         Intent intent = getIntent();
         carId = intent.getExtras().getString("carId");
         Log.d("TAG", "aweweaewaewaewae." + carId);
@@ -154,10 +173,34 @@ public class MainActivity extends AppCompatActivity {
 
                                     public void onClick(View v) {
 
-                                        String str = rowTextView.getText().toString();
+                                        final String str = rowTextView.getText().toString();
+//
+//                                        Log.d("TAG", "wuhuuu: " + str);
+//                                        findIndexOfTown(str);
+//                                        Intent intent = new Intent(MainActivity.this, Popup.class);
+//                                        intent.putExtra("town", str);
+//                                        startActivityForResult(intent,1);
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                                        Log.d("TAG", "wuhuuu: " + str);
-                                        findIndexOfTown(str);
+                                        builder.setCancelable(true);
+                                        builder.setTitle("Navigácia");
+                                        builder.setMessage("Chcete spustiť navigovanie na adresu: " + str);
+
+                                        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                        builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                townsLayoutOpen = false;
+                                                changeLayoutSize();
+                                                findIndexOfTown(str);
+                                            }
+                                        });
+                                        builder.show();
                                     }
                                 });
 
@@ -187,6 +230,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    private void changeLayoutSize(){
+        Button button = (Button) findViewById(R.id.button1);
+
+        if (townsLayoutOpen){
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsWrapper);
+            linearLayout.getLayoutParams().height = 300;
+            linearLayout.requestLayout();
+            button.setText("Zmenšiť");
+        }
+        else{
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsWrapper);
+            linearLayout.getLayoutParams().height = 0;
+            linearLayout.requestLayout();
+            button.setText("Zväčšiť");
+
+        }
+
+    }
+
+
 
     private void findIndexOfTown(final String town){
         Log.e("PRO","Navigujem" + town);
@@ -310,29 +373,14 @@ public class MainActivity extends AppCompatActivity {
 //        final EditText address = (EditText)findViewById(R.id.edit1);
 
         Button btn = (Button) findViewById(R.id.button1);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new Thread() {
-//                    public void run() {
-//                        try {
-////                            ApiNavigation.navigateToAddress(address.getText().toString(), false, 0, 5000);
-//                            int flags = 0;
-//                            boolean searchAddress = false;
-//                            int lat =(int)( 49.3010575 * 100000);
-//                            int lon = (int)( 20.6898463 * 100000);
-//                            WayPoint wp = new WayPoint("A", lon, lat);
-//                            //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
-//                            Log.e("PRO","Navigujem");
-//                            ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
-//                        } catch (GeneralException e) {
-//                            e.printStackTrace();
-//                            Log.e("Navigation", "Error code:"+ e);
-//                        }
-//                    }
-//                }.start();
-//            }
-//        });
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                townsLayoutOpen = !townsLayoutOpen;
+                changeLayoutSize();
+
+            }
+        });
 
     }
 
@@ -351,6 +399,8 @@ public class MainActivity extends AppCompatActivity {
         checkSygicResources();
     }
 
+
+
     @Override
     protected Dialog onCreateDialog(int id) {
         Dialog dlg = fgm.onCreateDialog(id);
@@ -367,6 +417,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        String dataTown = (String)data.getBundleExtra("town");
+//        if (){
+//
+//        }
         super.onActivityResult(requestCode, resultCode, data);
         fgm.onActivityResult(requestCode, resultCode, data);
     }
