@@ -15,11 +15,14 @@
 
     <include layout="@layout/appbar" />
 
+
+
     <LinearLayout
         android:id="@+id/townsWrapper"
         android:layout_width="match_parent"
         android:layout_height="155dp"
         android:orientation="vertical">
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -40,23 +43,18 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout" />
-
-        <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Zmenšiť" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="29dp"
-        android:text="" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="321dp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

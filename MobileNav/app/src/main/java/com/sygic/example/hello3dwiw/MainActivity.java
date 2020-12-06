@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,12 +22,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -77,7 +80,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final String LOG_TAG = "hello3dwiw";
 
     private SygicNaviFragment fgm;
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     public Object routeInfoLon;
     public Object routeInfoLat;
     public String[] routeInfo2;
-
+    public Spinner spino;
     public boolean townsLayoutOpen;
 
     @Override
@@ -105,14 +108,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolBar);
-        setSupportActionBar(toolbar);
+            //ked to bolo nizsie bugol mi toolbar ...
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.activity_main);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolBar);
+//        setSupportActionBar(toolbar);
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
             checkSygicResources();
         }
+
+        spino = (Spinner) findViewById(R.id.static_spinner );
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.stateArray, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spino.setAdapter(adapter);
+
+
+        spino.setOnItemSelectedListener(this);
+
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getLocation();
@@ -229,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
     private void changeLayoutSize(){
         Button button = (Button) findViewById(R.id.button1);
@@ -274,6 +293,12 @@ public class MainActivity extends AppCompatActivity {
 
                             TextView textView = (TextView) findViewById(R.id.textView4);
                             textView.setText(town);
+                            spino.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    spino.setSelection(1);
+                                }
+                            });
                         } catch (GeneralException e) {
                             e.printStackTrace();
                             Log.e("Navigation", "Error code:"+ e);
@@ -284,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+//
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -319,8 +344,8 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(doAsynch, 0, 50000);
 
     }
-
-
+//
+//
     private void sendLocationToFire(double lat, double lon){
         Map<String, Object> data = new HashMap<>();
         data.put("lattitude", lat);
@@ -341,8 +366,8 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                });
     }
-
-
+//
+//
     private void checkSygicResources() {
         ResourceManager resourceManager = new ResourceManager(this, null);
         if(resourceManager.shouldUpdateResources()) {
@@ -364,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
             initUI();
         }
     }
-
+//
     private void initUI() {
         setContentView(R.layout.activity_main);
         fgm = new SygicNaviFragment();
@@ -383,8 +408,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
+//
+//
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         for(int res : grantResults) {
@@ -414,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPrepareDialog(id, dialog);
         fgm.onPrepareDialog(id, dialog);
     }
-
+//
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        String dataTown = (String)data.getBundleExtra("town");
@@ -423,6 +448,24 @@ public class MainActivity extends AppCompatActivity {
 //        }
         super.onActivityResult(requestCode, resultCode, data);
         fgm.onActivityResult(requestCode, resultCode, data);
+    }
+//
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Resources res = getResources();
+        String[] items = res.getStringArray(R.array.stateArray);
+        Toast.makeText(this, "Array" + items[position], Toast.LENGTH_LONG).show();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", items[position]);
+        db.collection("cars").document(carId)
+                .update(data);
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 //    @Override
