@@ -43,8 +43,8 @@
 <!--</div>-->
 <div>
   <!-- this header tag displays only when user is logged-in -->
-  <h1 *ngIf="accountService.user | async">
-    Welcome User: {{ (accountService.user | async)?.email }}!
+  <h1>
+   Mantra
   </h1>
 
   <!-- this div displays only when user is not-logged-in -->
@@ -58,6 +58,7 @@
 <!--      Signup-->
 <!--    </button>-->
 <p>Master account - email:mantra@mantra.sk  password: 123456</p>
+    <p>Docasne heslo pre vsetkych dispecerov 123456...</p>
     <!-- user click this button to login -->
     <button (click)="login()" [disabled]="!email || !password" >
       Login

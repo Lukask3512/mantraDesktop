@@ -53,14 +53,12 @@ export class OpenlayerComponent implements OnInit {
       });
 
       var carStyle1 = new Style({
-        image: new CircleStyle({
-          radius: 8,
-          stroke: new Stroke({
-            color: '#0000FF'
-          }),
-          fill: new Fill({
-            color: '#0000FF'
-          })
+        image: new Icon({
+          color: '#8959A8',
+          crossOrigin: 'anonymous',
+          src: 'assets/logo/truck.png',
+          scale: 0.05
+
         })
       });
       carFeature1.setStyle(carStyle1);
@@ -77,15 +75,14 @@ export class OpenlayerComponent implements OnInit {
           name: 'car'
         });
 
+
         var carStyle = new Style({
-          image: new CircleStyle({
-            radius: 8,
-            stroke: new Stroke({
-              color: '#0000FF'
-            }),
-            fill: new Fill({
-              color: '#0000FF'
-            })
+          image: new Icon({
+            color: '#8959A8',
+            crossOrigin: 'anonymous',
+            src: 'assets/logo/truck.png',
+            scale: 0.03
+
           })
         });
         carFeature.setStyle(carStyle);
@@ -122,12 +119,14 @@ export class OpenlayerComponent implements OnInit {
         this.map.getView().setCenter(fromLonLat([lon, lat]))
         this.map.getView().setZoom(8)
       } else {
-        console.log(lon.length - 1)
-        this.map.getView().animate({
-          center: fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])),
-          zoom: 8,
-          duration: 1000
-        })
+        // console.log(lon.length - 1)
+        // this.map.getView().animate({
+        //   center: fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])),
+        //   zoom: 8,
+        //   duration: 1000
+        // })
+        this.map.getView().setCenter(fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])));
+        this.map.getView().setZoom(8);
       }
     }
 
