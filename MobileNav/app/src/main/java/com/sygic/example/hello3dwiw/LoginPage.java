@@ -67,6 +67,7 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                                     }
                                 } else {
                                     Log.d("TAG", "Error getting documents: ", task.getException());
+                                    Toast.makeText(getApplicationContext(),"Nesprávne číslo",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
