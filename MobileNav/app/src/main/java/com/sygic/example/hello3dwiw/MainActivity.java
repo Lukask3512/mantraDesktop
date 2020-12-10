@@ -13,6 +13,7 @@ import android.location.Location;
 import android.media.JetPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public String[] routeInfo2;
     public Spinner spino;
     public boolean townsLayoutOpen;
+    private Handler handler;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,6 +113,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //ked to bolo nizsie bugol mi toolbar ...
 
         setContentView(R.layout.activity_main);
+        handler = new Handler();
+
+
+
+
+
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolBar);
 //        setSupportActionBar(toolbar);
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
@@ -212,6 +220,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                         builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                changeSpinnerValue(1);
+
                                                 townsLayoutOpen = false;
                                                 changeLayoutSize();
                                                 findIndexOfTown(str);
@@ -240,11 +250,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
                 carId = null;
                 Intent intent = new Intent(MainActivity.this, LoginPage.class);
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("status", "Offline");
+
+                db.collection("cars").document(carId)
+                        .update(data);
                 startActivity(intent);
                 finish();
 
             }
         });
+
+
 
 
 
@@ -271,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     private void findIndexOfTown(final String town){
-        Log.e("PRO","Navigujem" + town);
+
         for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++){
             if (((ArrayList<?>) routeInfo).get(i) == town){
                 Log.e("PRO","crash to" + ((ArrayList<?>) routeInfoLat).get(i));
@@ -291,14 +309,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
 
 
-                            TextView textView = (TextView) findViewById(R.id.textView4);
-                            textView.setText(town);
-                            spino.post(new Runnable() {
+                            final TextView textView = (TextView) findViewById(R.id.textView4);
+                            runOnUiThread(new Runnable() {
+
                                 @Override
                                 public void run() {
-                                    spino.setSelection(1);
+
+                                    // Stuff that updates the UI
+                                    textView.setText(town);
+
                                 }
                             });
+
                         } catch (GeneralException e) {
                             e.printStackTrace();
                             Log.e("Navigation", "Error code:"+ e);
@@ -309,7 +331,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
     }
-//
+
+    //zmeni stav spinnera spinner values su v res/
+    private void changeSpinnerValue(final int id) {
+
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                spino.setSelection(id);
+
+
+            }
+        });
+
+
+
+
+
+
+    }
+
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -468,20 +511,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if(mCurrentUser == null){
-//            sendUserToLogin();
-//        }
-//    }
+    @Override
+    protected void onStop() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", "Offline");
+        db.collection("cars").document(carId)
+                .update(data);
+        super.onStop();
 
-//    private void sendUserToLogin() {
-//        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-//        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(loginIntent);
-//        finish();
-//    }
-
+    }
 }
