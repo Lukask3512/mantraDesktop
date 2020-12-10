@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit {
         this.user = user[0];
         this.dataService.setDispecer(this.user);
         if (user){
-          this.router.navigate(['/view/dispecer']);
+          this.router.navigate(['/view/cars']);
         }
       })
 

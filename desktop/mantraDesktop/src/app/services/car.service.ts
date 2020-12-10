@@ -26,7 +26,6 @@ export class CarService {
     }else {
       createdBy = loggedUser.id;
     }
-console.log(loggedUser);
     return this.afs.collection<Dispecer>('cars', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', createdBy); // na upravu stahujem len novsie sporty

@@ -6,6 +6,12 @@
 
 
 <div class="routeList">
+  <div class="routes">
+    <h1>Aktivne cesty</h1>
+    <ul>
+      <li (click)="changeRoute(active)" *ngFor="let active of this.allActiveRoutes">Created: {{this.active.createdAt}}</li>
+    </ul>
+  </div>
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
   <div class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img (click)="deleteRoute(route)" class="delete" src="assets/logo/delete.svg"></div>
@@ -17,7 +23,8 @@
 
 <app-adresses (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
-              (placeLon)="getLon($event)">
+              (placeLon)="getLon($event)"
+              (type)="getType($event)">
 </app-adresses>
 </div>
 

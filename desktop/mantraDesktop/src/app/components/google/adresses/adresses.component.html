@@ -6,7 +6,15 @@
     <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
            placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off"
            spellcheck="off" type="text" #search [(ngModel)]="addTaskValue">
-    <button (click)="add()">Pridat</button>
+
+    <section class="example-section">
+      <mat-radio-group [(ngModel)]="labelPosition">
+        <mat-radio-button class="example-margin" value="nakladka">Nakladka</mat-radio-button>
+        <mat-radio-button class="example-margin" value="vykladka">Vykladka</mat-radio-button>
+      </mat-radio-group>
+    </section>
+
+    <button [disabled]="!labelPosition || !addressToDispetcer" (click)="add()">Pridat</button>
   </div>
 
 <!--  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">-->

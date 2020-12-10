@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
 import Dispecer from "../models/Dispecer";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import Cars from "../models/Cars";
 import {Observable} from "rxjs";
 import Route from "../models/Route";
+import {DataService} from "../data/data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,15 @@ export class RouteService {
   private routes: Observable<Dispecer[]>;
 
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.routesCollection = this.afs.collection<any>('route');
   }
 
   getRoutes(carId){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-      query = query.where('carId', '==', carId); // na upravu stahujem len novsie sporty
+      query = query.where('carId', '==', carId).where('finished', '==', false)
+      ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
@@ -34,6 +36,12 @@ export class RouteService {
     );
   }
 
+  // getRoutesOrder(carId){
+  //   return this.afs.collection('route').
+  //
+  // }
+
+  //toto i treba dorobit
   createRoute(route: Route){
     return this.afs.collection('route').add(route);
   }
@@ -46,5 +54,57 @@ export class RouteService {
     }else {
       return this.routesCollection.doc(newRoute.id).update(newRoute);
     }
+  }
+
+  getAllRoutes(){
+    //id of logged dispecer
+    var id;
+    var loggedDispecer = this.dataService.getDispecer();
+    if (loggedDispecer.createdBy == 'master'){
+      id = loggedDispecer.id
+    }else{
+      id = loggedDispecer.createdBy;
+    }
+      return this.afs.collection<Dispecer>('route', ref => {
+        let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        query = query.where('createdBy', '==', id)
+          .where('finished', '==', false)
+        ref.orderBy('createdAt');
+        return query;
+      }).snapshotChanges().pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc['id']
+            return {id, ...data};
+          });
+        })
+      );
+    }
+
+  getAllFinishedRoutes(){
+    //id of logged dispecer
+    var id;
+    var loggedDispecer = this.dataService.getDispecer();
+    if (loggedDispecer.createdBy == 'master'){
+      id = loggedDispecer.id
+    }else{
+      id = loggedDispecer.createdBy;
+    }
+    return this.afs.collection<Dispecer>('route', ref => {
+      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('createdBy', '==', id)
+        .where('finished', '==', true)
+      ref.orderBy('createdAt').limit(10);
+      return query;
+    }).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc['id']
+          return {id, ...data};
+        });
+      })
+    );
   }
 }

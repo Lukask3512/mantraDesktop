@@ -1,0 +1,19 @@
+<div class="allWrapper">
+
+<div class="wrapper">
+
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div cdkDrag cdkDragHandle class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img  class="delete" src="assets/logo/delete.svg"></div>
+</div>
+
+<app-adresses (placeName)="getAdress($event)"
+              (placeLat)="getLat($event)"
+              (placeLon)="getLon($event)"
+              (type)="getType($event)">
+</app-adresses>
+
+  <button (click)="openAddDialog()">Vybrat vozidlo</button>
+
+
+</div>
+</div>
