@@ -337,15 +337,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             //On click function
             public void onClick(View view) {
-                carId = null;
                 Intent intent = new Intent(MainActivity.this, LoginPage.class);
 
                 Map<String, Object> data = new HashMap<>();
                 data.put("status", "Offline");
 
-                db.collection("cars").document(carId)
-                        .update(data);
-                intent.putExtra("carId", carId);
+                if (carId != null) {
+                    db.collection("cars").document(carId)
+                            .update(data);
+                    carId = null;
+                }
                 startActivity(intent);
                 finish();
 
