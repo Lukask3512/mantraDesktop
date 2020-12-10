@@ -3,7 +3,7 @@ import {DataService} from "../../../data/data.service";
 import Cars from "../../../models/Cars";
 import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-route-to-car',
@@ -12,7 +12,9 @@ import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 })
 export class RouteToCarComponent implements OnInit {
 
-  constructor(private dataService: DataService, private routeService: RouteService, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private dataService: DataService, private routeService: RouteService
+              , @Inject(MAT_DIALOG_DATA) public data: any,
+  public dialogRef: MatDialogRef<RouteToCarComponent>) { }
   cars:Cars[];
 
   routesTowns;
@@ -28,12 +30,6 @@ export class RouteToCarComponent implements OnInit {
     this.type = this.data.routesType;
   }
 
-  doAsyncTask() {
-    var promise = new Promise((resolve, reject) => {
-
-    });
-    return promise;
-  }
 
   addRouteToCar(carId){
     var loggedDispecer = this.dataService.getDispecer();
@@ -43,6 +39,11 @@ export class RouteToCarComponent implements OnInit {
     }else {
       dispecerId = loggedDispecer.createdBy;
     }
+    var emptyStatus:string[] = [];
+    this.routesTowns.forEach(function (value) {
+      emptyStatus.push("");
+    });
+
     var route: Route = {
       carId: carId,
       createdBy: dispecerId,
@@ -50,13 +51,15 @@ export class RouteToCarComponent implements OnInit {
       coordinatesOfTownsLon: this.routesLon,
       finished: false,
       nameOfTowns: this.routesTowns,
-      status: [],
+      status: emptyStatus,
       type: this.type,
       createdAt: (Date.now())
 
     }
-    this.routeService.createRoute(route);
 
+
+    this.routeService.createRoute(route);
+    this.dialogRef.close({event: true})
   }
 
 

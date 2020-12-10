@@ -56,6 +56,7 @@ export class CarDetailComponent implements OnInit {
           this.routesTowns = this.routes.nameOfTowns;
           this.routesLat = this.routes.coordinatesOfTownsLat;
           this.routesLon = this.routes.coordinatesOfTownsLon;
+          this.type = this.routes.type;
           //doplnit ykladku nakladku
 
           setTimeout(() =>
@@ -69,6 +70,7 @@ export class CarDetailComponent implements OnInit {
           this.routesTowns = [];
           this.routesLon = [];
           this.routesLat = [];
+          this.type = [];
         }
       });
     });
@@ -87,6 +89,7 @@ export class CarDetailComponent implements OnInit {
     this.routesTowns = route.nameOfTowns;
     this.routesLat = route.coordinatesOfTownsLat;
     this.routesLon = route.coordinatesOfTownsLon;
+    this.type = route.type;
     this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
 
@@ -94,27 +97,36 @@ export class CarDetailComponent implements OnInit {
     moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
     moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
     moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.type, event.previousIndex, event.currentIndex);
     this.change = true;
   }
 
 
   sendToDriver(){
-
+    var emptyStatus:string[] = [];
+    this.routesTowns.forEach(function (value) {
+      emptyStatus.push("");
+    });
 
     if (this.routes === undefined){
+
+
       const route: Route = {
         carId: this.car.id,
         createdBy: this.createdById,
         nameOfTowns: this.routesTowns,
         coordinatesOfTownsLat: this.routesLat,
         coordinatesOfTownsLon: this.routesLon,
-        status: [],
-        type: [],
+        status: emptyStatus,
+        type: this.type,
         finished: false,
         createdAt: (Date.now()/1000)
       };
       this.routeService.createRoute(route);
     }else{
+
+
+
       const route: Route = {
         carId: this.car.id,
         createdBy: this.createdById,
@@ -122,8 +134,8 @@ export class CarDetailComponent implements OnInit {
         coordinatesOfTownsLat: this.routesLat,
         coordinatesOfTownsLon: this.routesLon,
         id: this.routes.id,
-        status: [],
-        type: [],
+        status: emptyStatus,
+        type: this.type,
         finished: false,
         createdAt: (Date.now()/1000)
       };
@@ -179,7 +191,7 @@ export class CarDetailComponent implements OnInit {
               this.routesTowns.splice(i,1);
               this.routesLon.splice(i,1);
               this.routesLat.splice(i,1);
-
+              this.type.splice(i,1);
               const route: Route = {
                 carId: this.car.id,
                 createdBy: this.createdById,
