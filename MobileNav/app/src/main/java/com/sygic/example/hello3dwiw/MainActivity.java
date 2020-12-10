@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -92,10 +93,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     FusedLocationProviderClient fusedLocationProviderClient;
 
     private String carId;
+    private String routeId;
     public Object routeInfo;
     public Object routeInfoLon;
     public Object routeInfoLat;
-    public String[] routeInfo2;
+    public Object routeInfoType;
+    public Object routeInfoStatus
+            ;
+    public int actualIndexInArray = -1;
     public Spinner spino;
     public boolean townsLayoutOpen;
     private Handler handler;
@@ -146,116 +151,216 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         townsLayoutOpen = true;
         Intent intent = getIntent();
-        carId = intent.getExtras().getString("carId");
-        Log.d("TAG", "aweweaewaewaewae." + carId);
+        if (intent.getExtras() != null && intent.getExtras().getString("routeId") != null) {
+            carId = intent.getExtras().getString("carId");
+            routeId = intent.getExtras().getString("routeId");
+            Log.d("TAG", "aweweaewaewaewae." + routeId);
 
-        db.collection("route")
-                .whereEqualTo("carId", carId)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("TAG", "Listen failed.", e);
-                            return;
-                        }
+            DocumentReference docRef = db.collection("route").document(routeId);
 
-                        List<String> cities = new ArrayList<>();
-                        for (QueryDocumentSnapshot doc : value) {
-                            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
+            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot doc,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w("TAG", "Listen failed.", e);
+                        return;
+                    }
 
-                            linearLayout.removeAllViews();
-                           routeInfo = null;
-                            routeInfoLat = null;
-                            routeInfoLon = null;
+                    List<String> cities = new ArrayList<>();
+//                        for (QueryDocumentSnapshot doc : value) {
+                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
 
-                                Log.d("TAG", "Current cites in CA2: " + doc.getData().get("nameOfTowns"));
-                                Log.d("TAG", "Current cites in CA2: " + doc.getData().get("coordinatesOfTownsLat"));
-                                Log.d("TAG", "Current cites in CA2: " + doc.getData().get("coordinatesOfTownsLon"));
-                                routeInfo = doc.getData().get("nameOfTowns");
-                            routeInfoLat = doc.getData().get("coordinatesOfTownsLat");
-                            routeInfoLon = doc.getData().get("coordinatesOfTownsLon");
-
-                            Log.d("TAG", "Hovno " + routeInfo);
+                    linearLayout.removeAllViews();
+                    routeInfo = null;
+                    routeInfoLat = null;
+                    routeInfoLon = null;
+                    routeInfoType = null;
 
 
-                            final TextView[] myTextViews = new TextView[((ArrayList<?>) routeInfo).size()];
+                    routeInfo = doc.getData().get("nameOfTowns");
+                    routeInfoLat = doc.getData().get("coordinatesOfTownsLat");
+                    routeInfoLon = doc.getData().get("coordinatesOfTownsLon");
+                    routeInfoType = doc.getData().get("type");
+                    routeInfoStatus = doc.getData().get("status");
 
-                            for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++) {
-                                // create a new textview
-                                final TextView rowTextView = new TextView(MainActivity.this);
 
-                                // set some properties of rowTextView or something
-                                rowTextView.setText((String)((ArrayList<?>) routeInfo).get(i));
-                                rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP,30f);
+                    final TextView[] myTextViews = new TextView[((ArrayList<?>) routeInfo).size()];
+
+                    for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++) {
+                        // create a new textview
+                        final TextView rowTextView = new TextView(MainActivity.this);
+
+                        // set some properties of rowTextView or something
+                        rowTextView.setText((String) ((ArrayList<?>) routeInfo).get(i));
+                        rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30f);
 //                                rowTextView.setBackground(getResources().getDrawable(R.drawable.border));
-                                rowTextView.setBackgroundResource(R.drawable.border);
-                                // add the textview to the linearlayout
-                                linearLayout.addView(rowTextView);
+                        rowTextView.setBackgroundResource(R.drawable.border);
+                        if (((ArrayList<?>) routeInfoStatus).get(i) == "Naložené" ||
+                                ((ArrayList<?>) routeInfoStatus).get(i) == "Vyložené") {
+                            rowTextView.setBackgroundColor(Color.parseColor("#00FF00"));
+                        }
+                        // add the textview to the linearlayout
+                        linearLayout.addView(rowTextView);
 
-                                rowTextView.setId(i);
-                                rowTextView.setOnClickListener(new View.OnClickListener() {
+                        rowTextView.setId(i);
+                        final int finalI = i;
+                        rowTextView.setOnClickListener(new View.OnClickListener() {
 
-                                    public void onClick(View v) {
+                            public void onClick(View v) {
+//                                        changeSpinnerValue(0);
 
-                                        final String str = rowTextView.getText().toString();
+                                final String str = rowTextView.getText().toString();
 //
 //                                        Log.d("TAG", "wuhuuu: " + str);
 //                                        findIndexOfTown(str);
 //                                        Intent intent = new Intent(MainActivity.this, Popup.class);
 //                                        intent.putExtra("town", str);
 //                                        startActivityForResult(intent,1);
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                                        builder.setCancelable(true);
-                                        builder.setTitle("Navigácia");
-                                        builder.setMessage("Chcete spustiť navigovanie na adresu: " + str);
+                                builder.setCancelable(true);
+                                builder.setTitle("Navigácia");
+                                builder.setMessage("Chcete spustiť navigovanie na adresu: " + str);
 
-                                        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                        builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                changeSpinnerValue(1);
+                                actualIndexInArray = finalI;
 
-                                                townsLayoutOpen = false;
-                                                changeLayoutSize();
-                                                findIndexOfTown(str);
-                                            }
-                                        });
-                                        builder.show();
+//                                        if (finalI > 0) {
+//                                        String[] animals = {"horse", "cow", "camel", "sheep", "goat"};
+//                                        boolean[] checkedItems = {true, false, false, true, false};
+//                                        builder.setSingleChoiceItems(animals, 1, null);
+
+//
+                                builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
                                     }
                                 });
+                                builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (finalI > 0) {
+                                            int id = finalI - 1;
+                                            TextView finished = (TextView) findViewById(id);
 
-                                // save a reference to the textview for later
-                                myTextViews[i] = rowTextView;
+                                            finished.setBackgroundColor(Color.parseColor("#00FF00"));
+
+                                            if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("nakladka")) {
+                                                if (actualIndexInArray >= 0) {
+                                                    ((ArrayList<String>) routeInfoStatus).set(finalI - 1, "Naložené");
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    //
+                                                    data.put("status", routeInfoStatus);
+                                                    db.collection("route").document(routeId)
+                                                            .update(data);
+                                                }
+
+                                            } else {
+                                                if (actualIndexInArray >= 0) {
+                                                    ((ArrayList<String>) routeInfoStatus).set(finalI - 1, "Vyložené");
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    //
+                                                    data.put("status", routeInfoStatus);
+                                                    db.collection("route").document(routeId)
+                                                            .update(data);
+                                                }
+                                            }
+                                        }
+
+                                        changeSpinnerValue(1);
+
+
+                                        townsLayoutOpen = false;
+                                        changeLayoutSize();
+                                        findIndexOfTown(finalI);
+
+                                    }
+                                });
+                                builder.show();
                             }
+                        });
 
-                            Log.d("TAG", "Current cites in CA: " + doc.getData());
-                        }
-
+                        // save a reference to the textview for later
+                        myTextViews[i] = rowTextView;
                     }
-                });
+                    Button button = new Button(MainActivity.this);
+                    button.setText("Dokoncit");
+                    button.setOnClickListener(new View.OnClickListener() {
+
+                        public void onClick(View v) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                            builder.setCancelable(true);
+                            builder.setTitle("Navigácia");
+                            builder.setMessage("Chcete dokoncit danu trasu?");
+
+                            builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Long tsLong = System.currentTimeMillis() / 1000;
+                                    Map<String, Object> data = new HashMap<>();
+                                    data.put("finished", true);
+                                    data.put("finishedAt", tsLong.toString());
+
+                                    db.collection("route").document(routeId)
+                                            .update(data);
+
+                                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
+                                    linearLayout.setVisibility(View.INVISIBLE);
 
 
+                                }
+                            });
+                            builder.show();
+                        }
+                    });
+                    linearLayout.addView(button);
+
+                    Log.d("TAG", "Current cites in CA: " + doc.getData());
+//                        }
+
+                }
+            });
+
+        }
 
         Button button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
             public void onClick(View view) {
-                carId = null;
                 Intent intent = new Intent(MainActivity.this, LoginPage.class);
 
                 Map<String, Object> data = new HashMap<>();
                 data.put("status", "Offline");
 
-                db.collection("cars").document(carId)
-                        .update(data);
+                if (carId != null) {
+                    db.collection("cars").document(carId)
+                            .update(data);
+                    carId = null;
+                }
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+        Button buttonRoutes = (Button) findViewById(R.id.toRoutes);
+        buttonRoutes.setOnClickListener(new View.OnClickListener(){
+            @Override
+            //On click function
+            public void onClick(View view) {
+                routeId = null;
+                Intent intent = new Intent(MainActivity.this, ChooseRoute.class);
+                intent.putExtra("carId", carId);
                 startActivity(intent);
                 finish();
 
@@ -288,13 +393,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-    private void findIndexOfTown(final String town){
+    private void findIndexOfTown(final int town){
 
-        for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++){
-            if (((ArrayList<?>) routeInfo).get(i) == town){
-                Log.e("PRO","crash to" + ((ArrayList<?>) routeInfoLat).get(i));
-                final double lattitude =  (double)((ArrayList<?>) routeInfoLat).get(i);
-                final double longtitude = (double)((ArrayList<?>) routeInfoLon).get(i);
+//        for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++){
+//            if (((ArrayList<?>) routeInfo).get(i) == town){
+                Log.e("PRO","crash to" + ((ArrayList<?>) routeInfoLat).get(town));
+                final double lattitude =  (double)((ArrayList<?>) routeInfoLat).get(town);
+                final double longtitude = (double)((ArrayList<?>) routeInfoLon).get(town);
+                final int townForThread = town;
+
                 new Thread() {
                     public void run() {
                         try {
@@ -308,18 +415,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                             ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
 
-
                             final TextView textView = (TextView) findViewById(R.id.textView4);
                             runOnUiThread(new Runnable() {
 
                                 @Override
                                 public void run() {
-
+                                    String town = (String) ((ArrayList<?>) routeInfo).get(townForThread);
+                                    //vykladka  / nakladka
+                                    String type = (String) ((ArrayList<?>) routeInfoType).get(townForThread);
                                     // Stuff that updates the UI
-                                    textView.setText(town);
+                                    textView.setText(town + ": " + type);
 
                                 }
                             });
+
+
+
 
                         } catch (GeneralException e) {
                             e.printStackTrace();
@@ -327,14 +438,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         }
                     }
                 }.start();
-                break;
-            }
-        }
+//                break;
+//            }
+//        }
     }
 
     //zmeni stav spinnera spinner values su v res/
     private void changeSpinnerValue(final int id) {
-
+        String[] arrayString = getResources().getStringArray(R.array.stateArray);
+        ((ArrayList<String>) routeInfoStatus).set(actualIndexInArray, arrayString[id]);
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", routeInfoStatus);
+        db.collection("route").document(routeId)
+                .update(data);
         runOnUiThread(new Runnable() {
 
             @Override
@@ -390,27 +506,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //
 //
     private void sendLocationToFire(double lat, double lon){
-        Map<String, Object> data = new HashMap<>();
-        data.put("lattitude", lat);
-        data.put("longtitude", lon);
-        db.collection("cars").document(carId)
-                .update(data);
-        //len ak by sme chceli odchytavat ci to fakt doslo na firebase ...
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w("TAG", "Error adding document", e);
-//                    }
-//                });
+        if (carId != null){
+            Map<String, Object> data = new HashMap<>();
+            data.put("lattitude", lat);
+            data.put("longtitude", lon);
+            db.collection("cars").document(carId).update(data);
+        }
+
+
     }
-//
-//
+
     private void checkSygicResources() {
         ResourceManager resourceManager = new ResourceManager(this, null);
         if(resourceManager.shouldUpdateResources()) {
@@ -497,12 +602,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Resources res = getResources();
         String[] items = res.getStringArray(R.array.stateArray);
-        Toast.makeText(this, "Array" + items[position], Toast.LENGTH_LONG).show();
+        Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
+        if (actualIndexInArray >= 0){
+            ((ArrayList<String>) routeInfoStatus).set(actualIndexInArray, items[position]);
+            Map<String, Object> data = new HashMap<>();
+            //
+            data.put("status", routeInfoStatus);
+            db.collection("route").document(routeId)
+                    .update(data);
+        }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("status", items[position]);
-        db.collection("cars").document(carId)
-                .update(data);
 
     }
 
@@ -513,10 +622,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     protected void onStop() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("status", "Offline");
-        db.collection("cars").document(carId)
-                .update(data);
+
         super.onStop();
 
     }

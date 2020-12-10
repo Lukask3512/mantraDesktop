@@ -8,7 +8,8 @@
     android:id="@+id/myToolBar"
     android:theme="@style/ThemeOverlay.AppCompat.Light"
     app:title="Mantra"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    android:textColor="#ffffff">
 
     <Spinner
         android:id="@+id/static_spinner"
@@ -17,10 +18,20 @@
         android:textColor="#ffffff" />
 
     <Button
+        android:id="@+id/toRoutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cesty"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_prihlas"/>
+
+    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout" />
+        android:text="Logout"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_prihlas"/>
 
 </androidx.appcompat.widget.Toolbar>
 
