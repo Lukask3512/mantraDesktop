@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="icon, label, theme">
+        <activity android:name=".ChooseRoute"></activity>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginPage"

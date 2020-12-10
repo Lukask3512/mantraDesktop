@@ -33,13 +33,13 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
 
         Spinner spino = (Spinner) findViewById(R.id.static_spinner );
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.stateArray, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spino.setAdapter(adapter);
+        spino.setVisibility(View.INVISIBLE);
 
+        Button buttonToRoutes = (Button) findViewById(R.id.toRoutes);
+        Button buttonLogout = (Button) findViewById(R.id.button2);
 
-        spino.setOnItemSelectedListener(this);
+        buttonToRoutes.setVisibility(View.INVISIBLE);
+        buttonLogout.setVisibility(View.INVISIBLE);
 
 
         Button button = (Button) findViewById(R.id.prihlas);
@@ -61,7 +61,7 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d("TAG", document.getId() + " => " + document.getData());
                                         Log.d("TAG", document.getId() + " => " );
-                                        Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                                        Intent intent = new Intent(LoginPage.this, ChooseRoute.class);
                                         intent.putExtra("carId", document.getId());
                                         startActivity(intent);
                                     }
