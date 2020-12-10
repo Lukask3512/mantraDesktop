@@ -15,11 +15,15 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class CarDetailComponent implements OnInit {
   routes;
+  allActiveRoutes: Route[];
    routesTowns: string[] = [];
    routesLat: string[] = [];
    routesLon: string[] = [];
+  type: string[] = [];
     car;
   change:boolean;
+
+  createdById;
 
   @ViewChild('child')
   private child: OpenlayerComponent;
@@ -33,6 +37,7 @@ export class CarDetailComponent implements OnInit {
     this.routesTowns = [];
     this.routesLon = [];
     this.routesLat = [];
+    this.type = [];
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
       setTimeout(() =>
@@ -42,14 +47,16 @@ export class CarDetailComponent implements OnInit {
         800);
       this.routeService.getRoutes(this.car.id).subscribe(routes => {
         this.routes = routes[0];
-
+        // @ts-ignore
+        this.allActiveRoutes = routes;
+      console.log(routes);
         if (this.routes !== undefined) {
           // @ts-ignore
           this.actuallyCarRoutes = routes[0];
           this.routesTowns = this.routes.nameOfTowns;
           this.routesLat = this.routes.coordinatesOfTownsLat;
           this.routesLon = this.routes.coordinatesOfTownsLon;
-
+          //doplnit ykladku nakladku
 
           setTimeout(() =>
             {
@@ -66,7 +73,21 @@ export class CarDetailComponent implements OnInit {
       });
     });
 
+    var loggedDispecer = this.dataService.getDispecer();
+    if (loggedDispecer.createdBy == 'master'){
+      this.createdById = loggedDispecer.id
+    }else {
+      this.createdById = loggedDispecer.createdBy;
+    }
 
+  }
+
+  changeRoute(route: Route){
+    this.routes = route;
+    this.routesTowns = route.nameOfTowns;
+    this.routesLat = route.coordinatesOfTownsLat;
+    this.routesLon = route.coordinatesOfTownsLon;
+    this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -79,21 +100,32 @@ export class CarDetailComponent implements OnInit {
 
   sendToDriver(){
 
+
     if (this.routes === undefined){
       const route: Route = {
         carId: this.car.id,
+        createdBy: this.createdById,
         nameOfTowns: this.routesTowns,
         coordinatesOfTownsLat: this.routesLat,
         coordinatesOfTownsLon: this.routesLon,
+        status: [],
+        type: [],
+        finished: false,
+        createdAt: (Date.now()/1000)
       };
       this.routeService.createRoute(route);
     }else{
       const route: Route = {
         carId: this.car.id,
+        createdBy: this.createdById,
         nameOfTowns: this.routesTowns,
         coordinatesOfTownsLat: this.routesLat,
         coordinatesOfTownsLon: this.routesLon,
         id: this.routes.id,
+        status: [],
+        type: [],
+        finished: false,
+        createdAt: (Date.now()/1000)
       };
       this.routeService.updateRoute(route);
     }
@@ -110,7 +142,13 @@ export class CarDetailComponent implements OnInit {
   }
   getLon(lon){
     this.routesLon.push(lon);
+    console.log(lon);
     this.child.notifyMe(this.routesLat, this.routesLon, this.car);
+  }
+  getType(type){
+    this.type.push(type);
+    console.log(type);
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
   }
 
   deleteRoute(routeToDelete){
@@ -144,10 +182,15 @@ export class CarDetailComponent implements OnInit {
 
               const route: Route = {
                 carId: this.car.id,
+                createdBy: this.createdById,
                 nameOfTowns: this.routesTowns,
                 coordinatesOfTownsLat: this.routesLat,
                 coordinatesOfTownsLon: this.routesLon,
                 id: this.routes.id,
+                status: [],
+                type: [],
+                finished: false,
+                createdAt: (Date.now()/1000)
               };
               this.routeService.updateRoute(route);
             }

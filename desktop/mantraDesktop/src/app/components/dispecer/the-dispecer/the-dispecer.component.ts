@@ -13,7 +13,6 @@ export class TheDispecerComponent implements OnInit {
   constructor(private dispecerService: DispecerService) { }
 
   ngOnInit(): void {
-    console.log(this.dispecer);
   }
 
   deleteDispecer(){

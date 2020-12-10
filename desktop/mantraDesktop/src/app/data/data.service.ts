@@ -8,6 +8,7 @@ import Dispecer from "../models/Dispecer";
 export class DataService {
   private carSource = new BehaviorSubject<string>('empty');
   currentCar = this.carSource.asObservable();
+  cars;
 
   private loggedDispecer: Dispecer;
   constructor() { }
@@ -22,6 +23,14 @@ export class DataService {
 
   getDispecer(){
     return this.loggedDispecer;
+  }
+
+  getAllCars(){
+    return this.cars;
+  }
+
+  setCars(cars){
+    this.cars = cars;
   }
 
 }

@@ -1,10 +1,15 @@
 export default class Route {
   id?: string;
+  createdBy: string
   carId: string;
   aboutRoute?: string;
-  status?: string;
   nameOfTowns: any[];
   coordinatesOfTownsLat: string[];
   coordinatesOfTownsLon: string[];
+  type: string[];  //true nakladka , false vykladka
+  status: string[]; //na ceste/nakladam/problem atd...
+  finished: boolean;
+  createdAt: number; //timestamps
+  finishedAt?: number;
 
 }

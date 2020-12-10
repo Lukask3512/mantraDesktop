@@ -1,0 +1,10 @@
+<div class="wrapper">
+<div class="car" *ngFor="let car of cars">
+  <h1>{{car.ecv}}</h1>
+  <h2>{{car.status}}</h2>
+  <button (click)="addRouteToCar(car.id)">Priradit</button>
+</div>
+
+
+
+</div>

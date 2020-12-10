@@ -39,6 +39,8 @@ import {ViewModule} from "./components/view.module";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatButtonModule} from "@angular/material/button";
+import {NewTransportComponent} from "./components/transportation/new-transport/new-transport.component";
+import {MatRadioModule} from "@angular/material/radio";
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import {MatButtonModule} from "@angular/material/button";
     CarDetailComponent,
     AdressesComponent,
     AppComponent,
-    ViewComponent
+    ViewComponent,
+    NewTransportComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -82,12 +85,15 @@ import {MatButtonModule} from "@angular/material/button";
     ViewModule,
     MatPaginatorModule,
     MatSortModule,
-    MatButtonModule
+    MatButtonModule,
+    MatRadioModule
   ],
-  exports : [
-    MatFormFieldModule,
-    MatInputModule
-  ],
+    exports: [
+        MatFormFieldModule,
+        MatInputModule,
+        AdressesComponent,
+
+    ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

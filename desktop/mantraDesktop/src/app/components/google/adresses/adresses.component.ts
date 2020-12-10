@@ -16,10 +16,12 @@ export class AdressesComponent implements OnInit {
   addressToDispetcer: string;
   @ViewChild('search')
   public searchElementRef: ElementRef;
+  labelPosition: 'Nakladka' | 'Vykladka';
 
   @Output() placeName: EventEmitter<any> = new EventEmitter();
   @Output() placeLat: EventEmitter<any> = new EventEmitter();
   @Output() placeLon: EventEmitter<any> = new EventEmitter();
+  @Output() type: EventEmitter<any> = new EventEmitter();
   addTaskValue: string = "";
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -49,6 +51,8 @@ export class AdressesComponent implements OnInit {
 
           this.addressToDispetcer = place.formatted_address;
           this.zoom = 12;
+
+
         });
       });
     });
@@ -67,10 +71,14 @@ export class AdressesComponent implements OnInit {
   }
 
   add(){
+
     this.placeName.emit(this.addressToDispetcer);
     this.placeLat.emit(this.latitude);
     this.placeLon.emit(this.longitude);
+    this.type.emit(this.labelPosition);
     this.addTaskValue = "";
+    this.addressToDispetcer = undefined;
+    this.labelPosition = undefined;
   }
 
 

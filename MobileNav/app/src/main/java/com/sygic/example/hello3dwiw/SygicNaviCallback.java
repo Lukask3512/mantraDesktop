@@ -25,8 +25,7 @@ public class SygicNaviCallback implements IApiCallback {
                 new Runnable() {
                     @Override
                     public void run() {
-                        String str = "Hello Event";
-                        Toast.makeText(mActivity, str, Toast.LENGTH_SHORT).show();
+
                     }
                 }
         );
