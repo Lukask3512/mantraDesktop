@@ -7,7 +7,7 @@ import { MapsAPILoader } from '@agm/core';
   styleUrls: ['./adresses.component.scss']
 })
 export class AdressesComponent implements OnInit {
-  title: string = 'AGM project';
+
   latitude: number;
   longitude: number;
   zoom: number;

@@ -48,4 +48,8 @@ export class CarService {
   deleteCar(carId){
     return this.carsCollection.doc(carId).delete();
   }
+
+  getCar(carId){
+    return this.carsCollection.doc(carId).valueChanges();
+  }
 }

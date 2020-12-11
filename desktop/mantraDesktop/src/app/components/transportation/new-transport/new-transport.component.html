@@ -12,7 +12,7 @@
               (type)="getType($event)">
 </app-adresses>
 
-  <button (click)="openAddDialog()">Vybrat vozidlo</button>
+  <button [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
 
 
 </div>
