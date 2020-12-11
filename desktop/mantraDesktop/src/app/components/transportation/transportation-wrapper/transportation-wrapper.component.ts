@@ -88,7 +88,6 @@ export class TransportationWrapperComponent implements OnInit {
 
     for(let i = route.status.length ; i >= 0; i--){
       if (route.status[i] != -1){
-        console.log("som nasiel")
           return this.routeStatusService.getStatus(route.status[i]);
         }
       }
