@@ -69,10 +69,11 @@ export class NewTransportComponent implements OnInit {
       if (value === undefined){
         return;
       }else if (value.event == true) {
-          this.routesTowns = null;
-          this.routesLon = null;
-          this.routesLat = null;
-          this.type = null;
+          this.routesTowns = [];
+          this.routesLon = [];
+          this.routesLat = [];
+          this.type = [];
+        this.change = false;
       }
     });
   }

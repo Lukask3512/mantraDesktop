@@ -103,9 +103,9 @@ export class CarDetailComponent implements OnInit {
 
 
   sendToDriver(){
-    var emptyStatus:string[] = [];
+    var emptyStatus:number[] = [];
     this.routesTowns.forEach(function (value) {
-      emptyStatus.push("");
+      emptyStatus.push(-1);
     });
 
     if (this.routes === undefined){

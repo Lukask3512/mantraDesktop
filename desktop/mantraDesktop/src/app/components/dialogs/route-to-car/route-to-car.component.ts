@@ -21,6 +21,8 @@ export class RouteToCarComponent implements OnInit {
   routesLat;
   routesLon;
   type;
+  newRoute;
+  routeId;
   ngOnInit(): void {
     this.cars = this.dataService.getAllCars();
     console.log(this.data)
@@ -28,6 +30,8 @@ export class RouteToCarComponent implements OnInit {
     this.routesLat = this.data.routesLat;
     this.routesLon = this.data.routesLon;
     this.type = this.data.routesType;
+    this.newRoute = this.data.newRoute;
+    this.routeId = this.data.routeId;
   }
 
 
@@ -39,26 +43,44 @@ export class RouteToCarComponent implements OnInit {
     }else {
       dispecerId = loggedDispecer.createdBy;
     }
-    var emptyStatus:string[] = [];
+    var emptyStatus:number[] = [];
     this.routesTowns.forEach(function (value) {
-      emptyStatus.push("");
+      emptyStatus.push(-1);
     });
-
-    var route: Route = {
-      carId: carId,
-      createdBy: dispecerId,
-      coordinatesOfTownsLat: this.routesLat,
-      coordinatesOfTownsLon: this.routesLon,
-      finished: false,
-      nameOfTowns: this.routesTowns,
-      status: emptyStatus,
-      type: this.type,
-      createdAt: (Date.now())
+    var route: Route;
+    //ked nemam vytvorenu cestu
+    if (this.newRoute){
+        route = {
+          carId: carId,
+          createdBy: dispecerId,
+          coordinatesOfTownsLat: this.routesLat,
+          coordinatesOfTownsLon: this.routesLon,
+          finished: false,
+          nameOfTowns: this.routesTowns,
+          status: emptyStatus,
+          type: this.type,
+          createdAt: (Date.now())
+      }
+      this.routeService.createRoute(route);
+    }
+    //ked mam vytvorenu cestu a len ju chem priradit auto
+    else {
+      route = {
+        id: this.routeId,
+        carId: carId,
+        createdBy: dispecerId,
+        coordinatesOfTownsLat: this.routesLat,
+        coordinatesOfTownsLon: this.routesLon,
+        finished: false,
+        nameOfTowns: this.routesTowns,
+        status: emptyStatus,
+        type: this.type,
+        createdAt: (Date.now())
+      }
+      this.routeService.updateRoute(route);
 
     }
 
-
-    this.routeService.createRoute(route);
     this.dialogRef.close({event: true})
   }
 

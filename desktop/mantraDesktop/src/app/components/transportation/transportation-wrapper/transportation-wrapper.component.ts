@@ -4,6 +4,9 @@ import {CarService} from "../../../services/car.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {RouteToCarComponent} from "../../dialogs/route-to-car/route-to-car.component";
 import Route from "../../../models/Route";
+import uniqWith from 'lodash/uniqWith';
+import get from 'lodash/get';
+import {RouteStatusService} from "../../../data/route-status.service";
 
 @Component({
   selector: 'app-transportation-wrapper',
@@ -14,21 +17,52 @@ export class TransportationWrapperComponent implements OnInit {
   allActiveRoutes;
   allFinishedRoutes;
   displayedColumns: string[] = ['naklady', 'vykladky'];
-  constructor(private routeService: RouteService, private carServise: CarService, private dialog: MatDialog) { }
+
+  spans=[];
+
+  constructor(private routeStatusService: RouteStatusService,private routeService: RouteService, private carServise: CarService, private dialog: MatDialog) {
+
+  }
+
+  cacheSpan(key, accessor) {
+    for (let i = 0; i < this.allFinishedRoutes.length;) {
+      let currentValue = accessor(this.allFinishedRoutes[i]);
+      let count = 1;
+
+      // Iterate through the remaining rows to see how many match
+      // the current value as retrieved through the accessor.
+      for (let j = i + 1; j < this.allFinishedRoutes.length; j++) {
+        if (currentValue != accessor(this.allFinishedRoutes[j])) {
+          break;
+        }
+
+        count++;
+      }
+
+      if (!this.spans[i]) {
+        this.spans[i] = {};
+      }
+
+      // Store the number of similar values that were found (the span)
+      // and skip i to the next unique row.
+      this.spans[i][key] = count;
+      i += count;
+    }
+  }
+  getRowSpan(col, index) {
+    return this.spans[index] && this.spans[index][col];
+  }
 
   ngOnInit(): void {
+    let DATA = {};
     this.routeService.getAllRoutes().subscribe(routes => {
       this.allActiveRoutes = routes;
     })
     this.routeService.getAllFinishedRoutes().subscribe(routes => {
       this.allFinishedRoutes = routes;
-      console.log(routes);
     })
   }
 
-  addRouteToCar(route){
-    console.log(route);
-  }
 
   timestamptToDate(timestamp){
     var date = new Date(timestamp * 1000)
@@ -37,21 +71,39 @@ export class TransportationWrapperComponent implements OnInit {
 
   carIdToName(carId){
    this.carServise.getCar(carId).subscribe(car => {
-     console.log(car)
    });
   }
 
-  getStatus(){
+  getStatus(route: Route){
+    // for(let i = 0 ; i<route.status.length; i++){
+    //   if (route.status[i+1] == ""){
+    //     console.log(route.status[i])
+    //     console.log(route.status.length)
+    //     return route.status[i];
+    //   }else if(i+1 >= route.status.length){
+    //     console.log("som v else")
+    //     return route.status[route.status.length];
+    //   }
+    // }
+
+    for(let i = route.status.length ; i >= 0; i--){
+      if (route.status[i] != -1){
+        console.log("som nasiel")
+          return this.routeStatusService.getStatus(route.status[i]);
+        }
+      }
 
   }
 
-  openAddDialog(route: Route) {
+  openAddDialog(route: Route, newRoute: boolean, routeId: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       routesTowns: route.nameOfTowns,
       routesLat: route.coordinatesOfTownsLat,
       routesLon: route.coordinatesOfTownsLon,
-      routesType: route.type
+      routesType: route.type,
+      routeId: routeId,
+      newRoute: newRoute
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
@@ -63,5 +115,6 @@ export class TransportationWrapperComponent implements OnInit {
       }
     });
   }
+
 
 }

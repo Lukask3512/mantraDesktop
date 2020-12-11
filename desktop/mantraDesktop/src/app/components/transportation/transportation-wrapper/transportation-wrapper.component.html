@@ -23,10 +23,17 @@
     </div>
     <div class="status">
       <h2>Status</h2>
-      <li>{{route.carId}}</li>
-      <li>{{route.status[route.status.length -1]}}</li>
+      <div *ngIf="route.carId == null">
+        <button (click)="openAddDialog(route, false, route.id)">Priradit autu</button>
+      </div>
+      <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      <li>{{getStatus(route)}}</li>
     </div>
   </div>
+
+
+<!--  ////////////-->
+
 
   <h1>Ukoncene</h1>
   <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
@@ -49,12 +56,36 @@
     </div>
     <div class="repetRoute">
       <h2>Ukoncene</h2>
-      <button (click)="openAddDialog(route)">Zopakovat trasu</button>
+      <button (click)="openAddDialog(route, true, route.id)">Zopakovat trasu</button>
       <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>
     </div>
   </div>
 
 </div>
+
+<!--  <table mat-table [dataSource]="this.allActiveRoutes" matSort class="mat-elevation-z8">-->
+
+
+<!--    &lt;!&ndash; Name Column &ndash;&gt;-->
+<!--    <ng-container matColumnDef="naklady">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Nakladky </th>-->
+<!--      <td mat-cell *matCellDef="let element"> {{element.carId}} </td>-->
+<!--    </ng-container>-->
+
+<!--    &lt;!&ndash; Weight Column &ndash;&gt;-->
+<!--    <ng-container matColumnDef="vykladky">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Tel. Cislo </th>-->
+<!--      <td mat-cell *matCellDef="let element; let i = dataIndex"-->
+<!--          [attr.rowspan]="getRowSpan('Priority',i)"-->
+<!--          [style.display]="getRowSpan('Priority', i) ? '' : 'none'"-->
+<!--      >{{element.nameOfTowns}} </td>-->
+<!--    </ng-container>-->
+
+<!--    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+
+<!--</table>-->
+
 
 
 
