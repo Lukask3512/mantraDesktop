@@ -1,69 +1,31 @@
-<!--<div class="card">-->
-<!--  <h4 class="card-header">Register</h4>-->
-<!--  <div class="card-body">-->
-<!--    <form [formGroup]="form" (ngSubmit)="onSubmit()">-->
-<!--      <div class="form-group">-->
-<!--        <label for="firstName">First Name</label>-->
-<!--        <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />-->
-<!--        <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">-->
-<!--          <div *ngIf="f.firstName.errors.required">First Name is required</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <label for="lastName">Last Name</label>-->
-<!--        <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />-->
-<!--        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">-->
-<!--          <div *ngIf="f.lastName.errors.required">Last Name is required</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <label for="username">Username</label>-->
-<!--        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />-->
-<!--        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">-->
-<!--          <div *ngIf="f.username.errors.required">Username is required</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <label for="password">Password</label>-->
-<!--        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />-->
-<!--        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">-->
-<!--          <div *ngIf="f.password.errors.required">Password is required</div>-->
-<!--          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <button [disabled]="loading" class="btn btn-primary">-->
-<!--          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>-->
-<!--          Register-->
-<!--        </button>-->
-<!--        <a routerLink="../login" class="btn btn-link">Cancel</a>-->
-<!--      </div>-->
-<!--    </form>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="col-md-6 offset-md-3 mt-5">
+  <router-outlet></router-outlet>
 <div>
   <!-- this header tag displays only when user is logged-in -->
-  <h1>
-   Mantra
-  </h1>
-
+  <h4 class="card-header"><img src="assets/logo/mantra.svg" width="50" height="60">Login</h4>
+  <div class="card-body">
   <!-- this div displays only when user is not-logged-in -->
-  <div >
+  <div class>
     <!-- these input fields takes email and password from user -->
-    <input type="text" [(ngModel)]="email" placeholder="Enter email"/>
+    <input type="text" [(ngModel)]="email" placeholder="Enter email" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
+
     <input type="password" [(ngModel)]="password" placeholder="Enter password"/>
 
     <!-- user click this button to signup -->
-<!--    <button (click)="signup()" [disabled]="!email || !password">-->
-<!--      Signup-->
-<!--    </button>-->
-<p>Master account - email:mantra@mantra.sk  password: 123456</p>
+    <!--    <button (click)="signup()" [disabled]="!email || !password">-->
+    <!--      Signup-->
+    <!--    </button>-->
+    <p>Master account - email:mantra@mantra.sk  password: 123456</p>
     <p>Docasne heslo pre vsetkych dispecerov 123456...</p>
     <!-- user click this button to login -->
     <button (click)="login()" [disabled]="!email || !password" >
       Login
     </button>
+    <button (click)="signup()" [disabled]="email || password" onclick="alert('Not available yet')" >
+      signup
+    </button>
   </div>
 
 </div>
-
+</div>
+</div>
