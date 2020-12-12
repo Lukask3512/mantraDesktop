@@ -27,6 +27,7 @@
         <button (click)="openAddDialog(route, false, route.id)">Priradit autu</button>
       </div>
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      <app-find-route-status [route]="route"></app-find-route-status>
       <li>{{getStatus(route)}}</li>
     </div>
   </div>

@@ -48,6 +48,7 @@ export class RouteToCarComponent implements OnInit {
       emptyStatus.push(-1);
     });
     var route: Route;
+    console.log(this.newRoute)
     //ked nemam vytvorenu cestu
     if (this.newRoute){
         route = {
