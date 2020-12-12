@@ -8,7 +8,6 @@
     android:id="@+id/myToolBar"
     android:theme="@style/ThemeOverlay.AppCompat.Light"
     app:title="Mantra"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:textColor="#ffffff">
 
     <Spinner

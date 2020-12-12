@@ -98,12 +98,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public Object routeInfoLon;
     public Object routeInfoLat;
     public Object routeInfoType;
-    public Object routeInfoStatus
-            ;
+    public Object routeInfoStatus;
+
+    Object oldRoutes;
+
     public int actualIndexInArray = -1;
     public Spinner spino;
     public boolean townsLayoutOpen;
     private Handler handler;
+    private boolean popUpPoPoZmene = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spino = (Spinner) findViewById(R.id.static_spinner );
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.stateArray, android.R.layout.simple_spinner_item);
+                this, R.array.stateArray, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spino.setAdapter(adapter);
 
@@ -167,11 +170,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         return;
                     }
 
+                    //aby po prihlaseni hned po prihlaseni nevyskocila sprava, ale az po zmene
+
+
+
                     List<String> cities = new ArrayList<>();
 //                        for (QueryDocumentSnapshot doc : value) {
                     LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
 
                     linearLayout.removeAllViews();
+
+
                     routeInfo = null;
                     routeInfoLat = null;
                     routeInfoLon = null;
@@ -183,6 +192,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     routeInfoLon = doc.getData().get("coordinatesOfTownsLon");
                     routeInfoType = doc.getData().get("type");
                     routeInfoStatus = doc.getData().get("status");
+
+                    if (oldRoutes != null && !oldRoutes.toString().equals(routeInfo.toString())){
+                        Log.d("cesta", "(String)" +  routeInfo.toString());
+                        Log.d("cesta", "(String)" +  oldRoutes.toString());
+                        if (popUpPoPoZmene){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                            builder.setCancelable(true);
+                            builder.setTitle("Zmena cesty");
+                            builder.setMessage("Vaša cesta bola upravená");
+
+                            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+
+                                }
+                            });
+                            builder.show();
+                        }
+                    }
+                    oldRoutes =  doc.getData().get("nameOfTowns");
+
+                    popUpPoPoZmene = true;
 
 
                     final TextView[] myTextViews = new TextView[((ArrayList<?>) routeInfo).size()];
@@ -196,9 +229,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30f);
 //                                rowTextView.setBackground(getResources().getDrawable(R.drawable.border));
                         rowTextView.setBackgroundResource(R.drawable.border);
-                        if (((ArrayList<?>) routeInfoStatus).get(i) == "Naložené" ||
-                                ((ArrayList<?>) routeInfoStatus).get(i) == "Vyložené") {
+                        if (((ArrayList<Long>) routeInfoStatus).get(i) == 3 ||
+                                ((ArrayList<Long>) routeInfoStatus).get(i) == 5) {
                             rowTextView.setBackgroundColor(Color.parseColor("#00FF00"));
+                        }
+                        if (((ArrayList<Long>) routeInfoStatus).get(i) == 6){
+                            rowTextView.setBackgroundColor(Color.parseColor("#ff5e5e"));
                         }
                         // add the textview to the linearlayout
                         linearLayout.addView(rowTextView);
@@ -244,11 +280,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                             int id = finalI - 1;
                                             TextView finished = (TextView) findViewById(id);
 
-                                            finished.setBackgroundColor(Color.parseColor("#00FF00"));
 
-                                            if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("nakladka")) {
+                                            Log.d("Error2", "" +  (((ArrayList<?>) routeInfoStatus).get(finalI - 1)));
+
+                                            if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("nakladka") &&
+                                                    (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 1 ||
+                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 0 ||
+                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2 ||
+                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)) {
                                                 if (actualIndexInArray >= 0) {
-                                                    ((ArrayList<String>) routeInfoStatus).set(finalI - 1, "Naložené");
+                                                    finished.setBackgroundColor(Color.parseColor("#00FF00"));
+                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 3);
                                                     Map<String, Object> data = new HashMap<>();
                                                     //
                                                     data.put("status", routeInfoStatus);
@@ -256,9 +298,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                                             .update(data);
                                                 }
 
-                                            } else {
+                                            } else if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("vykladka") &&
+                                                    (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 1 ||
+                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 0 ||
+                                                                    Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2 ||
+                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)){
                                                 if (actualIndexInArray >= 0) {
-                                                    ((ArrayList<String>) routeInfoStatus).set(finalI - 1, "Vyložené");
+                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 5);
                                                     Map<String, Object> data = new HashMap<>();
                                                     //
                                                     data.put("status", routeInfoStatus);
@@ -286,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                     Button button = new Button(MainActivity.this);
                     button.setText("Dokoncit");
+                    button.setBackgroundColor(Color.parseColor("#00FF00"));
                     button.setOnClickListener(new View.OnClickListener() {
 
                         public void onClick(View v) {
@@ -446,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //zmeni stav spinnera spinner values su v res/
     private void changeSpinnerValue(final int id) {
         String[] arrayString = getResources().getStringArray(R.array.stateArray);
-        ((ArrayList<String>) routeInfoStatus).set(actualIndexInArray, arrayString[id]);
+        ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, id);
         Map<String, Object> data = new HashMap<>();
         data.put("status", routeInfoStatus);
         db.collection("route").document(routeId)
@@ -604,7 +651,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String[] items = res.getStringArray(R.array.stateArray);
         Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
         if (actualIndexInArray >= 0){
-            ((ArrayList<String>) routeInfoStatus).set(actualIndexInArray, items[position]);
+            ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, position);
             Map<String, Object> data = new HashMap<>();
             //
             data.put("status", routeInfoStatus);
