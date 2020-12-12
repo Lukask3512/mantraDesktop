@@ -20,7 +20,7 @@ export class TransportationWrapperComponent implements OnInit {
 
   spans=[];
 
-  constructor(private routeStatusService: RouteStatusService,private routeService: RouteService, private carServise: CarService, private dialog: MatDialog) {
+  constructor(public routeStatusService: RouteStatusService,private routeService: RouteService, private carServise: CarService, private dialog: MatDialog) {
 
   }
 

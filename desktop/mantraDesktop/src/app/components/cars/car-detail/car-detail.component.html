@@ -9,12 +9,15 @@
   <div class="routes">
     <h1>Aktivne cesty</h1>
     <ul>
-      <li (click)="changeRoute(active)" *ngFor="let active of this.allActiveRoutes">Created: {{this.active.createdAt}}</li>
+      <li (click)="changeRoute(active)" *ngFor="let active of this.allActiveRoutes">Vytvorene: {{this.timestamptToDate(this.active.createdAt)}}</li>
     </ul>
   </div>
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img (click)="deleteRoute(route)" class="delete" src="assets/logo/delete.svg"></div>
+  <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>{{route}}
+    <span>{{this.routeStatus.getStatus(this.routes.status[i])}}</span>
+    <img (click)="deleteRoute(route)" class="delete" src="assets/logo/delete.svg">
+  </div>
 </div>
 
 <div class="center">

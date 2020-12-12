@@ -3,12 +3,12 @@
 <div *ngIf="allActiveRoutes" class="wrapper" >
   <div class="nakl"></div>
   <h1 >Aktivne</h1>
-  <div *ngFor="let route of allActiveRoutes" class="oneRoute">
+  <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute">
     <div *ngIf="allActiveRoutes.length" class="nakladka">
       <h2>nakladky</h2>
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'vykladka'">
-          {{town}}
+          {{town}} <span>{{this.routeStatusService.getStatus(route.status[i])}}</span>
         </li>
     </ng-container>
   </div>
@@ -17,7 +17,7 @@
       <h2>Vykladky</h2>
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'nakladka'">
-          {{town}}
+          {{town}} <span class="routeStatus">{{this.routeStatusService.getStatus(route.status[i])}}</span>
         </li>
     </ng-container>
     </div>
@@ -27,8 +27,8 @@
         <button (click)="openAddDialog(route, false, route.id)">Priradit autu</button>
       </div>
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
-      <app-find-route-status [route]="route"></app-find-route-status>
-      <li>{{getStatus(route)}}</li>
+<!--      <app-find-route-status [route]="route"></app-find-route-status>-->
+<!--      <li>{{getStatus(route)}}</li>-->
     </div>
   </div>
 
@@ -57,8 +57,9 @@
     </div>
     <div class="repetRoute">
       <h2>Ukoncene</h2>
-      <button (click)="openAddDialog(route, true, route.id)">Zopakovat trasu</button>
       <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>
+
+      <button (click)="openAddDialog(route, true, route.id)">Zopakovat trasu</button>
     </div>
   </div>
 
