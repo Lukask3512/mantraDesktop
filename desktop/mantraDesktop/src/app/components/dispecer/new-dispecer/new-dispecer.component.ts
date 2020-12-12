@@ -28,7 +28,7 @@ export class NewDispecerComponent implements OnInit {
     this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).subscribe(user => {
       if (user.length > 0){
         //tento pouzivatel uz je v databaze
-
+        //TODO vypis ze pouzivatel sa uz nachadza v databaze
         return;
       }
       else {
@@ -53,6 +53,7 @@ export class NewDispecerComponent implements OnInit {
     }
     return {
       name: this.dispecerForm.get('firstName').value,
+      surname: this.dispecerForm.get('lastName').value,
       phone: this.dispecerForm.get('phoneNumber').value,
       email: this.dispecerForm.get('email').value,
       status: false,

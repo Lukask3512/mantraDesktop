@@ -1,27 +1,10 @@
+<button routerLink="/view/newRoute">Nova trasa</button>
 
-<!--  <table mat-table [dataSource]="this.allRoutes" matSort class="mat-elevation-z8">-->
-
-
-<!--    &lt;!&ndash; Name Column &ndash;&gt;-->
-<!--    <ng-container matColumnDef="naklady">-->
-<!--      <th mat-header-cell *matHeaderCellDef> Nakladky </th>-->
-<!--      <td mat-cell *matCellDef="let element"> {{element.carId}} </td>-->
-<!--    </ng-container>-->
-
-<!--    &lt;!&ndash; Weight Column &ndash;&gt;-->
-<!--    <ng-container matColumnDef="vykladky">-->
-<!--      <th mat-header-cell *matHeaderCellDef> Tel. Cislo </th>-->
-<!--      <td mat-cell *matCellDef="let element"> {{element.nameOfTowns}} </td>-->
-<!--    </ng-container>-->
-
-<!--    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
-<!--    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-
-<!--</table>-->
-<div class="wrapper">
-  <h1>Aktivne</h1>
+<div *ngIf="allActiveRoutes" class="wrapper" >
+  <div class="nakl"></div>
+  <h1 >Aktivne</h1>
   <div *ngFor="let route of allActiveRoutes" class="oneRoute">
-    <div class="nakladka">
+    <div *ngIf="allActiveRoutes.length" class="nakladka">
       <h2>nakladky</h2>
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'vykladka'">
@@ -30,7 +13,7 @@
     </ng-container>
   </div>
 
-  <div class="vykladka">
+  <div *ngIf="allActiveRoutes.length" class="vykladka">
       <h2>Vykladky</h2>
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'nakladka'">
@@ -39,10 +22,19 @@
     </ng-container>
     </div>
     <div class="status">
-      <li>{{route.carId}}</li>
-      <li>{{route.status[route.status.length -1]}}</li>
+      <h2>Status</h2>
+      <div *ngIf="route.carId == null">
+        <button (click)="openAddDialog(route, false, route.id)">Priradit autu</button>
+      </div>
+      <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      <app-find-route-status [route]="route"></app-find-route-status>
+      <li>{{getStatus(route)}}</li>
     </div>
   </div>
+
+
+<!--  ////////////-->
+
 
   <h1>Ukoncene</h1>
   <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
@@ -64,16 +56,41 @@
       </ng-container>
     </div>
     <div class="repetRoute">
-      <button (click)="addRouteToCar(route)">Zopakovat trasu</button>
+      <h2>Ukoncene</h2>
+      <button (click)="openAddDialog(route, true, route.id)">Zopakovat trasu</button>
+      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>
     </div>
   </div>
 
 </div>
 
+<!--  <table mat-table [dataSource]="this.allActiveRoutes" matSort class="mat-elevation-z8">-->
+
+
+<!--    &lt;!&ndash; Name Column &ndash;&gt;-->
+<!--    <ng-container matColumnDef="naklady">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Nakladky </th>-->
+<!--      <td mat-cell *matCellDef="let element"> {{element.carId}} </td>-->
+<!--    </ng-container>-->
+
+<!--    &lt;!&ndash; Weight Column &ndash;&gt;-->
+<!--    <ng-container matColumnDef="vykladky">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Tel. Cislo </th>-->
+<!--      <td mat-cell *matCellDef="let element; let i = dataIndex"-->
+<!--          [attr.rowspan]="getRowSpan('Priority',i)"-->
+<!--          [style.display]="getRowSpan('Priority', i) ? '' : 'none'"-->
+<!--      >{{element.nameOfTowns}} </td>-->
+<!--    </ng-container>-->
+
+<!--    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+
+<!--</table>-->
 
 
 
 
 
 
-<buttin routerLink="/view/newRoute">Nova trasa</buttin>
+
+

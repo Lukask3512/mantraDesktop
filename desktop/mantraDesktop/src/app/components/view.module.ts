@@ -13,11 +13,13 @@ import {AppModule} from "../app.module";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import { RouteToCarComponent } from './dialogs/route-to-car/route-to-car.component';
 import {MatTableModule} from "@angular/material/table";
+import { FindCarByIdComponent } from './cars/find-car-by-id/find-car-by-id.component';
+import { FindRouteStatusComponent } from './transportation/find-route-status/find-route-status.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent
     ],
     exports: [
         OpenlayerComponent,

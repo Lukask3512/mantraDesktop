@@ -1,13 +1,8 @@
 <div class="allWrap" >
 
 
-<!--  <table style="width: 800px" class="fixed">-->
-<!--    <col width="500px" />-->
-
-
-<!--    <tr>-->
-<!--      <th>-->
   <form class="wrap" [formGroup]="dispecerForm">
+    <label>Pridaj dispečera</label>
     <label>Zadajte meno</label>
     <input type="text" formControlName="firstName" placeholder="Zadajte meno...">
 
@@ -22,7 +17,7 @@
 
     <button (click)="saveDispecer()" type="submit" [disabled]="!dispecerForm.valid">Submit</button>
   </form>
-<!--  </th>-->
+
 
 <!--  <th>-->
 <!--    <table width="300px" class="fixed">-->

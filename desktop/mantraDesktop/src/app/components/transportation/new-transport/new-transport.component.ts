@@ -61,14 +61,21 @@ export class NewTransportComponent implements OnInit {
       routesTowns: this.routesTowns,
       routesLat: this.routesLat,
       routesLon: this.routesLon,
-      routesType: this.type
+      routesType: this.type,
+      // routeId: routeId,
+      newRoute: true
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
+      console.log(value)
       if (value === undefined){
         return;
-      }else {
-
+      }else if (value.event == true) {
+          this.routesTowns = [];
+          this.routesLon = [];
+          this.routesLat = [];
+          this.type = [];
+        this.change = false;
       }
     });
   }

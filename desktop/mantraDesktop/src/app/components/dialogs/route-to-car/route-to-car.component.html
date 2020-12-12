@@ -1,10 +1,11 @@
 <div class="wrapper">
+  <p>Ulozit trasu bez priradenia?</p>
+  <button (click)="addRouteToCar(null)">Ulozit</button>
 <div class="car" *ngFor="let car of cars">
   <h1>{{car.ecv}}</h1>
   <h2>{{car.status}}</h2>
   <button (click)="addRouteToCar(car.id)">Priradit</button>
 </div>
-
 
 
 </div>
