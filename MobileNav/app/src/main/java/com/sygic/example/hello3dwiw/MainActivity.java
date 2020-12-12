@@ -154,8 +154,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         townsLayoutOpen = true;
         Intent intent = getIntent();
+        carId = intent.getExtras().getString("carId");
+
         if (intent.getExtras() != null && intent.getExtras().getString("routeId") != null) {
-            carId = intent.getExtras().getString("carId");
             routeId = intent.getExtras().getString("routeId");
             Log.d("TAG", "aweweaewaewaewae." + routeId);
 
@@ -405,10 +406,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             //On click function
             public void onClick(View view) {
-                routeId = null;
                 Intent intent = new Intent(MainActivity.this, ChooseRoute.class);
                 intent.putExtra("carId", carId);
+                Log.d("pro", "Error getting documents: " + carId);
                 startActivity(intent);
+                routeId = null;
                 finish();
 
             }
@@ -424,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (townsLayoutOpen){
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsWrapper);
-            linearLayout.getLayoutParams().height = 300;
+            linearLayout.getLayoutParams().height = 400;
             linearLayout.requestLayout();
             button.setText("Zmenšiť");
         }

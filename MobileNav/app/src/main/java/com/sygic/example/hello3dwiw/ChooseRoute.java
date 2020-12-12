@@ -56,7 +56,6 @@ public class ChooseRoute extends AppCompatActivity {
         Intent intent = getIntent();
         carId = intent.getExtras().getString("carId");
 
-
         //nacitavam vsetky aktivne trasy
         db.collection("route")
                 .whereEqualTo("carId", carId).whereEqualTo("finished", false).orderBy("createdBy")
@@ -261,7 +260,6 @@ public class ChooseRoute extends AppCompatActivity {
 
             }
         };
-        //tu sa nastavi ako casto sa bude odosielat lokacia
         timer.schedule(doAsynch, 500);
 
 
@@ -274,6 +272,8 @@ public class ChooseRoute extends AppCompatActivity {
             //On click function
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseRoute.this, MainActivity.class);
+                Log.d("pro", "Error getting documents: " + carId);
+
                 intent.putExtra("carId", carId);
 //                intent.putExtra("routeId", null);
                 startActivity(intent);

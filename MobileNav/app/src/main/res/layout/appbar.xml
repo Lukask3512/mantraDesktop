@@ -8,21 +8,17 @@
     android:id="@+id/myToolBar"
     android:theme="@style/ThemeOverlay.AppCompat.Light"
     app:title="Mantra"
-    android:textColor="#ffffff">
+    android:textColor="#ffffff"
+    app:titleTextColor="@android:color/primary_text_dark"
+    app:subtitleTextColor="@android:color/secondary_text_light">
 
     <Spinner
         android:id="@+id/static_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#ffffff" />
-
-    <Button
-        android:id="@+id/toRoutes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cesty"
         android:textColor="#ffffff"
-        android:background="@drawable/button_prihlas"/>
+        android:layout_gravity="center"/>
+
 
     <Button
         android:id="@+id/button2"
@@ -30,7 +26,18 @@
         android:layout_height="wrap_content"
         android:text="Logout"
         android:textColor="#ffffff"
-        android:background="@drawable/button_prihlas"/>
+        android:background="@drawable/button_prihlas"
+        android:layout_gravity="end"/>
+    <Button
+        android:id="@+id/toRoutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cesty"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_prihlas"
+        android:layout_gravity="end"/>
+
+
 
 </androidx.appcompat.widget.Toolbar>
 
