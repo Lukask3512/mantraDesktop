@@ -7,6 +7,7 @@ import {Subject} from "rxjs";
 import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component";
 import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {RouteStatusService} from "../../../data/route-status.service";
 
 @Component({
   selector: 'app-car-detail',
@@ -19,6 +20,7 @@ export class CarDetailComponent implements OnInit {
    routesTowns: string[] = [];
    routesLat: string[] = [];
    routesLon: string[] = [];
+   status;
   type: string[] = [];
     car;
   change:boolean;
@@ -28,7 +30,7 @@ export class CarDetailComponent implements OnInit {
   @ViewChild('child')
   private child: OpenlayerComponent;
 
-  constructor(private routeService: RouteService, private dataService: DataService, private dialog: MatDialog) {
+  constructor(private routeService: RouteService, private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService) {
 
   }
 
@@ -38,6 +40,7 @@ export class CarDetailComponent implements OnInit {
     this.routesLon = [];
     this.routesLat = [];
     this.type = [];
+    this.status = [];
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
       setTimeout(() =>
@@ -57,6 +60,7 @@ export class CarDetailComponent implements OnInit {
           this.routesLat = this.routes.coordinatesOfTownsLat;
           this.routesLon = this.routes.coordinatesOfTownsLon;
           this.type = this.routes.type;
+          this.status = this.routes.status;
           //doplnit ykladku nakladku
 
           setTimeout(() =>
@@ -71,6 +75,7 @@ export class CarDetailComponent implements OnInit {
           this.routesLon = [];
           this.routesLat = [];
           this.type = [];
+          this.status = [];
         }
       });
     });
@@ -90,6 +95,7 @@ export class CarDetailComponent implements OnInit {
     this.routesLat = route.coordinatesOfTownsLat;
     this.routesLon = route.coordinatesOfTownsLon;
     this.type = route.type;
+    this.status = route.status;
     this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
 
@@ -98,7 +104,13 @@ export class CarDetailComponent implements OnInit {
     moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
     moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
     moveItemInArray(this.type, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.status, event.previousIndex, event.currentIndex);
     this.change = true;
+  }
+
+  timestamptToDate(timestamp){
+    var date = new Date(timestamp * 1000)
+    return date.toDateString();
   }
 
 

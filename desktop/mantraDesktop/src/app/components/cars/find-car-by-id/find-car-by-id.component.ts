@@ -15,7 +15,6 @@ export class FindCarByIdComponent implements OnInit {
   ngOnInit(): void {
     this.carService.getCar(this.carId).subscribe(car => {
       this.carName = car;
-      console.log(car);
     })
   }
 
