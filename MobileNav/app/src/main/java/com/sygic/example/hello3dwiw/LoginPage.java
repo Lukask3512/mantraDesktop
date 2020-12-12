@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -63,6 +66,15 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                                         Log.d("TAG", document.getId() + " => " );
                                         Intent intent = new Intent(LoginPage.this, ChooseRoute.class);
                                         intent.putExtra("carId", document.getId());
+
+                                        Map<String, Object> data = new HashMap<>();
+                                        data.put("status", "Online");
+
+
+                                            db.collection("cars").document(document.getId().toString())
+                                                    .update(data);
+
+
                                         startActivity(intent);
                                     }
                                 } else {
