@@ -446,9 +446,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 //        for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++){
 //            if (((ArrayList<?>) routeInfo).get(i) == town){
-                Log.e("PRO","crash to" + ((ArrayList<?>) routeInfoLat).get(town));
-                final double lattitude =  (double)((ArrayList<?>) routeInfoLat).get(town);
-                final double longtitude = (double)((ArrayList<?>) routeInfoLon).get(town);
+                Log.e("PRO","crash to" + ((ArrayList<Double>) routeInfoLat).get(town));
+                final double lattitude =  (double)((ArrayList<Double>) routeInfoLat).get(town);
+                final double longtitude = (double)((ArrayList<Double>) routeInfoLon).get(town);
                 final int townForThread = town;
 
                 new Thread() {
