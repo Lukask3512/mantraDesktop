@@ -7,6 +7,8 @@ import Route from "../../../models/Route";
 import uniqWith from 'lodash/uniqWith';
 import get from 'lodash/get';
 import {RouteStatusService} from "../../../data/route-status.service";
+import {DataService} from "../../../data/data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-transportation-wrapper',
@@ -20,7 +22,8 @@ export class TransportationWrapperComponent implements OnInit {
 
   spans=[];
 
-  constructor(public routeStatusService: RouteStatusService,private routeService: RouteService, private carServise: CarService, private dialog: MatDialog) {
+  constructor(public routeStatusService: RouteStatusService,private routeService: RouteService,
+              private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router) {
 
   }
 
@@ -64,6 +67,8 @@ export class TransportationWrapperComponent implements OnInit {
   }
 
 
+
+
   timestamptToDate(timestamp){
     var date = new Date(timestamp * 1000)
     return date.toDateString();
@@ -102,6 +107,7 @@ export class TransportationWrapperComponent implements OnInit {
       routesLon: route.coordinatesOfTownsLon,
       routesType: route.type,
       routeId: routeId,
+      routeStatus: route.status,
       newRoute: newRoute
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
@@ -113,6 +119,14 @@ export class TransportationWrapperComponent implements OnInit {
         return;
       }
     });
+  }
+
+  routeDetail(route: Route){
+    this.dataService.changeRealRoute(route);
+  }
+
+  deleteRoute(route: Route){
+    this.routeService.deleteRoute(route.id);
   }
 
 

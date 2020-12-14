@@ -1,9 +1,9 @@
 <div class="allWrapper">
-
+  <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>
 <div class="wrapper">
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div cdkDrag cdkDragHandle class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img  class="delete" src="assets/logo/delete.svg"></div>
+  <div cdkDrag cdkDragHandle class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img (click)="deleteTown(route)" class="delete" src="assets/logo/delete.svg"></div>
 </div>
 
 <app-adresses (placeName)="getAdress($event)"
@@ -11,8 +11,9 @@
               (placeLon)="getLon($event)"
               (type)="getType($event)">
 </app-adresses>
-
-  <button [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
+  <button *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
+  <button *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
+  <button *ngIf="carId != null"  (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
 
 
 </div>

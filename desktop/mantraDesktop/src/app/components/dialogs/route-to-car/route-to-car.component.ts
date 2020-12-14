@@ -17,6 +17,8 @@ export class RouteToCarComponent implements OnInit {
   public dialogRef: MatDialogRef<RouteToCarComponent>) { }
   cars:Cars[];
 
+  routeStatus;
+
   routesTowns;
   routesLat;
   routesLon;
@@ -32,6 +34,7 @@ export class RouteToCarComponent implements OnInit {
     this.type = this.data.routesType;
     this.newRoute = this.data.newRoute;
     this.routeId = this.data.routeId;
+    this.routeStatus = this.data.routeStatus;
   }
 
 
@@ -43,10 +46,6 @@ export class RouteToCarComponent implements OnInit {
     }else {
       dispecerId = loggedDispecer.createdBy;
     }
-    var emptyStatus:number[] = [];
-    this.routesTowns.forEach(function (value) {
-      emptyStatus.push(-1);
-    });
     var route: Route;
     console.log(this.newRoute)
     //ked nemam vytvorenu cestu
@@ -58,7 +57,7 @@ export class RouteToCarComponent implements OnInit {
           coordinatesOfTownsLon: this.routesLon,
           finished: false,
           nameOfTowns: this.routesTowns,
-          status: emptyStatus,
+          status: this.routeStatus,
           type: this.type,
           createdAt: (Date.now())
       }
@@ -74,7 +73,7 @@ export class RouteToCarComponent implements OnInit {
         coordinatesOfTownsLon: this.routesLon,
         finished: false,
         nameOfTowns: this.routesTowns,
-        status: emptyStatus,
+        status: this.routeStatus,
         type: this.type,
         createdAt: (Date.now())
       }
@@ -82,7 +81,7 @@ export class RouteToCarComponent implements OnInit {
 
     }
 
-    this.dialogRef.close({event: true})
+    this.dialogRef.close({event: true, carId: carId})
   }
 
 

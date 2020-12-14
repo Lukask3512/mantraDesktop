@@ -1,10 +1,10 @@
-<button routerLink="/view/newRoute">Nova trasa</button>
+<button (click)="routeDetail(null)" routerLink="/view/newRoute">Nova trasa</button>
 
-<div *ngIf="allActiveRoutes" class="wrapper" >
+<div *ngIf="allActiveRoutes" class="wrapper"  >
   <div class="nakl"></div>
   <h1 >Aktivne</h1>
-  <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute">
-    <div *ngIf="allActiveRoutes.length" class="nakladka">
+  <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute" >
+    <div *ngIf="allActiveRoutes.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
       <h2>nakladky</h2>
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'vykladka'">
@@ -13,7 +13,7 @@
     </ng-container>
   </div>
 
-  <div *ngIf="allActiveRoutes.length" class="vykladka">
+  <div *ngIf="allActiveRoutes.length" class="vykladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
       <h2>Vykladky</h2>
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'nakladka'">
@@ -26,6 +26,7 @@
       <div *ngIf="route.carId == null">
         <button (click)="openAddDialog(route, false, route.id)">Priradit autu</button>
       </div>
+      <button (click)="deleteRoute(route)">Odstranit trasu</button>
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
 <!--      <app-find-route-status [route]="route"></app-find-route-status>-->
 <!--      <li>{{getStatus(route)}}</li>-->

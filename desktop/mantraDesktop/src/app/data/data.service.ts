@@ -8,13 +8,24 @@ import Dispecer from "../models/Dispecer";
 export class DataService {
   private carSource = new BehaviorSubject<string>('empty');
   currentCar = this.carSource.asObservable();
+
+  private routeSource = new BehaviorSubject<any>(null);
+  currentRoute = this.routeSource.asObservable();
+
+
   cars;
 
   private loggedDispecer: Dispecer;
   constructor() { }
+  //toto je na auto - cardetail
   changRoute(car: any) {
     // console.log(message)
     this.carSource.next(car);
+  }
+
+  changeRealRoute(route: any) {
+    // console.log(message)
+    this.routeSource.next(route);
   }
 
   setDispecer(dispecer){

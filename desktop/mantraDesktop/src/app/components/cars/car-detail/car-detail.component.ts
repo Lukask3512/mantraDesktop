@@ -204,6 +204,7 @@ export class CarDetailComponent implements OnInit {
               this.routesLon.splice(i,1);
               this.routesLat.splice(i,1);
               this.type.splice(i,1);
+              this.status.splice(i, 1);
               const route: Route = {
                 carId: this.car.id,
                 createdBy: this.createdById,
@@ -211,8 +212,8 @@ export class CarDetailComponent implements OnInit {
                 coordinatesOfTownsLat: this.routesLat,
                 coordinatesOfTownsLon: this.routesLon,
                 id: this.routes.id,
-                status: [],
-                type: [],
+                status: this.status,
+                type: this.type,
                 finished: false,
                 createdAt: (Date.now()/1000)
               };

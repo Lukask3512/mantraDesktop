@@ -108,4 +108,8 @@ export class RouteService {
       })
     );
   }
+
+  deleteRoute(routeId){
+    return this.routesCollection.doc(routeId).delete();
+  }
 }

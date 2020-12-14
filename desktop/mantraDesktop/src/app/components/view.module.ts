@@ -23,7 +23,8 @@ import { FindRouteStatusComponent } from './transportation/find-route-status/fin
     ],
     exports: [
         OpenlayerComponent,
-        TheDispecerComponent
+        TheDispecerComponent,
+        FindCarByIdComponent
     ],
     imports: [
         CommonModule,
