@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button mLogoutBtn;
 
+    private int previousItemInSpinner = 0;
+
     FusedLocationProviderClient fusedLocationProviderClient;
 
     private String carId;
@@ -338,36 +340,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                         public void onClick(View v) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-                            builder.setCancelable(true);
-                            builder.setTitle("Navigácia");
-                            builder.setMessage("Chcete dokoncit danu trasu?");
-
-                            builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Long tsLong = System.currentTimeMillis() / 1000;
-                                    Map<String, Object> data = new HashMap<>();
-                                    data.put("finished", true);
-                                    data.put("finishedAt", tsLong.toString());
-
-                                    db.collection("route").document(routeId)
-                                            .update(data);
-
-                                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
-                                    linearLayout.setVisibility(View.INVISIBLE);
-
-
-                                }
-                            });
-                            builder.show();
+                            allertFinish();
                         }
                     });
                     linearLayout.addView(button);
@@ -659,7 +632,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             data.put("status", routeInfoStatus);
             db.collection("route").document(routeId)
                     .update(data);
+            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
+                allertFinish();
+            }
         }
+        if ((previousItemInSpinner == 3 || previousItemInSpinner == 5) && actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size()){
+            allertNextNavigation();
+        }
+        previousItemInSpinner = position;
 
 
     }
@@ -674,5 +654,62 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         super.onStop();
 
+    }
+
+    private void allertFinish(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Navigácia");
+        builder.setMessage("Chcete dokoncit danu trasu?");
+
+        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Long tsLong = System.currentTimeMillis() / 1000;
+                Map<String, Object> data = new HashMap<>();
+                data.put("finished", true);
+                data.put("finishedAt", tsLong.toString());
+
+                db.collection("route").document(routeId)
+                        .update(data);
+
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
+                linearLayout.setVisibility(View.INVISIBLE);
+
+
+            }
+        });
+        builder.show();
+    }
+
+    private void allertNextNavigation(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Navigácia");
+        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
+
+        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                findIndexOfTown(actualIndexInArray +1);
+
+
+            }
+        });
+        builder.show();
     }
 }
