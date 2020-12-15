@@ -435,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             WayPoint wp = new WayPoint("A", lon, lat);
                             //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
 
+
                             ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
 
                             final TextView textView = (TextView) findViewById(R.id.textView4);
@@ -457,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         } catch (GeneralException e) {
                             e.printStackTrace();
                             Log.e("Navigation", "Error code:"+ e);
+                            Toast.makeText(MainActivity.this, "Enter valid license or download correct maps.", Toast.LENGTH_LONG).show();
                         }
                     }
                 }.start();
@@ -574,6 +576,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 townsLayoutOpen = !townsLayoutOpen;
                 changeLayoutSize();
 
+//                allertOnNextPontByButton();
             }
         });
 
@@ -625,13 +628,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Resources res = getResources();
         String[] items = res.getStringArray(R.array.stateArray);
         Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
-        if (actualIndexInArray >= 0){
-            ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, position);
-            Map<String, Object> data = new HashMap<>();
-            //
-            data.put("status", routeInfoStatus);
-            db.collection("route").document(routeId)
-                    .update(data);
+        if (actualIndexInArray >= 0 ){
+            if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
+                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, position);
+
+                Map<String, Object> data = new HashMap<>();
+                //
+                data.put("status", routeInfoStatus);
+                db.collection("route").document(routeId)
+                        .update(data);
+            }
+
+
             if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
                 allertFinish();
             }
@@ -705,7 +713,51 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                findIndexOfTown(actualIndexInArray +1);
+                actualIndexInArray ++;
+                findIndexOfTown(actualIndexInArray);
+                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, 1);
+
+                Map<String, Object> data = new HashMap<>();
+                //
+                data.put("status", routeInfoStatus);
+                db.collection("route").document(routeId)
+                        .update(data);
+
+
+            }
+        });
+        builder.show();
+    }
+
+    private void allertOnNextPontByButton(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Predchadzajuci bod bol");
+//        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
+
+        String[] animals = {"vylozeny", "nalozeny", "problem", "sheep", "goat"};
+        boolean[] checkedItems = {true, false, false, true, false};
+        builder.setSingleChoiceItems(animals, 1, null);
+
+//        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+        builder.setPositiveButton("Dalsia zastavka", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                actualIndexInArray ++;
+                findIndexOfTown(actualIndexInArray);
+                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, 1);
+
+                Map<String, Object> data = new HashMap<>();
+                //
+                data.put("status", routeInfoStatus);
+                db.collection("route").document(routeId)
+                        .update(data);
 
 
             }
