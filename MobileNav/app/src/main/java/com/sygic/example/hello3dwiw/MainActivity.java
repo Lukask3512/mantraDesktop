@@ -635,8 +635,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Map<String, Object> data = new HashMap<>();
                 //
                 data.put("status", routeInfoStatus);
-                db.collection("route").document(routeId)
-                        .update(data);
+                if (routeId != null){
+                    db.collection("route").document(routeId)
+                            .update(data);
+                }
+
             }
 
 
@@ -644,7 +647,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 allertFinish();
             }
         }
-        if ((previousItemInSpinner == 3 || previousItemInSpinner == 5) && actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size()){
+//        if ((previousItemInSpinner == 3 || previousItemInSpinner == 5) && actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size()){
+//            allertNextNavigation();
+//        }
+
+        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
             allertNextNavigation();
         }
         previousItemInSpinner = position;
@@ -684,9 +691,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Map<String, Object> data = new HashMap<>();
                 data.put("finished", true);
                 data.put("finishedAt", tsLong.toString());
-
                 db.collection("route").document(routeId)
                         .update(data);
+                routeId = null;
 
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
                 linearLayout.setVisibility(View.INVISIBLE);
@@ -715,6 +722,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(DialogInterface dialog, int which) {
                 actualIndexInArray ++;
                 findIndexOfTown(actualIndexInArray);
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        spino.setSelection(1);
+
+
+                    }
+                });
                 ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, 1);
 
                 Map<String, Object> data = new HashMap<>();
