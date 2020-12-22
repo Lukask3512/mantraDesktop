@@ -25,6 +25,7 @@ export class RouteToCarComponent implements OnInit {
   type;
   newRoute;
   routeId;
+  aboutRoute;
   ngOnInit(): void {
     this.cars = this.dataService.getAllCars();
     console.log(this.data)
@@ -35,6 +36,7 @@ export class RouteToCarComponent implements OnInit {
     this.newRoute = this.data.newRoute;
     this.routeId = this.data.routeId;
     this.routeStatus = this.data.routeStatus;
+    this.aboutRoute = this.data.aboutRoute
   }
 
 
@@ -59,6 +61,7 @@ export class RouteToCarComponent implements OnInit {
           nameOfTowns: this.routesTowns,
           status: this.routeStatus,
           type: this.type,
+          aboutRoute: this.aboutRoute,
           createdAt: (Date.now())
       }
       this.routeService.createRoute(route);
@@ -75,6 +78,7 @@ export class RouteToCarComponent implements OnInit {
         nameOfTowns: this.routesTowns,
         status: this.routeStatus,
         type: this.type,
+        aboutRoute: this.aboutRoute,
         createdAt: (Date.now())
       }
       this.routeService.updateRoute(route);

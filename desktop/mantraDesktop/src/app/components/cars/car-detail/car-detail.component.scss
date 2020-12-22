@@ -45,13 +45,24 @@
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
   background: white;
   font-size: 14px;
+}
+
+.routeTown{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: start;
+}
+.routeInfo{
+  background: #cccccc;
+  border-radius: 2px;
 }
 
 .cdk-drag-preview {

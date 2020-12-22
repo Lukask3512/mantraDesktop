@@ -12,6 +12,8 @@ export class AdressesComponent implements OnInit {
   longitude: number;
   zoom: number;
   address: string;
+  aboutRoute: string = '';
+
   private geoCoder;
   addressToDispetcer: string;
   @ViewChild('search')
@@ -22,6 +24,8 @@ export class AdressesComponent implements OnInit {
   @Output() placeLat: EventEmitter<any> = new EventEmitter();
   @Output() placeLon: EventEmitter<any> = new EventEmitter();
   @Output() type: EventEmitter<any> = new EventEmitter();
+  @Output() aboutRouteEmitter: EventEmitter<any> = new EventEmitter();
+
   addTaskValue: string = "";
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -76,6 +80,9 @@ export class AdressesComponent implements OnInit {
     this.placeLat.emit(this.latitude);
     this.placeLon.emit(this.longitude);
     this.type.emit(this.labelPosition);
+    this.aboutRouteEmitter.emit(this.aboutRoute);
+
+    this.aboutRoute = "";
     this.addTaskValue = "";
     this.addressToDispetcer = undefined;
     this.labelPosition = undefined;

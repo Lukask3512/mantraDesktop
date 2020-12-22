@@ -8,6 +8,8 @@ import Route from "../../../models/Route";
 import {DataService} from "../../../data/data.service";
 import {take} from "rxjs/operators";
 import {RouteService} from "../../../services/route.service";
+import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
+import {RouteStatusService} from "../../../data/route-status.service";
 
 @Component({
   selector: 'app-new-transport',
@@ -21,6 +23,7 @@ export class NewTransportComponent implements OnInit {
   routesLon: string[] = [];
   type: string[] = [];
   status: number[]= [];
+  aboutRoute: string[] = [];
   carId: string;
 
   route: Route;
@@ -28,7 +31,7 @@ export class NewTransportComponent implements OnInit {
   change:boolean;
   @ViewChild('child')
   private child: OpenlayerComponent;
-  constructor(private dialog: MatDialog, private dataService: DataService, private routeService: RouteService) { }
+  constructor(public routeStatus: RouteStatusService, private dialog: MatDialog, private dataService: DataService, private routeService: RouteService) { }
 
   ngOnInit(): void {
     this.change = false;
@@ -49,6 +52,7 @@ export class NewTransportComponent implements OnInit {
         this.type = this.route.type;
         this.carId = this.route.carId;
         this.status = this.route.status;
+        this.aboutRoute = this.route.aboutRoute;
       }
     })
   }
@@ -59,6 +63,8 @@ export class NewTransportComponent implements OnInit {
     moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
     moveItemInArray(this.type, event.previousIndex, event.currentIndex);
     moveItemInArray(this.status, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
+
     this.change = true;
   }
 
@@ -80,10 +86,16 @@ export class NewTransportComponent implements OnInit {
     // this.child.notifyMe(this.routesLat, this.routesLon, null);
   }
 
+  getAboutRoute(aboutRoute){
+    this.aboutRoute.push(aboutRoute);
+    console.log(aboutRoute);
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+
   openAddDialog() {
     const dialogConfig = new MatDialogConfig();
 
-    if (this.route.id == null) {
+    if (this.route == undefined){
       dialogConfig.data = {
         carId: this.carId,
         routesTowns: this.routesTowns,
@@ -91,6 +103,20 @@ export class NewTransportComponent implements OnInit {
         routesLon: this.routesLon,
         routesType: this.type,
         routeStatus: this.status,
+        aboutRoute: this.aboutRoute,
+        newRoute: true
+      };
+    }
+
+    else if (this.route.id == null) {
+      dialogConfig.data = {
+        carId: this.carId,
+        routesTowns: this.routesTowns,
+        routesLat: this.routesLat,
+        routesLon: this.routesLon,
+        routesType: this.type,
+        routeStatus: this.status,
+        aboutRoute: this.aboutRoute,
         newRoute: true
       };
     }else{
@@ -101,6 +127,7 @@ export class NewTransportComponent implements OnInit {
         routesType: this.type,
         routeId: this.route.id,
         routeStatus: this.status,
+        aboutRoute: this.aboutRoute,
         newRoute: false
       };
     }
@@ -117,6 +144,7 @@ export class NewTransportComponent implements OnInit {
           this.routesLat = [];
           this.type = [];
           this.status = []
+          this.aboutRoute = [];
         this.change = false;
       }
     });
@@ -131,6 +159,7 @@ export class NewTransportComponent implements OnInit {
       routesType: this.type,
       routeId: this.route.id,
       routeStatus: this.status,
+      aboutRoute: this.aboutRoute,
       newRoute: false
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
@@ -157,9 +186,11 @@ export class NewTransportComponent implements OnInit {
         id: this.route.id,
         status: this.status,
         type: this.type,
+        aboutRoute: this.aboutRoute,
         // finished: false,
         createdAt: (Date.now()/1000)
       };
+      console.log(route);
       this.routeService.updateRoute(route);
 
     this.change = false;
@@ -173,10 +204,26 @@ export class NewTransportComponent implements OnInit {
         this.routesLat.splice(i,1);
         this.type.splice(i,1);
         this.status.splice(i, 1);
+        this.aboutRoute.splice(i,1);
 
       }
     }
     this.change = true;
+  }
+
+  editInfo(routeInfo, id){
+    const dialogRef = this.dialog.open(EditInfoComponent, {
+      data: {routeInfo: routeInfo }
+    });
+    dialogRef.afterClosed().subscribe(value => {
+
+      if (value.routeInfo !== undefined){
+        this.aboutRoute[id] = value.routeInfo;
+        this.change = true;
+      }else {
+        return;
+      }
+    });
   }
 
 

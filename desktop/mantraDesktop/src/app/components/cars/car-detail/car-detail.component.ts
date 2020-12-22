@@ -8,6 +8,7 @@ import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component
 import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RouteStatusService} from "../../../data/route-status.service";
+import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 
 @Component({
   selector: 'app-car-detail',
@@ -21,6 +22,7 @@ export class CarDetailComponent implements OnInit {
    routesLat: string[] = [];
    routesLon: string[] = [];
    status;
+   aboutRoute: string[] = [];
   type: string[] = [];
     car;
   change:boolean;
@@ -41,6 +43,7 @@ export class CarDetailComponent implements OnInit {
     this.routesLat = [];
     this.type = [];
     this.status = [];
+    this.aboutRoute = [];
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
       setTimeout(() =>
@@ -61,6 +64,7 @@ export class CarDetailComponent implements OnInit {
           this.routesLon = this.routes.coordinatesOfTownsLon;
           this.type = this.routes.type;
           this.status = this.routes.status;
+          this.aboutRoute = this.routes.aboutRoute;
           //doplnit ykladku nakladku
 
           setTimeout(() =>
@@ -96,6 +100,7 @@ export class CarDetailComponent implements OnInit {
     this.routesLon = route.coordinatesOfTownsLon;
     this.type = route.type;
     this.status = route.status;
+    this.aboutRoute = route.aboutRoute;
     this.child.notifyMe(this.routesLat, this.routesLon, this.car);
   }
 
@@ -105,6 +110,7 @@ export class CarDetailComponent implements OnInit {
     moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
     moveItemInArray(this.type, event.previousIndex, event.currentIndex);
     moveItemInArray(this.status, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
     this.change = true;
   }
 
@@ -131,6 +137,7 @@ export class CarDetailComponent implements OnInit {
         coordinatesOfTownsLon: this.routesLon,
         status: emptyStatus,
         type: this.type,
+        aboutRoute: this.aboutRoute,
         finished: false,
         createdAt: (Date.now()/1000)
       };
@@ -147,6 +154,7 @@ export class CarDetailComponent implements OnInit {
         coordinatesOfTownsLon: this.routesLon,
         id: this.routes.id,
         status: emptyStatus,
+        aboutRoute: this.aboutRoute,
         type: this.type,
         finished: false,
         createdAt: (Date.now()/1000)
@@ -158,6 +166,7 @@ export class CarDetailComponent implements OnInit {
 
   getAdress(adress){
     this.routesTowns.push(adress);
+    this.status.push(-1);
     this.change = true;
   }
   getLat(lat){
@@ -173,6 +182,27 @@ export class CarDetailComponent implements OnInit {
     this.type.push(type);
     console.log(type);
     // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+
+  getAboutRoute(aboutRoute){
+    this.aboutRoute.push(aboutRoute);
+    console.log(aboutRoute);
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+
+  editInfo(routeInfo, id){
+    const dialogRef = this.dialog.open(EditInfoComponent, {
+      data: {routeInfo: routeInfo }
+    });
+    dialogRef.afterClosed().subscribe(value => {
+
+      if (value.routeInfo !== undefined){
+        this.aboutRoute[id] = value.routeInfo;
+        this.change = true;
+      }else {
+        return;
+      }
+    });
   }
 
   deleteRoute(routeToDelete){
@@ -205,6 +235,7 @@ export class CarDetailComponent implements OnInit {
               this.routesLat.splice(i,1);
               this.type.splice(i,1);
               this.status.splice(i, 1);
+              this.aboutRoute.splice(i,1);
               const route: Route = {
                 carId: this.car.id,
                 createdBy: this.createdById,
@@ -212,6 +243,7 @@ export class CarDetailComponent implements OnInit {
                 coordinatesOfTownsLat: this.routesLat,
                 coordinatesOfTownsLon: this.routesLon,
                 id: this.routes.id,
+                aboutRoute: this.aboutRoute,
                 status: this.status,
                 type: this.type,
                 finished: false,

@@ -14,9 +14,16 @@
   </div>
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>{{route}}
-    <span>{{this.routeStatus.getStatus(this.routes.status[i])}}</span>
-    <img (click)="deleteRoute(route)" class="delete" src="assets/logo/delete.svg">
+  <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>
+    <div class="routeTown">
+      <p>{{route}}</p>
+      <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
+      <img (click)="deleteRoute(route)" class="delete" src="assets/logo/delete.svg">
+    </div>
+     <div class="routeTown routeInfo">
+        <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
+       <img (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
+     </div>
   </div>
 </div>
 
@@ -27,7 +34,8 @@
 <app-adresses (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
               (placeLon)="getLon($event)"
-              (type)="getType($event)">
+              (type)="getType($event)"
+                (aboutRouteEmitter)="getAboutRoute($event)">
 </app-adresses>
 </div>
 

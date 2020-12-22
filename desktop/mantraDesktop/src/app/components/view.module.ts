@@ -15,21 +15,29 @@ import { RouteToCarComponent } from './dialogs/route-to-car/route-to-car.compone
 import {MatTableModule} from "@angular/material/table";
 import { FindCarByIdComponent } from './cars/find-car-by-id/find-car-by-id.component';
 import { FindRouteStatusComponent } from './transportation/find-route-status/find-route-status.component';
+import { EditInfoComponent } from './dialogs/edit-info/edit-info.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent
     ],
     exports: [
         OpenlayerComponent,
         TheDispecerComponent,
         FindCarByIdComponent
     ],
-    imports: [
-        CommonModule,
-        ViewRoutingModule,
-        MatTableModule
-    ]
+  imports: [
+    CommonModule,
+    ViewRoutingModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
+  ]
 })
 export class ViewModule { }

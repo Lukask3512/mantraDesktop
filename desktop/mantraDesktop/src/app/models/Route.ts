@@ -2,7 +2,7 @@ export default class Route {
   id?: string;
   createdBy: string
   carId?: string;
-  aboutRoute?: string;
+  aboutRoute?: string[];
   nameOfTowns: any[];
   coordinatesOfTownsLat: string[];
   coordinatesOfTownsLon: string[];

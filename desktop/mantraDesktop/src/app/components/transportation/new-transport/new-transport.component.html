@@ -2,14 +2,25 @@
   <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>
 <div class="wrapper">
 
-<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div cdkDrag cdkDragHandle class="example-box" *ngFor="let route of routesTowns" cdkDrag>{{route}} <img (click)="deleteTown(route)" class="delete" src="assets/logo/delete.svg"></div>
-</div>
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>
+      <div class="routeTown">
+        <p>{{route}}</p>
+        <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
+        <img (click)="deleteTown(route)" class="delete" src="assets/logo/delete.svg">
+      </div>
+      <div class="routeTown routeInfo">
+        <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
+        <img (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
+      </div>
+    </div>
+  </div>
 
 <app-adresses (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
               (placeLon)="getLon($event)"
-              (type)="getType($event)">
+              (type)="getType($event)"
+              (aboutRouteEmitter)="getAboutRoute($event)">
 </app-adresses>
   <button *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
   <button *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>

@@ -13,6 +13,7 @@
         <mat-radio-button class="example-margin" value="vykladka">Vykladka</mat-radio-button>
       </mat-radio-group>
     </section>
+    <input type="text" [(ngModel)]="aboutRoute">
 
     <button [disabled]="!labelPosition || !addressToDispetcer" (click)="add()">Pridat</button>
   </div>
