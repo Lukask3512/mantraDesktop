@@ -42,7 +42,7 @@ export class AddCarDialogComponent implements OnInit {
       ecv: this.carForm.get('ecv').value,
       phoneNumber: this.carForm.get('phone').value,
       createdBy: createdBy,
-      status: 'offline'
+      status: -2
     };
   }
 

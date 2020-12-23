@@ -9,6 +9,9 @@ export class RouteStatusService {
 
   getStatus(id){
     switch (id){
+      case -2: {
+        return 'Offline'
+      }
       case 0: {
         return 'Čakám'
       }

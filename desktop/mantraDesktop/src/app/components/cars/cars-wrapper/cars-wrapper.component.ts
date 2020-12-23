@@ -7,6 +7,7 @@ import {DataService} from "../../../data/data.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AddCarDialogComponent} from "../../dialogs/add-car-dialog/add-car-dialog.component";
 import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
+import {RouteStatusService} from "../../../data/route-status.service";
 
 @Component({
   selector: 'app-cars-wrapper',
@@ -16,7 +17,8 @@ import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-c
 export class CarsWrapperComponent implements OnInit {
   dataSource;
   displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'detail', 'delete'];
-  constructor(private carService: CarService, private dataSerice: DataService, private dialog: MatDialog) { }
+  constructor(private carService: CarService, private dataSerice: DataService, private dialog: MatDialog,
+              public routeStatusService: RouteStatusService) { }
   cars;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
