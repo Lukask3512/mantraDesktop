@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public Object routeInfoLat;
     public Object routeInfoType;
     public Object routeInfoStatus;
+    public Object routeInfoAbout;
 
     Object oldRoutes;
 
@@ -188,17 +190,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     routeInfoLat = null;
                     routeInfoLon = null;
                     routeInfoType = null;
-
+                    routeInfoAbout = null;
 
                     routeInfo = doc.getData().get("nameOfTowns");
                     routeInfoLat = doc.getData().get("coordinatesOfTownsLat");
                     routeInfoLon = doc.getData().get("coordinatesOfTownsLon");
                     routeInfoType = doc.getData().get("type");
                     routeInfoStatus = doc.getData().get("status");
+                    routeInfoAbout = doc.getData().get("aboutRoute");
 
                     if (oldRoutes != null && !oldRoutes.toString().equals(routeInfo.toString())){
-                        Log.d("cesta", "(String)" +  routeInfo.toString());
-                        Log.d("cesta", "(String)" +  oldRoutes.toString());
                         if (popUpPoPoZmene){
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -210,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.cancel();
-
                                 }
                             });
                             builder.show();
@@ -247,15 +247,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         rowTextView.setOnClickListener(new View.OnClickListener() {
 
                             public void onClick(View v) {
-//                                        changeSpinnerValue(0);
 
                                 final String str = rowTextView.getText().toString();
-//
-//                                        Log.d("TAG", "wuhuuu: " + str);
-//                                        findIndexOfTown(str);
-//                                        Intent intent = new Intent(MainActivity.this, Popup.class);
-//                                        intent.putExtra("town", str);
-//                                        startActivityForResult(intent,1);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
                                 builder.setCancelable(true);
@@ -264,12 +257,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                                 actualIndexInArray = finalI;
 
-//                                        if (finalI > 0) {
-//                                        String[] animals = {"horse", "cow", "camel", "sheep", "goat"};
-//                                        boolean[] checkedItems = {true, false, false, true, false};
-//                                        builder.setSingleChoiceItems(animals, 1, null);
-
-//
                                 builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -282,9 +269,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                         if (finalI > 0) {
                                             int id = finalI - 1;
                                             TextView finished = (TextView) findViewById(id);
-
-
-                                            Log.d("Error2", "" +  (((ArrayList<?>) routeInfoStatus).get(finalI - 1)));
 
                                             if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("nakladka") &&
                                                     (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 1 ||
@@ -344,10 +328,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         }
                     });
                     linearLayout.addView(button);
-
-                    Log.d("TAG", "Current cites in CA: " + doc.getData());
-//                        }
-
                 }
             });
 
@@ -361,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Intent intent = new Intent(MainActivity.this, LoginPage.class);
 
                 Map<String, Object> data = new HashMap<>();
-                data.put("status", "Offline");
+                data.put("status", -2);
 
                 if (carId != null) {
                     db.collection("cars").document(carId)
@@ -389,25 +369,60 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        ImageButton imageButton = (ImageButton) findViewById(R.id.buttonInfo);
+        imageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            //On click function
+            public void onClick(View view) {
+                if (routeId != null && actualIndexInArray >= 0 && actualIndexInArray <= ((ArrayList<?>) routeInfoAbout).size()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    builder.setCancelable(true);
+                    builder.setTitle("Info");
+                    builder.setMessage(((ArrayList<?>) routeInfoAbout).get(actualIndexInArray).toString());
+
+                    builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }else{
+                        Toast.makeText(MainActivity.this, "No route selected", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        ImageButton nextRouteButton = (ImageButton) findViewById(R.id.nextRoute);
+        nextRouteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            //On click function
+            public void onClick(View view) {
+                if (routeId != null){
+                    allertNextNavigation(true);
+                }else {
+                    Toast.makeText(MainActivity.this, "No route selected", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
 
 
 
     }
     private void changeLayoutSize(){
-        Button button = (Button) findViewById(R.id.button1);
 
         if (townsLayoutOpen){
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsWrapper);
             linearLayout.getLayoutParams().height = 400;
             linearLayout.requestLayout();
-            button.setText("Zmenšiť");
         }
         else{
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsWrapper);
             linearLayout.getLayoutParams().height = 0;
             linearLayout.requestLayout();
-            button.setText("Zväčšiť");
 
         }
 
@@ -417,9 +432,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void findIndexOfTown(final int town){
 
-//        for (int i = 0; i < ((ArrayList<?>) routeInfo).size(); i++){
-//            if (((ArrayList<?>) routeInfo).get(i) == town){
-                Log.e("PRO","crash to" + ((ArrayList<Double>) routeInfoLat).get(town));
                 final double lattitude =  (double)((ArrayList<Double>) routeInfoLat).get(town);
                 final double longtitude = (double)((ArrayList<Double>) routeInfoLon).get(town);
                 final int townForThread = town;
@@ -458,7 +470,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         } catch (GeneralException e) {
                             e.printStackTrace();
                             Log.e("Navigation", "Error code:"+ e);
-                            Toast.makeText(MainActivity.this, "Enter valid license or download correct maps.", Toast.LENGTH_LONG).show();
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, "Enter valid license or download correct maps.", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }
                 }.start();
@@ -467,30 +485,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //        }
     }
 
-    //zmeni stav spinnera spinner values su v res/
-    private void changeSpinnerValue(final int id) {
-        String[] arrayString = getResources().getStringArray(R.array.stateArray);
+    private void changeRouteStatus(int id){
         ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, id);
         Map<String, Object> data = new HashMap<>();
         data.put("status", routeInfoStatus);
         db.collection("route").document(routeId)
                 .update(data);
-        runOnUiThread(new Runnable() {
 
+        changeCarStatus(id);
+    }
+
+    private void changeCarStatus(int id){
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", id);
+        db.collection("cars").document(carId)
+                .update(data);
+    }
+
+    //zmeni stav spinnera spinner values su v res/
+    private void changeSpinnerValue(final int id) {
+        if (routeId != null){
+            changeRouteStatus(id);
+        }
+
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 spino.setSelection(id);
-
-
             }
         });
-
-
-
-
-
-
     }
 
     private void getLocation() {
@@ -567,16 +590,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fgm = new SygicNaviFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.sygicmap, fgm).commitAllowingStateLoss();
 
-//        final EditText address = (EditText)findViewById(R.id.edit1);
-
-        Button btn = (Button) findViewById(R.id.button1);
+        ImageButton btn = (ImageButton) findViewById(R.id.button1);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 townsLayoutOpen = !townsLayoutOpen;
                 changeLayoutSize();
 
-//                allertOnNextPontByButton();
             }
         });
 
@@ -615,47 +635,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        String dataTown = (String)data.getBundleExtra("town");
-//        if (){
-//
-//        }
         super.onActivityResult(requestCode, resultCode, data);
         fgm.onActivityResult(requestCode, resultCode, data);
     }
-//
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Resources res = getResources();
         String[] items = res.getStringArray(R.array.stateArray);
         Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
-        if (actualIndexInArray >= 0 ){
+        changeCarStatus(position);
+        if (routeId != null){
+            if (actualIndexInArray >= 0 ){
             if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
-                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, position);
-
-                Map<String, Object> data = new HashMap<>();
-                //
-                data.put("status", routeInfoStatus);
-                if (routeId != null){
-                    db.collection("route").document(routeId)
-                            .update(data);
+                changeRouteStatus(position);
                 }
 
-            }
 
 
             if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
                 allertFinish();
             }
         }
-//        if ((previousItemInSpinner == 3 || previousItemInSpinner == 5) && actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size()){
-//            allertNextNavigation();
-//        }
 
         if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
-            allertNextNavigation();
+            allertNextNavigation(false);
         }
         previousItemInSpinner = position;
 
+        }
 
     }
 
@@ -687,13 +695,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (actualIndexInArray > 0) {
+                    allertOnPreviousPoint(true);
+                }
                 Long tsLong = System.currentTimeMillis() / 1000;
                 Map<String, Object> data = new HashMap<>();
                 data.put("finished", true);
                 data.put("finishedAt", tsLong.toString());
                 db.collection("route").document(routeId)
                         .update(data);
-                routeId = null;
+//                routeId = null;
 
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsArray);
                 linearLayout.setVisibility(View.INVISIBLE);
@@ -704,57 +715,63 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.show();
     }
 
-    private void allertNextNavigation(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-        builder.setCancelable(true);
-        builder.setTitle("Navigácia");
-        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
-
-        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                actualIndexInArray ++;
-                findIndexOfTown(actualIndexInArray);
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        spino.setSelection(1);
+    private void allertNextNavigation(final boolean askPrevious){
+        if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size()){
+            actualIndexInArray++;
+            allertFinish();
+        }else {
 
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setCancelable(true);
+            builder.setTitle("Navigácia");
+            builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
+
+            builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    actualIndexInArray++;
+                    findIndexOfTown(actualIndexInArray);
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            spino.setSelection(1);
+
+
+                        }
+                    });
+
+                    if (askPrevious && actualIndexInArray > 0) {
+                        allertOnPreviousPoint(false);
                     }
-                });
-                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, 1);
 
-                Map<String, Object> data = new HashMap<>();
-                //
-                data.put("status", routeInfoStatus);
-                db.collection("route").document(routeId)
-                        .update(data);
+                    changeSpinnerValue(1);
 
 
-            }
-        });
-        builder.show();
+                }
+            });
+            builder.show();
+        }
     }
 
-    private void allertOnNextPontByButton(){
+    private void allertOnPreviousPoint(final boolean last){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Predchadzajuci bod bol");
+        builder.setTitle("Predchadzajuce miesto:");
 //        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
 
-        String[] animals = {"vylozeny", "nalozeny", "problem", "sheep", "goat"};
-        boolean[] checkedItems = {true, false, false, true, false};
+        String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
+        boolean[] checkedItems = {true, false, false, false};
         builder.setSingleChoiceItems(animals, 1, null);
 
 //        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
@@ -763,18 +780,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                dialog.cancel();
 //            }
 //        });
-        builder.setPositiveButton("Dalsia zastavka", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                actualIndexInArray ++;
-                findIndexOfTown(actualIndexInArray);
-                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray, 1);
+                ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray - 1, 1);
+                int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                if (selectedPosition == 0){
+                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 5);
+
+                }else if(selectedPosition == 1){
+                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 3);
+                }
+                else if(selectedPosition == 2){
+                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 6);
+                }else if(selectedPosition == 3){
+                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, -1);
+                }
 
                 Map<String, Object> data = new HashMap<>();
                 //
                 data.put("status", routeInfoStatus);
                 db.collection("route").document(routeId)
                         .update(data);
+
+                if (last){
+                    routeId = null;
+                }
 
 
             }

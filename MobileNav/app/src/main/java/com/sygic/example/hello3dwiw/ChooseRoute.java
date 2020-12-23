@@ -108,13 +108,6 @@ public class ChooseRoute extends AppCompatActivity {
 
                                         public void onClick(View v) {
 
-                                            final String str = rowTextView.getText().toString();
-//
-//                                        Log.d("TAG", "wuhuuu: " + str);
-//                                        findIndexOfTown(str);
-//                                        Intent intent = new Intent(MainActivity.this, Popup.class);
-//                                        intent.putExtra("town", str);
-//                                        startActivityForResult(intent,1);
                                             AlertDialog.Builder builder = new AlertDialog.Builder(ChooseRoute.this);
 
                                             builder.setCancelable(true);
@@ -177,7 +170,7 @@ public class ChooseRoute extends AppCompatActivity {
                                         LinearLayout linearLayout1 = new LinearLayout(ChooseRoute.this);
                                         linearLayout1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                         linearLayout1.setOrientation(LinearLayout.VERTICAL);
-//                                linearLayout1.setBackgroundColor(Color.parseColor("#3fff38"));
+
                                         final TextView headerText = new TextView(ChooseRoute.this);
                                         headerText.setText("Posledne dokončená cesta: " +  inexOfCollection);
                                         headerText.setTextSize(TypedValue.COMPLEX_UNIT_SP,32f);
@@ -212,13 +205,6 @@ public class ChooseRoute extends AppCompatActivity {
 
                                                 public void onClick(View v) {
 
-                                                    final String str = rowTextView.getText().toString();
-//
-//                                        Log.d("TAG", "wuhuuu: " + str);
-//                                        findIndexOfTown(str);
-//                                        Intent intent = new Intent(MainActivity.this, Popup.class);
-//                                        intent.putExtra("town", str);
-//                                        startActivityForResult(intent,1);
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(ChooseRoute.this);
 
                                                     builder.setCancelable(true);
@@ -287,7 +273,7 @@ public class ChooseRoute extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseRoute.this, LoginPage.class);
                 Map<String, Object> data = new HashMap<>();
-                data.put("status", "Offline");
+                data.put("status", -2);
 
                 db.collection("cars").document(carId)
                         .update(data);

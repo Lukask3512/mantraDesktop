@@ -68,7 +68,7 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                                         intent.putExtra("carId", document.getId());
 
                                         Map<String, Object> data = new HashMap<>();
-                                        data.put("status", "Online");
+                                        data.put("status", 0);
 
 
                                             db.collection("cars").document(document.getId().toString())
