@@ -2,12 +2,12 @@
   <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>
 <div class="wrapper">
 
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>
+  <div  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>
       <div class="routeTown">
-        <p>{{route}}</p>
+        <p>{{routeTown}}</p>
         <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
-        <img (click)="deleteTown(route)" class="delete" src="assets/logo/delete.svg">
+        <img  (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
       </div>
       <div class="routeTown routeInfo">
         <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
@@ -16,16 +16,20 @@
     </div>
   </div>
 
-<app-adresses (placeName)="getAdress($event)"
+<app-adresses  (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
               (placeLon)="getLon($event)"
               (type)="getType($event)"
               (aboutRouteEmitter)="getAboutRoute($event)">
 </app-adresses>
-  <button *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
-  <button *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
-  <button *ngIf="carId != null"  (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
+  <div >
+    <button *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
+    <button *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
+    <button *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
+  </div>
 
 
 </div>
 </div>
+<app-route-log *ngIf="route != undefined" [routeId]="parentSubject"></app-route-log>
+

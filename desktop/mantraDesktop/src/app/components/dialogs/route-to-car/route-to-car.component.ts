@@ -4,6 +4,7 @@ import Cars from "../../../models/Cars";
 import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {RouteStatusService} from "../../../data/route-status.service";
 
 @Component({
   selector: 'app-route-to-car',
@@ -14,7 +15,7 @@ export class RouteToCarComponent implements OnInit {
 
   constructor(private dataService: DataService, private routeService: RouteService
               , @Inject(MAT_DIALOG_DATA) public data: any,
-  public dialogRef: MatDialogRef<RouteToCarComponent>) { }
+  public dialogRef: MatDialogRef<RouteToCarComponent>, public routeStatusService: RouteStatusService) { }
   cars:Cars[];
 
   routeStatus;
@@ -36,7 +37,8 @@ export class RouteToCarComponent implements OnInit {
     this.newRoute = this.data.newRoute;
     this.routeId = this.data.routeId;
     this.routeStatus = this.data.routeStatus;
-    this.aboutRoute = this.data.aboutRoute
+    this.aboutRoute = this.data.aboutRoute;
+
   }
 
 

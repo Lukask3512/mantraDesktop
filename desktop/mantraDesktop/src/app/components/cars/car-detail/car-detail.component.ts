@@ -16,6 +16,9 @@ import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
   styleUrls: ['./car-detail.component.scss']
 })
 export class CarDetailComponent implements OnInit {
+  //aby log sledoval zmeny ak zmenim trasu
+  parentSubject:Subject<any> = new Subject();
+
   routes;
   allActiveRoutes: Route[];
    routesTowns: string[] = [];
@@ -70,6 +73,8 @@ export class CarDetailComponent implements OnInit {
           setTimeout(() =>
             {
               this.child.notifyMe(this.routesLat, this.routesLon,this.car);
+              this.notifyChildren(this.routes.id);
+
             },
             800);
 
@@ -92,6 +97,11 @@ export class CarDetailComponent implements OnInit {
     }
 
   }
+  notifyChildren(routeId) {
+    console.log("som sendol")
+    this.parentSubject.next(routeId);
+  }
+
 
   changeRoute(route: Route){
     this.routes = route;
@@ -102,6 +112,8 @@ export class CarDetailComponent implements OnInit {
     this.status = route.status;
     this.aboutRoute = route.aboutRoute;
     this.child.notifyMe(this.routesLat, this.routesLon, this.car);
+    this.notifyChildren(this.routes.id);
+
   }
 
   drop(event: CdkDragDrop<string[]>) {

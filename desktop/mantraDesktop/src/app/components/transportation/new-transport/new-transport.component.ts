@@ -10,6 +10,7 @@ import {take} from "rxjs/operators";
 import {RouteService} from "../../../services/route.service";
 import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 import {RouteStatusService} from "../../../data/route-status.service";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-new-transport',
@@ -17,6 +18,8 @@ import {RouteStatusService} from "../../../data/route-status.service";
   styleUrls: ['./new-transport.component.scss']
 })
 export class NewTransportComponent implements OnInit {
+  //aby log sledoval zmeny ak zmenim trasu
+  parentSubject:Subject<any> = new Subject();
 
   routesTowns: string[] = [];
   routesLat: string[] = [];
@@ -42,7 +45,7 @@ export class NewTransportComponent implements OnInit {
     this.status = [];
     this.carId = null;
     this.dataService.currentRoute.pipe(take(1)).subscribe(route => {
-      console.log(route)
+      console.log(route);
       if (route != null){
         this.route = route;
 
@@ -53,6 +56,13 @@ export class NewTransportComponent implements OnInit {
         this.carId = this.route.carId;
         this.status = this.route.status;
         this.aboutRoute = this.route.aboutRoute;
+
+        setTimeout(() =>
+          {
+            this.notifyChildren(this.route.id);
+
+          },
+          800);
       }
     })
   }
@@ -66,6 +76,11 @@ export class NewTransportComponent implements OnInit {
     moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
 
     this.change = true;
+  }
+
+  notifyChildren(routeId) {
+    console.log("somodoslal")
+    this.parentSubject.next(routeId);
   }
 
   getAdress(adress){

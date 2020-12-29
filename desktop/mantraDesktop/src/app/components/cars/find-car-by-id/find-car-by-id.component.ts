@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CarService} from "../../../services/car.service";
+import {RouteStatusService} from "../../../data/route-status.service";
 
 @Component({
   selector: 'app-find-car-by-id',
@@ -11,7 +12,7 @@ export class FindCarByIdComponent implements OnInit {
   @Input() carId: string;
   carName;
   carUndefined;
-  constructor(private carService: CarService) { }
+  constructor(public routeStatusService: RouteStatusService, private carService: CarService) { }
 
   ngOnInit(): void {
     if (this.carId != null){

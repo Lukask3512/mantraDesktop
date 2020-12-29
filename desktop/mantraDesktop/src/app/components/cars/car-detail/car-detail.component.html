@@ -43,5 +43,6 @@
 
     <app-openlayer #child></app-openlayer>
   </div>
+  <app-route-log *ngIf="routes != undefined" [routeId]="parentSubject"></app-route-log>
 
 </div>

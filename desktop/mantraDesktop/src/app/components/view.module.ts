@@ -19,16 +19,18 @@ import { EditInfoComponent } from './dialogs/edit-info/edit-info.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { RouteLogComponent } from './transportation/route-log/route-log.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, RouteLogComponent
     ],
     exports: [
         OpenlayerComponent,
         TheDispecerComponent,
-        FindCarByIdComponent
+        FindCarByIdComponent,
+        RouteLogComponent
     ],
   imports: [
     CommonModule,
