@@ -48,6 +48,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -83,6 +84,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+//treba tu urobit mocny refaktor
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final String LOG_TAG = "hello3dwiw";
 
@@ -104,9 +107,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public Object routeInfoStatus;
     public Object routeInfoAbout;
 
+    //routeLog
+    public Object routeLogLat;
+    public Object routeLogLon;
+    public Object routeLogPlace;
+    public Object routeLogState;
+    public Object routeLogTimestamp;
+    private Object routeLog;
+    private Object routeLogId;
+
+    //car
+    private double carLattitude;
+    private double carLongtitude;
+
     Object oldRoutes;
 
-    public int actualIndexInArray = -1;
+    public int actualIndexInArray;
     public Spinner spino;
     public boolean townsLayoutOpen;
     private Handler handler;
@@ -126,13 +142,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         setContentView(R.layout.activity_main);
         handler = new Handler();
+        actualIndexInArray = -1;
 
-
-
-
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.myToolBar);
-//        setSupportActionBar(toolbar);
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
             checkSygicResources();
         }
@@ -161,8 +172,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         carId = intent.getExtras().getString("carId");
 
         if (intent.getExtras() != null && intent.getExtras().getString("routeId") != null) {
+
             routeId = intent.getExtras().getString("routeId");
-            Log.d("TAG", "aweweaewaewaewae." + routeId);
+            getRouteLog();
+
+
 
             DocumentReference docRef = db.collection("route").document(routeId);
 
@@ -537,6 +551,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                         location.getLatitude(), location.getLongitude(), 1);
                                 Log.e("Error", "" + addresses.get(0).getLatitude());
                                 sendLocationToFire(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                                carLattitude = addresses.get(0).getLatitude();
+                                carLongtitude = addresses.get(0).getLongitude();
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 Log.e("Error", "se porantalo" + e);
@@ -641,6 +657,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (routeLogId != null && actualIndexInArray != -1){
+            updateRouteLog(actualIndexInArray, position);
+        }
         Resources res = getResources();
         String[] items = res.getStringArray(R.array.stateArray);
         Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
@@ -716,9 +735,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void allertNextNavigation(final boolean askPrevious){
+        Log.d("wata", "DocumentSnapshot written with ID: " + actualIndexInArray);
         if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size()){
             actualIndexInArray++;
             allertFinish();
+            Log.d("wata2", "DocumentSnapshot written with ID: " + actualIndexInArray);
+
         }else {
 
 
@@ -738,7 +760,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     actualIndexInArray++;
-                    findIndexOfTown(actualIndexInArray);
+                    Log.d("wata", "DocumentSnapshot written with ID: " + actualIndexInArray);
+//                    updateRouteLog(actualIndexInArray, 1);
+//                    findIndexOfTown(actualIndexInArray);
                     runOnUiThread(new Runnable() {
 
                         @Override
@@ -766,7 +790,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void allertOnPreviousPoint(final boolean last){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         builder.setTitle("Predchadzajuce miesto:");
 //        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
 
@@ -780,6 +804,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                dialog.cancel();
 //            }
 //        });
+
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -787,14 +812,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                 if (selectedPosition == 0){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 5);
-
+                    updateRouteLog(actualIndexInArray -1, 5);
                 }else if(selectedPosition == 1){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 3);
+                    updateRouteLog(actualIndexInArray -1, 3);
                 }
                 else if(selectedPosition == 2){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 6);
+                    updateRouteLog(actualIndexInArray -1, 6);
+
                 }else if(selectedPosition == 3){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, -1);
+                    updateRouteLog(actualIndexInArray -1, -1);
+
                 }
 
                 Map<String, Object> data = new HashMap<>();
@@ -805,11 +835,148 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (last){
                     routeId = null;
+                }else{
+                    findIndexOfTown(actualIndexInArray);
+                    updateRouteLog(actualIndexInArray, 1);
                 }
 
 
             }
         });
         builder.show();
+    }
+
+    private void createRouteLog(){
+        // Add a new document with a generated id.
+        Map<String, Object> data = new HashMap<>();
+        data.put("routeId", routeId);
+        db.collection("routeLog")
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("TAG", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        routeLogId = documentReference.getId();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error adding document", e);
+                    }
+                });
+    }
+
+    private void updateRouteLog(int place, long state){
+        Long tsLong = System.currentTimeMillis();
+        String ts = tsLong.toString();
+        if (routeLogPlace == null){
+            routeLogPlace = new ArrayList<String>();
+            routeLogState = new ArrayList<Integer>();
+            routeLogTimestamp = new ArrayList<String>();
+            routeLogLat = new ArrayList<Integer>();
+            routeLogLon = new ArrayList<Integer>();
+        }
+        String town = ((ArrayList<String>) routeInfo).get(place);
+
+//        Log.d("TAGg", "DocumentSnapshot successfully updated1!" + ((ArrayList<String>) routeLogPlace).get(((ArrayList<String>) routeLogPlace).size() - 1));
+//        Log.d("TAGg", "DocumentSnapshot successfully updated2!" + town);
+//        Log.d("TAGg", "DocumentSnapshot successfully updated1!" + ((ArrayList<Integer>) routeLogState).get(((ArrayList<Integer>) routeLogState).size() -1));
+//        Log.d("TAGg", "DocumentSnapshot successfully updated2!" + state);
+
+        if (((ArrayList<String>) routeLogPlace).size() == 0){
+            ((ArrayList<String>) routeLogPlace).add(town);
+            ((ArrayList<Long>) routeLogState).add(state);
+            ((ArrayList<String>) routeLogTimestamp).add(ts);
+            ((ArrayList<Double>) routeLogLat).add(carLattitude);
+            ((ArrayList<Double>) routeLogLon).add(carLongtitude);
+
+            // Add a new document with a generated id.
+            Map<String, Object> data = new HashMap<>();
+            data.put("lattitude",routeLogLat);
+            data.put("longtitude", routeLogLon);
+            data.put("place", routeLogPlace);
+            data.put("timestamp", routeLogTimestamp);
+            data.put("state", routeLogState);
+            db.collection("routeLog")
+                    .document(routeLogId.toString()).update(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("TAG", "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("TAG", "Error updating document", e);
+                        }
+                    });
+        }
+
+        //nepridavat 2 rovnake veci za sebou / napr pri odhlaseni a potom pokracovani v danej trase
+        else if (!((ArrayList<String>) routeLogPlace).get(((ArrayList<String>) routeLogPlace).size() - 1).equals(town)
+        || (Long)((ArrayList<Long>) routeLogState).get(((ArrayList<Long>) routeLogState).size() - 1) !=  state){
+
+            ((ArrayList<String>) routeLogPlace).add(town);
+            ((ArrayList<Long>) routeLogState).add(state);
+            ((ArrayList<String>) routeLogTimestamp).add(ts);
+            ((ArrayList<Double>) routeLogLat).add(carLattitude);
+            ((ArrayList<Double>) routeLogLon).add(carLongtitude);
+
+            // Add a new document with a generated id.
+            Map<String, Object> data = new HashMap<>();
+            data.put("lattitude",routeLogLat);
+            data.put("longtitude", routeLogLon);
+            data.put("place", routeLogPlace);
+            data.put("timestamp", routeLogTimestamp);
+            data.put("state", routeLogState);
+            db.collection("routeLog")
+                    .document(routeLogId.toString()).update(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("TAG", "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("TAG", "Error updating document", e);
+                        }
+                    });
+        }
+
+
+    }
+
+
+    private void getRouteLog(){
+        db.collection("routeLog")
+                .whereEqualTo("routeId", routeId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() > 0){
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    routeLog = document.getData();
+                                    routeLogPlace = document.getData().get("place");
+                                    routeLogLat = document.getData().get("lattitude");
+                                    routeLogLon = document.getData().get("longtitude");
+                                    routeLogTimestamp = document.getData().get("timestamp");
+                                    routeLogState = document.getData().get("state");
+                                    routeLogId = document.getId();
+                                }
+                        }else{
+                                Log.d("TAG1", "neexist");
+                                createRouteLog();
+                            }
+                        } else {
+                            Log.d("TAG1", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
