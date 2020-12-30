@@ -1,7 +1,16 @@
 package com.sygic.example.hello3dwiw;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.telephony.TelephonyManager;
+import android.view.View;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -24,14 +33,36 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    public static String mobileid;
+    public static String mobileNumber;
+    public static String carIdDoc;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        String s1 = sh.getString("phoneId", "");
+
+
+        if (sh.contains("phoneId")){
+            Log.d("TAGx", sh.contains("phoneId") + s1 + " som v ife a priradujem si " + s1 );
+            mobileid = s1;
+        }else{
+            String uniqueID = UUID.randomUUID().toString();
+        SharedPreferences.Editor myEdit = sh.edit();
+        myEdit.putString("phoneId", uniqueID);
+        mobileid = uniqueID;
+            Log.d("TAGx", sh.contains("phoneId") + s1 + " som v else a priradujem si " + uniqueID );
+        myEdit.commit();
+        }
 
 
         Spinner spino = (Spinner) findViewById(R.id.static_spinner );
@@ -53,6 +84,7 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                 //Create the intent to start another activity
                 TextInputEditText textInputEditText = (TextInputEditText) findViewById(R.id.textInput);
                 Editable cislo = textInputEditText.getText();
+                mobileNumber = cislo.toString();
                 Log.d("TAG", "cislo" + " => " + cislo);
                 db.collection("cars")
                         .whereEqualTo("phoneNumber", cislo.toString())
@@ -61,25 +93,73 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d("TAG", document.getId() + " => " + document.getData());
-                                        Log.d("TAG", document.getId() + " => " );
-                                        Intent intent = new Intent(LoginPage.this, ChooseRoute.class);
-                                        intent.putExtra("carId", document.getId());
+                                    if (task.getResult().size() > 0) {
+                                        for (final QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d("TAG", document.getId() + " => " + document.getData().get("phoneId"));
+                                            carIdDoc = document.getId();
 
-                                        Map<String, Object> data = new HashMap<>();
-                                        data.put("status", 0);
+                                            if (document.getData().get("phoneId") == null || document.getData().get("phoneId").toString().equals(mobileid)) {
 
 
-                                            db.collection("cars").document(document.getId().toString())
-                                                    .update(data);
+                                                Log.d("TAG", document.getId() + " => ");
+                                                Intent intent = new Intent(LoginPage.this, ChooseRoute.class);
+                                                intent.putExtra("carId", document.getId());
+
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put("status", 0);
+                                                data.put("phoneId", mobileid);
+
+                                                db.collection("cars").document(document.getId().toString())
+                                                        .update(data);
 
 
-                                        startActivity(intent);
+                                                startActivity(intent);
+                                            }else{
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
+
+                                                builder.setCancelable(true);
+                                                builder.setTitle("Rozdielny telefon");
+                                                builder.setMessage("Chcete odhlasit predchadzajuci telefon z navigacie?" +
+                                                        " Prihlásený môže byť len 1 používateľ. ");
+
+                                                builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+
+                                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        Log.d("TAG", document.getId() + " => ");
+                                                        Intent intent = new Intent(LoginPage.this, ChooseRoute.class);
+                                                        intent.putExtra("carId", document.getId());
+
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        data.put("status", 0);
+                                                        data.put("phoneId", mobileid);
+
+                                                        db.collection("cars").document(document.getId().toString())
+                                                                .update(data);
+
+
+                                                        startActivity(intent);
+                                                        dialog.cancel();
+                                                    }
+                                                });
+                                                builder.show();
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        Log.d("TAG1", "neexist");
+                                        Toast.makeText(getApplicationContext(),"Nesprávne číslo",Toast.LENGTH_SHORT).show();
+
                                     }
                                 } else {
                                     Log.d("TAG", "Error getting documents: ", task.getException());
-                                    Toast.makeText(getApplicationContext(),"Nesprávne číslo",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Skúste to znova",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -106,4 +186,5 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
         Toast.makeText(this, "Assrray" , Toast.LENGTH_LONG).show();
         Log.e("Error", "" );
     }
+
 }

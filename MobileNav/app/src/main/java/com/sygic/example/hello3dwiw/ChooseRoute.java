@@ -1,6 +1,7 @@
 package com.sygic.example.hello3dwiw;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,7 +26,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,15 +45,25 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static androidx.lifecycle.Lifecycle.State.STARTED;
+
 public class ChooseRoute extends AppCompatActivity {
+//ci aktivita bezi - len pre odhlasenie
+    static boolean active = false;
 
     private String carId;
+    private String mobileNumber;
+    private String mobileId;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_route);
+
+        mobileNumber = LoginPage.mobileNumber;
+        mobileId = LoginPage.mobileid;
+//        checkOnlineMobile();
 
         final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.carRoutes);
 
@@ -126,6 +140,7 @@ public class ChooseRoute extends AppCompatActivity {
                                                     Intent intent = new Intent(ChooseRoute.this, MainActivity.class);
                                                     intent.putExtra("carId", carId);
                                                     intent.putExtra("routeId", document.getId());
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     startActivity(intent);
                                                     finish();
                                                 }
@@ -286,4 +301,83 @@ public class ChooseRoute extends AppCompatActivity {
 
 
     }
+
+//    private void checkOnlineMobile(){
+//
+//       if (active){
+//
+//
+//        db.collection("cars").document(LoginPage.carIdDoc)
+//        .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot snapshot,
+//                                @Nullable FirebaseFirestoreException e) {
+//                if (e != null) {
+//                    Log.w("TAG", "Listen failed.", e);
+//                    return;
+//                }
+//
+//                String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+//                        ? "Local" : "Server";
+//
+//                if (snapshot != null && snapshot.exists()) {
+//                    Log.d("TAG", source + " data: " + snapshot.getData());
+//                    String fireIdMob = new String(snapshot.getData().get("phoneId").toString());
+//                    if (!fireIdMob.equals(mobileId.toString())) {
+//
+//
+//                        Log.d("TAGxx", snapshot.getData().get("phoneId").toString() + " => " + mobileId + " " + mobileNumber);
+//
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(ChooseRoute.this);
+//
+//                        builder.setCancelable(false);
+//                        builder.setTitle("Boli ste odlhaseny!!");
+//                        builder.setMessage("Vasim telefonym cislom sa prihlasil iny pouzivatel");
+//
+//                        carId = null;
+//                        mobileId = null;
+//                        mobileNumber = null;
+//
+//                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                                Intent intent = new Intent(ChooseRoute.this, LoginPage.class);
+//                                startActivity(intent);
+//                                finish();
+//
+//                            }
+//                        });
+//                        builder.show();
+//
+//                    }
+//
+//
+//                } else {
+//                    Log.d("TAG", source + " data: null");
+//                }
+//            }
+//        });
+//       }
+//
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        active = true;
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        active = false;
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        active = true;
+//    }
 }

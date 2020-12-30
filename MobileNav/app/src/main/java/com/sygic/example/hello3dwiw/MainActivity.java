@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
         handler = new Handler();
         actualIndexInArray = -1;
-
+        checkOnlineMobile();
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
             checkSygicResources();
         }
@@ -289,34 +289,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                                             Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 0 ||
                                                             Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2 ||
                                                             Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)) {
-                                                if (actualIndexInArray >= 0) {
-                                                    finished.setBackgroundColor(Color.parseColor("#00FF00"));
-                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 3);
-                                                    Map<String, Object> data = new HashMap<>();
-                                                    //
-                                                    data.put("status", routeInfoStatus);
-                                                    db.collection("route").document(routeId)
-                                                            .update(data);
-                                                }
+
+                                                                if (actualIndexInArray >= 0) {
+                                                                    finished.setBackgroundColor(Color.parseColor("#00FF00"));
+                                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 3);
+                                                                    Map<String, Object> data = new HashMap<>();
+                                                                    //
+                                                                    data.put("status", routeInfoStatus);
+                                                                    db.collection("route").document(routeId)
+                                                                            .update(data);
+                                                                }
 
                                             } else if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("vykladka") &&
                                                     (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 1 ||
                                                             Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 0 ||
                                                                     Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2 ||
                                                             Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)){
-                                                if (actualIndexInArray >= 0) {
-                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 5);
-                                                    Map<String, Object> data = new HashMap<>();
-                                                    //
-                                                    data.put("status", routeInfoStatus);
-                                                    db.collection("route").document(routeId)
-                                                            .update(data);
-                                                }
+
+                                                                if (actualIndexInArray >= 0) {
+                                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 5);
+                                                                    Map<String, Object> data = new HashMap<>();
+                                                                    //
+                                                                    data.put("status", routeInfoStatus);
+                                                                    db.collection("route").document(routeId)
+                                                                            .update(data);
+                                                                }
                                             }
                                         }
 
                                         changeSpinnerValue(1);
-
+                                        updateRouteLog(actualIndexInArray,1);
 
                                         townsLayoutOpen = false;
                                         changeLayoutSize();
@@ -414,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //On click function
             public void onClick(View view) {
                 if (routeId != null){
-                    allertNextNavigation(true);
+                    allertNextNavigation(true, false);
                 }else {
                     Toast.makeText(MainActivity.this, "No route selected", Toast.LENGTH_LONG).show();
                 }
@@ -657,7 +659,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (routeLogId != null && actualIndexInArray != -1){
+        if (routeLogId != null && actualIndexInArray != -1 && routeId != null){
             updateRouteLog(actualIndexInArray, position);
         }
         Resources res = getResources();
@@ -678,7 +680,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
-            allertNextNavigation(false);
+            allertNextNavigation(false, true);
         }
         previousItemInSpinner = position;
 
@@ -714,6 +716,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.setPositiveButton("Áno", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                actualIndexInArray++;
+
                 if (actualIndexInArray > 0) {
                     allertOnPreviousPoint(true);
                 }
@@ -734,10 +738,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.show();
     }
 
-    private void allertNextNavigation(final boolean askPrevious){
+    private void allertNextNavigation(final boolean askPrevious, final boolean goNextWithouAsking){
         Log.d("wata", "DocumentSnapshot written with ID: " + actualIndexInArray);
-        if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size()){
-            actualIndexInArray++;
+        if(actualIndexInArray+1 >= ((ArrayList<Number>) routeInfoStatus).size()){
             allertFinish();
             Log.d("wata2", "DocumentSnapshot written with ID: " + actualIndexInArray);
 
@@ -748,7 +751,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             builder.setCancelable(true);
             builder.setTitle("Navigácia");
-            builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
+            builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu - " + ((ArrayList<String>) routeInfo).get(actualIndexInArray + 1) + "?");
 
             builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
                 @Override
@@ -761,7 +764,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 public void onClick(DialogInterface dialog, int which) {
                     actualIndexInArray++;
                     Log.d("wata", "DocumentSnapshot written with ID: " + actualIndexInArray);
-//                    updateRouteLog(actualIndexInArray, 1);
+                    if (actualIndexInArray == 0){
+                        findIndexOfTown(actualIndexInArray);
+                    }
+
 //                    findIndexOfTown(actualIndexInArray);
                     runOnUiThread(new Runnable() {
 
@@ -777,8 +783,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     if (askPrevious && actualIndexInArray > 0) {
                         allertOnPreviousPoint(false);
                     }
+                    if (goNextWithouAsking){
+                        findIndexOfTown(actualIndexInArray);
+                    }
 
-                    changeSpinnerValue(1);
+//                    changeSpinnerValue(1);
 
 
                 }
@@ -791,7 +800,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setCancelable(false);
-        builder.setTitle("Predchadzajuce miesto:");
+        builder.setTitle("Predchadzajuce miesto: " + ((ArrayList<String>) routeInfo).get(actualIndexInArray -1));
 //        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
 
         String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
@@ -975,6 +984,58 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             }
                         } else {
                             Log.d("TAG1", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void checkOnlineMobile(){
+
+        db.collection("cars").document(LoginPage.carIdDoc)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("TAG", "Listen failed.", e);
+                            return;
+                        }
+
+                        String source = snapshot != null && snapshot.getMetadata().hasPendingWrites()
+                                ? "Local" : "Server";
+
+                        if (snapshot != null && snapshot.exists()) {
+                            Log.d("TAG", source + " data: " + snapshot.getData());
+                            String fireIdMob = new String(snapshot.getData().get("phoneId").toString());
+                            if (!fireIdMob.equals(LoginPage.mobileid.toString())) {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                                builder.setCancelable(false);
+                                builder.setTitle("Boli ste odlhaseny!!");
+                                builder.setMessage("Vasim telefonym cislom sa prihlasil iny pouzivatel");
+
+                                carId = null;
+                                routeId = null;
+
+                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+
+                                        Intent intent = new Intent(MainActivity.this, LoginPage.class);
+                                        startActivity(intent);
+                                        finish();
+
+                                    }
+                                });
+                                builder.show();
+
+                            }
+
+
+                        } else {
+                            Log.d("TAG", source + " data: null");
                         }
                     }
                 });
