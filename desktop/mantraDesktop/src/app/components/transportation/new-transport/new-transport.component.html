@@ -1,29 +1,31 @@
 <div class="allWrapper">
   <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>
 <div class="wrapper">
-  <p *ngIf="route.estimatedTimeArrival">Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.route.estimatedTimeArrival)}}</p>
+  <p *ngIf="route != undefined  && route.estimatedTimeArrival && !route.finished">
+    Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.route.estimatedTimeArrival)}}
+  </p>
 
-  <div  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div [cdkDropListSortingDisabled]="!checkFinished()"  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>
       <div class="routeTown">
         <p>{{routeTown}}</p>
         <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
-        <img  (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
+        <img *ngIf=" checkFinished()"  (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
       </div>
       <div class="routeTown routeInfo">
         <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
-        <img (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
+        <img *ngIf="checkFinished()" (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
       </div>
     </div>
   </div>
 
-<app-adresses  (placeName)="getAdress($event)"
+<app-adresses *ngIf="checkFinished()"  (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
               (placeLon)="getLon($event)"
               (type)="getType($event)"
               (aboutRouteEmitter)="getAboutRoute($event)">
 </app-adresses>
-  <div >
+  <div *ngIf="checkFinished()" >
     <button *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
     <button *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
     <button *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
