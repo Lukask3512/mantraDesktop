@@ -741,32 +741,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        if (routeLogId != null && actualIndexInArray != -1 && routeId != null){
-//            updateRouteLog(actualIndexInArray, position);
-//        }
-//        Resources res = getResources();
-//        String[] items = res.getStringArray(R.array.stateArray);
-//        Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
-//        changeCarStatus(position);
-//        if (routeId != null){
-//            if (actualIndexInArray >= 0 ){
-//            if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
-//                changeRouteStatus(position);
-//                }
-//
-//
-//
-//            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
-//                allertFinish();
-//            }
-//        }
-//
-//        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
-//            allertNextNavigation(false, true);
-//        }
-//        previousItemInSpinner = position;
-//
-//        }
+        if (routeLogId != null && actualIndexInArray != -1 && routeId != null){
+            updateRouteLog(actualIndexInArray, position);
+        }
+        Resources res = getResources();
+        String[] items = res.getStringArray(R.array.stateArray);
+        Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
+        changeCarStatus(position);
+        if (routeId != null){
+            if (actualIndexInArray >= 0 ){
+            if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
+                changeRouteStatus(position);
+                }
+
+
+
+            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
+                allertFinish();
+            }
+        }
+
+        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
+            allertNextNavigation(false, true);
+        }
+        previousItemInSpinner = position;
+
+        }
 
     }
 
