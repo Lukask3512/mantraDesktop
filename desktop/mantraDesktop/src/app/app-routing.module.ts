@@ -16,42 +16,42 @@ import {NewTransportComponent} from "./components/transportation/new-transport/n
 
 const routes: Routes = [
   { path: 'view', component: ViewComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [{
     path: 'cars',
       component: CarsWrapperComponent
     }]
   },
   { path: 'view', component: ViewComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [{
       path: 'map',
       component: MapComponent
     }]
   },
   { path: 'view', component: ViewComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [{
       path: 'cars/detail',
       component: CarDetailComponent
     }]
   },
   { path: 'view', component: ViewComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [{
       path: 'dispecer',
       component: DispecerComponent
     }]
   },
   { path: 'view', component: ViewComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [{
       path: 'transport',
       component: TransportationWrapperComponent
     }]
   },
   { path: 'view', component: ViewComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [{
       path: 'newRoute',
       component: NewTransportComponent

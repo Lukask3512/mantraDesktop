@@ -11,5 +11,6 @@ export default class Route {
   finished: boolean;
   createdAt: number; //timestamps
   finishedAt?: number;
+  estimatedTimeArrival?: string;
 
 }

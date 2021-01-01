@@ -1,6 +1,7 @@
 <div class="allWrapper">
   <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>
 <div class="wrapper">
+  <p *ngIf="route.estimatedTimeArrival">Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.route.estimatedTimeArrival)}}</p>
 
   <div  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>

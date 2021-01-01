@@ -241,6 +241,9 @@ export class NewTransportComponent implements OnInit {
     });
   }
 
+  estimatedTimeToLocal(dateUtc){
+    var date = (new Date(dateUtc));
+    return date.toLocaleString();
 
-
+  }
 }
