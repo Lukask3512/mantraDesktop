@@ -142,7 +142,7 @@ public class ChooseRoute extends AppCompatActivity {
                                                     intent.putExtra("routeId", document.getId());
                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     startActivity(intent);
-                                                    finish();
+//                                                    finish();
                                                 }
                                             });
                                             builder.show();
@@ -276,7 +276,7 @@ public class ChooseRoute extends AppCompatActivity {
                 Log.d("pro", "Error getting documents: " + carId);
 
                 intent.putExtra("carId", carId);
-//                intent.putExtra("routeId", null);
+                intent.putExtra("routeId", "null");
                 startActivity(intent);
                 finish();
 

@@ -15,6 +15,7 @@ import android.media.JetPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
@@ -63,6 +64,7 @@ import com.sygic.sdk.api.exception.GeneralException;
 import com.sygic.sdk.api.model.WayPoint;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -158,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         spino.setOnItemSelectedListener(this);
 
+        townsLayoutOpen = true;
+        Intent intent = getIntent();
+        carId = intent.getExtras().getString("carId");
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -167,11 +172,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-        townsLayoutOpen = true;
-        Intent intent = getIntent();
-        carId = intent.getExtras().getString("carId");
 
-        if (intent.getExtras() != null && intent.getExtras().getString("routeId") != null) {
+
+        if (intent.getExtras() != null && intent.getExtras().getString("routeId") != null && !intent.getExtras().getString("routeId").equals("null")) {
 
             routeId = intent.getExtras().getString("routeId");
             getRouteLog();
@@ -377,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ChooseRoute.class);
                 intent.putExtra("carId", carId);
-                Log.d("pro", "Error getting documents: " + carId);
                 startActivity(intent);
                 routeId = null;
                 finish();
@@ -444,6 +446,71 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    void demo()
+    {
+        if (routeId != null){
+            if (!routeId.equals("null")){
+
+         String status = null;
+                try {
+            status = ApiNavigation.getRouteStatus(0);
+            ParseRouteStatus(status);
+
+        } catch (GeneralException e) {
+            e.printStackTrace();
+                }
+
+        }}
+
+    }
+
+    protected String ParseRouteStatus(String statusFromRoute) {
+        try {
+            JSONObject jout = new JSONObject(statusFromRoute);
+            String n1 = jout.getString("numVisited");
+            String n2 = jout.getString("numUnvisited");
+            String n3 = jout.getString("numPredictedLateArrivals");
+            String n4 = jout.getString("numPredictedEarlyArrivals");
+            JSONArray jArr = jout.getJSONArray("waypoints");
+            String eta = "n/a";
+//            String output = "visited/unvisited/early/late:" + n1 + "/" + n2 + "/" + n3 + "/" + n4 + "\n";
+            for (int i = 0; i < jArr.length(); i++) {
+                JSONObject obj = jArr.getJSONObject(i);
+//                String waypointId = obj.getString("waypointId");              // retrieve waypoint id
+                JSONObject rts = obj.getJSONObject("realtimeStatus");
+                String status = rts.getString("status");                      // retrieve status
+//                String eta = "n/a";
+                int drem = -1;
+                int trem = -1;
+                if (status.compareTo("unvisited") == 0) {
+                    eta = rts.getString("estimatedTimeArrival");     // retrieve eta to the waypoint
+                    drem = rts.getInt("distanceRemaining");          // retrieve remaining distance in meters
+                    trem = rts.getInt("timeRemaining");              // retrieve remaining time in seconds
+                    Log.e("NavigationTime", "Error code:"+ eta + " " + trem);
+                }
+//                output += "waypointId=" + waypointId + ",";
+//                output += "status=" + status + "\n";
+//                output += "eta=" + eta + "\n";
+//                output += "distanceRemaining=" + String.valueOf(drem) + "\n";
+//                output += "timeRemaining=" + String.valueOf(trem) + "\n";
+            }
+            Log.e("NavigationTime", "Error code:"+ eta);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("estimatedTimeArrival", eta);
+            db.collection("route").document(routeId)
+                    .update(data);
+
+            return eta;
+
+        }
+        catch(JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+
+    }
+
 
 
     private void findIndexOfTown(final int town){
@@ -463,9 +530,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             WayPoint wp = new WayPoint("A", lon, lat);
                             //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
 
-
                             ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
-
                             final TextView textView = (TextView) findViewById(R.id.textView4);
                             runOnUiThread(new Runnable() {
 
@@ -476,6 +541,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     String type = (String) ((ArrayList<?>) routeInfoType).get(townForThread);
                                     // Stuff that updates the UI
                                     textView.setText(town + ": " + type);
+                                    demo();
 
                                 }
                             });
@@ -552,6 +618,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 List<Address> addresses = geocoder.getFromLocation(
                                         location.getLatitude(), location.getLongitude(), 1);
                                 Log.e("Error", "" + addresses.get(0).getLatitude());
+
                                 sendLocationToFire(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                                 carLattitude = addresses.get(0).getLatitude();
                                 carLongtitude = addresses.get(0).getLongitude();
@@ -576,6 +643,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             data.put("lattitude", lat);
             data.put("longtitude", lon);
             db.collection("cars").document(carId).update(data);
+            if (routeId != null ){
+                if (!routeId.equals("null")){
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 5s = 5000ms
+                            demo();
+
+                        }
+                    }, 5000);
+                }
+            }
+
         }
 
 
@@ -659,32 +741,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (routeLogId != null && actualIndexInArray != -1 && routeId != null){
-            updateRouteLog(actualIndexInArray, position);
-        }
-        Resources res = getResources();
-        String[] items = res.getStringArray(R.array.stateArray);
-        Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
-        changeCarStatus(position);
-        if (routeId != null){
-            if (actualIndexInArray >= 0 ){
-            if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
-                changeRouteStatus(position);
-                }
-
-
-
-            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
-                allertFinish();
-            }
-        }
-
-        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
-            allertNextNavigation(false, true);
-        }
-        previousItemInSpinner = position;
-
-        }
+//        if (routeLogId != null && actualIndexInArray != -1 && routeId != null){
+//            updateRouteLog(actualIndexInArray, position);
+//        }
+//        Resources res = getResources();
+//        String[] items = res.getStringArray(R.array.stateArray);
+//        Toast.makeText(this, items[position], Toast.LENGTH_LONG).show();
+//        changeCarStatus(position);
+//        if (routeId != null){
+//            if (actualIndexInArray >= 0 ){
+//            if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
+//                changeRouteStatus(position);
+//                }
+//
+//
+//
+//            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
+//                allertFinish();
+//            }
+//        }
+//
+//        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
+//            allertNextNavigation(false, true);
+//        }
+//        previousItemInSpinner = position;
+//
+//        }
 
     }
 
@@ -965,6 +1047,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .whereEqualTo("routeId", routeId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -987,6 +1070,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         }
                     }
                 });
+
     }
 
     private void checkOnlineMobile(){
