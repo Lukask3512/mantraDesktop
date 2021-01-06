@@ -246,4 +246,14 @@ export class NewTransportComponent implements OnInit {
     return date.toLocaleString();
 
   }
+
+  checkFinished(){
+    if (this.route !== undefined && this.route.finished){
+      return false;
+    }else if(this.route == undefined){
+      return true
+    }else {
+      return true;
+    }
+  }
 }
