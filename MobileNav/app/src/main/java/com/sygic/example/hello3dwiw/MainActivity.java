@@ -54,6 +54,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.sygic.aura.ResourceManager;
 import com.sygic.aura.feature.gps.LocationService;
@@ -77,6 +80,11 @@ import androidx.appcompat.widget.ActionMenuView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private SygicNaviFragment fgm;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
     private Button mLogoutBtn;
 
     private int previousItemInSpinner = 0;
@@ -452,11 +462,53 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (!routeId.equals("null")){
 
          String status = null;
+                String json = null;
                 try {
+
             status = ApiNavigation.getRouteStatus(0);
             ParseRouteStatus(status);
 
-        } catch (GeneralException e) {
+                    json = ApiNavigation.getRoute(1, 0, 0);
+                    JSONObject jsonObject = new JSONObject(json);
+                    JSONObject jsonArray = (JSONObject) jsonObject.get("polygon");
+                    JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
+                    JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
+
+
+//                    File file = new File(this.getFilesDir(), "file-nameName");
+//                    FileReader fileReader = null;
+//                    FileWriter fileWriter = null;
+//                    BufferedReader bufferedReader = null;
+//                    BufferedWriter bufferedWriter = null;
+//                    String response = null;
+//                    if(!file.exists()){
+//                        file.createNewFile();
+//                        fileWriter = new FileWriter(file.getAbsoluteFile());
+//                        bufferedWriter = new BufferedWriter(fileWriter);
+//                        bufferedWriter.write("'" + jsonFinish2.toString() + "'"); // si vkladam uvodzovky pre json format
+//                        bufferedWriter.close();
+//
+//                    }
+//                    String skuska = "'" + jsonFinish.toString() + "'";
+                    Log.e("NavigationTime2", "co to bude"+ jsonFinish);
+
+                    //ukladam textak do databazy s trasou
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference mountainsRef = storageRef.child("Routes");
+                    mountainsRef.child(carId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                            // ...
+                        }
+                    });
+
+        } catch (GeneralException | JSONException e) {
             e.printStackTrace();
                 }
 
@@ -856,8 +908,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         @Override
                         public void run() {
 
-                            spino.setSelection(1);
-
+//                            spino.setSelection(1);
+                    changeSpinnerValue(1);
 
                         }
                     });
@@ -869,7 +921,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         findIndexOfTown(actualIndexInArray);
                     }
 
-//                    changeSpinnerValue(1);
+
 
 
                 }
