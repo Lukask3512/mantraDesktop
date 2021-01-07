@@ -1,9 +1,35 @@
-<div class="wrapper">
 
-  <p>{{this.dispecer.name}}</p>
-  <p>{{this.dispecer.phone}}</p>
-<p>{{this.dispecer.email}}</p>
-  <p>{{this.dispecer.status}}</p>
+<div class="allWrap" >
+</div>
+
+<div class="dispecerWrapper">
+  <label>Meno</label>
+  <input type="text" formControlName="Name" placeholder="{{this.dispecer.name}}">
+
+  <label>Email</label>
+  <input type="text" formControlName="email" placeholder="{{this.dispecer.email}}">
+
+  <label>Telefónne číslo</label>
+  <input type="text" formControlName="phoneNumber" placeholder="{{this.dispecer.phone}}">
+
+  <label>Status</label>
+  <input type="text" formControlName="status" placeholder="{{this.dispecer.status}}">
+
+
   <button (click)="deleteDispecer()">Vymazat</button>
 
 </div>
+
+  <!-- <<ng-template mat-tab-label>
+  <mat-icon class="example-tab-icon">thumb_up</mat-icon>
+  First
+
+  <label >Dispečer</label>
+  <p>{{this.dispecer.name}}</p>
+  <p>{{this.dispecer.phone}}</p>
+  <p>{{this.dispecer.email}}</p>
+  <p>{{this.dispecer.status}}</p>
+  <button (click)="deleteDispecer()">Vymazat</button>
+</ng-template>>
+</div>
+-->

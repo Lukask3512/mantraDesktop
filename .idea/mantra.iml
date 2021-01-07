@@ -3,8 +3,8 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../../mantra/gen" />
-        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../../mantra/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../../mantra" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../../mantra" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/../../mantra/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/../../mantra/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../../mantra/assets" />

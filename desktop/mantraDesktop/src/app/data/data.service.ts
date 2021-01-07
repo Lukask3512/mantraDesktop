@@ -15,7 +15,10 @@ export class DataService {
 
   cars;
 
+  private dispecerSource = new BehaviorSubject<string>('empty');
   private loggedDispecer: Dispecer;
+
+
   constructor() { }
   //toto je na auto - cardetail
   changRoute(car: any) {

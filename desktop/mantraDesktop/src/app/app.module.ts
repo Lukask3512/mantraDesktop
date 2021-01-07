@@ -41,25 +41,27 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatButtonModule} from "@angular/material/button";
 import {NewTransportComponent} from "./components/transportation/new-transport/new-transport.component";
 import {MatRadioModule} from "@angular/material/radio";
+import {RouteLogComponent} from "./components/transportation/route-log/route-log.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    SideBarComponent,
-    MapComponent,
-    DispecerComponent,
-    NewDispecerComponent,
-    NewCarComponent,
-    RegisterComponent,
-    CarsWrapperComponent,
-    AddCarDialogComponent,
-    CarDetailComponent,
-    AdressesComponent,
-    AppComponent,
-    ViewComponent,
-    NewTransportComponent
-  ],
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        SideBarComponent,
+        MapComponent,
+        DispecerComponent,
+        NewDispecerComponent,
+        NewCarComponent,
+        RegisterComponent,
+        CarsWrapperComponent,
+        AddCarDialogComponent,
+        CarDetailComponent,
+        AdressesComponent,
+        AppComponent,
+        ViewComponent,
+        NewTransportComponent,
+        RouteLogComponent
+    ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
