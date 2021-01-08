@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="eafa4f04-d713-4f68-9dfa-0d6a749b23f4" name="prototyp.mantra-online.eu" url="http://mantra-online.eu">
+        <fileTransfer rootFolder="/prototyp.mantra-online.eu" host="mantra-online.eu" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

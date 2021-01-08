@@ -11,6 +11,7 @@ public class SygicNaviCallback implements IApiCallback {
 
     private Activity mActivity;
 
+
     public SygicNaviCallback(Activity activity) {
         mActivity = activity;
     }
@@ -19,6 +20,10 @@ public class SygicNaviCallback implements IApiCallback {
     public void onEvent(final int event, final String data) {
         if(event == ApiEvents.EVENT_APP_EXIT) {
             mActivity.finish();
+        }
+        if (event == ApiEvents.EVENT_OFF_ROUTE_EXT || event == ApiEvents.EVENT_ROUTE_COMPUTED){
+            Log.e("NavigationTime5", "co to bude" + MainActivity.readRouteId);
+            MainActivity.sendRoute();
         }
 
         mActivity.runOnUiThread(

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import Dispecer from "../../../models/Dispecer";
 import {DispecerService} from "../../../services/dispecer.service";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-the-dispecer',
@@ -10,7 +11,9 @@ import {DispecerService} from "../../../services/dispecer.service";
 export class TheDispecerComponent implements OnInit {
 
   @Input() dispecer: Dispecer;
-  constructor(private dispecerService: DispecerService) { }
+  dispecerovForm: any;
+
+  constructor(private dispecerService: DispecerService, private field: FormBuilder) { }
 
   ngOnInit(): void {
   }

@@ -20,7 +20,10 @@ export class DataService {
   cars;
   routes;
 
+  private dispecerSource = new BehaviorSubject<string>('empty');
   private loggedDispecer: Dispecer;
+
+
   constructor() { }
 
 
