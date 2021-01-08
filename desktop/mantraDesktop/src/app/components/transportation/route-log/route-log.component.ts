@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {RouteLogService} from "../../../services/route-log.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {RouteStatusService} from "../../../data/route-status.service";
 import {Subject} from "rxjs";
+import {jsPDF} from "jspdf";
 
 @Component({
   selector: 'app-route-log',
@@ -11,6 +12,7 @@ import {Subject} from "rxjs";
 })
 export class RouteLogComponent implements OnInit {
 
+  @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private routeLogService: RouteLogService, public routeStatusService: RouteStatusService) { }
   dataSource;
   displayedColumns: string[] = ['town', 'status', 'time'];
@@ -42,6 +44,21 @@ export class RouteLogComponent implements OnInit {
     // note that subsequent subscriptions on the same subject will fail
     // so the parent has to re-create parentSubject on changes
     this.routeId.unsubscribe();
+  }
+
+  downloadAsPDF(){
+    // const DATA = this.pdfTable.nativeElement;
+
+    const doc: jsPDF = new jsPDF("l", "pt", 'letter');
+    var data2 = document.getElementById("routeLog")
+    data2.style.fontSize = '10px'
+    doc.setFontSize(7);
+    console.log(data2)
+    doc.html(data2, {
+      callback: (doc) => {
+        doc.output("dataurlnewwindow");
+      }
+    });
   }
 
 }

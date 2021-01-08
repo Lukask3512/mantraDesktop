@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import Dispecer from "../models/Dispecer";
+import {RouteService} from "../services/route.service";
+import Route from "../models/Route";
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +15,16 @@ export class DataService {
   currentRoute = this.routeSource.asObservable();
 
 
+
+
   cars;
+  routes;
 
   private loggedDispecer: Dispecer;
   constructor() { }
-  //toto je na auto - cardetail
+
+
+
   changRoute(car: any) {
     // console.log(message)
     this.carSource.next(car);
@@ -43,5 +50,18 @@ export class DataService {
   setCars(cars){
     this.cars = cars;
   }
+
+  getOneCarById(id){
+    return this.cars.find(car => car.id == id);
+  }
+
+  setRoutes(routes){
+    this.routes = routes;
+  }
+  getRoutes(){
+    return this.routes;
+  }
+
+
 
 }

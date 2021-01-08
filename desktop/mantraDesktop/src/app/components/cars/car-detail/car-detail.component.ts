@@ -9,6 +9,8 @@ import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-c
 import {MatDialog} from "@angular/material/dialog";
 import {RouteStatusService} from "../../../data/route-status.service";
 import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
+import { AngularFireStorage } from '@angular/fire/storage';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-car-detail',
@@ -35,7 +37,7 @@ export class CarDetailComponent implements OnInit {
   @ViewChild('child')
   private child: OpenlayerComponent;
 
-  constructor(private routeService: RouteService, private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService) {
+  constructor(private http: HttpClient, private storage: AngularFireStorage, private routeService: RouteService, private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService) {
 
   }
 
@@ -49,15 +51,19 @@ export class CarDetailComponent implements OnInit {
     this.aboutRoute = [];
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
-      setTimeout(() =>
-        {
-          this.child.notifyMe(this.routesLat, this.routesLon,this.car);
-        },
-        800);
+
       this.routeService.getRoutes(this.car.id).subscribe(routes => {
         this.routes = routes[0];
+
         // @ts-ignore
         this.allActiveRoutes = routes;
+
+        setTimeout(() =>
+          {
+            this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
+          },
+          800);
+
       console.log(routes);
         if (this.routes !== undefined) {
           // @ts-ignore
@@ -72,7 +78,7 @@ export class CarDetailComponent implements OnInit {
 
           setTimeout(() =>
             {
-              this.child.notifyMe(this.routesLat, this.routesLon,this.car);
+              this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
               this.notifyChildren(this.routes.id);
 
             },
@@ -111,7 +117,7 @@ export class CarDetailComponent implements OnInit {
     this.type = route.type;
     this.status = route.status;
     this.aboutRoute = route.aboutRoute;
-    this.child.notifyMe(this.routesLat, this.routesLon, this.car);
+    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
     this.notifyChildren(this.routes.id);
 
   }
@@ -124,6 +130,8 @@ export class CarDetailComponent implements OnInit {
     moveItemInArray(this.status, event.previousIndex, event.currentIndex);
     moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
     this.change = true;
+    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
+    this.notifyChildren(this.routes.id);
   }
 
   timestamptToDate(timestamp){
@@ -183,12 +191,12 @@ export class CarDetailComponent implements OnInit {
   }
   getLat(lat){
     this.routesLat.push(lat);
-    this.child.notifyMe(this.routesLat, this.routesLon, this.car);
+    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
   }
   getLon(lon){
     this.routesLon.push(lon);
     console.log(lon);
-    this.child.notifyMe(this.routesLat, this.routesLon, this.car);
+    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
   }
   getType(type){
     this.type.push(type);
@@ -269,6 +277,11 @@ export class CarDetailComponent implements OnInit {
         }
       });
 
+  }
+
+  estimatedTimeToLocal(dateUtc){
+    var date = (new Date(dateUtc));
+    return date.toLocaleString();
   }
 
 }

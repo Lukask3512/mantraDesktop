@@ -1,1 +1,27 @@
-<app-openlayer #child></app-openlayer>
+<div class="wrapper">
+  <div id="map"></div>
+  <div class="info">
+      <h1>Info</h1>
+
+      <div class="car">
+<!--        <h2>Vozidlo</h2>-->
+        <h3 *ngIf="carToShow != undefined">{{carToShow.ecv}}</h3>
+        <h4 *ngIf="carToShow != undefined">{{this.routeStatusService.getStatus(carToShow.status)}}</h4>
+        <h4 *ngIf="carToShow != undefined">{{carToShow.phoneNumber}}</h4>
+        <h4 *ngIf="carToShow == undefined && routesToShow == undefined">Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.</h4>
+        <h4 *ngIf="carToShow == undefined && routesToShow != undefined">Nepriradená trasa</h4>
+        <button *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">
+          Priradiť autu</button>
+      </div>
+
+      <div class="routes">
+        <div class="route" *ngFor="let route of routesToShow">
+          <h3 *ngIf="route.estimatedTimeArrival != undefined">ETA{{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>
+          <h4 *ngFor="let town of route.nameOfTowns; index as i">{{town}}
+            <span>{{this.routeStatusService.getStatus(route.status[i])}}</span></h4>
+        </div>
+      </div>
+  </div>
+</div>
+
+

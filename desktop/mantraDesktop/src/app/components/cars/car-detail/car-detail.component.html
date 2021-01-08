@@ -4,6 +4,9 @@
 
 <div class="wrapper">
 
+  <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
+    Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
+  </p>
 
 <div class="routeList">
   <div class="routes">

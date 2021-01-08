@@ -4,7 +4,7 @@
 <div class="car" *ngFor="let car of cars">
   <h1>{{car.ecv}}</h1>
   <h2>{{routeStatusService.getStatus(car.status)}}</h2>
-  <button (click)="addRouteToCar(car.id)">Priradit</button>
+  <button (click)="addRouteToCar(car)">Priradit</button>
 </div>
 
 

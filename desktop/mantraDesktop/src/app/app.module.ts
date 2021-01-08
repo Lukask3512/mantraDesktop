@@ -11,6 +11,9 @@ import { NewDispecerComponent } from './components/dispecer/new-dispecer/new-dis
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import 'firebase/storage';
+
 import {MatDialogModule} from '@angular/material/dialog';
 
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -66,6 +69,7 @@ import {MatRadioModule} from "@angular/material/radio";
     AppRoutingModule,
     MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AngularFireDatabaseModule,
     ReactiveFormsModule,
     MatFormFieldModule,

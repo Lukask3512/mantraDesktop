@@ -1,7 +1,8 @@
 <div class="allWrapper">
-  <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>
+<!--  <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>-->
+  <h1 *ngIf="this.car != undefined" >{{this.car.ecv}}</h1>
 <div class="wrapper">
-  <p *ngIf="route != undefined  && route.estimatedTimeArrival && !route.finished">
+  <p *ngIf="route != undefined  && route.estimatedTimeArrival && !route.finished && this.car != undefined">
     Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.route.estimatedTimeArrival)}}
   </p>
 
@@ -33,6 +34,10 @@
 
 
 </div>
+  <div class="map">
+    <app-openlayer #child></app-openlayer>
+  </div>
+
 </div>
-<app-route-log *ngIf="route != undefined" [routeId]="parentSubject"></app-route-log>
+<app-route-log #pdfLog *ngIf="route != undefined" [routeId]="parentSubject"></app-route-log>
 
