@@ -1,8 +1,12 @@
-<div class="center">
-  <h2>Vozidlo: {{this.car.ecv}}</h2>
-</div>
+<div class="button_cont">
+    <p>Vozidlo: {{this.car.ecv}}</p>
+  </div>
 
-<div class="wrapper">
+
+
+
+
+<div>
 
   <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
     Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
@@ -30,9 +34,11 @@
   </div>
 </div>
 
-<div class="center">
-  <button [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
-</div>
+  <div class="button_cont" align="center">
+    <button [disabled]="!change" (click)="this.sendToDriver()" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
+      Odoslať vodičovi</button>
+  </div>
+
 
 <app-adresses (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
@@ -42,8 +48,8 @@
 </app-adresses>
 </div>
 
-  <div class="map">
 
+  <div class="map">
     <app-openlayer #child></app-openlayer>
   </div>
   <app-route-log *ngIf="routes != undefined" [routeId]="parentSubject"></app-route-log>

@@ -1,33 +1,31 @@
-<div class="wrapper">
+<div class="tabulka">
 
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-
+    <table mat-table [dataSource]="dataSource" matSort class="tabulka">
       <!-- Name Column -->
-      <ng-container matColumnDef="ecv">
+      <ng-container class="tbl-header" matColumnDef="ecv">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ECV </th>
         <td mat-cell *matCellDef="let element"> {{element.ecv}} </td>
       </ng-container>
 
       <!-- Weight Column -->
-      <ng-container matColumnDef="phoneNumber">
+      <ng-container class="tbl-header" matColumnDef="phoneNumber">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Tel. Cislo </th>
         <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
       </ng-container>
 
       <!-- Symbol Column -->
-      <ng-container matColumnDef="status">
+      <ng-container class="tbl-header" matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
         <td mat-cell *matCellDef="let element"> {{routeStatusService.getStatus(element.status)}} </td>
       </ng-container>
-
-      <ng-container matColumnDef="detail">
+r
+      <ng-container class="tbl-header" matColumnDef="detail">
         <th mat-header-cell *matHeaderCellDef> Detail </th>
         <td mat-cell *matCellDef="let element"> <button class="button" (click)="sendCar(element)" routerLink="/view/cars/detail">Detail</button> </td>
       </ng-container>
 
-      <ng-container matColumnDef="delete">
+      <ng-container class="tbl-header" matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
         <td mat-cell *matCellDef="let element"> <img alt="delete" (click)="deleteCar(element)" class="delete" src="./assets/logo/delete.svg"> </td>
       </ng-container>
