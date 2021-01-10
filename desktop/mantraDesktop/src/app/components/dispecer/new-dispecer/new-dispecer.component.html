@@ -15,7 +15,12 @@
     <label>Zadajte telefone cislo</label>
     <input type="text" formControlName="phoneNumber" placeholder="Zadajte tel...">
 
-    <button (click)="saveDispecer()" type="submit" [disabled]="!dispecerForm.valid">Submit</button>
+
+    <div class="button_cont" align="center">
+  <button (click)="saveDispecer()" type="submit" [disabled]="!dispecerForm.valid" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
+    Pridať
+  </button></div>
+
   </form>
 </div>
 
