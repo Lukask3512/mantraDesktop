@@ -4,6 +4,9 @@
 
 <div class="wrapper">
 
+  <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
+    Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
+  </p>
 
 <div class="routeList">
   <div class="routes">
@@ -18,11 +21,11 @@
     <div class="routeTown">
       <p>{{route}}</p>
       <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
-      <img (click)="deleteRoute(route)" class="delete" src="../../../../../../../../material-dashboard-angular2-master/material-dashboard-angular2-master/src/assets/delete.svg">
+      <img (click)="deleteRoute(route)" class="delete" src="./assets/logo/delete.svg">
     </div>
      <div class="routeTown routeInfo">
         <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
-       <img (click)="editInfo(aboutRoute[i], i)" class="delete" src="../../../../../../../../material-dashboard-angular2-master/material-dashboard-angular2-master/src/assets/edit.svg">
+       <img (click)="editInfo(aboutRoute[i], i)" class="delete" src="./assets/logo/edit.svg">
      </div>
   </div>
 </div>

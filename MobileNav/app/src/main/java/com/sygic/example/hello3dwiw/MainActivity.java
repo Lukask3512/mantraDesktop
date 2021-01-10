@@ -59,10 +59,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.sygic.aura.ResourceManager;
+import com.sygic.aura.embedded.IApiCallback;
 import com.sygic.aura.feature.gps.LocationService;
 import com.sygic.aura.utils.PermissionsUtils;
 import com.sygic.example.hello3dwiw.Models.Route;
+import com.sygic.sdk.api.Api;
+import com.sygic.sdk.api.ApiCallback;
 import com.sygic.sdk.api.ApiNavigation;
+import com.sygic.sdk.api.events.ApiEvents;
 import com.sygic.sdk.api.exception.GeneralException;
 import com.sygic.sdk.api.model.WayPoint;
 
@@ -100,9 +104,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String LOG_TAG = "hello3dwiw";
 
     private SygicNaviFragment fgm;
+    private Api mApi;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private Button mLogoutBtn;
 
@@ -111,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     FusedLocationProviderClient fusedLocationProviderClient;
 
     private String carId;
-    private String routeId;
+    private static String routeId;
+    public static String readRouteId;
     public Object routeInfo;
     public Object routeInfoLon;
     public Object routeInfoLat;
@@ -146,16 +152,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
             //ked to bolo nizsie bugol mi toolbar ...
 
+
         setContentView(R.layout.activity_main);
         handler = new Handler();
         actualIndexInArray = -1;
         checkOnlineMobile();
+
         if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
             checkSygicResources();
         }
@@ -188,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             routeId = intent.getExtras().getString("routeId");
             getRouteLog();
-
+            readRouteId = routeId;
 
 
             DocumentReference docRef = db.collection("route").document(routeId);
@@ -392,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 intent.putExtra("carId", carId);
                 startActivity(intent);
                 routeId = null;
+                readRouteId = null;
                 finish();
 
             }
@@ -441,7 +451,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
     private void changeLayoutSize(){
-
         if (townsLayoutOpen){
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.townsWrapper);
             linearLayout.getLayoutParams().height = 400;
@@ -454,6 +463,45 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }
 
+    }
+
+    public static void sendRoute(){
+        if (routeId != null){
+            if (!routeId.equals("null")){
+
+                String status = null;
+                String json = null;
+                try {
+
+                    json = ApiNavigation.getRoute(1, 0, 0);
+                    JSONObject jsonObject = new JSONObject(json);
+                    JSONObject jsonArray = (JSONObject) jsonObject.get("polygon");
+                    JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
+                    JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
+
+                    Log.e("NavigationTime2", "co to bude"+ jsonFinish);
+
+                    //ukladam textak do databazy s trasou
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference mountainsRef = storageRef.child("Routes");
+                    mountainsRef.child(routeId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                            // ...
+                        }
+                    });
+
+                } catch (GeneralException | JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }}
     }
 
     void demo()
@@ -492,21 +540,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                    String skuska = "'" + jsonFinish.toString() + "'";
                     Log.e("NavigationTime2", "co to bude"+ jsonFinish);
 
-                    //ukladam textak do databazy s trasou
-                    StorageReference storageRef = storage.getReference();
-                    StorageReference mountainsRef = storageRef.child("Routes");
-                    mountainsRef.child(carId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                        }
-                    });
+//                    //ukladam textak do databazy s trasou
+//                    StorageReference storageRef = storage.getReference();
+//                    StorageReference mountainsRef = storageRef.child("Routes");
+//                    mountainsRef.child(routeId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception exception) {
+//                            // Handle unsuccessful uploads
+//                        }
+//                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+//                            // ...
+//                        }
+//                    });
 
         } catch (GeneralException | JSONException e) {
             e.printStackTrace();
@@ -562,6 +610,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return null;
 
     }
+
 
 
 

@@ -58,9 +58,17 @@ export class TransportationWrapperComponent implements OnInit {
 
   ngOnInit(): void {
     let DATA = {};
-    this.routeService.getAllRoutes().subscribe(routes => {
-      this.allActiveRoutes = routes;
-    })
+    // this.routeService.getAllRoutes().subscribe(routes => {
+    //   this.allActiveRoutes = routes;
+    //   this.dataService.setRoutes(routes);
+    //
+    // });
+
+    this.routeService.routes$.subscribe(newRoutes => {
+      this.allActiveRoutes = newRoutes;
+    });
+
+
     this.routeService.getAllFinishedRoutes().subscribe(routes => {
       this.allFinishedRoutes = routes;
     })
@@ -108,6 +116,7 @@ export class TransportationWrapperComponent implements OnInit {
       routesType: route.type,
       routeId: routeId,
       routeStatus: route.status,
+      aboutRoute: route.aboutRoute,
       newRoute: newRoute
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);

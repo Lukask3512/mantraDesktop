@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
@@ -11,6 +11,9 @@ import {RouteService} from "../../../services/route.service";
 import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 import {RouteStatusService} from "../../../data/route-status.service";
 import {Subject} from "rxjs";
+import Cars from "../../../models/Cars";
+import { jsPDF } from 'jspdf';
+
 
 @Component({
   selector: 'app-new-transport',
@@ -28,12 +31,14 @@ export class NewTransportComponent implements OnInit {
   status: number[]= [];
   aboutRoute: string[] = [];
   carId: string;
-
+  car: Cars;
   route: Route;
 
   change:boolean;
   @ViewChild('child')
   private child: OpenlayerComponent;
+
+  @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(public routeStatus: RouteStatusService, private dialog: MatDialog, private dataService: DataService, private routeService: RouteService) { }
 
   ngOnInit(): void {
@@ -57,12 +62,27 @@ export class NewTransportComponent implements OnInit {
         this.status = this.route.status;
         this.aboutRoute = this.route.aboutRoute;
 
-        setTimeout(() =>
-          {
-            this.notifyChildren(this.route.id);
 
-          },
-          800);
+        if (this.carId != undefined || this.carId != null){
+          this.car = this.dataService.getOneCarById(this.carId);
+          console.log(this.car)
+          setTimeout(() =>
+            {
+
+              this.notifyChildren(this.route.id);
+              this.child.notifyMe(this.routesLat, this.routesLon,  this.dataService.getOneCarById(this.carId), this.route);
+            },
+            800);
+        }else{
+          // setTimeout(() =>
+          //   {
+          //     this.notifyChildren(this.route.id);
+          //     this.child.notifyMe(this.routesLat, this.routesLon,null);
+          //   },
+          //   800);
+        }
+
+
       }
     })
   }
@@ -74,6 +94,12 @@ export class NewTransportComponent implements OnInit {
     moveItemInArray(this.type, event.previousIndex, event.currentIndex);
     moveItemInArray(this.status, event.previousIndex, event.currentIndex);
     moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
+
+    setTimeout(() =>
+      {
+        this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+      },
+      800);
 
     this.change = true;
   }
@@ -87,6 +113,11 @@ export class NewTransportComponent implements OnInit {
     this.status.push(-1);
     this.routesTowns.push(adress);
     this.change = true;
+    setTimeout(() =>
+      {
+        this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+      },
+      800);
   }
   getLat(lat){
     this.routesLat.push(lat);
@@ -220,7 +251,11 @@ export class NewTransportComponent implements OnInit {
         this.type.splice(i,1);
         this.status.splice(i, 1);
         this.aboutRoute.splice(i,1);
-
+        setTimeout(() =>
+          {
+            this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+          },
+          800);
       }
     }
     this.change = true;
@@ -244,7 +279,6 @@ export class NewTransportComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     return date.toLocaleString();
-
   }
 
   checkFinished(){
@@ -255,5 +289,17 @@ export class NewTransportComponent implements OnInit {
     }else {
       return true;
     }
+  }
+
+  downloadAsPDF(){
+    const DATA = this.pdfTable.nativeElement;
+
+    const doc: jsPDF = new jsPDF("p", "mm", "a4");
+
+    doc.html(DATA, {
+      callback: (doc) => {
+        doc.output("dataurlnewwindow");
+      }
+    });
   }
 }

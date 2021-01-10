@@ -3,7 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firest
 import Dispecer from "../models/Dispecer";
 import {map, take} from "rxjs/operators";
 import Cars from "../models/Cars";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import Route from "../models/Route";
 import {DataService} from "../data/data.service";
 
@@ -14,10 +14,21 @@ export class RouteService {
   private routesCollection: AngularFirestoreCollection<Dispecer>;
   private routes: Observable<Dispecer[]>;
 
+  private allRoutesSource = new BehaviorSubject<any>(null);
+  allRoutes = this.allRoutesSource.asObservable();
+
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.routesCollection = this.afs.collection<any>('route');
+
+    this.getAllRoutes().subscribe(res => {
+      this._routes.next(res);
+    });
+
   }
+
+  private _routes = new BehaviorSubject<any>([]);
+  readonly routes$ = this._routes.asObservable();
 
   getRoutes(carId){
     return this.afs.collection<Dispecer>('route', ref => {
@@ -109,7 +120,12 @@ export class RouteService {
     );
   }
 
+
+
   deleteRoute(routeId){
     return this.routesCollection.doc(routeId).delete();
   }
+
+
+
 }

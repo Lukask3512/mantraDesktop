@@ -24,12 +24,20 @@ export class CarsWrapperComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    this.carService.getCars().subscribe(cars => {
+    // this.carService.getCars().subscribe(cars => {
+    //   this.cars = cars;
+    //   this.dataSerice.setCars(cars);
+    //   this.dataSource = new MatTableDataSource(this.cars);
+    //   this.dataSource.paginator = this.paginator;
+    // });
+
+    this.carService.cars$.subscribe(cars => {
       this.cars = cars;
       this.dataSerice.setCars(cars);
       this.dataSource = new MatTableDataSource(this.cars);
       this.dataSource.paginator = this.paginator;
     });
+
   }
 
   sendCar(car){

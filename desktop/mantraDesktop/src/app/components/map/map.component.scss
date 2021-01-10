@@ -1,4 +1,29 @@
-.map{
-  height: 500px;
-  width: 700px;
+.wrapper{
+  display: flex;
+  height: 45em;
+  width: 100%;
+  padding: 10px;
+}
+#map{
+  height: 90%;
+  width: 65%;
+}
+.info{
+  height: auto;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.car{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.route{
+  border: 2px solid gray;
+  border-radius: 2px;
+  margin: 5px;
+
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
 import Dispecer from "../models/Dispecer";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import Cars from "../models/Cars";
 import {DataService} from "../data/data.service";
@@ -17,7 +17,16 @@ export class CarService {
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.carsCollection = this.afs.collection<any>('cars');
+
+    this.getCars().subscribe(res => {
+      this._cars.next(res);
+    })
+
   }
+
+  private _cars = new BehaviorSubject<any>([]);
+  readonly cars$ = this._cars.asObservable();
+
   getCars(){
     var createdBy;
     var loggedUser = this.dataService.getDispecer();

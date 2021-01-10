@@ -42,7 +42,8 @@ export class RouteToCarComponent implements OnInit {
   }
 
 
-  addRouteToCar(carId){
+  addRouteToCar(car){
+    console.log(car)
     var loggedDispecer = this.dataService.getDispecer();
     var dispecerId;
     if (loggedDispecer.createdBy == 'master'){
@@ -55,7 +56,7 @@ export class RouteToCarComponent implements OnInit {
     //ked nemam vytvorenu cestu
     if (this.newRoute){
         route = {
-          carId: carId,
+          carId: car.id,
           createdBy: dispecerId,
           coordinatesOfTownsLat: this.routesLat,
           coordinatesOfTownsLon: this.routesLon,
@@ -70,6 +71,12 @@ export class RouteToCarComponent implements OnInit {
     }
     //ked mam vytvorenu cestu a len ju chem priradit auto
     else {
+      var carId;
+      if (car == null){
+        carId = null;
+      }else{
+        carId = car.id
+      }
       route = {
         id: this.routeId,
         carId: carId,
@@ -87,7 +94,7 @@ export class RouteToCarComponent implements OnInit {
 
     }
 
-    this.dialogRef.close({event: true, carId: carId})
+    this.dialogRef.close({event: true, car: car})
   }
 
 

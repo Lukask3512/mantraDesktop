@@ -10,8 +10,11 @@ import Dispecer from "../../app/models/Dispecer";
 
 
 
-
-@Component({ templateUrl: 'register.component.html' })
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  // styleUrls: ['./register.component.scss']
+})
 export class RegisterComponent implements OnInit {
   form: FormGroup;
   loading = false;
@@ -31,6 +34,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.form = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -62,6 +66,8 @@ export class RegisterComponent implements OnInit {
   }
 
   login() {
+    console.log(this.email);
+    console.log(this.password);
     this.accountService.login(this.email, this.password).subscribe(user => {
       console.log(user.user.email);
       this.dispecerService.getOneDispecer(user.user.email).subscribe(user => {
