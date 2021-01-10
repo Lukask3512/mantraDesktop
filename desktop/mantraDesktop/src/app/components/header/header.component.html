@@ -5,19 +5,9 @@
   <a routerLink="/view/cars" class="nav">Moje vozidlá</a>
   <a routerLink="/view/transport" class="nav">Moje prepravy</a>
   <a routerLink="/view/map" class="nav">Mapy</a>
+  <a routerLink="" (click)="logout()" class="nav">Logout</a>
 
-  <button routerLink="" (click)="logout()">Logout
 
-  </button>
-      <button class="myDropdown" onclick="myFunction()">Moje konto
-        <span class="caret"></span>
-      </button>
-      <div class="dropdown-menu dropdown-content" id="myDropdown">
-        <a routerLink="" class="nav">Profil</a>
-        <a routerLink="" class="nav">Nastavenia</a>
-        <a (click)="logout()" routerLink="" class="nav">LogOut</a>
-
-      </div>
 
 
 </nav>
