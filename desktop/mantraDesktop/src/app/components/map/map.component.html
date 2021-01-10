@@ -1,3 +1,27 @@
+<style>
+  table {
+    width:100%;
+  }
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  #t01 tr:nth-child(even) {
+    background-color: #eee;
+  }
+  #t01 tr:nth-child(odd) {
+    background-color: #fff;
+  }
+  #t01 th {
+    background-color: #817171;
+    color: white;
+  }
+</style>
+
 <div class="wrapper">
   <div id="map"></div>
   <div class="info">
@@ -5,9 +29,13 @@
 
       <div class="car">
 <!--        <h2>Vozidlo</h2>-->
-        <h3 *ngIf="carToShow != undefined">{{carToShow.ecv}}</h3>
-        <h4 *ngIf="carToShow != undefined">{{this.routeStatusService.getStatus(carToShow.status)}}</h4>
-        <h4 *ngIf="carToShow != undefined">{{carToShow.phoneNumber}}</h4>
+        <table id="t01">
+          <tr>
+            <th>Poznávacia značka:<h3 *ngIf="carToShow != undefined">{{carToShow.ecv}}</h3></th>
+            <th>Stav:<h4 *ngIf="carToShow != undefined">{{this.routeStatusService.getStatus(carToShow.status)}}</h4></th>
+            <th>Kontakt:<h5 *ngIf="carToShow != undefined">{{carToShow.phoneNumber}}</h5></th>
+          </tr>
+        </table>
         <h4 *ngIf="carToShow == undefined && routesToShow == undefined">Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.</h4>
         <h4 *ngIf="carToShow == undefined && routesToShow != undefined">Nepriradená trasa</h4>
         <button *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">
@@ -16,12 +44,14 @@
 
       <div class="routes">
         <div class="route" *ngFor="let route of routesToShow">
-          <h3 *ngIf="route.estimatedTimeArrival != undefined">ETA{{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>
-          <h4 *ngFor="let town of route.nameOfTowns; index as i">{{town}}
-            <span>{{this.routeStatusService.getStatus(route.status[i])}}</span></h4>
+          <table id="t01"><h3 *ngIf="route.estimatedTimeArrival != undefined">ETA:  {{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>
+              <tr>
+              <th><h2> Ciele: </h2><h4 *ngFor="let town of route.nameOfTowns; index as i">{{town}}<br>
+            <span>Stav: {{this.routeStatusService.getStatus(route.status[i])}}</span></h4></th>
+            </tr>
+          </table>
         </div>
       </div>
   </div>
 </div>
-
 
