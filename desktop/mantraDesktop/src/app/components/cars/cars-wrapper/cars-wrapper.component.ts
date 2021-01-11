@@ -35,6 +35,7 @@ export class CarsWrapperComponent implements OnInit {
       this.cars = cars;
       this.dataSerice.setCars(cars);
       this.dataSource = new MatTableDataSource(this.cars);
+      console.log("som dostal upravne auto")
       this.dataSource.paginator = this.paginator;
     });
 

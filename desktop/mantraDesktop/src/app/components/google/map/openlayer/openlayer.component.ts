@@ -42,11 +42,11 @@ export class OpenlayerComponent implements OnInit {
 
 
   notifyMe(lat, lon, car, route){
-    if (lat.length > 0) {
+    if (lat != undefined) {
       this.addMarker(lat, lon, car);
     }
 
-    if (this.coordinatesFeature == undefined && car !== undefined) {
+    if (this.coordinatesFeature == undefined && car !== undefined && route != undefined) {
         this.addRoute(route);
       }
   }
@@ -66,6 +66,7 @@ export class OpenlayerComponent implements OnInit {
       ],
       view: this.view
     });
+    console.log("se volam")
   }
 
 
@@ -184,7 +185,7 @@ export class OpenlayerComponent implements OnInit {
 
 
 
-    if (lat.length > 0) {
+    if ( lat != undefined && lat.length > 0) {
       for (let i = 0; i < lat.length; i++) {
         var iconFeature = new Feature({
           geometry: new Point(fromLonLat([lon[i], lat[i]])),

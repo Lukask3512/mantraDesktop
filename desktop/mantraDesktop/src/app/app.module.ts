@@ -30,6 +30,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { AdressesComponent } from './components/google/adresses/adresses.component';
 import { AgmCoreModule } from '@agm/core';
 import {MatInputModule} from "@angular/material/input";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // used to create fake backend
@@ -78,6 +79,7 @@ import {RouteLogComponent} from "./components/transportation/route-log/route-log
     MatInputModule,
     MatTableModule,
     MatListModule,
+    MatSnackBarModule,
     DragDropModule,
     FormsModule,
     BrowserModule,

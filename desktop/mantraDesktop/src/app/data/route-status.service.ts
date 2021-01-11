@@ -19,20 +19,20 @@ export class RouteStatusService {
         return 'Na ceste'
       }
       case 2: {
-        return 'Nakladám'
+        return 'Nakladám / Vykladám'
       }
       case 3: {
-        return 'Naložené'
+        return 'Naložené / Vyložené'
       }
       case 4: {
-        return 'Vykladám'
-      }
-      case 5: {
-        return 'Vyložené'
-      }
-      case 6: {
         return 'Problém'
       }
+      // case 5: {
+      //   return 'Vyložené'
+      // }
+      // case 6: {
+      //   return 'Problém'
+      // }
     }
   }
 }

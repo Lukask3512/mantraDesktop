@@ -20,7 +20,7 @@
     </ul>
   </div>
 
-<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+<div *ngIf="this.routes != undefined" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
   <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>
     <div class="routeTown">
       <p>{{route}}</p>
@@ -33,8 +33,11 @@
      </div>
   </div>
 </div>
+  <div *ngIf="this.routes == undefined">Trasa bola dokončená
+    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">Nova trasa</button>
+  </div>
 
-  <div class="button_cont" align="center">
+  <div  *ngIf="this.routes != undefined" class="button_cont" align="center">
     <button [disabled]="!change" (click)="this.sendToDriver()" class="oneButton green" href="add-website-here" target="_blank" rel="nofollow noopener">
       Odoslať vodičovi</button>
     <app-adresses (placeName)="getAdress($event)"

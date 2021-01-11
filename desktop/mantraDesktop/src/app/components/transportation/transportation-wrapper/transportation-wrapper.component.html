@@ -15,17 +15,14 @@
 
         <li *ngIf="route.type[i] != 'vykladka'">
           <div>
-          <div *ngIf="route.status[i] === 6 && route.status[i] !== 0 ">
-            {{town}}<span class="spanR">{{this.routeStatusService.getStatus(route.status[i])}}</span>
-          </div>
-
-          <div *ngIf="route.status[i] !== 6 && route.status[i] !== 1 && route.status[i] !== 0">
-            {{town}}<span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
-          </div>
-
-          <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
-            {{town}}<span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
-          </div>
+            <div>
+              {{town}}
+              <span *ngIf="route.status[i] === 0" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+              <span *ngIf="route.status[i] === 1" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+              <span *ngIf="route.status[i] === 2" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+              <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+              <span *ngIf="route.status[i] === 4" class="spanR"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            </div>
 
         </div>
         </li>
@@ -40,20 +37,14 @@
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
 
       <li *ngIf="route.type[i] != 'nakladka'">
-        <div><div *ngIf="route.status[i] === 6 && route.status[i] !== 0">
-          {{town}}<span class="spanR"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+        <div>
+          {{town}}
+          <span *ngIf="route.status[i] === 0" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+          <span *ngIf="route.status[i] === 1" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+          <span *ngIf="route.status[i] === 2" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+          <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+          <span *ngIf="route.status[i] === 4" class="spanR"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
         </div>
-
-        <div *ngIf="route.status[i] !== 6 && route.status[i] !== 1 && route.status[i] !== 0">
-          {{town}}<span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
-        </div>
-
-        <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
-          {{town}}<span class="spanY">  {{this.routeStatusService.getStatus(route.status[i])}}</span>
-        </div>
-
-
-      </div>
       </li>
 
     </ng-container>
@@ -81,7 +72,14 @@
       <h2>Nákladky</h2>
       <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'vykladka'">
-          {{town}}
+          <div>
+            {{town}}
+            <span *ngIf="route.status[i] === 0" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 1" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 2" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 4" class="spanR"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+          </div>
         </li>
       </ng-container>
     </div>
@@ -90,7 +88,14 @@
       <h2>Výkladky</h2>
       <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'nakladka'">
-          {{town}}
+          <div>
+            {{town}}
+            <span *ngIf="route.status[i] === 0" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 1" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 2" class="spanY"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+            <span *ngIf="route.status[i] === 4" class="spanR"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
+          </div>
         </li>
       </ng-container>
     </div>
@@ -99,6 +104,7 @@
       <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>
 
       <button (click)="openAddDialog(route, true, route.id)" class="buttonB">Zopakovať trasu</button>
+      <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť trasu</button>
     </div>
   </div>
 
