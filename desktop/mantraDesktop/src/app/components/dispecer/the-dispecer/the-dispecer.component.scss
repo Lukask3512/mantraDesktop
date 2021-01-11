@@ -19,3 +19,18 @@
   border-color: red !important;
   transition: all 0.4s ease 0.2s;
 }
+
+.wrap{
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 15px;
+}
+.allWrap{
+  display: flex;
+}
+.p{
+  color: blue;
+}

@@ -1,17 +1,22 @@
 
 <div class="dispecerWrapper">
 
-  <label >Dispečer</label>
-  <p>{{this.dispecer.name}}</p>
-  <p>{{this.dispecer.phone}}</p>
-  <p>{{this.dispecer.email}}</p>
+  <form class="wrap" >
+    <label><h5>Meno dispečéra</h5></label>
+    <p>{{this.dispecer.name}}</p>
 
-  <div class="button_cont" align="center">
+    <label><h5>Číslo dispečéra</h5></label>
+    <p>{{this.dispecer.phone}}</p>
+
+    <label><h5>E-mail</h5></label>
+    <p>{{this.dispecer.email}}</p>
+
+  <form class="button_cont" align="center">
     <button (click)="deleteDispecer()" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
       Vymazať
-    </button></div>
+    </button></form>
 <!--  <p>{{this.dispecer.status}}</p>-->
-
+  </form>
 </div>
 
 
