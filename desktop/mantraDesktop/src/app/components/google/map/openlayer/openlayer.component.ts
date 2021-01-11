@@ -36,6 +36,8 @@ export class OpenlayerComponent implements OnInit {
   pointsFeature;
   coordinatesFeature;
 
+  view;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
@@ -50,6 +52,10 @@ export class OpenlayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.view = new View({
+      center: olProj.fromLonLat([0, 0]),
+      zoom: 1
+    });
 
     this.map = new Map({
       target: 'map',
@@ -58,10 +64,7 @@ export class OpenlayerComponent implements OnInit {
           source: new OSM()
         }), this.vectorLayer
       ],
-      view: new View({
-        center: olProj.fromLonLat([0, 0]),
-        zoom: 1
-      })
+      view: this.view
     });
   }
 
@@ -226,20 +229,23 @@ export class OpenlayerComponent implements OnInit {
     });
     this.map.addLayer(this.vectorLayer);
 
-    if (lon.length === 1) {
-      this.map.getView().setCenter(fromLonLat([lon, lat]))
-      this.map.getView().setZoom(8)
+    this.view.fit(vectorSource.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
 
-    } else {
-      // console.log(lon.length - 1)
-      // this.map.getView().animate({
-      //   center: fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])),
-      //   zoom: 8,
-      //   duration: 800
-      // })
-      this.map.getView().setCenter(fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])));
-      this.map.getView().setZoom(8);
-    }
+
+    // if (lon.length === 1) {
+    //   this.map.getView().setCenter(fromLonLat([lon, lat]))
+    //   this.map.getView().setZoom(8)
+    //
+    // } else {
+    //   // console.log(lon.length - 1)
+    //   // this.map.getView().animate({
+    //   //   center: fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])),
+    //   //   zoom: 8,
+    //   //   duration: 800
+    //   // })
+    //   this.map.getView().setCenter(fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])));
+    //   this.map.getView().setZoom(8);
+    // }
 
   }
 }

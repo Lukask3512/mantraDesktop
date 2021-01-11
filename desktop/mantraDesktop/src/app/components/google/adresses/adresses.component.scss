@@ -1,0 +1,39 @@
+.formular{
+  margin-top: 1rem;
+}
+
+.button{
+  padding: {
+    left: 10px;
+    right: 10px;
+    top: 5px;
+    bottom: 5px;
+  }
+  border-radius: 3px;
+  border: none;
+}
+
+.radios{
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
+.red{
+  background-color: red;
+}
+.yellow{
+  background-color: yellow;
+}
+.green{
+  background-color: limegreen;
+}
+
+.addButton{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+.radioButtons{
+  display: flex;
+  justify-content: center;
+}
