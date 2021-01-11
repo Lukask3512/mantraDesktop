@@ -268,11 +268,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         rowTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30f);
 //                                rowTextView.setBackground(getResources().getDrawable(R.drawable.border));
                         rowTextView.setBackgroundResource(R.drawable.border);
-                        if (((ArrayList<Long>) routeInfoStatus).get(i) == 3 ||
-                                ((ArrayList<Long>) routeInfoStatus).get(i) == 5) {
+                        if (((ArrayList<Long>) routeInfoStatus).get(i) == 3) {
                             rowTextView.setBackgroundColor(Color.parseColor("#00FF00"));
                         }
-                        if (((ArrayList<Long>) routeInfoStatus).get(i) == 6){
+                        if (((ArrayList<Long>) routeInfoStatus).get(i) == 4){
                             rowTextView.setBackgroundColor(Color.parseColor("#ff5e5e"));
                         }
                         // add the textview to the linearlayout
@@ -329,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                                             Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)){
 
                                                                 if (actualIndexInArray >= 0) {
-                                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 5);
+                                                                    ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 3);
                                                                     Map<String, Object> data = new HashMap<>();
                                                                     //
                                                                     data.put("status", routeInfoStatus);
@@ -888,12 +887,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    @Override
-    protected void onStop() {
-
-        super.onStop();
-
-    }
+//    @Override
+//    protected void onStop() {
+//
+//        super.onStop();
+//
+//    }
 
     private void allertFinish(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -1015,7 +1014,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //        String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
 
         boolean[] checkedItems = {true, false, false, false};
-        builder.setSingleChoiceItems(animals, 1, null);
+        builder.setSingleChoiceItems(animals, 0, null);
 
 //        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
 //            @Override
@@ -1031,10 +1030,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                 if (selectedPosition == 0){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 3);
-                    updateRouteLog(actualIndexInArray -1, 5);
+                    updateRouteLog(actualIndexInArray -1, 3);
                 }else if(selectedPosition == 1){
-                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 3);
-                    updateRouteLog(actualIndexInArray -1, 6);
+                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 4);
+                    updateRouteLog(actualIndexInArray -1, 4);
                 }
                 else if(selectedPosition == 2){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, -1);

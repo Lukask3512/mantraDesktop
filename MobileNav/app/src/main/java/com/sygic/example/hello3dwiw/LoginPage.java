@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -30,6 +31,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.sygic.aura.ResourceManager;
+import com.sygic.aura.utils.PermissionsUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +51,16 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
+        if (PermissionsUtils.requestStartupPermissions(this) == PackageManager.PERMISSION_GRANTED) {
+            checkSygicResources();
+        }
+
+        if (ActivityCompat.checkSelfPermission(LoginPage.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            ActivityCompat.requestPermissions(LoginPage.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
@@ -186,5 +201,38 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
         Toast.makeText(this, "Assrray" , Toast.LENGTH_LONG).show();
         Log.e("Error", "" );
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for(int res : grantResults) {
+            if(res != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "You have to allow all permissions", Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
+        }
+    }
+
+    private void checkSygicResources() {
+        ResourceManager resourceManager = new ResourceManager(this, null);
+        if(resourceManager.shouldUpdateResources()) {
+            Toast.makeText(this, "Please wait while Sygic resources are being updated", Toast.LENGTH_LONG).show();
+            resourceManager.updateResources(new ResourceManager.OnResultListener() {
+                @Override
+                public void onError(int errorCode, @NotNull String message) {
+                    finish();
+                }
+
+                @Override
+                public void onSuccess() {
+
+                }
+            });
+        }
+        else {
+
+        }
+    }
+
 
 }
