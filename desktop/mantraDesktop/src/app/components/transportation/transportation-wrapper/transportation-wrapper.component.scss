@@ -1,4 +1,5 @@
 .oneRoute{
+  background-image: linear-gradient(to right, rgba(0,0,0,0) ,rgba(128,128,128,0.5), rgba(0,0,0,0));
   border: 2px solid black;
   margin: 10px;
   display: flex;
@@ -11,7 +12,7 @@
 }
 
 span{
-  background: gray;
+  background: rgba(255, 255, 0,0.5);
   border-radius: 5px;
   padding: 5px;
 }
@@ -30,3 +31,59 @@ span{
   min-width: 20%;
 }
 
+.buttonR {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 27px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.buttonB {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 10px 27px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.buttonG {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 27px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+ol {
+  background: #ff9999;
+  padding: 20px;
+}
+
+ol li {
+  background: #ffe5e5;
+  padding: 5px;
+  margin-left: 35px;
+}
+
+.centrovanie{
+  position: center;
+}
