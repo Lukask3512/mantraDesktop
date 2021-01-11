@@ -11,6 +11,7 @@ import {RouteStatusService} from "../../../data/route-status.service";
 import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 import { AngularFireStorage } from '@angular/fire/storage';
 import {HttpClient} from '@angular/common/http';
+import {CarService} from "../../../services/car.service";
 
 @Component({
   selector: 'app-car-detail',
@@ -37,7 +38,9 @@ export class CarDetailComponent implements OnInit {
   @ViewChild('child')
   private child: OpenlayerComponent;
 
-  constructor(private http: HttpClient, private storage: AngularFireStorage, private routeService: RouteService, private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService) {
+  constructor(private http: HttpClient, private storage: AngularFireStorage, private routeService: RouteService,
+              private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService,
+              private carService: CarService) {
 
   }
 
@@ -49,11 +52,29 @@ export class CarDetailComponent implements OnInit {
     this.type = [];
     this.status = [];
     this.aboutRoute = [];
+    this.carService.cars$.subscribe()
     this.dataService.currentCar.subscribe(car => {
       this.car = car;
+      this.carService.cars$.subscribe(cars => {
+        this.car = cars.find(oneCarFromDt => oneCarFromDt.id == this.car.id);
+      console.log("update")
+
+        setTimeout(() =>
+          {
+            console.log(car)
+            this.child.notifyMe(null, null, this.car, this.car);
+          },
+          800);
 
       this.routeService.getRoutes(this.car.id).subscribe(routes => {
         this.routes = routes[0];
+        if (routes[0] == undefined){
+          setTimeout(() =>
+            {
+              this.child.notifyMe(null, null,this.car, null);
+            },
+            800);
+        }
 
         // @ts-ignore
         this.allActiveRoutes = routes;
@@ -92,6 +113,7 @@ export class CarDetailComponent implements OnInit {
           this.type = [];
           this.status = [];
         }
+      });
       });
     });
 
@@ -282,6 +304,10 @@ export class CarDetailComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     return date.toLocaleString();
+  }
+
+  routeDetail(route: Route){
+    this.dataService.changeRealRoute(route);
   }
 
 }

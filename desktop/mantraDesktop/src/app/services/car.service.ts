@@ -61,4 +61,22 @@ export class CarService {
   getCar(carId){
     return this.carsCollection.doc(carId).valueChanges();
   }
+
+  getCarByEcv(carEcv){
+    return this.afs.collection('cars', ref => {
+      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+      query = query.where('ecv', '==', carEcv)
+      return query;
+    }).valueChanges();
+  }
+
+  getCarByNumber(carNumber){
+    return this.afs.collection('cars', ref => {
+      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+      query = query.where('phoneNumber', '==', carNumber)
+      return query;
+    }).valueChanges();
+  }
 }

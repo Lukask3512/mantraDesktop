@@ -27,6 +27,7 @@ import {RouteToCarComponent} from "../dialogs/route-to-car/route-to-car.componen
 import {easeOut} from 'ol/easing';
 import {unByKey} from 'ol/Observable';
 import {getVectorContext} from 'ol/render';
+import {BehaviorSubject} from "rxjs";
 
 
 @Component({
@@ -60,6 +61,9 @@ export class MapComponent implements OnInit {
   carsFromDatabase;
   routesFromDatabase;
   adressesFromDatabase;
+
+  private _routesToShow = new BehaviorSubject<any>([]);
+  readonly routes$ = this._routesToShow.asObservable();
 
   carToShow: Cars;
   routesToShow: Route[];
@@ -133,7 +137,6 @@ export class MapComponent implements OnInit {
   }
 //ak kliknem na auto
   onClickFindInfo(id){
-    console.log(id)
     this.carToShow = this.carsFromDatabase.find(car => car.id ==id);
     this.routesToShow = this.adressesFromDatabase.filter(route => route.carId == this.carToShow.id);
   }
@@ -257,6 +260,15 @@ export class MapComponent implements OnInit {
 
     if (car !== undefined){
         for (let i = 0; i<car.length; i++){
+
+          //update vozidla ak mam nakliknute nejake
+          if ( this.carToShow != undefined && car[i].id == this.carToShow.id){
+            this.onClickFindInfo(car[i].id);
+            console.log("som nasiel same")
+          }
+
+
+
           // console.log(car[i].lattitude)
 
           if (car[i].lattitude != undefined){
@@ -278,9 +290,13 @@ export class MapComponent implements OnInit {
             });
             carFeature.setStyle(carStyle);
             this.cars.push(carFeature);
-            if (car[i].status == 6) {
+            if (car[i].status == 4) {
               this.pulseCar = true;
 
+
+
+
+              //pre blikanie
               var isThereCar = this.carWarningStatus.filter(findCar => findCar.id == car[i].id);
               console.log(isThereCar)
 
@@ -322,7 +338,7 @@ export class MapComponent implements OnInit {
       // var flash = this.flash(feature, duration);
        let animate =  (event) => {
          let carInData = this.carsFromDatabase.find(findCar => findCar.id == car.id);
-         if (carInData.status != 6){
+         if (carInData.status != 4){
               return;
          }
 
@@ -493,7 +509,18 @@ export class MapComponent implements OnInit {
     }
     var color = -1;
 
-  routes.forEach(route => {
+
+  routes.forEach((route, index) => {
+
+    if (this.routesToShow != undefined)
+      console.log(this.routesToShow[0].id);
+      console.log(route.id)
+    if (this.routesToShow != undefined && route.id == this.routesToShow[0].id){
+      console.log("som nasiel same")
+      this.onClickFindInfoAdress(route.id);
+    }
+
+
     color++;
     if (color >= this.colors.length){
       color = 0;
@@ -508,7 +535,7 @@ export class MapComponent implements OnInit {
           type: "route"
         });
 
-        if (route.status[i] == 3 || route.status[i] == 5){
+        if (route.status[i] == 3){
           var iconStyle = new Style({
             image: new CircleStyle({
               radius: 8,
@@ -527,7 +554,7 @@ export class MapComponent implements OnInit {
             })
           });
         }
-        else if (route.status[i] ==6){
+        else if (route.status[i] == 4){
           var iconStyle = new Style({
             image: new CircleStyle({
               radius: 10,
@@ -570,8 +597,10 @@ export class MapComponent implements OnInit {
 
         iconFeature.setStyle(iconStyle);
         this.places.push(iconFeature)
+
       }
     }
+
   });
 
 

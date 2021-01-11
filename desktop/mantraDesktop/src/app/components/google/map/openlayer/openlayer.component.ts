@@ -23,7 +23,7 @@ import {take} from "rxjs/operators";
   templateUrl: './openlayer.component.html',
   styleUrls: ['./openlayer.component.scss']
 })
-export class OpenlayerComponent implements OnInit {
+export class OpenlayerComponent {
   map;
   vectorLayer = new VectorLayer();
   // vectorLayer;
@@ -38,20 +38,28 @@ export class OpenlayerComponent implements OnInit {
 
   view;
 
+  osm;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
   notifyMe(lat, lon, car, route){
-    if (lat.length > 0) {
+    if (lat != undefined) {
       this.addMarker(lat, lon, car);
     }
 
-    if (this.coordinatesFeature == undefined && car !== undefined) {
+    if (this.coordinatesFeature == undefined && car !== undefined && route != undefined) {
         this.addRoute(route);
       }
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    setTimeout(() =>
+      {
+
+
+    this.osm = new OSM();
+
     this.view = new View({
       center: olProj.fromLonLat([0, 0]),
       zoom: 1
@@ -61,11 +69,16 @@ export class OpenlayerComponent implements OnInit {
       target: 'map',
       layers: [
         new TileLayer({
-          source: new OSM()
+          source: this.osm
         }), this.vectorLayer
       ],
       view: this.view
     });
+    // this.map.render();
+    console.log("chcem refresh")
+
+      },
+      200);
   }
 
 
@@ -184,7 +197,7 @@ export class OpenlayerComponent implements OnInit {
 
 
 
-    if (lat.length > 0) {
+    if ( lat != undefined && lat.length > 0) {
       for (let i = 0; i < lat.length; i++) {
         var iconFeature = new Feature({
           geometry: new Point(fromLonLat([lon[i], lat[i]])),
