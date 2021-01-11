@@ -45,7 +45,7 @@
 
         <ImageButton
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="match_parent"
             android:background="@drawable/swap" />
 
@@ -65,7 +65,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:orientation="horizontal"
 
         >
@@ -75,20 +75,20 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text=""
-            android:layout_marginRight="320dp"
+            android:layout_marginRight="280dp"
             />
 
         <ImageButton
 
             android:id="@+id/nextRoute"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@drawable/nextroute" />
 
         <ImageButton
             android:id="@+id/buttonInfo"
-            android:layout_width="wrap_content"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@drawable/info" />
