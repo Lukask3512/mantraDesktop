@@ -9,12 +9,28 @@
     <div *ngIf="allActiveRoutes.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 
       <h2>Nákladky</h2>
+
       <ng-container  *ngFor="let town of route.nameOfTowns; index as i">
 
-        <li *ngIf="route.type[i] != 'vykladka'">
-          {{town}} <span>{{this.routeStatusService.getStatus(route.status[i])}}</span>
 
+        <li *ngIf="route.type[i] != 'vykladka'">
+          {{town}}
+          <div *ngIf="route.status[i] === 6 && route.status[i] !== 0 ">
+          <span class="spanR">{{this.routeStatusService.getStatus(route.status[i])}}</span>
+          </div>
+
+          <div *ngIf="route.status[i] !== 6 && route.status[i] !== 1 && route.status[i] !== 0">
+            <span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
+          </div>
+
+          <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
+            <span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
+          </div>
+          <div *ngIf=" route.status[i] === 0">
+            <span ></span>
+          </div>
         </li>
+
 
     </ng-container>
 
@@ -25,10 +41,24 @@
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
 
       <li *ngIf="route.type[i] != 'nakladka'">
-          {{town}} <span class="routeStatus">{{this.routeStatusService.getStatus(route.status[i])}}</span>
-          <br>
-          <br>
-        </li>
+        {{town}}
+        <div *ngIf="route.status[i] === 6 && route.status[i] !== 0">
+          <span class="spanR">{{this.routeStatusService.getStatus(route.status[i]) }}</span>
+        </div>
+
+        <div *ngIf="route.status[i] !== 6 && route.status[i] !== 1 && route.status[i] !== 0">
+          <span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
+        </div>
+
+        <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
+          <span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
+        </div>
+
+        <div *ngIf=" route.status[i] === 0">
+          <span ></span>
+        </div>
+
+      </li>
 
     </ng-container>
     </div>
