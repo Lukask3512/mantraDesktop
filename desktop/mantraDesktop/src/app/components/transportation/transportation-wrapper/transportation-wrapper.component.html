@@ -26,9 +26,7 @@
           <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
             {{town}}<span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
           </div>
-          <div *ngIf=" route.status[i] === 0">
-            <span ></span>
-          </div>
+
         </div>
         </li>
 
@@ -54,9 +52,7 @@
           {{town}}<span class="spanY">  {{this.routeStatusService.getStatus(route.status[i])}}</span>
         </div>
 
-        <div *ngIf=" route.status[i] === 0">
-          <span ></span>
-        </div>
+
       </div>
       </li>
 
