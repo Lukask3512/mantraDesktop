@@ -14,21 +14,22 @@
 
 
         <li *ngIf="route.type[i] != 'vykladka'">
-          {{town}}
+          <div>
           <div *ngIf="route.status[i] === 6 && route.status[i] !== 0 ">
-          <span class="spanR">{{this.routeStatusService.getStatus(route.status[i])}}</span>
+            {{town}}<span class="spanR">{{this.routeStatusService.getStatus(route.status[i])}}</span>
           </div>
 
           <div *ngIf="route.status[i] !== 6 && route.status[i] !== 1 && route.status[i] !== 0">
-            <span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
+            {{town}}<span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
           </div>
 
           <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
-            <span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
+            {{town}}<span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
           </div>
           <div *ngIf=" route.status[i] === 0">
             <span ></span>
           </div>
+        </div>
         </li>
 
 
@@ -41,23 +42,22 @@
     <ng-container *ngFor="let town of route.nameOfTowns; index as i">
 
       <li *ngIf="route.type[i] != 'nakladka'">
-        {{town}}
-        <div *ngIf="route.status[i] === 6 && route.status[i] !== 0">
-          <span class="spanR">{{this.routeStatusService.getStatus(route.status[i]) }}</span>
+        <div><div *ngIf="route.status[i] === 6 && route.status[i] !== 0">
+          {{town}}<span class="spanR"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
         </div>
 
         <div *ngIf="route.status[i] !== 6 && route.status[i] !== 1 && route.status[i] !== 0">
-          <span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
+          {{town}}<span class="spanG" >{{this.routeStatusService.getStatus(route.status[i])}}</span>
         </div>
 
         <div *ngIf="route.status[i] === 1 && route.status[i] !== 0">
-          <span class="spanY">{{this.routeStatusService.getStatus(route.status[i])}}</span>
+          {{town}}<span class="spanY">  {{this.routeStatusService.getStatus(route.status[i])}}</span>
         </div>
 
         <div *ngIf=" route.status[i] === 0">
           <span ></span>
         </div>
-
+      </div>
       </li>
 
     </ng-container>
