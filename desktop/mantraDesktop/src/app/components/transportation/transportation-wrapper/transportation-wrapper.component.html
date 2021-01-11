@@ -53,7 +53,7 @@
       <h2>Status</h2>
 
       <div *ngIf="route.carId == null">
-        <button (click)="openAddDialog(route, false, route.id)">Priradiť autu</button>
+        <button class="buttonG" (click)="openAddDialog(route, false, route.id)">Priradiť autu</button>
       </div>
       <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť trasu</button>
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>

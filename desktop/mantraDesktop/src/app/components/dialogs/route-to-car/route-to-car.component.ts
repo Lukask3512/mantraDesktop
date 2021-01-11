@@ -55,8 +55,14 @@ export class RouteToCarComponent implements OnInit {
     console.log(this.newRoute)
     //ked nemam vytvorenu cestu
     if (this.newRoute){
+      var carId;
+      if (car == null){
+        carId = null;
+      }else{
+        carId = car.id
+      }
         route = {
-          carId: car.id,
+          carId: carId,
           createdBy: dispecerId,
           coordinatesOfTownsLat: this.routesLat,
           coordinatesOfTownsLon: this.routesLon,
@@ -71,15 +77,15 @@ export class RouteToCarComponent implements OnInit {
     }
     //ked mam vytvorenu cestu a len ju chem priradit auto
     else {
-      var carId;
+      var carId2;
       if (car == null){
-        carId = null;
+        carId2 = null;
       }else{
-        carId = car.id
+        carId2 = car.id
       }
       route = {
         id: this.routeId,
-        carId: carId,
+        carId: carId2,
         createdBy: dispecerId,
         coordinatesOfTownsLat: this.routesLat,
         coordinatesOfTownsLon: this.routesLon,

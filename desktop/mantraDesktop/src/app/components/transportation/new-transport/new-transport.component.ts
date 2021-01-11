@@ -272,6 +272,7 @@ export class NewTransportComponent implements OnInit {
     const dialogRef = this.dialog.open(EditInfoComponent, {
       data: {routeInfo: routeInfo }
     });
+    console.log(routeInfo)
     dialogRef.afterClosed().subscribe(value => {
 
       if (value.routeInfo !== undefined){

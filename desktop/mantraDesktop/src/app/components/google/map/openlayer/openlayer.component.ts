@@ -23,7 +23,7 @@ import {take} from "rxjs/operators";
   templateUrl: './openlayer.component.html',
   styleUrls: ['./openlayer.component.scss']
 })
-export class OpenlayerComponent implements OnInit {
+export class OpenlayerComponent {
   map;
   vectorLayer = new VectorLayer();
   // vectorLayer;
@@ -38,6 +38,8 @@ export class OpenlayerComponent implements OnInit {
 
   view;
 
+  osm;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
@@ -51,7 +53,13 @@ export class OpenlayerComponent implements OnInit {
       }
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    setTimeout(() =>
+      {
+
+
+    this.osm = new OSM();
+
     this.view = new View({
       center: olProj.fromLonLat([0, 0]),
       zoom: 1
@@ -61,12 +69,16 @@ export class OpenlayerComponent implements OnInit {
       target: 'map',
       layers: [
         new TileLayer({
-          source: new OSM()
+          source: this.osm
         }), this.vectorLayer
       ],
       view: this.view
     });
-    console.log("se volam")
+    // this.map.render();
+    console.log("chcem refresh")
+
+      },
+      200);
   }
 
 
