@@ -3,12 +3,18 @@
 
 
     <string-array name="stateArray">
+<!--        <item>Čakám</item>-->
+<!--        <item>Na ceste</item>-->
+<!--        <item>Nakladám</item>-->
+<!--        <item>Naložené</item>-->
+<!--        <item>Vykladám</item>-->
+<!--        <item>Vyložené</item>-->
+<!--        <item>Problém</item>-->
+
         <item>Čakám</item>
         <item>Na ceste</item>
-        <item>Nakladám</item>
-        <item>Naložené</item>
-        <item>Vykladám</item>
-        <item>Vyložené</item>
+        <item>Nakladám / Vykladám</item>
+        <item>Naložené / Vyložené</item>
         <item>Problém</item>
 
     </string-array>

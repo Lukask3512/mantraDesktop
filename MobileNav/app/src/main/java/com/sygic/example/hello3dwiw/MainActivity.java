@@ -416,8 +416,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
                     builder.setCancelable(true);
-                    builder.setTitle("Info");
-                    builder.setMessage(((ArrayList<?>) routeInfoAbout).get(actualIndexInArray).toString());
+                    String typ = ((ArrayList<?>) routeInfoType).get(actualIndexInArray).toString();
+                    if (typ.equals("nakladka")){
+                        builder.setTitle("Nakládka");
+
+                    }else{
+                        builder.setTitle("Vykládka");
+                    }
+                    String vypis = ((ArrayList<?>) routeInfoAbout).get(actualIndexInArray).toString();
+                    Log.e("NavigationTime2", "co to bude"+ vypis);
+                    if (vypis.equals("")){
+                        builder.setMessage("Žiadne informácie k dispozícii");
+                    }else{
+                        builder.setMessage(vypis);
+                    }
 
                     builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -851,18 +863,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         changeCarStatus(position);
         if (routeId != null){
             if (actualIndexInArray >= 0 ){
-            if (previousItemInSpinner != 3 && previousItemInSpinner != 5){
+            if (previousItemInSpinner != 3){
                 changeRouteStatus(position);
                 }
 
 
 
-            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3 || position == 5) ){
+            if(actualIndexInArray+1 == ((ArrayList<Number>) routeInfoStatus).size() && (position == 3) ){
                 allertFinish();
             }
         }
 
-        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 5 || position == 3)){
+        if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 3)){
             allertNextNavigation(false, true);
         }
         previousItemInSpinner = position;
@@ -900,8 +912,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 actualIndexInArray++;
+                final TextView textView = (TextView) findViewById(R.id.textView4);
+                runOnUiThread(new Runnable() {
 
-                if (actualIndexInArray > 0) {
+                    @Override
+                    public void run() {
+                        textView.setText("");
+
+                    }
+                });
+                try {
+                    ApiNavigation.stopNavigation(0);
+                } catch (GeneralException e) {
+                    e.printStackTrace();
+                }
+                if (actualIndexInArray > 0 && previousItemInSpinner != 3) {
                     allertOnPreviousPoint(true);
                 }
                 Long tsLong = System.currentTimeMillis() / 1000;
@@ -986,7 +1011,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.setTitle("Predchadzajuce miesto: " + ((ArrayList<String>) routeInfo).get(actualIndexInArray -1));
 //        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
 
-        String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
+        String[] animals = {"naložený / vyložený",  "problém", "preskocit"};
+//        String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
+
         boolean[] checkedItems = {true, false, false, false};
         builder.setSingleChoiceItems(animals, 1, null);
 
@@ -1003,20 +1030,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray - 1, 1);
                 int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                 if (selectedPosition == 0){
-                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 5);
+                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 3);
                     updateRouteLog(actualIndexInArray -1, 5);
                 }else if(selectedPosition == 1){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 3);
-                    updateRouteLog(actualIndexInArray -1, 3);
+                    updateRouteLog(actualIndexInArray -1, 6);
                 }
                 else if(selectedPosition == 2){
-                    ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, 6);
-                    updateRouteLog(actualIndexInArray -1, 6);
-
-                }else if(selectedPosition == 3){
                     ((ArrayList<Number>) routeInfoStatus).set(actualIndexInArray -1, -1);
                     updateRouteLog(actualIndexInArray -1, -1);
-
                 }
 
                 Map<String, Object> data = new HashMap<>();
@@ -1225,4 +1247,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 });
     }
+
 }
