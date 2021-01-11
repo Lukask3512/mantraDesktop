@@ -7,15 +7,15 @@
   text-transform: uppercase;
   text-decoration: none;
   background: silver;
-  padding: 20px;
+  padding: 12px;
   border: 2px solid #494949 !important;
   display: inline-block;
   transition: all 0.4s ease 0s;
 }
 
 .example_c:hover {
-  color: black !important;
-  background: #f66c6c;
+  color: White !important;
+  background: #ff5d5d;
   border-color: red !important;
-  transition: all 0.8s ease 0.2s;
+  transition: all 0.4s ease 0.2s;
 }
