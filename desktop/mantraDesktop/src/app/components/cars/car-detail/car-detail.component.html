@@ -1,18 +1,18 @@
-<div class="button_cont">
-    <p>Vozidlo: {{this.car.ecv}}</p>
+<div class="header">
+    <h1>Vozidlo: {{this.car.ecv}}</h1>
+  <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
+    Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
+  </p>
   </div>
 
 
 
 
-
-<div>
-
-  <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
-    Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
-  </p>
+<div class="allWrapper">
 
 <div class="routeList">
+
+
   <div class="routes">
     <h1>Aktivne cesty</h1>
     <ul>
@@ -35,23 +35,29 @@
 </div>
 
   <div class="button_cont" align="center">
-    <button [disabled]="!change" (click)="this.sendToDriver()" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
+    <button [disabled]="!change" (click)="this.sendToDriver()" class="oneButton green" href="add-website-here" target="_blank" rel="nofollow noopener">
       Odoslať vodičovi</button>
+    <app-adresses (placeName)="getAdress($event)"
+                  (placeLat)="getLat($event)"
+                  (placeLon)="getLon($event)"
+                  (type)="getType($event)"
+                  (aboutRouteEmitter)="getAboutRoute($event)">
+    </app-adresses>
   </div>
-
-
-<app-adresses (placeName)="getAdress($event)"
-              (placeLat)="getLat($event)"
-              (placeLon)="getLon($event)"
-              (type)="getType($event)"
-                (aboutRouteEmitter)="getAboutRoute($event)">
-</app-adresses>
 </div>
 
 
-  <div class="map">
+<div class="map">
     <app-openlayer #child></app-openlayer>
   </div>
-  <app-route-log *ngIf="routes != undefined" [routeId]="parentSubject"></app-route-log>
+
 
 </div>
+
+
+
+
+
+
+  <app-route-log *ngIf="routes != undefined" [routeId]="parentSubject"></app-route-log>
+
