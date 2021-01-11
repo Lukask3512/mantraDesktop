@@ -3,6 +3,8 @@
   height: 45em;
   width: 100%;
   padding: 10px;
+  font-family: "Lato", sans-serif;
+  font-size: medium;
 }
 #map{
   height: 90%;
@@ -26,4 +28,27 @@
   border-radius: 2px;
   margin: 5px;
 
+}
+
+ table {
+   width:500px;
+ }
+table, th, td {
+  border: 2px solid dimgrey !important;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+#t01 tr:nth-child(even) {
+  background-color: #eee;
+}
+#t01 tr:nth-child(odd) {
+  background-color: #fff;
+}
+#t01 th {
+  background-color: #50585f;
+  font-family: "Lato", sans-serif;
+  color: white;
 }
