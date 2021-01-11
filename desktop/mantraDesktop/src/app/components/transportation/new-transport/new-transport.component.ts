@@ -97,7 +97,14 @@ export class NewTransportComponent implements OnInit {
 
     setTimeout(() =>
       {
-        this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+        if (this.carId != undefined || this.carId !=  null){
+          this.child.notifyMe(this.routesLat, this.routesLon,  this.dataService.getOneCarById(this.carId), this.route);
+
+        }
+        else{
+          this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+
+        }
       },
       800);
 
