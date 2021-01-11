@@ -168,6 +168,7 @@ export class MapComponent implements OnInit {
       if (color >= this.colors.length){
         color = 0;
       }
+
       this.addRoute(car, this.colors[color])
     });
   }
@@ -252,7 +253,7 @@ export class MapComponent implements OnInit {
       this.cars = [];
       // this.carWarningStatus = [];
       this.pulseCar = false;
-    console.log(car)
+
 
     if (car !== undefined){
         for (let i = 0; i<car.length; i++){
@@ -280,9 +281,16 @@ export class MapComponent implements OnInit {
             if (car[i].status == 6) {
               this.pulseCar = true;
 
-              this.flashCar(carFeature, 1000, car[i]);
+              var isThereCar = this.carWarningStatus.filter(findCar => findCar.id == car[i].id);
+              console.log(isThereCar)
 
-              // this.tileLayer.on('postrender', this.flash(carFeature,1000, this.tileLayer.event));
+              if (isThereCar.length == 0 ){
+                this.flashCar(carFeature, 1000, car[i]);
+                this.carWarningStatus.push(car[i]);
+              }
+
+            }else{
+              this.carWarningStatus = this.carWarningStatus.filter(findCar => findCar.id != car[i].id);
             }
           }
         }
@@ -306,10 +314,10 @@ export class MapComponent implements OnInit {
     }
 
    flashCar(feature, duration, car) {
+     var boolean = false;
     if (this.pulseCar) {
       var start = +new Date();
-      var map = this.map;
-      this.carWarningStatus.push(car);
+
 
       // var flash = this.flash(feature, duration);
        let animate =  (event) => {
@@ -366,105 +374,112 @@ export class MapComponent implements OnInit {
 
         // }
         vectorContext.drawGeometry(flashGeom);
+         // map.render();
+
         if (elapsed > duration) { // stop the effect
 
             start = +new Date();
-
-            this.flashMarker(feature, 2000);
-          map.render();
-
-          return;
-        }
-         map.render();
-      }
-      var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
-
-    }
-  }
-
-  flashMarker(feature, duration) {
-    if (this.pulseMarker) {
-      var start = +new Date();
-      var map = this.map;
-
-      // var flash = this.flash(feature, duration);
-      let animate =  (event) => {
-        // canvas context where the effect will be drawn
-
-        var vectorContext = getVectorContext(event);
-
-        var frameState = event.frameState;
-
-        // create a clone of the original ol.Feature
-        // on each browser frame a new style will be applied
-        var flashGeom = feature.getGeometry().clone();
-        var elapsed = frameState.time - start;
-        var elapsedRatio = elapsed / duration;
-        // radius will be 5 at start and 30 at end.
-        var radius = easeOut(elapsedRatio) * 25 + 5;
-        var opacity = easeOut(1 - elapsedRatio);
-
-
-        // you can customize here the style
-        // like color, width
-        var style = new Style({
-          image: new CircleStyle({
-            radius: radius,
-            snapToPixel: false,
-            fill: new Fill({
-              color: [240, 51, 51, opacity / 2]
-            }),
-            stroke: new Stroke({
-              color: [240, 51, 51, opacity],
-              width: 0.25 + opacity
-            }),
-
-          })
-        });
-
-        console.log(vectorContext)
-
-          vectorContext.setStyle(style);
-          vectorContext.drawGeometry(flashGeom);
-
-
-
-        if (elapsed > duration) { // stop the effect
-          if (this.pulseMarker){
-            // start = +new Date();
-            // flashGeom = feature.getGeometry().clone();
-            // elapsed = frameState.time - start;
-            // elapsedRatio = elapsed / duration;
-            // // radius will be 5 at start and 30 at end.
-            // radius = easeOut(elapsedRatio) * 25 + 5;
-            // opacity = easeOut(1 - elapsedRatio);
-            // // this.flashMarker(feature,duration);
-            start = +new Date();
+          // if (boolean == false) {
+            // this.flashCar(feature, 3000, car);
             this.tileLayer.on('postrender', animate);
-          }
-          else{
-            vectorContext.setStyle(null);
-            vectorContext.drawGeometry(null);
-            unByKey(listenerKey);
-            return;
-          }
+            boolean = true;
+            // this.map.render();
+            // return;
 
-        }else{
-          if (!this.pulseMarker) {
-            vectorContext.setStyle(null);
-            vectorContext.drawGeometry(null);
-            unByKey(listenerKey);
-            return;
-          }
+          // }else{
+          //   return;
+          // }
         }
+        this.map.render();
 
-        map.render();
       }
       var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
 
-
     }
   }
+
+  // flashMarker(feature, duration) {
+  //   if (this.pulseMarker) {
+  //     var start = +new Date();
+  //     var map = this.map;
+  //
+  //     // var flash = this.flash(feature, duration);
+  //     let animate =  (event) => {
+  //       // canvas context where the effect will be drawn
+  //
+  //       var vectorContext = getVectorContext(event);
+  //
+  //       var frameState = event.frameState;
+  //
+  //       // create a clone of the original ol.Feature
+  //       // on each browser frame a new style will be applied
+  //       var flashGeom = feature.getGeometry().clone();
+  //       var elapsed = frameState.time - start;
+  //       var elapsedRatio = elapsed / duration;
+  //       // radius will be 5 at start and 30 at end.
+  //       var radius = easeOut(elapsedRatio) * 25 + 5;
+  //       var opacity = easeOut(1 - elapsedRatio);
+  //
+  //
+  //       // you can customize here the style
+  //       // like color, width
+  //       var style = new Style({
+  //         image: new CircleStyle({
+  //           radius: radius,
+  //           snapToPixel: false,
+  //           fill: new Fill({
+  //             color: [240, 51, 51, opacity / 2]
+  //           }),
+  //           stroke: new Stroke({
+  //             color: [240, 51, 51, opacity],
+  //             width: 0.25 + opacity
+  //           }),
+  //
+  //         })
+  //       });
+  //
+  //
+  //         vectorContext.setStyle(style);
+  //         vectorContext.drawGeometry(flashGeom);
+  //
+  //
+  //
+  //       if (elapsed > duration) { // stop the effect
+  //         if (this.pulseMarker){
+  //           // start = +new Date();
+  //           // flashGeom = feature.getGeometry().clone();
+  //           // elapsed = frameState.time - start;
+  //           // elapsedRatio = elapsed / duration;
+  //           // // radius will be 5 at start and 30 at end.
+  //           // radius = easeOut(elapsedRatio) * 25 + 5;
+  //           // opacity = easeOut(1 - elapsedRatio);
+  //           // // this.flashMarker(feature,duration);
+  //           start = +new Date();
+  //           this.tileLayer.on('postrender', animate);
+  //         }
+  //         else{
+  //           vectorContext.setStyle(null);
+  //           vectorContext.drawGeometry(null);
+  //           unByKey(listenerKey);
+  //           return;
+  //         }
+  //
+  //       }else{
+  //         if (!this.pulseMarker) {
+  //           vectorContext.setStyle(null);
+  //           vectorContext.drawGeometry(null);
+  //           unByKey(listenerKey);
+  //           return;
+  //         }
+  //       }
+  //
+  //       map.render();
+  //     }
+  //     var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
+  //
+  //
+  //   }
+  // }
 
 
 
