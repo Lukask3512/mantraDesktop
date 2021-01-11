@@ -1,5 +1,5 @@
 .oneRoute{
-  background-image: linear-gradient(to right, rgba(0,0,0,0) ,rgba(128,128,128,0.5), rgba(0,0,0,0));
+  background-image: linear-gradient(to right, rgba(0,0,0,0) ,rgba(128,128,128,0.3), rgba(0,0,0,0));
   border: 2px solid black;
   margin: 10px;
   display: flex;
@@ -11,11 +11,23 @@
   order: 1;
 }
 
-span{
+.spanY{
   background: rgba(255, 255, 0,0.5);
   border-radius: 5px;
   padding: 5px;
 }
+.spanG{
+  background: rgba(30, 180, 0,0.5);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.spanR{
+  background: rgba(225, 0, 0,0.8);
+  border-radius: 5px;
+  padding: 5px;
+}
+
 
 .nakladka{
   max-width: 40%;
