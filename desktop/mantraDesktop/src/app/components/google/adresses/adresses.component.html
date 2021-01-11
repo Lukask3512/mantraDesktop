@@ -1,21 +1,23 @@
 <div class="container">
 
 
-  <div class="form-group">
-    <label>Enter address</label>
-    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
-           placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off"
+  <div class="form-group formular">
+    <input class="form-control" type="text"  (keydown.enter)="$event.preventDefault()"
+           placeholder="Nájdi miesto..." autocorrect="off" autocapitalize="off"
            spellcheck="off" type="text" #search [(ngModel)]="addTaskValue">
 
     <section class="example-section">
-      <mat-radio-group [(ngModel)]="labelPosition">
-        <mat-radio-button class="example-margin" value="nakladka">Nakladka</mat-radio-button>
-        <mat-radio-button class="example-margin" value="vykladka">Vykladka</mat-radio-button>
+      <mat-radio-group class="radioButtons" [(ngModel)]="labelPosition">
+        <mat-radio-button class="radios" value="nakladka">Nakladka</mat-radio-button>
+        <mat-radio-button class="radios" value="vykladka">Vykladka</mat-radio-button>
       </mat-radio-group>
     </section>
-    <input type="text" [(ngModel)]="aboutRoute">
+    <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="aboutRoute">
 
-    <button [disabled]="!labelPosition || !addressToDispetcer" (click)="add()">Pridat</button>
+    <div class="addButton">
+      <button class="button green" [disabled]="!labelPosition || !addressToDispetcer" (click)="add()">Pridat</button>
+
+    </div>
   </div>
 
 <!--  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">-->

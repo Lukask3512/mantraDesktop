@@ -1,10 +1,14 @@
-<div class="allWrapper">
-<!--  <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>-->
+<header>
   <h1 *ngIf="this.car != undefined" >{{this.car.ecv}}</h1>
-<div class="wrapper">
   <p *ngIf="route != undefined  && route.estimatedTimeArrival && !route.finished">
     Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.route.estimatedTimeArrival)}}
   </p>
+</header>
+
+<div class="allWrapper">
+<!--  <app-find-car-by-id [carId]="this.carId"></app-find-car-by-id>-->
+<div class="wrapper">
+
 
   <div [cdkDropListSortingDisabled]="!checkFinished()"  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>
@@ -26,10 +30,10 @@
               (type)="getType($event)"
               (aboutRouteEmitter)="getAboutRoute($event)">
 </app-adresses>
-  <div *ngIf="checkFinished()" >
-    <button *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
-    <button *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
-    <button *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
+  <div class="changeButtons" *ngIf="checkFinished()" >
+    <button class="oneButton green" *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
+    <button class="oneButton yellow"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
+    <button class="oneButton yellow"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
   </div>
 
 
