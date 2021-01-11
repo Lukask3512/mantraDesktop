@@ -16,6 +16,7 @@ export class TheDispecerComponent implements OnInit {
   constructor(private dispecerService: DispecerService, private field: FormBuilder) { }
 
   ngOnInit(): void {
+
   }
 
   deleteDispecer(){
