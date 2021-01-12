@@ -23,8 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="icon, label, theme">
-        <activity android:name=".ChooseRoute"></activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ChooseRoute"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
 
             android:screenOrientation="portrait"
