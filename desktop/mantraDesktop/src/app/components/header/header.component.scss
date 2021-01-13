@@ -29,7 +29,7 @@
 }
 a{
   color: white;
-  border: 2px solid blue;
+  border: 1px solid blue;
 }
 
 
@@ -65,15 +65,16 @@ table.fixed { table-layout:fixed; }
   background: #50585f;
   padding: 18px;
   border: 2px solid dimgrey !important;
-  display: inline-grid;
+  display: inline-block;
   transition: all 0.4s ease 0s;
   margin-right: 10px;
   margin-left: 10px;
+
 }
 
 .example_c:hover {
   color: black !important;
   background: #929292;
   border-color: #8d8d8d !important;
-  transition: all 0.8s ease 0.2s;
+  transition: all 0.4s ease 0.2s;
 }

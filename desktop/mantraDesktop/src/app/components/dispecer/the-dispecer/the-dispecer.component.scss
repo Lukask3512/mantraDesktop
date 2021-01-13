@@ -6,20 +6,19 @@
   color: black !important;
   text-transform: uppercase;
   text-decoration: none;
-  background: silver;
-  padding: 12px;
+  background: #ff8a5f;
+  padding: 10px;
   border: 2px solid #494949 !important;
   display: inline-block;
   transition: all 0.4s ease 0s;
 }
 
 .example_c:hover {
-  color: White !important;
-  background: #ff5d5d;
-  border-color: red !important;
-  transition: all 0.4s ease 0.2s;
+  color: white !important;
+  background: #ff4f4f;
+  border-color: #f52c2c !important;
+  transition: all 0.8s ease 0.2s;
 }
-
 .wrap{
   margin: 15px;
   display: flex;

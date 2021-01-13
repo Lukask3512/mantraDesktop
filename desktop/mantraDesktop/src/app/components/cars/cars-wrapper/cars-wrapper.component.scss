@@ -1,6 +1,20 @@
 @import "./src/sccs/shared/mixins";
 @import "./src/sccs/shared/variables";
 
+.blackHeader{
+  height: 56px;
+  background: silver;
+  box-sizing: border-box;
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+.widthColumn{
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  position: center;
+}
 .wrapper{
   display: flex;
   margin: 10px;
@@ -78,3 +92,7 @@ th.mat-sort-header-sorted {
   border-color: #f6b93b !important;
   transition: all 0.4s ease 0s;
 }
+
+
+
+

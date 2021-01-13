@@ -1,9 +1,9 @@
-<div class="tabulka">
 
-  <div class="mat-elevation-z8">
+  <div class="widthColumn" >
+  <div>
     <table mat-table [dataSource]="dataSource" matSort class="tabulka">
       <!-- Name Column -->
-      <ng-container class="tbl-header" matColumnDef="ecv">
+      <ng-container class="blackHeader" matColumnDef="ecv">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ECV </th>
         <td mat-cell *matCellDef="let element"> {{element.ecv}} </td>
       </ng-container>
@@ -38,6 +38,7 @@ r
     <app-new-car></app-new-car>
 
   </div>
+
 
 </div>
 

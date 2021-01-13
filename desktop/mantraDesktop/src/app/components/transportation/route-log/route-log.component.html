@@ -1,5 +1,6 @@
 <h1>Log</h1>
-<button (click)="downloadAsPDF()">download</button>
+<button class="button2" (click)="downloadAsPDF()">⇊download⇊</button>
+
 <div id="routeLog" #routeLog1 class *ngIf="this.routeLog != undefined">
   <div class="oneLog" *ngFor="let route of this.routeLog.place; let i = index;">
     <p>{{this.routeLog.place[i]}}</p>

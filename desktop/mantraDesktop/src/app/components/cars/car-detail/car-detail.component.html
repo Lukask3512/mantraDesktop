@@ -6,8 +6,6 @@
   </div>
 
 
-
-
 <div class="allWrapper">
 
 <div class="routeList">
@@ -38,8 +36,10 @@
   </div>
 
   <div  *ngIf="this.routes != undefined" class="button_cont" align="center">
-    <button [disabled]="!change" (click)="this.sendToDriver()" class="oneButton green" href="add-website-here" target="_blank" rel="nofollow noopener">
+
+    <button [disabled]="!change" (click)="this.sendToDriver()" class="button" href="add-website-here" target="_blank" rel="nofollow noopener">
       Odoslať vodičovi</button>
+
     <app-adresses (placeName)="getAdress($event)"
                   (placeLat)="getLat($event)"
                   (placeLon)="getLon($event)"

@@ -1,11 +1,15 @@
-<div class="wrapper">
-  <p>Ulozit trasu bez priradenia?</p>
-  <button (click)="addRouteToCar(null)">Ulozit</button>
-<div class="car" *ngFor="let car of cars">
-  <h1>{{car.ecv}}</h1>
-  <h2>{{routeStatusService.getStatus(car.status)}}</h2>
-  <button (click)="addRouteToCar(car)">Priradit</button>
+
+<div>
+<table class="car" *ngFor="let car of cars" >
+  <tr>
+    <th>{{car.ecv}}</th>
+    <th>{{routeStatusService.getStatus(car.status)}}</th>
+   <th> <button (click)="addRouteToCar(car)" class="addButton">+</button></th>
+  </tr>
+</table>
+
+<h1>Uložiť trasu bez priradenia?</h1>
+<button class="save_c" (click)="addRouteToCar(null)">Uložiť</button>
 </div>
 
 
-</div>

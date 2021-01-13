@@ -1,0 +1,99 @@
+table {
+  font-family: "Lato", sans-serif;
+  border-collapse: collapse;
+  width: 290px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  width: 80px;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: black;
+}
+.add{
+  color: mediumseagreen;
+  cursor: pointer;
+}
+
+
+.addButton{
+  padding: 10px 27px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 8px;
+
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: green;
+    border-radius: 8px;
+    z-index: -2;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: lightgreen;
+    transition: all .3s;
+    border-radius: 8px;
+    z-index: -1;
+  }
+  &:hover {
+    color: black;
+    font-size: large;
+    &:before {
+      width: 100%;
+    }
+  }
+}
+
+.save_c {
+  font-family: "Lato", sans-serif, bold;
+  width: 150px;
+position: center;
+  margin-left: auto;
+  margin-right: auto;
+  color: white !important;
+  text-transform: full-width;
+  text-decoration: white;
+  background: #50585f;
+  padding: 18px;
+  border: 2px solid dimgrey !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+  margin-right: 10px;
+  margin-left: 10px;
+
+}
+
+.save_c:hover {
+  color: black !important;
+  background: lightseagreen;
+  border-color: #8d8d8d !important;
+  transition: all 0.4s ease 0.2s;
+}
