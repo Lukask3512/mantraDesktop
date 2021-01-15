@@ -32,8 +32,8 @@
 </app-adresses>
   <div class="changeButtons" *ngIf="checkFinished()" >
     <button class="oneButton green" *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
-    <button class="oneButton yellow"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrat vozidlo</button>
-    <button class="oneButton yellow"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmen vozidlo</button>
+    <button class="oneButton yellow"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrať vozidlo</button>
+    <button class="oneButton yellow"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>
   </div>
 
 

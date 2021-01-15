@@ -64,7 +64,8 @@
       <div *ngIf="route.carId == null">
         <button (click)="openAddDialog(route, false, route.id)">Priradiť autu</button>
       </div>
-      <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť trasu</button>
+
+      <button><img alt="delete" (click)="deleteRoute(route)" class="deleteButton"src="./assets/logo/delete.svg"></button>
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
 <!--      <app-find-route-status [route]="route"></app-find-route-status>-->
 <!--      <li>{{getStatus(route)}}</li>-->

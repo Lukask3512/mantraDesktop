@@ -48,7 +48,7 @@
     bottom: 5px;
   }
   display: inline-block;
-  border-radius: 10rem;
+  border-radius: 5px;
   color: #fff;
   text-transform: uppercase;
   font-size: 1rem;
@@ -65,8 +65,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #7b9b45;
-    border-radius: 10rem;
+    background-color: #00a274;
+    border-radius: 5px;
     z-index: -2;
   }
 
@@ -77,9 +77,9 @@
     left: 0;
     width: 0%;
     height: 100%;
-    background-color: darken(green, 15%);
+    background-color: cornflowerblue;
     transition: all .2s ease 1s;
-    border-radius: 1rem;
+    border-radius: 5px;
     z-index: -1;
   }
 
