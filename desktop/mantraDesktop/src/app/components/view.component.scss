@@ -15,7 +15,8 @@ float: left;
 .header{
   width: 100%;
   display: block;
-  background: #50585f;
+  background-color: #000000;
+  background-image: linear-gradient( to right, #999494 0%, black 100%);
 }
 
 .sidenav {
