@@ -34,11 +34,13 @@ export class AddCarDialogComponent implements OnInit {
           if (carByNumber.length == 0) {
             this.carService.createCar(this.assignToCar());
             this.dialogRef.close();
+            return;
           }
           else{
             this.snackBar.open('Vložené tel. číslo sa už nachádza v databáze', 'Ok', {
               duration: 5000
             });
+            return;
           }
         })
 
@@ -47,6 +49,7 @@ export class AddCarDialogComponent implements OnInit {
         this.snackBar.open('Vložené ECV sa už nachádza v databáze', 'Ok', {
           duration: 5000
         });
+        return;
       }
 
     })

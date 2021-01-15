@@ -122,7 +122,12 @@ export class NewTransportComponent implements OnInit {
     this.change = true;
     setTimeout(() =>
       {
-        this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+        if (this.car == undefined){
+          this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+        }else{
+          this.child.notifyMe(this.routesLat, this.routesLon,this.dataService.getOneCarById(this.carId), this.route);
+
+        }
       },
       800);
   }

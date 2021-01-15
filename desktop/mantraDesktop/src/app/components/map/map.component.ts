@@ -71,6 +71,8 @@ export class MapComponent implements OnInit {
   pulseCar:boolean = false;
   pulseMarker:boolean = false;
 
+  firstZoom = false;
+
   tileLayer = new TileLayer({
     source: new OSM({
       wrapX: false,
@@ -171,8 +173,6 @@ export class MapComponent implements OnInit {
       if (color >= this.colors.length){
         color = 0;
       }
-
-      this.addRoute(car, this.colors[color])
     });
   }
 
@@ -326,13 +326,22 @@ export class MapComponent implements OnInit {
     var vectorNaZobrazenieAllFeatures =  new VectorSource({
       features: this.places.concat(this.cars).concat(this.routes)
     });
-    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
+
+    if (this.firstZoom == false){
+      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
+      this.firstZoom = true;
+    }
+
     }
 
    flashCar(feature, duration, car) {
      var boolean = false;
     if (this.pulseCar) {
       var start = +new Date();
+
+      //setCenter
+        this.map.getView().setCenter(fromLonLat([car.longtitude, car.lattitude]))
+        this.map.getView().setZoom(8)
 
 
       // var flash = this.flash(feature, duration);
@@ -629,7 +638,7 @@ export class MapComponent implements OnInit {
 
       // var velkost = this.map.getSize();
       // console.log(velkost)
-      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
+      // this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
     }
 
 
