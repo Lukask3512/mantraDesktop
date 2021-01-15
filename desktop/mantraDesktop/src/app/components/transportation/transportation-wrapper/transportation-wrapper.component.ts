@@ -9,6 +9,8 @@ import get from 'lodash/get';
 import {RouteStatusService} from "../../../data/route-status.service";
 import {DataService} from "../../../data/data.service";
 import {Router} from "@angular/router";
+import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
+import {DeleteRouteComponent} from "../../dialogs/delete-route/delete-route.component";
 
 @Component({
   selector: 'app-transportation-wrapper',
@@ -135,7 +137,15 @@ export class TransportationWrapperComponent implements OnInit {
   }
 
   deleteRoute(route: Route){
-    this.routeService.deleteRoute(route.id);
+    const dialogRef = this.dialog.open(DeleteRouteComponent);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        this.routeService.deleteRoute(route.id);
+
+      }
+    });
   }
 
 

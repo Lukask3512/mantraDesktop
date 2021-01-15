@@ -5,7 +5,9 @@
     <app-the-dispecer [dispecer]="dispecer"></app-the-dispecer>
   </div>
 
-  <app-new-dispecer></app-new-dispecer>
+  <app-new-dispecer *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-dispecer>
+  <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
+    Pridať nového dispečéra môže len master konto.</h2>
 
   </div>
 </div>

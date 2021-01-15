@@ -12,8 +12,8 @@
     <h5>E-mail</h5>
     <p>{{this.dispecer.email}}</p>
 
-  <form class="button_cont" align="center">
-    <button (click)="deleteDispecer()" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
+  <form *ngIf="this.dataService.getDispecer().createdBy == 'master' " class="button_cont" align="center">
+    <button  (click)="deleteDispecer()" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
       Vymazať
     </button></form>
 <!--  <p>{{this.dispecer.status}}</p>-->

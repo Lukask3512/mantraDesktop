@@ -1,0 +1,20 @@
+@import "./src/sccs/shared/mixins";
+@import "./src/sccs/shared/variables";
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.button{
+  @include button($color-button-green);
+}
+.buttonRed{
+  @include button($color-button-red);
+  margin-right: 10px;
+
+}
+
+h1{
+  font-size: 1.8em;
+}

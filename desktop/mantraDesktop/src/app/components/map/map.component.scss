@@ -30,6 +30,28 @@
 
 }
 
+.infoHeader{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between ;
+}
+
+.closeInfo{
+  color: white;
+  background: red;
+  border-radius: 3px;
+  padding: {
+    top: 2px;
+    bottom: 2px;
+    left: 8px;
+    right: 8px;
+  }
+  border: none;
+  margin-left: 5px;
+}
+
+
  table {
    width:500px;
  }

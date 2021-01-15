@@ -124,9 +124,16 @@ export class MapComponent implements OnInit {
         console.log(feature.get('type'))
         var type = feature.get('type');
         if (type == "car"){
-          this.onClickFindInfo(feature.get('name'))
+          this.onClickFindInfo(feature.get('name'));
+          this.zoomToAddressOrCar(feature)
+        }
+
+        else if(type == "town"){
+          this.zoomToAddressOrCar(feature)
+          this.onClickFindInfoAdress(feature.get('name'))
         }
         else if(type == "route"){
+          this.zoomToRoute(feature)
           this.onClickFindInfoAdress(feature.get('name'))
         }
         // $(element).popover('show');
@@ -327,10 +334,10 @@ export class MapComponent implements OnInit {
       features: this.places.concat(this.cars).concat(this.routes)
     });
 
-    if (this.firstZoom == false){
-      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
-      this.firstZoom = true;
-    }
+    // if (this.firstZoom == false){
+    //   this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
+    //   this.firstZoom = true;
+    // }
 
     }
 
@@ -341,7 +348,7 @@ export class MapComponent implements OnInit {
 
       //setCenter
         this.map.getView().setCenter(fromLonLat([car.longtitude, car.lattitude]))
-        this.map.getView().setZoom(8)
+        this.map.getView().setZoom(8);
 
 
       // var flash = this.flash(feature, duration);
@@ -541,7 +548,7 @@ export class MapComponent implements OnInit {
         var iconFeature = new Feature({
           geometry: new Point(fromLonLat([route.coordinatesOfTownsLon[i], route.coordinatesOfTownsLat[i]])),
           name: route.id,
-          type: "route"
+          type: "town"
         });
 
         if (route.status[i] == 3){
@@ -632,13 +639,18 @@ export class MapComponent implements OnInit {
       var feature = vectorSource.getFeatures()[0];
       var polygon = feature.getGeometry();
 
-      var vectorNaZobrazenieAllFeatures =  new VectorSource({
+      var vectorNaZobrazenieAllFeatures = new VectorSource({
         features: this.places.concat(this.cars).concat(this.routes)
       });
 
       // var velkost = this.map.getSize();
       // console.log(velkost)
-      // this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
+      if (this.firstZoom == false){
+        this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+          duration: 800} )
+        this.firstZoom = true;
+    }
+
     }
 
 
@@ -688,5 +700,45 @@ export class MapComponent implements OnInit {
       }
     });
   }
+
+  closeInfo(){
+    this.carToShow = null;
+    this.routesToShow = null;
+    var vectorNaZobrazenieAllFeatures = new VectorSource({
+      features: this.places.concat(this.cars).concat(this.routes)
+    });
+    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+      duration: 800} )
+
+
+  }
+
+  zoomToAddressOrCar(address){
+    var poloha = address.getGeometry().getCoordinates()
+    this.view.animate({
+      center: poloha,
+      duration: 500,
+      zoom: 12
+    });
+  }
+
+  zoomToRoute(address){
+    console.log(address)
+    console.log(address.getGeometry().getExtent())
+    var celaCesta = address.getGeometry().getExtent()
+
+    this.view.fit(celaCesta, {padding: [100,100,100,100],
+      minResolution: 50,
+      duration: 800} )
+
+
+    // var poloha = address.getGeometry().getCoordinates()
+    // this.view.animate({
+    //   center: poloha,
+    //   duration: 500,
+    //   zoom: 12
+    // });
+  }
+
 }
 

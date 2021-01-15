@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DispecerService} from "../../../services/dispecer.service";
 import { map } from 'rxjs/operators';
+import {DataService} from "../../../data/data.service";
 
 @Component({
   selector: 'app-dispecer',
@@ -10,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class DispecerComponent implements OnInit {
 
   allDispeces;
-  constructor(private dispecerService: DispecerService) {
+  constructor(private dispecerService: DispecerService, public dataService: DataService) {
     this.dispecerService.getDispecers().subscribe(data =>{
       this.allDispeces = data;
     })
