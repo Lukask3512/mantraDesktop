@@ -6,6 +6,11 @@
   display: flex;
   padding: 10px;
   border-radius: 3px;
+  transition: transform  0.2s;
+
+}
+.oneRoute:hover{
+  transform: scale(1.02);
 }
 
 .oneRouteHeader{
@@ -110,11 +115,12 @@
   //margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  transition: transform 0.2s;
+
 }
 
 .buttonR:hover{
   background-color: #f44336;
-  transition: 0.2s, 0.2s;
 }
 p{
   margin: 0px;
@@ -132,11 +138,12 @@ p{
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  transition: transform 0.2s;
+
 }
 .buttonB:hover {
   color: white !important;
   background: #008CBA;
-  transition: 0.2s, 0.2s;
 }
 
 li{
@@ -156,10 +163,12 @@ li{
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  transition: transform 0.2s;
 }
 
+
+
 .buttonG:hover{
-  transition: 0.2s, 0.2s;
   background-color: #4CAF50;
 }
 
