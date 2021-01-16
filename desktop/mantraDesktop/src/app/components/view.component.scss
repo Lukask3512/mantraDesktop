@@ -1,6 +1,6 @@
 .wrapper{
   position: center;
-  margin-top: auto;
+  //margin-top: auto;
 }
 .sideBar{
   //float: left;
@@ -9,7 +9,8 @@
 }
 
 .sideNavWrapper{
-float: left;
+  width: 20%;
+  height: 100%;
 }
 
 .header{
@@ -18,16 +19,21 @@ float: left;
   background-color: #141227; //farba pozadia na header
 }
 
-.sidenav {
+//.sidenav {
+//  height: 100%;
+//  width: 160px;
+//  position: fixed;
+//  z-index: 1;
+//  top: 0;
+//  left: 0;
+//  background-color: #111;
+//  overflow-x: hidden;
+//  padding-top: 20px;
+//}
+.sideBarAndContentWrapper{
+  display: flex;
+  align-items: stretch;
   height: 100%;
-  width: 160px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  padding-top: 20px;
 }
 
 .sidenav a {
