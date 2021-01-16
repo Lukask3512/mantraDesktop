@@ -67,7 +67,7 @@
   <h1>Ukončené</h1>
   <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
-      <h2>Nákladky</h2>
+      <h2>Nakládky</h2>
       <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'vykladka'">
           <div>
@@ -83,7 +83,7 @@
     </div>
 
     <div class="vykladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
-      <h2>Výkladky</h2>
+      <h2>Vykládky</h2>
       <ng-container *ngFor="let town of route.nameOfTowns; index as i">
         <li *ngIf="route.type[i] != 'nakladka'">
           <div>

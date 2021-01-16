@@ -56,15 +56,18 @@ a{
 }
 table.fixed { table-layout:fixed; }
 
-.example_c {
-  font-family: "Lato", sans-serif, bold;
+.button_c {
+  position: fixed;
+  margin-right: 10px;
+  font-family: Candara;
   width: 150px;
   color: white !important;
   text-transform: full-width;
   text-decoration: white;
   background: #50585f;
   padding: 18px;
-  border: 2px solid dimgrey !important;
+  border: #50585f;
+  border-width: 0 0 0 3px; /* top right bottom left */
   display: inline-block;
   transition: all 0.4s ease 0s;
   margin-right: 10px;
@@ -72,94 +75,14 @@ table.fixed { table-layout:fixed; }
 
 }
 
-.example_c:hover {
+.button_c:hover {
   color: black !important;
   background: #929292;
   border-color: #8d8d8d !important;
   transition: all 0.4s ease 0.2s;
 }
 
-.myButton {
-  background: transparent;
-  border-radius:3px;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  border:floralwhite;
-  display:inline-block;
-  cursor:pointer;
-  color: floralwhite;
-  font-family:Arial;
-  font-size:17px;
-  font-weight:bold;
-  padding:16px 50px;
-  text-decoration:none;
-}
-.myButton:hover {
-  background-color:transparent;
-  color: whitesmoke;
-}
-.myButton:active {
-  position:relative;
-  top:1px;
-}
 
-.myButtonSignOut {
-  background: transparent;
-  border-radius: 3px;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  border: 0px solid floralwhite;
-  display: inline-block;
-  cursor: pointer;
-  color: floralwhite;
-  font-family: Arial;
-  font-size: 17px;
-  font-weight: bold;
-  padding: 16px 50px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px goldenrod;
-  transition: all .3s;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    border-radius: 4px;
-    z-index: -2;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
-    background-color: transparent;
-    transition: font-size 4s 1s;
-    border-radius: 4px;
-    z-index: -1;
-  }
-
-  &:hover {
-    color: red;
-
-    &:before {
-      width: 100%;
-    }
-  }
-}
 
 
 
