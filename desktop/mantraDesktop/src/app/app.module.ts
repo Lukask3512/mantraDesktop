@@ -46,6 +46,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {NewTransportComponent} from "./components/transportation/new-transport/new-transport.component";
 import {MatRadioModule} from "@angular/material/radio";
 import {RouteLogComponent} from "./components/transportation/route-log/route-log.component";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
     declarations: [
@@ -66,36 +67,37 @@ import {RouteLogComponent} from "./components/transportation/route-log/route-log
         NewTransportComponent,
         RouteLogComponent
     ],
-  imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
-    AppRoutingModule,
-    MatDialogModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule,
-    AngularFireDatabaseModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatListModule,
-    MatSnackBarModule,
-    DragDropModule,
-    FormsModule,
-    BrowserModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
-      libraries: ['places']
-    }),
-    ViewModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatButtonModule,
-    MatRadioModule
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        BrowserModule,
+        AppRoutingModule,
+        MatDialogModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireStorageModule,
+        AngularFireDatabaseModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatListModule,
+        MatSnackBarModule,
+        DragDropModule,
+        FormsModule,
+        BrowserModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
+            libraries: ['places']
+        }),
+        ViewModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatButtonModule,
+        MatRadioModule,
+        MatTooltipModule
+    ],
     exports: [
         MatFormFieldModule,
         MatInputModule,

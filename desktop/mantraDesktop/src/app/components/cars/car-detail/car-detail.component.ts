@@ -58,10 +58,10 @@ export class CarDetailComponent implements OnInit {
       this.carService.cars$.subscribe(cars => {
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id == this.car.id);
       console.log("update")
-
+      // console.log(this.car)
         setTimeout(() =>
           {
-            console.log(car)
+            // console.log(this.car)
             this.child.notifyMe(null, null, this.car, this.car);
           },
           800);
@@ -126,7 +126,6 @@ export class CarDetailComponent implements OnInit {
 
   }
   notifyChildren(routeId) {
-    console.log("som sendol")
     this.parentSubject.next(routeId);
   }
 

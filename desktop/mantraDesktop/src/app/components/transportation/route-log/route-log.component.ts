@@ -22,13 +22,8 @@ export class RouteLogComponent implements OnInit {
   ngOnInit(): void {
 
     this.routeId.subscribe(routeId => {
-      console.log("som dostal routeid" + routeId)
       this.routeLogService.getLogFromRoute(routeId).subscribe(data =>{
-        console.log(data);
         this.routeLog = data[0];
-        console.log(this.routeLog);
-        // this.dataSource = new MatTableDataSource(this.routeLog);
-        // this.dataSource.paginator = this.paginator;
       });
     })
 
@@ -40,9 +35,6 @@ export class RouteLogComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // needed if child gets re-created (eg on some model changes)
-    // note that subsequent subscriptions on the same subject will fail
-    // so the parent has to re-create parentSubject on changes
     this.routeId.unsubscribe();
   }
 

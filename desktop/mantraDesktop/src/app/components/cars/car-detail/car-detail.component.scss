@@ -13,6 +13,19 @@
   justify-content: center;
 }
 
+.nakaldkaVykladka{
+  font-weight: 800;
+  padding: {
+    top: 2px;
+    bottom: 2px;
+    left: 5px;
+    right: 5px;
+  };
+  background: rgba(191, 191, 191, 0.7);
+  font-size: xx-small;
+  border-radius: 4px;
+}
+
 .allWrapper{
   display: flex;
   margin: {

@@ -16,6 +16,9 @@ import LineString from 'ol/geom/LineString';
 import {HttpClient} from "@angular/common/http";
 import {AngularFireStorage} from "@angular/fire/storage";
 import {take} from "rxjs/operators";
+import {easeOut} from 'ol/easing';
+import {unByKey} from 'ol/Observable';
+import {getVectorContext} from 'ol/render';
 
 
 @Component({
@@ -33,12 +36,20 @@ export class OpenlayerComponent {
 
   places = [];
 
+  carFromDetail;
+
   pointsFeature;
   coordinatesFeature;
 
   view;
 
-  osm;
+  tileLayer = new TileLayer({
+    source: new OSM({
+      wrapX: false,
+    }),
+  });
+
+  blikaAuto = false;
 
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
@@ -58,7 +69,7 @@ export class OpenlayerComponent {
       {
 
 
-    this.osm = new OSM();
+
 
     this.view = new View({
       center: olProj.fromLonLat([0, 0]),
@@ -68,9 +79,7 @@ export class OpenlayerComponent {
     this.map = new Map({
       target: 'map',
       layers: [
-        new TileLayer({
-          source: this.osm
-        }), this.vectorLayer
+        this.tileLayer, this.vectorLayer
       ],
       view: this.view
     });
@@ -150,7 +159,7 @@ export class OpenlayerComponent {
     }
 
     if (car !== undefined && car.lattitude != undefined){
-
+      this.carFromDetail = car
       var carFeature1 = new Feature({
         geometry: new Point(fromLonLat([car.longtitude, car.lattitude])),
         name: 'car'
@@ -167,32 +176,35 @@ export class OpenlayerComponent {
       });
       carFeature1.setStyle(carStyle1);
       this.places.push(carFeature1);
-
-
-    for (let i = 0; i<car.length; i++){
-      console.log(car[i].lattitude)
-
-      if (car[i].lattitude != undefined){
-
-        var carFeature = new Feature({
-          geometry: new Point(fromLonLat([car[i].longtitude, car[i].lattitude])),
-          name: 'car'
-        });
-
-
-        var carStyle = new Style({
-          image: new Icon({
-            color: '#8959A8',
-            crossOrigin: 'anonymous',
-            src: 'assets/logo/truck.png',
-            scale: 0.03
-
-          })
-        });
-        carFeature.setStyle(carStyle);
-        this.places.push(carFeature);
+      if (car.status == 4 && this.blikaAuto == false){
+        this.flashCar(carFeature1, 2000, car)
       }
-    }
+
+    // for (let i = 0; i<car.length; i++){
+    //   console.log(car[i].lattitude)
+    //
+    //   if (car[i].lattitude != undefined){
+    //
+    //     var carFeature = new Feature({
+    //       geometry: new Point(fromLonLat([car[i].longtitude, car[i].lattitude])),
+    //       name: 'car'
+    //     });
+    //
+    //
+    //     var carStyle = new Style({
+    //       image: new Icon({
+    //         color: '#8959A8',
+    //         crossOrigin: 'anonymous',
+    //         src: 'assets/logo/truck.png',
+    //         scale: 0.03
+    //
+    //       })
+    //     });
+    //
+    //     carFeature.setStyle(carStyle);
+    //     this.places.push(carFeature);
+    //   }
+    // }
     }
 
 
@@ -259,6 +271,88 @@ export class OpenlayerComponent {
     //   this.map.getView().setCenter(fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])));
     //   this.map.getView().setZoom(8);
     // }
+
+  }
+
+  flashCar(feature, duration, car) {
+    var boolean = false;
+    // if (this.pulseCar) {
+      var start = +new Date();
+    this.blikaAuto = true;
+      //setCenter
+      this.map.getView().setCenter(fromLonLat([car.longtitude, car.lattitude]))
+      this.map.getView().setZoom(10);
+
+
+      // var flash = this.flash(feature, duration);
+      let animate =  (event) => {
+        // let carInData = this.carsFromDatabase.find(findCar => findCar.id == car.id);
+        if (this.carFromDetail.status != 4){
+          return;
+        }
+
+        // canvas context where the effect will be drawn
+        var vectorContext = getVectorContext(event);
+        var frameState = event.frameState;
+
+        // create a clone of the original ol.Feature
+        // on each browser frame a new style will be applied
+        var flashGeom = feature.getGeometry().clone();
+        var elapsed = frameState.time - start;
+        var elapsedRatio = elapsed / duration;
+        // radius will be 5 at start and 30 at end.
+        var radius = easeOut(elapsedRatio) * 25 + 5;
+        var opacity = easeOut(1 - elapsedRatio);
+
+
+        // you can customize here the style
+        // like color, width
+        var style = new Style({
+          image: new CircleStyle({
+            radius: radius,
+            snapToPixel: false,
+            fill: new Fill({
+              color: [240, 51, 51, opacity / 2]
+            }),
+            stroke: new Stroke({
+              color: [240, 51, 51, opacity],
+              width: 0.25 + opacity
+            }),
+
+          })
+        });
+
+        var styledelete = new Style({
+        });
+
+
+        // if (!vectorContext){
+        vectorContext.setStyle(styledelete);
+        vectorContext.setStyle(style);
+
+        // }
+        vectorContext.drawGeometry(flashGeom);
+        // map.render();
+
+        if (elapsed > duration) { // stop the effect
+
+          start = +new Date();
+          // if (boolean == false) {
+          // this.flashCar(feature, 3000, car);
+          this.tileLayer.on('postrender', animate);
+          boolean = true;
+          // this.map.render();
+          // return;
+
+          // }else{
+          //   return;
+          // }
+        }
+        this.map.render();
+
+      }
+      var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
+
 
   }
 }

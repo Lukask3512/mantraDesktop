@@ -21,7 +21,10 @@
 <div *ngIf="this.routes != undefined" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
   <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>
     <div class="routeTown">
-      <p>{{route}}</p>
+      <p>{{route}}
+        <span *ngIf="type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+        <span *ngIf="type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+      </p>
       <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
       <img (click)="deleteRoute(route)" class="delete" src="./assets/logo/delete.svg">
     </div>
