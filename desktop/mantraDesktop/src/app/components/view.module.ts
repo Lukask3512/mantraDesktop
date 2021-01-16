@@ -20,6 +20,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { DeleteRouteComponent } from './dialogs/delete-route/delete-route.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -31,14 +32,15 @@ import { DeleteRouteComponent } from './dialogs/delete-route/delete-route.compon
         TheDispecerComponent,
         FindCarByIdComponent
     ],
-  imports: [
-    CommonModule,
-    ViewRoutingModule,
-    MatTableModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule
-  ]
+    imports: [
+        CommonModule,
+        ViewRoutingModule,
+        MatTableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule
+    ]
 })
 export class ViewModule { }
