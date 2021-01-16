@@ -742,7 +742,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         };
         //tu sa nastavi ako casto sa bude odosielat lokacia
-        timer.schedule(doAsynch, 0, 50000);
+        timer.schedule(doAsynch, 0, 4000);
 
     }
 //
