@@ -6,8 +6,10 @@
 }
 .sideBar{
   //float: left;
-  height: 80%;
+  height: 100%;
   //position: fixed;
+  background: #212529;
+
 }
 
 .footer{
@@ -22,12 +24,15 @@
 .sideNavWrapper{
   width: 150px;
   height: 100%;
+  background: #212529;
 }
 
 .header{
+  height: 75px;
   width: 100%;
   display: block;
-  background-color: #141227; //farba pozadia na header
+  background-color: #343a40 ; //farba pozadia na header rovnaka ako na www.redarrow.sk // stavim sa ze budu namietky..znova
+
 }
 
 //.sidenav {
@@ -69,3 +74,4 @@
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
