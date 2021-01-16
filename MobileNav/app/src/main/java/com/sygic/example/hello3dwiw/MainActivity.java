@@ -12,6 +12,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.media.JetPlayer;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -306,10 +307,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                             TextView finished = (TextView) findViewById(id);
 
                                             if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("nakladka") &&
-                                                    (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 1 ||
-                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 0 ||
-                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2 ||
-                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)) {
+                                                    (
+                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2)) {
 
                                                                 if (actualIndexInArray >= 0) {
                                                                     finished.setBackgroundColor(Color.parseColor("#00FF00"));
@@ -322,10 +321,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                                                 }
 
                                             } else if (((ArrayList<String>) routeInfoType).get(finalI - 1).equals("vykladka") &&
-                                                    (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 1 ||
-                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 0 ||
-                                                                    Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2 ||
-                                                            Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 4)){
+                                                    (
+                                                                    Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(finalI - 1)).toString()) == 2)){
 
                                                                 if (actualIndexInArray >= 0) {
                                                                     ((ArrayList<Number>) routeInfoStatus).set(finalI - 1, 3);
@@ -362,6 +359,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         public void onClick(View v) {
 
                             allertFinish();
+//                            allertOnAllRouteDone();
                         }
                     });
                     linearLayout.addView(button);
@@ -904,6 +902,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 dialog.cancel();
             }
         });
@@ -928,6 +927,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (actualIndexInArray > 0 && previousItemInSpinner != 3) {
                     allertOnPreviousPoint(true);
                 }
+                else{
+                    allertOnAllRouteDone();
+                }
+
                 Long tsLong = System.currentTimeMillis() / 1000;
                 Map<String, Object> data = new HashMap<>();
                 data.put("finished", true);
@@ -1003,6 +1006,76 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    //ked chce dokoncit trasu tak sa ho opyta na vsetky mesta - ci uspesne nalozil/ vylozil
+    private void allertOnAllRouteDone(){
+        final ArrayList selectedItems = new ArrayList();  // Where we track the selected items
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setCancelable(false);
+        builder.setTitle("Tieto miesta boli úspešne naložené / vyložené?");
+//        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
+
+        ArrayList<String> animals = (ArrayList<String>) routeInfo;
+//        String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
+        String [] arrayToList = new String[animals.size()];
+        arrayToList = animals.toArray(arrayToList);
+        boolean[] checkedItems = new boolean[arrayToList.length];
+
+        for (int i =0; i < ((ArrayList<String>) routeInfo).size(); i++){
+            if (Integer.parseInt((((ArrayList<?>) routeInfoStatus).get(i)).toString()) == 3){
+                checkedItems[i] = true;
+                selectedItems.add(i);
+            }
+        }
+
+        builder.setMultiChoiceItems(arrayToList, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which,
+                                boolean isChecked) {
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    selectedItems.add(which);
+                } else if (selectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(Integer.valueOf(which));
+                }
+            }
+        });
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.w("TAGix", selectedItems.toString());
+
+
+                for (int i =0; i < ((ArrayList<String>) routeInfo).size(); i++){
+                    for (int j = 0; j < selectedItems.size(); j++){
+                        if ((Integer) selectedItems.get(j) == i){
+                            ((ArrayList<Integer>) routeInfoStatus).set(i, 3);
+                            break;
+                        }else{
+                            ((ArrayList<Integer>) routeInfoStatus).set(i, 4);
+                        }
+                    }
+//
+                }
+                Log.w("TAGix", routeInfoStatus.toString());
+
+
+                Map<String, Object> data = new HashMap<>();
+                //
+                data.put("status", routeInfoStatus);
+                db.collection("route").document(routeId)
+                        .update(data);
+
+                routeId = null;
+
+            }
+        });
+        builder.show();
+    }
+
     private void allertOnPreviousPoint(final boolean last){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -1047,7 +1120,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         .update(data);
 
                 if (last){
-                    routeId = null;
+                    allertOnAllRouteDone();
                 }else{
                     findIndexOfTown(actualIndexInArray);
                     updateRouteLog(actualIndexInArray, 1);
