@@ -23,12 +23,12 @@
 
 .sideNavWrapper{
   width: 150px;
-  height: 100%;
+  height: auto;
   background: #212529;
 }
 
 .header{
-  height: 75px;
+  height: 50px;
   width: 100%;
   display: block;
   background-color: #343a40 ; //farba pozadia na header rovnaka ako na www.redarrow.sk // stavim sa ze budu namietky..znova
@@ -49,7 +49,8 @@
 .sideBarAndContentWrapper{
   display: flex;
   align-items: stretch;
-  height: 100%;
+  height: max-content;
+  min-height: 100%;
 }
 
 .sidenav a {
