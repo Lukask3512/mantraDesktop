@@ -7,8 +7,13 @@
   padding: 10px;
   border-radius: 3px;
   transition: transform  0.2s;
-
 }
+.oneRoute:hover{
+  transform: scale(1.02);
+}
+
+
+
 .oneRoute:hover{
   transform: scale(1.02);
 }
@@ -78,6 +83,9 @@ table {
   padding: 5px;
 }
 
+.noCursor{
+  cursor: default;
+}
 
 .nakladka{
   max-width: 40%;
@@ -122,6 +130,7 @@ table {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  transition: transform 0.2s
 }
 .buttonR {
   background-color: gray;
