@@ -80,6 +80,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         MatInputModule,
         MatTableModule,
         MatListModule,
+        MatSortModule,
         MatSnackBarModule,
         DragDropModule,
         FormsModule,

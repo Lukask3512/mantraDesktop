@@ -6,6 +6,11 @@
   display: flex;
   padding: 10px;
   border-radius: 3px;
+  transition: transform  0.2s;
+
+}
+.oneRoute:hover{
+  transform: scale(1.02);
 }
 
 .activitySign{
@@ -79,6 +84,9 @@
   min-width: 40%;
   cursor: pointer;
 }
+.noCursor{
+  cursor: default;
+}
 
 .repetRoute .status{
   max-width: 20%;
@@ -122,15 +130,20 @@
   //margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
-  width: 160px;
+  transition: transform 0.2s;
+
 }
 
 .buttonR:hover{
   background-color: #f44336;
   transition: 0.2s, 0.2s;
 }
-.buttonRepeat {
-  background-color: #0996ac;
+p{
+  margin: 0px;
+}
+
+.buttonB {
+  background-color: gray;
   border: none;
   color: white;
   padding: 8px 23px;
@@ -138,22 +151,16 @@
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  //margin: 4px 2px;
+  margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
-  width: 160px;
+  transition: transform 0.2s;
 
 }
-.buttonRepeat:hover{
-  background-color: darkolivegreen;
-  transition: 0.2s, 0.2s;
+.buttonB:hover {
+  color: white !important;
+  background: #008CBA;
 }
-
-p{
-  margin: 0px;
-}
-
-
 
 li{
   margin-top: 4px;
@@ -172,10 +179,12 @@ li{
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  transition: transform 0.2s;
 }
 
+
+
 .buttonG:hover{
-  transition: 0.2s, 0.2s;
   background-color: #4CAF50;
 }
 

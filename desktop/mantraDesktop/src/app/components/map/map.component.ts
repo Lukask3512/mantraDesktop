@@ -71,7 +71,8 @@ export class MapComponent implements OnInit {
   pulseCar:boolean = false;
   pulseMarker:boolean = false;
 
-  firstZoom = false;
+  firstZoomCars = false;
+  firstZoomAddress = false;
 
   tileLayer = new TileLayer({
     source: new OSM({
@@ -334,10 +335,11 @@ export class MapComponent implements OnInit {
       features: this.places.concat(this.cars).concat(this.routes)
     });
 
-    // if (this.firstZoom == false){
-    //   this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
-    //   this.firstZoom = true;
-    // }
+    if (this.firstZoomCars == false){
+      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+        duration: 800} )
+      this.firstZoomCars = true;
+    }
 
     }
 
@@ -645,10 +647,10 @@ export class MapComponent implements OnInit {
 
       // var velkost = this.map.getSize();
       // console.log(velkost)
-      if (this.firstZoom == false){
+      if (this.firstZoomAddress == false){
         this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
           duration: 800} )
-        this.firstZoom = true;
+        this.firstZoomAddress = true;
     }
 
     }
