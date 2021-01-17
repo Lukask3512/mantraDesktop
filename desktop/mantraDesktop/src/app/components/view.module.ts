@@ -21,11 +21,12 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { DeleteRouteComponent } from './dialogs/delete-route/delete-route.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { DeleteDispecerComponent } from './dialogs/delete-dispecer/delete-dispecer.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent
     ],
     exports: [
         OpenlayerComponent,
