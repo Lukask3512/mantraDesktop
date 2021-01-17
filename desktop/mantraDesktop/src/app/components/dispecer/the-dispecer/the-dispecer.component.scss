@@ -49,3 +49,24 @@ p{
   width: 40px;
   cursor: pointer;
 }
+
+.buttonR {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+
+}
+
+.buttonR:hover{
+  background-color: #f44336;
+  transition: 0.2s, 0.2s;
+}
