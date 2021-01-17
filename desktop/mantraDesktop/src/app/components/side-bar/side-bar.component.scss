@@ -11,9 +11,7 @@
   background: #343a40;
 }
 
-*, :before, :after{ box-sizing: border-box; }
-// FONTS
-$sans: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+*, :before, :after{ box-sizing: border-box; }  ;
 
 // COLORS
 $brutalWhite: #ffffff;
@@ -33,6 +31,9 @@ $white-off: #DFDBD9;
 // MAIN NAV
 .main-nav{
 
+  font-family: Candara;
+  font-weight: bold;
+  font-size: 20px;
   ul{
     //border-bottom: solid 1px $gray-shine;
     margin-top: 15%;
@@ -41,6 +42,9 @@ $white-off: #DFDBD9;
 
   li{
     margin-top: 7%;
+    text-align: left;
+    margin-left: 2px;
+
 
     //border-bottom: solid 1px $gray-shine;
   }
@@ -48,7 +52,7 @@ $white-off: #DFDBD9;
   a{
     padding: 1.1em 0;
     color: $white-off;
-    font: 400 1.125em $sans;
+    font-family: Candara;
     text:{
       align: center;
       //transform: lowercase;

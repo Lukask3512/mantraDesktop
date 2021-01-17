@@ -3,19 +3,20 @@
 
   <form class="wrap" >
 
-    <h5>Meno dispečéra</h5>
-    <p>{{this.dispecer.name}}</p>
+    <h5>Meno dispečera</h5>
+    <p class="barDispecer"> {{this.dispecer.name}}</p>
 
-    <h5>Číslo dispečéra</h5>
-    <p>{{this.dispecer.phone}}</p>
+    <h5>Číslo dispečera</h5>
+    <p class="barDispecer">{{this.dispecer.phone}}</p>
 
     <h5>E-mail</h5>
-    <p>{{this.dispecer.email}}</p>
+    <p class="barDispecer">{{this.dispecer.email}}</p>
 
   <form *ngIf="this.dataService.getDispecer().createdBy == 'master' " class="button_cont" align="center">
-    <button  (click)="deleteDispecer()" class="example_c" href="add-website-here" target="_blank" rel="nofollow noopener">
-      Vymazať
-    </button></form>
+
+    <a><img alt="delete" (click)="deleteDispecer()" class="deleteDispecer" src="./assets/logo/delete.svg"></a>
+
+  </form>
 <!--  <p>{{this.dispecer.status}}</p>-->
   </form>
 </div>

@@ -7,14 +7,50 @@
 }
 
 .button{
-  @include button($color-button-green);
-}
-.buttonRed{
-  @include button($color-button-red);
+  background-color: darkolivegreen;
   margin-right: 10px;
+  color: white;}
+.buttonRed{
+  background-color: #ff2d2d;
+  margin-right: 10px;
+  color: white;
 
 }
 
 h1{
   font-size: 1.8em;
+}
+
+.buttonChoose {
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: darkolivegreen;
+  transition: 0.2s, 0.2s;
+}
+
+.buttonChoose.red{
+  background-color: #ff2d2d;
+  margin-right: 10px;
+  color: white;
+}
+.buttonChoose.green{
+  background-color: darkolivegreen;
+  margin-right: 10px;
+  color: white;
 }

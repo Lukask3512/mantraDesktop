@@ -12,7 +12,7 @@
 
 
   <div class="routes">
-    <h1>Aktivne cesty</h1>
+    <h1>Aktívne cesty</h1>
     <ul>
       <li (click)="changeRoute(active)" *ngFor="let active of this.allActiveRoutes">Vytvorene: {{this.timestamptToDate(this.active.createdAt)}}</li>
     </ul>
@@ -35,12 +35,12 @@
   </div>
 </div>
   <div *ngIf="this.routes == undefined">Trasa bola dokončená
-    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">Nova trasa</button>
+    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonNewRoute  ">Nová trasa</button>
   </div>
 
   <div  *ngIf="this.routes != undefined" class="button_cont" align="center">
 
-    <button [disabled]="!change" (click)="this.sendToDriver()" class="button" href="add-website-here" target="_blank" rel="nofollow noopener">
+    <button [disabled]="!change" (click)="this.sendToDriver()" class="button" >
       Odoslať vodičovi</button>
 
     <app-adresses (placeName)="getAdress($event)"

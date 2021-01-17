@@ -69,20 +69,22 @@ li{
 .buttonDownload {
   display: inline-block;
   position: relative;
-  padding: 10px 25px;
-
-  background-color: darkolivegreen;
+  padding: 8px 23px;
+  background-color: #333;
   color: white;
-
-  font-family: sans-serif;
+  font-family: Candara;
   text-decoration: none;
-  font-size: 0.9em;
+  font-size: 16px;
   text-align: center;
   text-indent: 15px;
+  width: 160px;
+  border-radius: 4px;
+
+
 }
 
 .buttonDownload:hover {
-  background-color: #333;
+  background-color: darkolivegreen;
   color: white;
 }
 
@@ -98,8 +100,6 @@ li{
 .buttonDownload:before {
   width: 10px;
   height: 2px;
-  border-style: solid;
-  border-width: 0 2px 2px;
 }
 
 /* Download arrow shape */
@@ -119,11 +119,11 @@ li{
 }
 
 .buttonDownload:hover:before {
-  border-color: #4CC713;
+  border-color: black;
 }
 
 .buttonDownload:hover:after {
-  border-top-color: #4CC713;
+  border-top-color: black;
   animation-play-state: running;
 }
 

@@ -37,7 +37,7 @@ mat-form-field{
   width: 70%;
 }
 
-button{
+/*button{
   background: rgba(46, 204, 113, 1);
   padding: 5px 10px;
   border-radius: 4px;
@@ -104,8 +104,7 @@ input::placeholder{
       width: 100%
     }
   }
-}
-
+}*/
 /* Shake animation */
 @keyframes shake {
   0% {
@@ -151,4 +150,53 @@ input::placeholder{
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+button[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button[type=submit]:hover {
+  background-color: #45a049;
+}
+.wrap{
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 15px;
+}
+
+.example_c {
+  color: black !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: silver;
+  padding: 20px;
+  border: 2px solid #494949 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+.example_c:hover {
+  color: white !important;
+  background: #50585f;
+  border-color: darkolivegreen !important;
+  transition: all 0.8s ease 0.2s;
 }

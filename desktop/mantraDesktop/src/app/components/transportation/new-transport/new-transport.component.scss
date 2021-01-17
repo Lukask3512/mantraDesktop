@@ -77,6 +77,67 @@ header{
   cursor: pointer;
 }
 
+.buttonTransport {
+  background-color: #343a40;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: darkolivegreen;
+  transition: 0.2s, 0.2s;
+}
+
+.buttonDriver {
+  background-color: #343a40;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: green;
+  transition: 0.2s, 0.2s;
+}
+
+.buttonChange {
+  background-color: darkorange;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: darkolivegreen;
+  transition: 0.2s, 0.2s;
+}
+
+
 .routeTown{
   display: flex;
   justify-content: space-between;

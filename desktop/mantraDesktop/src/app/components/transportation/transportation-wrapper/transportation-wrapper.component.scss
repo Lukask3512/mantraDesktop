@@ -8,6 +8,18 @@
   border-radius: 3px;
 }
 
+.activitySign{
+  font-family: Candara;
+  font-size: 40px;
+  font-palette: dark;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  position: center;
+  margin-top: 20px;
+  letter-spacing: .15rem;
+
+}
 .oneRouteHeader{
   border-bottom: 2px solid gray;
   margin: 10px;
@@ -51,7 +63,7 @@
 }
 
 .spanR{
-  background: rgba(225, 0, 0,0.8);
+  background: rgb(255, 73, 73);
   border-radius: 5px;
   padding: 5px;
 }
@@ -110,18 +122,15 @@
   //margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  width: 160px;
 }
 
 .buttonR:hover{
   background-color: #f44336;
   transition: 0.2s, 0.2s;
 }
-p{
-  margin: 0px;
-}
-
-.buttonB {
-  background-color: gray;
+.buttonRepeat {
+  background-color: #0996ac;
   border: none;
   color: white;
   padding: 8px 23px;
@@ -129,15 +138,22 @@ p{
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  //margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
+  width: 160px;
+
 }
-.buttonB:hover {
-  color: white !important;
-  background: #008CBA;
+.buttonRepeat:hover{
+  background-color: darkolivegreen;
   transition: 0.2s, 0.2s;
 }
+
+p{
+  margin: 0px;
+}
+
+
 
 li{
   margin-top: 4px;
@@ -177,6 +193,10 @@ ol li {
 
 .centrovanie{
   position: center;
+}
+.deleteTrack{
+  width: 40px;
+  cursor: pointer;
 }
 
 
@@ -226,53 +246,6 @@ ol li {
     width: 0%;
     height: 100%;
     background-color: darken(green, 15%);
-    transition: all .3s;
-    border-radius: 8px;
-    z-index: -1;
-  }
-  &:hover {
-    color: #fff;
-    &:before {
-      width: 100%;
-    }
-  }
-}
-
-.deleteButton{
-  padding: 10px 27px;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  text-transform: uppercase;
-  border-radius: 8px;
-
-  transition: all .3s;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: red;
-    border-radius: 8px;
-    z-index: -2;
-  }
-  &:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
-    background-color: orange;
     transition: all .3s;
     border-radius: 8px;
     z-index: -1;
@@ -342,3 +315,60 @@ ol li {
       }
     }
   }
+
+
+$scale: 0.7;
+$color: #111;
+
+.icon {
+  background: invert($color);
+  position: relative;
+  width: 200px*$scale;
+  height: 200px*$scale;
+  margin: 50px auto 0;
+  border-radius: 5px*$scale;
+  transition: box-shadow .2s ease;
+  &:hover {
+    box-shadow: 0 0 10px*$scale rgba(10,10,10,.3);
+  }
+}
+
+.icon:hover .lid, .icon:hover .lidcap {
+  transform: rotate(10deg);
+  margin-bottom: 15px*$scale;
+}
+
+.lidcap, .lid, .bin {
+  position: absolute;
+}
+
+.lidcap, .lid {
+  border-top-left-radius: 4px*$scale;
+  border-top-right-radius: 4px*$scale;
+  background: $color;
+  transition: transform .2s linear, margin .2s linear;
+}
+
+.lidcap {
+  bottom: 138px*$scale;
+  left: 90px*$scale;
+  height: 10px*$scale;
+  width: 20px*$scale;
+}
+
+.lid {
+  bottom: 120px*$scale;
+  left: 30px*$scale;
+  width: 140px*$scale;
+  height: 20px*$scale;
+}
+
+.bin {
+  bottom: 0;
+  left: 40px*$scale;
+  width: 100px*$scale;
+  border-top: 120px*$scale solid $color;
+  border-left: 10px*$scale solid transparent;
+  border-right: 10px*$scale solid transparent;
+}
+

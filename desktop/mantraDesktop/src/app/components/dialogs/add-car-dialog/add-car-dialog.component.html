@@ -1,14 +1,15 @@
 <div style="position: relative" class="cat-container">
-  <h1 class="header">Pridat vozidlo</h1>
+  <form class="wrap">
+  <h1 class="header">Pridať vozidlo</h1>
   <mat-form-field [formGroup]="carForm">
-    <label>ECV</label>
-    <input matInput formControlName="ecv">
+    <label>EČV</label>
+    <input type="text" matInput formControlName="ecv" >
 
-    <label>Tel.</label>
-    <input matInput formControlName="phone">
+    <label>Tel. číslo</label>
+    <input  type="text" matInput formControlName="phone" >
 
   </mat-form-field>
 
-  <button (click)="saveCar()" type="submit" [disabled]="!carForm.valid">+ Pridat</button>
-
+  <button (click)="saveCar()" type="submit" class="example_c" [disabled]="!carForm.valid">Pridať +</button>
+  </form>
 </div>

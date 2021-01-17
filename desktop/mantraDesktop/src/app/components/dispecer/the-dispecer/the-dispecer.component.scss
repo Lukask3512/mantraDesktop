@@ -33,3 +33,19 @@
 p{
   color: #2C2A8A;
 }
+
+
+.barDispecer {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: white;
+}
+.deleteDispecer{
+  width: 40px;
+  cursor: pointer;
+}
