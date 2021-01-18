@@ -12,11 +12,11 @@
     <h5>E-mail</h5>
     <p class="barDispecer">{{this.dispecer.email}}</p>
 
-  <form *ngIf="this.dataService.getDispecer().createdBy == 'master' " class="button_cont" align="center">
 
-    <a><img alt="Odstrániť" (click)="deleteDispecer()" class="buttonR" ></a>
-
-  </form>
+    <div class="button_cont" align="center">
+      <button (click)="deleteDispecer()"class="buttonR ">
+        Odstrániť
+      </button></div>
 <!--  <p>{{this.dispecer.status}}</p>-->
   </form>
 </div>
