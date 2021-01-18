@@ -2,13 +2,13 @@
   display: flex;
   height: 45em;
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   font-family: "Lato", sans-serif;
   font-size: medium;
 }
 #map{
   height: 90%;
-  width: 65%;
+  width: 70%;
 }
 .info{
   height: auto;
@@ -24,6 +24,7 @@
   width: 100%;
 }
 .route{
+  display: flex;
   border: 2px solid gray;
   border-radius: 2px;
   margin: 5px;
@@ -51,18 +52,25 @@
   margin-left: 5px;
 }
 
-
- table {
-   width:500px;
- }
-table, th, td {
-  border: 2px solid dimgrey !important;
+table {
+  width: 100%;
   border-collapse: collapse;
 }
-th, td {
-  padding: 10px;
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: #eee;
+}
+th {
+  background: #333;
+  color: white;
+  font-weight: bold;
+}
+td, th {
+  padding: 6px;
+  border: 1px solid #ccc;
   text-align: left;
 }
+
 #t01 tr:nth-child(even) {
   background-color: #eee;
 }
@@ -74,3 +82,40 @@ th, td {
   font-family: "Lato", sans-serif;
   color: white;
 }
+
+@media
+only screen and (max-width: 800px),
+(min-device-width: 800px) and (max-device-width: 1024px)  {
+
+  /* Force table to not be like tables anymore */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr { border: 1px solid #ccc; }
+
+  td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid white;
+    position: relative;
+    padding-left: 50%;
+  }}
+
+  td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
