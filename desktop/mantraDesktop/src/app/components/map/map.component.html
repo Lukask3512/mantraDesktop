@@ -19,7 +19,7 @@
         </table>
         <h4 *ngIf="carToShow == undefined && routesToShow == undefined">Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.</h4>
         <h4 *ngIf="carToShow == undefined && routesToShow != undefined">Nepriradená trasa</h4>
-        <button *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">
+        <button class="buttonG" *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">
           Priradiť autu</button>
       </div>
 
