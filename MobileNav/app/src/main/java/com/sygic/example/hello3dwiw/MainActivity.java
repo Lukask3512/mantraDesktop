@@ -870,8 +870,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 allertFinish();
             }
         }
+            if (position == 3){
+                deleteRoute();
+            }else{
+                sendRoute();
+            }
 
         if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 3)){
+
             allertNextNavigation(false, true);
         }
         previousItemInSpinner = position;
@@ -1046,7 +1052,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.w("TAGix", selectedItems.toString());
+//                Log.w("TAGix", selectedItems.toString());
 
 
                 for (int i =0; i < ((ArrayList<String>) routeInfo).size(); i++){
@@ -1062,7 +1068,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 Log.w("TAGix", routeInfoStatus.toString());
 
-
+                deleteRoute();
                 Map<String, Object> data = new HashMap<>();
                 //
                 data.put("status", routeInfoStatus);
@@ -1318,6 +1324,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         }
                     }
                 });
+    }
+    //vymaze cestu z databazy storage - ked
+    private void deleteRoute(){
+
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference desertRef = storageRef.child("Routes/" + routeId + ".json");
+
+        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+            }
+        });
     }
 
 }
