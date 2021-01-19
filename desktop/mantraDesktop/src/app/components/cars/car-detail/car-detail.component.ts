@@ -85,7 +85,7 @@ export class CarDetailComponent implements OnInit {
           },
           800);
 
-        // if (this.routes != undefined){
+        if (this.routes != undefined){
           routes.forEach(route => {
 
             if (route.id == this.routes.id){
@@ -99,7 +99,7 @@ export class CarDetailComponent implements OnInit {
               console.log("rovnake")
             }
           })
-        // }
+        }
 
         // console.log(this.routes)
 
