@@ -40,7 +40,7 @@
 
   <div  *ngIf="this.routes != undefined" class="button_cont" align="center">
 
-    <button [disabled]="!change" (click)="this.sendToDriver()" class="button" >
+    <button id="mySendButton" [disabled]="!change" (click)="this.sendToDriver()" class="oneButton greenSend" >
       Odoslať vodičovi</button>
 
     <app-adresses (placeName)="getAdress($event)"

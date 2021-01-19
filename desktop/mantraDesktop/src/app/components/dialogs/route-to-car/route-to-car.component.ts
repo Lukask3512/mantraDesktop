@@ -61,6 +61,10 @@ export class RouteToCarComponent implements OnInit {
       }else{
         carId = car.id
       }
+      var newRouteStatus = []
+      this.routeStatus.forEach(route => {
+        newRouteStatus.push(-1);
+      });
         route = {
           carId: carId,
           createdBy: dispecerId,
@@ -68,7 +72,7 @@ export class RouteToCarComponent implements OnInit {
           coordinatesOfTownsLon: this.routesLon,
           finished: false,
           nameOfTowns: this.routesTowns,
-          status: this.routeStatus,
+          status: newRouteStatus,
           type: this.type,
           aboutRoute: this.aboutRoute,
           createdAt: (Date.now())

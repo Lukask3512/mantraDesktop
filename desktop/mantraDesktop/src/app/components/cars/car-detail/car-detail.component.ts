@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
@@ -44,6 +44,7 @@ export class CarDetailComponent implements OnInit {
 
   }
 
+  @ViewChild('mySendButton') mySendButton: ElementRef;
   ngOnInit(): void {
     this.change = false;
     this.routesTowns = [];
@@ -67,7 +68,6 @@ export class CarDetailComponent implements OnInit {
           800);
 
       this.routeService.getRoutes(this.car.id).subscribe(routes => {
-        this.routes = routes[0];
         if (routes[0] == undefined){
           setTimeout(() =>
             {
@@ -85,8 +85,27 @@ export class CarDetailComponent implements OnInit {
           },
           800);
 
-      console.log(routes);
-        if (this.routes !== undefined) {
+        // if (this.routes != undefined){
+          routes.forEach(route => {
+
+            if (route.id == this.routes.id){
+              this.routes = route;
+              this.routesTowns = this.routes.nameOfTowns;
+              this.routesLat = this.routes.coordinatesOfTownsLat;
+              this.routesLon = this.routes.coordinatesOfTownsLon;
+              this.type = this.routes.type;
+              this.status = this.routes.status;
+              this.aboutRoute = this.routes.aboutRoute;
+              console.log("rovnake")
+            }
+          })
+        // }
+
+        // console.log(this.routes)
+
+        if (this.routes == undefined) {
+          this.routes = routes[0];
+
           // @ts-ignore
           this.actuallyCarRoutes = routes[0];
           this.routesTowns = this.routes.nameOfTowns;
@@ -151,6 +170,8 @@ export class CarDetailComponent implements OnInit {
     moveItemInArray(this.status, event.previousIndex, event.currentIndex);
     moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
     this.change = true;
+    this.mySendButton.nativeElement.style.backgroundColor = 'limegreen';
+
     this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
     this.notifyChildren(this.routes.id);
   }
@@ -203,6 +224,7 @@ export class CarDetailComponent implements OnInit {
       this.routeService.updateRoute(route);
     }
     this.change = false;
+
   }
 
   getAdress(adress){
@@ -240,6 +262,8 @@ export class CarDetailComponent implements OnInit {
       if (value.routeInfo !== undefined){
         this.aboutRoute[id] = value.routeInfo;
         this.change = true;
+
+
       }else {
         return;
       }

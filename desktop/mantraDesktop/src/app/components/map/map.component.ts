@@ -35,7 +35,7 @@ import {BehaviorSubject} from "rxjs";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent {
   map;
   vectorLayerAdress = new VectorLayer();
   vectorLayerCars = new VectorLayer();
@@ -49,6 +49,7 @@ export class MapComponent implements OnInit {
 
   colors = ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#27AE60', '#E67E22', '#F1C40F', '#E67E22',
   '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949']
+
 
   //features pre mapu
   places = [];
@@ -86,7 +87,9 @@ export class MapComponent implements OnInit {
               private dialog: MatDialog) { }
 
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    setTimeout(() =>
+    {
     this.view = new View({
       center: olProj.fromLonLat([0, 0]),
       zoom: 1
@@ -144,6 +147,8 @@ export class MapComponent implements OnInit {
     });
 
     this.checkFeatureUnderMouse(); //pointer
+    },
+      200);
   }
 //ak kliknem na auto
   onClickFindInfo(id){
@@ -159,39 +164,20 @@ export class MapComponent implements OnInit {
     // this.carToShow = this.carsFromDatabase.find(car => car.id == this.routesToShow[0].carId);
   }
 
-
-
-  // getLatLonFromActive(routes){
-  //   console.log(routes)
-  //
-  //   routes.forEach(route => {
-  //
-  //
-  //       // this.addMarker(route.coordinatesOfTownsLat, route.coordinatesOfTownsLon, this.colors[color]);
-  //     this.addMarker(routes, this.colors[color]);
-  //     this.addRoute(route, this.colors[color])
-  //
-  //   })
-  // }
-
-  sendCarsToRoute(){
-    var color = -1;
-    this.dataService.getAllCars().forEach(car => {
-      color++;
-      if (color >= this.colors.length){
-        color = 0;
-      }
-    });
-  }
-
-  addRoute(route, color){
+  addRoute(routes) {
     this.routes = [];
     var outputData;
+
+    routes.forEach((route, index) => {
+
+
+
     const ref = this.storage.ref('Routes/' + route.id + '.json');
     var stahnute = ref.getDownloadURL().subscribe(data => {
-      // console.log(data);
 
-      this.http.get(data, { responseType: 'text' as 'json' }).pipe(take(1)).subscribe(text =>{
+
+      this.http.get(data, {responseType: 'text' as 'json'}).pipe(take(1)).subscribe(text => {
+
         outputData = text;
 
         //zmena na json
@@ -215,41 +201,37 @@ export class MapComponent implements OnInit {
         var routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: color
+            color: this.getColorByIndex(index)
           })
         });
         routeFeature.setStyle(routeStyle);
 
-
+      // console.log(routeFeature);
+      // console.log(route)
         this.routes.push(routeFeature);
-        this.coordinatesFeature = routeFeature;
+      this.pridajCestyNaMapu();
 
-        var vectorSource = new VectorSource({
-          features: this.routes
-        });
-
-        this.map.removeLayer(this.vectorLayerCoordinates)
-        this.vectorLayerCoordinates = new VectorLayer({
-          source: vectorSource,
-        });
-        this.vectorLayerCoordinates.setZIndex(1);
-        this.map.addLayer(this.vectorLayerCoordinates);
-
-        var vectorNaZobrazenieAllFeatures =  new VectorSource({
-          features: this.places.concat(this.cars).concat(this.routes)
-        });
-
-        // var velkost = this.map.getSize();
-        // console.log(velkost)
-        // this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
 
       }, (error) => {
-        console.log("trasa nenajdena")
+        console.log("trasa nenajdena1")
       })
-    },error => {
-      console.log("trasa nenajdena")
-    } );
+    }, error => {
+      console.log("trasa nenajdena2")
+    });
 
+  });
+  }
+
+  pridajCestyNaMapu(){
+    var vectorSource = new VectorSource({
+      features: this.routes
+    });
+    this.map.removeLayer(this.vectorLayerCoordinates)
+    this.vectorLayerCoordinates = new VectorLayer({
+      source: vectorSource,
+    });
+    this.vectorLayerCoordinates.setZIndex(1);
+    this.map.addLayer(this.vectorLayerCoordinates);
   }
 
   checkFeatureUnderMouse(){
@@ -275,10 +257,6 @@ export class MapComponent implements OnInit {
             console.log("som nasiel same")
           }
 
-
-
-          // console.log(car[i].lattitude)
-
           if (car[i].lattitude != undefined){
 
             var carFeature = new Feature({
@@ -302,11 +280,8 @@ export class MapComponent implements OnInit {
               this.pulseCar = true;
 
 
-
-
               //pre blikanie
               var isThereCar = this.carWarningStatus.filter(findCar => findCar.id == car[i].id);
-              console.log(isThereCar)
 
               if (isThereCar.length == 0 ){
                 this.flashCar(carFeature, 1000, car[i]);
@@ -360,13 +335,6 @@ export class MapComponent implements OnInit {
               return;
          }
 
-         // var ssThereCar = this.carWarningStatus.filter(findCar => findCar.id == car.id);
-         // console.log(c)
-         // if (ssThereCar != undefined && ssThereCar.length > 1) {
-         //   return;
-         // }
-
-
         // canvas context where the effect will be drawn
         var vectorContext = getVectorContext(event);
         var frameState = event.frameState;
@@ -401,127 +369,26 @@ export class MapComponent implements OnInit {
          var styledelete = new Style({
          });
 
-
-        // if (!vectorContext){
          vectorContext.setStyle(styledelete);
           vectorContext.setStyle(style);
-
-        // }
         vectorContext.drawGeometry(flashGeom);
-         // map.render();
 
         if (elapsed > duration) { // stop the effect
-
             start = +new Date();
-          // if (boolean == false) {
-            // this.flashCar(feature, 3000, car);
             this.tileLayer.on('postrender', animate);
             boolean = true;
-            // this.map.render();
-            // return;
-
-          // }else{
-          //   return;
-          // }
         }
         this.map.render();
-
       }
       var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
 
     }
   }
 
-  // flashMarker(feature, duration) {
-  //   if (this.pulseMarker) {
-  //     var start = +new Date();
-  //     var map = this.map;
-  //
-  //     // var flash = this.flash(feature, duration);
-  //     let animate =  (event) => {
-  //       // canvas context where the effect will be drawn
-  //
-  //       var vectorContext = getVectorContext(event);
-  //
-  //       var frameState = event.frameState;
-  //
-  //       // create a clone of the original ol.Feature
-  //       // on each browser frame a new style will be applied
-  //       var flashGeom = feature.getGeometry().clone();
-  //       var elapsed = frameState.time - start;
-  //       var elapsedRatio = elapsed / duration;
-  //       // radius will be 5 at start and 30 at end.
-  //       var radius = easeOut(elapsedRatio) * 25 + 5;
-  //       var opacity = easeOut(1 - elapsedRatio);
-  //
-  //
-  //       // you can customize here the style
-  //       // like color, width
-  //       var style = new Style({
-  //         image: new CircleStyle({
-  //           radius: radius,
-  //           snapToPixel: false,
-  //           fill: new Fill({
-  //             color: [240, 51, 51, opacity / 2]
-  //           }),
-  //           stroke: new Stroke({
-  //             color: [240, 51, 51, opacity],
-  //             width: 0.25 + opacity
-  //           }),
-  //
-  //         })
-  //       });
-  //
-  //
-  //         vectorContext.setStyle(style);
-  //         vectorContext.drawGeometry(flashGeom);
-  //
-  //
-  //
-  //       if (elapsed > duration) { // stop the effect
-  //         if (this.pulseMarker){
-  //           // start = +new Date();
-  //           // flashGeom = feature.getGeometry().clone();
-  //           // elapsed = frameState.time - start;
-  //           // elapsedRatio = elapsed / duration;
-  //           // // radius will be 5 at start and 30 at end.
-  //           // radius = easeOut(elapsedRatio) * 25 + 5;
-  //           // opacity = easeOut(1 - elapsedRatio);
-  //           // // this.flashMarker(feature,duration);
-  //           start = +new Date();
-  //           this.tileLayer.on('postrender', animate);
-  //         }
-  //         else{
-  //           vectorContext.setStyle(null);
-  //           vectorContext.drawGeometry(null);
-  //           unByKey(listenerKey);
-  //           return;
-  //         }
-  //
-  //       }else{
-  //         if (!this.pulseMarker) {
-  //           vectorContext.setStyle(null);
-  //           vectorContext.drawGeometry(null);
-  //           unByKey(listenerKey);
-  //           return;
-  //         }
-  //       }
-  //
-  //       map.render();
-  //     }
-  //     var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
-  //
-  //
-  //   }
-  // }
-
-
-
 
   addMarker(routes: Route[]){
     this.places = [];
 
-    // this.map.removeLayer(this.vectorLayer)
     if (this.coordinatesFeature != null || this.coordinatesFeature != undefined){
       this.places.push(this.coordinatesFeature);
     }
@@ -534,16 +401,9 @@ export class MapComponent implements OnInit {
       console.log(this.routesToShow[0].id);
       console.log(route.id)
     if (this.routesToShow != undefined && route.id == this.routesToShow[0].id){
-      console.log("som nasiel same")
+
       this.onClickFindInfoAdress(route.id);
     }
-
-
-    color++;
-    if (color >= this.colors.length){
-      color = 0;
-    }
-    this.addRoute(route, this.colors[color]);
 
     if (route.coordinatesOfTownsLat.length > 0) {
       for (let i = 0; i < route.coordinatesOfTownsLat.length; i++) {
@@ -561,7 +421,7 @@ export class MapComponent implements OnInit {
                 color: '#7FFF00'
               }),
               fill: new Fill({
-                color: this.colors[color]
+                color: this.getColorByIndex(index)
               }),
             }),
             text: new Text({
@@ -580,7 +440,7 @@ export class MapComponent implements OnInit {
                 color: '#FF0000'
               }),
               fill: new Fill({
-                color: this.colors[color]
+                color: this.getColorByIndex(index)
               }),
             }),
             text: new Text({
@@ -591,7 +451,6 @@ export class MapComponent implements OnInit {
             })
           });
           this.pulseMarker=true;
-          // this.flashMarker(iconFeature, 1000);
         }else{
           var iconStyle = new Style({
             image: new CircleStyle({
@@ -600,7 +459,7 @@ export class MapComponent implements OnInit {
                 color: '#fff'
               }),
               fill: new Fill({
-                color: this.colors[color]
+                color: this.getColorByIndex(index)
               }),
             }),
             text: new Text({
@@ -614,17 +473,20 @@ export class MapComponent implements OnInit {
 
 
         iconFeature.setStyle(iconStyle);
-        this.places.push(iconFeature)
+        this.places.push(iconFeature);
+        if (index + 1 == routes.length){
+          setTimeout(() =>
+            {
+              //chvilu pockam kym natiahnem cesty, ak by ju nahodou auto updatlo
+              this.addRoute(routes);
+            },
+            1500);
+        }
 
       }
     }
 
   });
-
-
-
-    // .concat(this.routes).concat(this.cars),
-    // this.coordinatesFeature =
     var vectorSource = new VectorSource({
       features: this.places
     });
@@ -645,8 +507,6 @@ export class MapComponent implements OnInit {
         features: this.places.concat(this.cars).concat(this.routes)
       });
 
-      // var velkost = this.map.getSize();
-      // console.log(velkost)
       if (this.firstZoomAddress == false){
         this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
           duration: 800} )
@@ -654,23 +514,6 @@ export class MapComponent implements OnInit {
     }
 
     }
-
-
-
-    // if (routes.length === 1) {
-    //   this.map.getView().setCenter(fromLonLat([routes[0].coordinatesOfTownsLon, routes[0].coordinatesOfTownsLat]))
-    //   this.map.getView().setZoom(8)
-    //
-    // } else {
-    //   // this.map.getView().animate({
-    //   //   center: fromLonLat(([routes[0].coordinatesOfTownsLon[routes[0].coordinatesOfTownsLon.length - 1], routes[0].coordinatesOfTownsLon[routes[0].coordinatesOfTownsLon.length - 1]])),
-    //   //   zoom: 8,
-    //   //   duration: 800
-    //   // })
-    //   // this.map.getView().setCenter(fromLonLat(([routes[routes.l][route.coordinatesOfTownsLon.length - 1],
-    //   //   route.coordinatesOfTownsLat[route.coordinatesOfTownsLat.length - 1]])));
-    //   // this.map.getView().setZoom(8);
-    // }
 
   }
 
@@ -710,9 +553,7 @@ export class MapComponent implements OnInit {
       features: this.places.concat(this.cars).concat(this.routes)
     });
     this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-      duration: 800} )
-
-
+      duration: 800} );
   }
 
   zoomToAddressOrCar(address){
@@ -733,13 +574,17 @@ export class MapComponent implements OnInit {
       minResolution: 50,
       duration: 800} )
 
+  }
 
-    // var poloha = address.getGeometry().getCoordinates()
-    // this.view.animate({
-    //   center: poloha,
-    //   duration: 500,
-    //   zoom: 12
-    // });
+  getColorByIndex(index){
+    var ktoruFarbu;
+    if (index >= this.colors.length){
+      ktoruFarbu = index % this.colors.length;
+      return this.colors[ktoruFarbu];
+    }else{
+      ktoruFarbu = index;
+      return this.colors[ktoruFarbu]
+    }
   }
 
 }
