@@ -490,4 +490,13 @@ public class ChooseRoute extends AppCompatActivity {
 //        super.onResume();
 //        active = true;
 //    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ChooseRoute.this, LoginPage.class);
+//        intent.putExtra("carId", carId);
+        startActivity(intent);
+        carId = null;
+        finish();
+    }
 }

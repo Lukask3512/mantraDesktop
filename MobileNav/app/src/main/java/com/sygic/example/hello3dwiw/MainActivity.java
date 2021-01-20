@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public Object routeLogTimestamp;
     private Object routeLog;
     private Object routeLogId;
+    public Object routeLogType;
 
     //car
     private double carLattitude;
@@ -382,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     db.collection("cars").document(carId)
                             .update(data);
                     carId = null;
+                    routeId = null;
                 }
                 startActivity(intent);
                 finish();
@@ -1168,8 +1170,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             routeLogTimestamp = new ArrayList<String>();
             routeLogLat = new ArrayList<Integer>();
             routeLogLon = new ArrayList<Integer>();
+            routeLogType = new ArrayList<String>();
         }
         String town = ((ArrayList<String>) routeInfo).get(place);
+        String type = ((ArrayList<String>) routeInfoType).get(place);
+        if (type.equals("nakladka")){
+            type = "nakládka";
+        }else{
+            type = "vykládka";
+        }
+
 
 //        Log.d("TAGg", "DocumentSnapshot successfully updated1!" + ((ArrayList<String>) routeLogPlace).get(((ArrayList<String>) routeLogPlace).size() - 1));
 //        Log.d("TAGg", "DocumentSnapshot successfully updated2!" + town);
@@ -1182,6 +1192,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ((ArrayList<String>) routeLogTimestamp).add(ts);
             ((ArrayList<Double>) routeLogLat).add(carLattitude);
             ((ArrayList<Double>) routeLogLon).add(carLongtitude);
+            ((ArrayList<String>) routeLogType).add(type);
 
             // Add a new document with a generated id.
             Map<String, Object> data = new HashMap<>();
@@ -1190,6 +1201,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             data.put("place", routeLogPlace);
             data.put("timestamp", routeLogTimestamp);
             data.put("state", routeLogState);
+            data.put("type", routeLogType);
             db.collection("routeLog")
                     .document(routeLogId.toString()).update(data)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -1215,6 +1227,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ((ArrayList<String>) routeLogTimestamp).add(ts);
             ((ArrayList<Double>) routeLogLat).add(carLattitude);
             ((ArrayList<Double>) routeLogLon).add(carLongtitude);
+            ((ArrayList<String>) routeLogType).add(type);
 
             // Add a new document with a generated id.
             Map<String, Object> data = new HashMap<>();
@@ -1223,6 +1236,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             data.put("place", routeLogPlace);
             data.put("timestamp", routeLogTimestamp);
             data.put("state", routeLogState);
+            data.put("type", routeLogType);
             db.collection("routeLog")
                     .document(routeLogId.toString()).update(data)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -1343,6 +1357,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // Uh-oh, an error occurred!
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MainActivity.this, ChooseRoute.class);
+        intent.putExtra("carId", carId);
+        startActivity(intent);
+        routeId = null;
+        readRouteId = null;
+        finish();
     }
 
 }
