@@ -82,8 +82,10 @@ export class RouteLogComponent implements OnInit {
     doc.html(data2, {
       callback: (doc) => {
         doc.output("dataurlnewwindow");
-        data2.style.fontSize = '16px'
-        data2.style.padding = '8px'
+        setTimeout(function(){
+          data2.style.fontSize = '16px'
+          data2.style.padding = '8px' }, 3000);
+
 
       }
     });
