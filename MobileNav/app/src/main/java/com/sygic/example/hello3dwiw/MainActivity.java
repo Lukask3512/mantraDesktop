@@ -517,21 +517,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     void demo()
     {
-        if (routeId != null){
-            if (!routeId.equals("null")){
+        Timer timer = new Timer();
+        TimerTask doAsynch = new TimerTask() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void run() {
+                if (routeId != null) {
+                    if (!routeId.equals("null")) {
 
-         String status = null;
-                String json = null;
-                try {
+                        String status = null;
+                        String json = null;
+                        try {
 
-            status = ApiNavigation.getRouteStatus(0);
-            ParseRouteStatus(status);
+                            status = ApiNavigation.getRouteStatus(0);
+                            ParseRouteStatus(status);
 
-                    json = ApiNavigation.getRoute(1, 0, 0);
-                    JSONObject jsonObject = new JSONObject(json);
-                    JSONObject jsonArray = (JSONObject) jsonObject.get("polygon");
-                    JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
-                    JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
+                            json = ApiNavigation.getRoute(1, 0, 0);
+                            JSONObject jsonObject = new JSONObject(json);
+                            JSONObject jsonArray = (JSONObject) jsonObject.get("polygon");
+                            JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
+                            JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
 
 
 //                    File file = new File(this.getFilesDir(), "file-nameName");
@@ -549,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //
 //                    }
 //                    String skuska = "'" + jsonFinish.toString() + "'";
-                    Log.e("NavigationTime2", "co to bude"+ jsonFinish);
+                            Log.e("NavigationTime2", "co to bude" + jsonFinish);
 
 //                    //ukladam textak do databazy s trasou
 //                    StorageReference storageRef = storage.getReference();
@@ -567,11 +572,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                        }
 //                    });
 
-        } catch (GeneralException | JSONException e) {
-            e.printStackTrace();
-                }
+                        } catch (GeneralException | JSONException e) {
+                            e.printStackTrace();
+                        }
 
-        }}
+                    }
+                }
+            }
+        };
+        timer.schedule(doAsynch, 0, 60000);
 
     }
 
@@ -743,7 +752,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 });
             }
         };
-        //tu sa nastavi ako casto sa bude odosielat lokacia
+        //tu sa nastavi ako casto sa bude nacitavat lokacia do premennej
         timer.schedule(doAsynch, 0, 4000);
 
     }
@@ -763,7 +772,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            demo();
+//                            demo();
 
                         }
                     }, 5000);
@@ -1227,7 +1236,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ((ArrayList<String>) routeLogTimestamp).add(ts);
             ((ArrayList<Double>) routeLogLat).add(carLattitude);
             ((ArrayList<Double>) routeLogLon).add(carLongtitude);
-            ((ArrayList<String>) routeLogType).add(type);
+            if (type != null && routeLogType != null){
+                ((ArrayList<String>) routeLogType).add(type);
+            }
 
             // Add a new document with a generated id.
             Map<String, Object> data = new HashMap<>();
@@ -1289,7 +1300,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void checkOnlineMobile(){
-
+        Log.w("TAGix", LoginPage.carIdDoc);
         db.collection("cars").document(LoginPage.carIdDoc)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
