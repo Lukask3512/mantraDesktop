@@ -6,6 +6,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {NewCarComponent} from "../../cars/new-car/new-car.component";
 import {DataService} from "../../../data/data.service";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-add-car-dialog',
@@ -27,20 +28,21 @@ export class AddCarDialogComponent implements OnInit {
 
   saveCar(){
     // console.log(this.carService.getCarByEcv("Skuska1"))
-    this.carService.getCarByEcv(this.assignToCar().ecv).subscribe(car => {
+    this.carService.getCarByEcv(this.assignToCar().ecv).pipe(take(1)).subscribe(car => {
       console.log(car)
       if (car.length == 0){
-        this.carService.getCarByNumber(this.assignToCar().phoneNumber).subscribe(carByNumber => {
-          if (carByNumber.length == 0) {
-            this.carService.createCar(this.assignToCar());
-            this.dialogRef.close();
-            return;
-          }
-          else{
+        this.carService.getCarByNumber(this.assignToCar().phoneNumber).pipe(take(1)).subscribe(carByNumber => {
+          if (carByNumber.length > 0) {
             this.snackBar.open('Vložené tel. číslo sa už nachádza v databáze', 'Ok', {
               duration: 5000
             });
             return;
+          }
+          else{
+            this.carService.createCar(this.assignToCar());
+            this.dialogRef.close();
+            return;
+
           }
         })
 

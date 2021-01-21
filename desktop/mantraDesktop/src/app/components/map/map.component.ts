@@ -39,7 +39,7 @@ export class MapComponent {
   map;
   vectorLayerAdress = new VectorLayer();
   vectorLayerCars = new VectorLayer();
-  vectorLayerCoordinates = new VectorLayer();
+  vectorLayerCoordinates;
   // vectorLayer;
   coordinatesSkuska = [[2.173403, 40.385064], [2.273403,41.385064]];
   //skusam vytvorit trasu
@@ -74,6 +74,7 @@ export class MapComponent {
 
   firstZoomCars = false;
   firstZoomAddress = false;
+  firstZoom = 0;
 
   tileLayer = new TileLayer({
     source: new OSM({
@@ -104,17 +105,22 @@ export class MapComponent {
     });
 
     // this.carsFromDatabase = this.dataService.getAllCars()
+      this.carService.cars$.subscribe(newCars => {
+        this.carsFromDatabase = newCars;
+        this.addCars(this.carsFromDatabase);
+        console.log("nacitavam auto")
+
+      });
 
     this.routeService.routes$.subscribe(newRoutes => {
       this.pulseMarker = false;
       this.adressesFromDatabase = newRoutes;
+      console.log("nacitavam marker")
+      console.log(newRoutes)
       this.addMarker(this.adressesFromDatabase);
     });
 
-    this.carService.cars$.subscribe(newCars => {
-      this.carsFromDatabase = newCars;
-      this.addCars(this.carsFromDatabase);
-    });
+
 
     // this.sendCarsToRoute();
 
@@ -220,6 +226,9 @@ export class MapComponent {
     });
 
   });
+    if (routes.length == 0){
+      this.map.removeLayer(this.vectorLayerCoordinates)
+    }
   }
 
   pridajCestyNaMapu(){
@@ -310,10 +319,11 @@ export class MapComponent {
       features: this.places.concat(this.cars).concat(this.routes)
     });
 
-    if (this.firstZoomCars == false){
+    if (this.firstZoomCars == false || this.firstZoom < 2){
       this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
         duration: 800} )
       this.firstZoomCars = true;
+      this.firstZoom ++;
     }
 
     }
@@ -394,6 +404,10 @@ export class MapComponent {
     }
     var color = -1;
 
+    if (routes.length == 0){
+      this.map.removeLayer(this.vectorLayerCoordinates);
+      this.map.removeLayer(this.vectorLayerCoordinates);
+    }
 
   routes.forEach((route, index) => {
 
@@ -507,10 +521,11 @@ export class MapComponent {
         features: this.places.concat(this.cars).concat(this.routes)
       });
 
-      if (this.firstZoomAddress == false){
+      if (this.firstZoomAddress == false || this.firstZoom < 2){
         this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
           duration: 800} )
         this.firstZoomAddress = true;
+        this.firstZoom ++;
     }
 
     }

@@ -77,6 +77,7 @@ export class RouteLogComponent implements OnInit {
     var data2 = document.getElementById("routeLog")
     data2.style.fontSize = '9px'
     data2.style.padding = '2px'
+    data2.style.width = '800px';
     doc.setFontSize(7);
     // console.log(data2)
     doc.html(data2, {
@@ -85,7 +86,7 @@ export class RouteLogComponent implements OnInit {
         setTimeout(function(){
           data2.style.fontSize = '16px'
           data2.style.padding = '8px' }, 3000);
-
+        data2.style.width = '100%';
 
       }
     });
