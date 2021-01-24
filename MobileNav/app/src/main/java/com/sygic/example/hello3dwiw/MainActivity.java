@@ -242,8 +242,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
                             builder.setCancelable(true);
-                            builder.setTitle("Zmena cesty");
-                            builder.setMessage("Vaša cesta bola upravená");
+                            builder.setTitle("Zmena trasy");
+                            builder.setMessage("Vaša trasa bola upravená");
 
                             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         myTextViews[i] = rowTextView;
                     }
                     Button button = new Button(MainActivity.this);
-                    button.setText("Dokoncit");
+                    button.setText("Dokončiť");
                     button.setBackgroundColor(Color.parseColor("#00FF00"));
                     button.setOnClickListener(new View.OnClickListener() {
 
@@ -914,7 +914,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         builder.setCancelable(true);
         builder.setTitle("Navigácia");
-        builder.setMessage("Chcete dokoncit danu trasu?");
+        builder.setMessage("Chcete dokončiť danú trasu?");
 
         builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
             @Override
@@ -978,7 +978,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             builder.setCancelable(true);
             builder.setTitle("Navigácia");
-            builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu - " + ((ArrayList<String>) routeInfo).get(actualIndexInArray + 1) + "?");
+            builder.setMessage("Chcete spustiť navigáciu na nasledujúcu adresu - " + ((ArrayList<String>) routeInfo).get(actualIndexInArray + 1) + "?");
 
             builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
                 @Override
@@ -1097,10 +1097,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setCancelable(false);
-        builder.setTitle("Predchadzajuce miesto: " + ((ArrayList<String>) routeInfo).get(actualIndexInArray -1));
+        builder.setTitle("Predchádzajúce miesto: " + ((ArrayList<String>) routeInfo).get(actualIndexInArray -1));
 //        builder.setMessage("Chcete spustit navigaciu na nasledujucu adresu?");
 
-        String[] animals = {"naložený / vyložený",  "problém", "preskocit"};
+        String[] animals = {"naložený / vyložený",  "problém", "preskočiť"};
 //        String[] animals = {"vylozeny", "nalozeny", "problem", "preskocit"};
 
         boolean[] checkedItems = {true, false, false, false};
@@ -1322,8 +1322,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
                                 builder.setCancelable(false);
-                                builder.setTitle("Boli ste odlhaseny!!");
-                                builder.setMessage("Vasim telefonym cislom sa prihlasil iny pouzivatel");
+                                builder.setTitle("Boli ste odhlásený!!");
+                                builder.setMessage("Vašim telefónnym číslom sa prihlásil iný používateľ");
 
                                 carId = null;
                                 routeId = null;

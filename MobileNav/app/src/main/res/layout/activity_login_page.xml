@@ -11,8 +11,9 @@
         android:id="@+id/prihlas"
         android:layout_width="159dp"
         android:layout_height="45dp"
+        android:textColor="@color/com_sygic_white"
         android:background="@drawable/button_prihlas"
-        android:text="Prihlas"
+        android:text="Prihlásiť"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +47,7 @@
                 android:id="@+id/textInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Zadajte tel. cislo"
+                android:hint="Zadajte tel. číslo"
                 android:inputType="number" />
         </LinearLayout>
 

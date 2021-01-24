@@ -2,14 +2,14 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <gradient
-        android:startColor="@color/com_sygic_black_a15"
+        android:startColor="#0009ff"
         android:endColor="#0009ff">
 
 
     </gradient>
 
     <corners
-        android:radius="20dp">
+        android:radius="10dp">
 
     </corners>
 

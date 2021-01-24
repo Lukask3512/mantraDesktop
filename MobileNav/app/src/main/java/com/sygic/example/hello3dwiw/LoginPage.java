@@ -133,8 +133,8 @@ public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSe
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
 
                                                 builder.setCancelable(true);
-                                                builder.setTitle("Rozdielny telefon");
-                                                builder.setMessage("Chcete odhlasit predchadzajuci telefon z navigacie?" +
+                                                builder.setTitle("Odhlásenie");
+                                                builder.setMessage("Chcete odhlásiť predchádzajúci telefón z navigácie?" +
                                                         " Prihlásený môže byť len 1 používateľ. ");
 
                                                 builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
