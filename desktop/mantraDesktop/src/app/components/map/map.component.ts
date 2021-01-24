@@ -74,7 +74,7 @@ export class MapComponent {
 
   firstZoomCars = false;
   firstZoomAddress = false;
-  firstZoom = 0;
+
 
   tileLayer = new TileLayer({
     source: new OSM({
@@ -318,12 +318,12 @@ export class MapComponent {
     var vectorNaZobrazenieAllFeatures =  new VectorSource({
       features: this.places.concat(this.cars).concat(this.routes)
     });
+    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+      duration: 800} )
 
-    if (this.firstZoomCars == false || this.firstZoom < 2){
-      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-        duration: 800} )
+    if (this.firstZoomCars == false){
+
       this.firstZoomCars = true;
-      this.firstZoom ++;
     }
 
     }
@@ -517,16 +517,18 @@ export class MapComponent {
       var feature = vectorSource.getFeatures()[0];
       var polygon = feature.getGeometry();
 
-      var vectorNaZobrazenieAllFeatures = new VectorSource({
-        features: this.places.concat(this.cars).concat(this.routes)
-      });
+      setTimeout( () => {
+        var vectorNaZobrazenieAllFeatures = new VectorSource({
+          features: this.places.concat(this.cars).concat(this.routes)
+        });
 
-      if (this.firstZoomAddress == false || this.firstZoom < 2){
-        this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-          duration: 800} )
-        this.firstZoomAddress = true;
-        this.firstZoom ++;
-    }
+        if (this.firstZoomAddress == false){
+          this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+            duration: 800} )
+          this.firstZoomAddress = true;
+        }
+      }, 1500 );
+
 
     }
 
