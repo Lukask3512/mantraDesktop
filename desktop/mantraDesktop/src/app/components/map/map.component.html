@@ -25,10 +25,12 @@
 
       <div class="routes">
         <div class="route" *ngFor="let route of routesToShow">
-          <table id="t01"><h3 *ngIf="route.estimatedTimeArrival != undefined">ETA:  {{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>
+          <table id="t01">
+<!--            <h3 *ngIf="route.estimatedTimeArrival != undefined">ETA:  {{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>-->
               <tr>
               <th><h2> Ciele: </h2><h4 *ngFor="let town of route.nameOfTowns; index as i">{{town}}<br>
-            <span>Stav: {{this.routeStatusService.getStatus(route.status[i])}}</span></h4></th>
+            <span>Stav: {{this.routeStatusService.getStatus(route.status[i])}}</span><br>
+              <span>ETA: {{this.estimatedTimeToLocal(this.route.estimatedTimeArrival[i])}}</span></h4></th>
             </tr>
           </table>
         </div>

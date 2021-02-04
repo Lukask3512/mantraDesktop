@@ -22,6 +22,10 @@ export class RegisterComponent implements OnInit {
   email: string;
   password: string;
 
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+
   user:{ photoUrl?: string; phone: number; createdBy?: string; name: string; id: string; email: string; status: boolean }[];
 
   constructor(
@@ -34,6 +38,14 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.firstFormGroup = this.formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this.formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
+
 
     this.form = this.formBuilder.group({
       firstName: ['', Validators.required],

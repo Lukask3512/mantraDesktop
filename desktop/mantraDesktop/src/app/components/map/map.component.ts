@@ -536,6 +536,9 @@ export class MapComponent {
 
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
+    if (dateUtc == null){
+      return "Neznámy"
+    }
     return date.toLocaleString();
   }
 

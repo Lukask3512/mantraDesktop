@@ -47,6 +47,8 @@ import {NewTransportComponent} from "./components/transportation/new-transport/n
 import {MatRadioModule} from "@angular/material/radio";
 import {RouteLogComponent} from "./components/transportation/route-log/route-log.component";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
     declarations: [
@@ -67,38 +69,40 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         NewTransportComponent,
         RouteLogComponent
     ],
-    imports: [
-        BrowserAnimationsModule,
-        BrowserModule,
-        AppRoutingModule,
-        MatDialogModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireStorageModule,
-        AngularFireDatabaseModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTableModule,
-        MatListModule,
-        MatSortModule,
-        MatSnackBarModule,
-        DragDropModule,
-        FormsModule,
-        BrowserModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        AppRoutingModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
-            libraries: ['places']
-        }),
-        ViewModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatButtonModule,
-        MatRadioModule,
-        MatTooltipModule
-    ],
+  imports: [
+    BrowserAnimationsModule,
+    BrowserModule,
+    AppRoutingModule,
+    MatDialogModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatListModule,
+    MatSortModule,
+    MatSnackBarModule,
+    DragDropModule,
+    FormsModule,
+    BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',
+      libraries: ['places']
+    }),
+    ViewModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    MatRadioModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatStepperModule
+  ],
     exports: [
         MatFormFieldModule,
         MatInputModule,
