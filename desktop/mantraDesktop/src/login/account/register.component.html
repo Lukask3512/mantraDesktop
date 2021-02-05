@@ -14,56 +14,52 @@
 <body>
 <img class="alert" src="./assets/logo/mantralogin.png">
 
+<mat-horizontal-stepper linear>
+  <mat-step>
+
+  </mat-step>
+</mat-horizontal-stepper>
+
 <div id="layoutAuthentication">
   <div id="layoutAuthentication_content">
-<!--    <main>-->
+    <main>
 
-<!--      <div class="container">-->
-<!--        <div class="row justify-content-center">-->
-<!--          <div class="col-lg-5">-->
-<!--            <div class="card shadow-lg border-0 rounded-lg mt-5">-->
-<!--              <div class="card-header"><h3 class="text-center font-weight-normal my-4">Prihlásiť sa</h3></div>-->
-<!--              <div class="card-body">-->
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+              <div class="card-header"><h3 class="text-center font-weight-normal my-4">Prihlásiť sa</h3></div>
+              <div class="card-body">
 
-<!--                  <div class="form-group">-->
-<!--                    <label class="small mb-1" for="inputEmailAddress">Email</label>-->
-<!--                    <input type="text" [(ngModel)]="email" class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Tu vložte e-mail" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />-->
-<!--                  </div>-->
-<!--                  <div class="form-group">-->
-<!--                    <label class="small mb-1" for="inputPassword">Heslo</label>-->
-<!--                    <input type="password" [(ngModel)]="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Tu vložte heslo" />-->
-<!--                  </div>-->
-<!--                  <div class="form-group">-->
-<!--                    <div class="custom-control custom-checkbox">-->
-<!--                      <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">-->
-<!--                     <a (click)="login()" class="btn btn-secondary">Prihlásiť sa</a>      &lt;!&ndash; upravit button &ndash;&gt;-->
-<!--                  </div>-->
+                  <div class="form-group">
+                    <label class="small mb-1" for="inputEmailAddress">Email</label>
+                    <input type="text" [(ngModel)]="email" class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Tu vložte e-mail" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                  </div>
+                  <div class="form-group">
+                    <label class="small mb-1" for="inputPassword">Heslo</label>
+                    <input type="password" [(ngModel)]="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Tu vložte heslo" />
+                  </div>
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                    </div>
+                  </div>
+                  <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                     <a (click)="login()" class="btn btn-secondary">Prihlásiť sa</a>      <!-- upravit button -->
+                  </div>
 
-<!--              </div>-->
-<!--              <div class="card-footer text-center">-->
-<!--                <div class="small"><a href="https://drive.google.com/drive/folders/11h02yREwcdZcCjag4o4iHllyoib0KhQv?fbclid=IwAR0VFciBdFGft4VhnhN4Phq0iMXupN7-W9ysvR3ZFJXj-a3siXk3l3bBav0">Appka na stiahnutie</a></div>-->
+              </div>
+              <div class="card-footer text-center">
+                <div class="small"><a href="https://drive.google.com/drive/folders/11h02yREwcdZcCjag4o4iHllyoib0KhQv?fbclid=IwAR0VFciBdFGft4VhnhN4Phq0iMXupN7-W9ysvR3ZFJXj-a3siXk3l3bBav0">Appka na stiahnutie</a></div>
 
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </main>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
-    <mat-horizontal-stepper>
-      <mat-step label="rit">
-        <p>pro</p>
-      </mat-step>
-      <mat-step label="ri2t">
-        <p>pro</p>
-      </mat-step>
-      <mat-step label="r3it">
-        <p>pro</p>
-      </mat-step>
-    </mat-horizontal-stepper>
+
 
   </div>
 
