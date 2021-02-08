@@ -66,6 +66,7 @@ export class RouteToCarComponent implements OnInit {
         newRouteStatus.push(-1);
       });
         route = {
+          detailsAboutAdresses: [],
           carId: carId,
           createdBy: dispecerId,
           coordinatesOfTownsLat: this.routesLat,
@@ -88,6 +89,7 @@ export class RouteToCarComponent implements OnInit {
         carId2 = car.id
       }
       route = {
+        detailsAboutAdresses: [],
         id: this.routeId,
         carId: carId2,
         createdBy: dispecerId,

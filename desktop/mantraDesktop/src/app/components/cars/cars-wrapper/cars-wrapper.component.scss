@@ -10,21 +10,21 @@
   border-color: inherit;
 }
 .widthColumn{
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
-  position: center;
+  display: flex;
 }
+
 .wrapper{
   display: flex;
   margin: 10px;
   flex-direction: row;
 
 }
+.privesWrapper{
+  margin: 10px;
+}
 
 .carsWrapper{
-  display: flex;
-  flex-direction: column;
+  margin: 10px;
 }
 
 .carWrapper{

@@ -10,7 +10,6 @@ export class AdressesComponent implements OnInit {
 
   latitude: number;
   longitude: number;
-  zoom: number;
   address: string;
   aboutRoute: string = '';
 
@@ -54,7 +53,10 @@ export class AdressesComponent implements OnInit {
           this.longitude = place.geometry.location.lng();
 
           this.addressToDispetcer = place.formatted_address;
-          this.zoom = 12;
+
+          this.placeName.emit(this.addressToDispetcer);
+          this.placeLat.emit(this.latitude);
+          this.placeLon.emit(this.longitude);
 
 
         });
@@ -68,19 +70,18 @@ export class AdressesComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
-        this.zoom = 8;
         this.getAddress(this.latitude, this.longitude);
       });
     }
   }
 
-  add(){
+  resetGoogle(){
 
-    this.placeName.emit(this.addressToDispetcer);
-    this.placeLat.emit(this.latitude);
-    this.placeLon.emit(this.longitude);
-    this.type.emit(this.labelPosition);
-    this.aboutRouteEmitter.emit(this.aboutRoute);
+    // this.placeName.emit(this.addressToDispetcer);
+    // this.placeLat.emit(this.latitude);
+    // this.placeLon.emit(this.longitude);
+    // this.type.emit(this.labelPosition);
+    // this.aboutRouteEmitter.emit(this.aboutRoute);
 
     this.aboutRoute = "";
     this.addTaskValue = "";
@@ -100,7 +101,6 @@ export class AdressesComponent implements OnInit {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
       if (status === 'OK') {
         if (results[0]) {
-          this.zoom = 12;
           this.address = results[0].formatted_address;
         } else {
           window.alert('No results found');

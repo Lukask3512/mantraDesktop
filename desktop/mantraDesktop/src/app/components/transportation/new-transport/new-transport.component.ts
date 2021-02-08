@@ -1,5 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component";
+import {AdressesComponent} from "../../google/adresses/adresses.component";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {AddCarDialogComponent} from "../../dialogs/add-car-dialog/add-car-dialog.component";
@@ -13,6 +14,8 @@ import {RouteStatusService} from "../../../data/route-status.service";
 import {Subject} from "rxjs";
 import Cars from "../../../models/Cars";
 import { jsPDF } from 'jspdf';
+import {FormBuilder, Validators} from "@angular/forms";
+import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 
 
 @Component({
@@ -34,14 +37,50 @@ export class NewTransportComponent implements OnInit {
   car: Cars;
   route: Route;
 
+  latFromGoogle;
+  lonFromGoogle;
+  routeFromGoogle;
+
+  numberOfItems:number;
+  actualItemInForm: number = 0;
+
+  detailAboutRoute: DeatilAboutAdresses[];
+
+  transportForm = this.fb.group({
+   sizeD: ["", Validators.required],
+    sizeV: ["", Validators.required],
+    sizeS: ["", Validators.required],
+    weight: ["", Validators.required],
+    nosnost: ["0"],
+    vyskaNakHrany: ["0", Validators.required],
+    poziciaNakladania: ["nerozhoduje", Validators.required], //0 nerozhoduje, 1 rozhoduje
+    vyskaHrany: ["nerozhoduje", Validators.required],
+    vyskaHranySize: [""],
+
+    stohovatelnost: ["nie", Validators.required],
+    stohoSize: [0],
+
+    zoZadu: false,
+    zBoku: false,
+    zVrchu: false,
+
+  });
+
+  labelPosition: 'Nakladka' | 'Vykladka';
+
+
   change:boolean;
   @ViewChild('child')
   private child: OpenlayerComponent;
 
+  @ViewChild('childGoogle')
+  private childGoogle: AdressesComponent;
+
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
-  constructor(public routeStatus: RouteStatusService, private dialog: MatDialog, private dataService: DataService, private routeService: RouteService) { }
+  constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog, private dataService: DataService, private routeService: RouteService) { }
 
   ngOnInit(): void {
+    this.detailAboutRoute = []
     this.change = false;
     this.routesTowns = [];
     this.routesLon = [];
@@ -117,8 +156,43 @@ export class NewTransportComponent implements OnInit {
   }
 
   getAdress(adress){
+    // this.status.push(-1);
+    // this.routesTowns.push(adress);
+    this.routeFromGoogle = adress;
+
+
+  }
+  getLat(lat){
+    // this.routesLat.push(lat);
+    this.latFromGoogle = lat;
+    console.log("igotit" + lat)
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+  getLon(lon){
+    this.lonFromGoogle= lon;
+    // this.routesLon.push(lon);
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+  getType(type){
+    // this.type.push(type);
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+
+  getAboutRoute(aboutRoute){
+    // this.aboutRoute.push(aboutRoute);
+    console.log(aboutRoute);
+
+    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  }
+
+  add(){
+    this.routesTowns.push(this.routeFromGoogle);
+    this.routesLon.push(this.lonFromGoogle);
+    this.routesLat.push(this.latFromGoogle);
     this.status.push(-1);
-    this.routesTowns.push(adress);
+
+    this.childGoogle.resetGoogle();
+
     this.change = true;
     setTimeout(() =>
       {
@@ -130,24 +204,97 @@ export class NewTransportComponent implements OnInit {
         }
       },
       800);
-  }
-  getLat(lat){
-    this.routesLat.push(lat);
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
-  }
-  getLon(lon){
-    this.routesLon.push(lon);
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
-  }
-  getType(type){
-    this.type.push(type);
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+    this.routeFromGoogle = null;
+    this.latFromGoogle= null;
+    this.lonFromGoogle = null;
+
   }
 
-  getAboutRoute(aboutRoute){
-    this.aboutRoute.push(aboutRoute);
-    console.log(aboutRoute);
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  nextItem(){
+
+    if (this.actualItemInForm ==this.detailAboutRoute.length){
+      this.detailAboutRoute.push(this.getDetail());
+      this.transportForm.reset();
+      this.actualItemInForm ++;
+
+    }else{
+      this.detailAboutRoute[this.actualItemInForm] = this.getDetail();
+      this.transportForm.reset();
+      this.actualItemInForm ++;
+      this.assignToDetail();
+    }
+    console.log(this.detailAboutRoute);
+    console.log(this.actualItemInForm)
+  }
+
+  previousItem(){
+    if (this.actualItemInForm ==this.detailAboutRoute.length){
+      this.detailAboutRoute.push(this.getDetail())
+    }else{
+      this.detailAboutRoute[this.actualItemInForm] = this.getDetail();
+    }
+    this.actualItemInForm --;
+    this.transportForm.reset();
+    this.assignToDetail();
+  }
+
+  saveDetailFormToArray(){
+
+  }
+
+  getDetail(): DeatilAboutAdresses{
+    var stohovatelnost = this.transportForm.get('stohovatelnost').value;
+    if (stohovatelnost == 'nie'){
+      stohovatelnost = 0;
+    }else{
+      stohovatelnost = this.transportForm.get('stohoSize').value;
+    }
+    var vyskaNakHrany;
+    if (this.transportForm.get('vyskaHrany').value == 'rozhoduje'){
+      vyskaNakHrany = this.transportForm.get('vyskaHranySize').value;
+    }else{
+      vyskaNakHrany = -1;
+    }
+
+    return{
+      polohaNakladania: 5,
+      sizeD: this.transportForm.get('sizeD').value,
+      sizeS: this.transportForm.get('sizeS').value,
+      sizeV: this.transportForm.get('sizeV').value,
+      // specRezim: this.transportForm.get(''),
+      stohovatelnost: stohovatelnost,
+      vyskaNaklHrany: vyskaNakHrany,
+      weight: this.transportForm.get('weight').value,
+
+    }
+
+  }
+
+  assignToDetail(){
+    // console.log(this.detailAboutRoute)
+    // console.log(this.detailAboutRoute[this.actualItemInForm].sizeD)
+
+      this.transportForm.controls['sizeD'].setValue(this.detailAboutRoute[this.actualItemInForm].sizeD);
+    this.transportForm.controls['sizeV'].setValue(this.detailAboutRoute[this.actualItemInForm].sizeV);
+    this.transportForm.controls['sizeS'].setValue(this.detailAboutRoute[this.actualItemInForm].sizeS);
+    this.transportForm.controls['weight'].setValue(this.detailAboutRoute[this.actualItemInForm].weight);
+    if (this.detailAboutRoute[this.actualItemInForm].vyskaNaklHrany >= 0){
+      this.transportForm.controls['vyskaHranySize'].setValue(this.detailAboutRoute[this.actualItemInForm].vyskaNaklHrany);
+      this.transportForm.controls['vyskaHrany'].setValue("rozhoduje");
+    }
+    // else{
+    //   this.transportForm.controls['vyskaHrany'].setValue("nerozhoduje");
+    // }
+
+    if (this.detailAboutRoute[this.actualItemInForm].stohovatelnost >= 0){
+      this.transportForm.controls['stohoSize'].setValue(this.detailAboutRoute[this.actualItemInForm].polohaNakladania);
+      this.transportForm.controls['stohovatelnost'].setValue("ano");
+    }
+
+    // this.transportForm.controls[''].setValue(this.detailAboutRoute[this.actualItemInForm].polohaNakladania);
+    // this.transportForm.controls[''].setValue(this.detailAboutRoute[this.actualItemInForm].polohaNakladania);
+    // this.transportForm.controls[''].setValue(this.detailAboutRoute[this.actualItemInForm].polohaNakladania);
+
   }
 
   openAddDialog() {
@@ -255,6 +402,8 @@ export class NewTransportComponent implements OnInit {
     this.change = false;
   }
 
+
+
   deleteTown(routeTown){
     for (let i = 0; i < this.routesTowns.length; i++){
       if (this.routesTowns[i] == routeTown){
@@ -315,5 +464,12 @@ export class NewTransportComponent implements OnInit {
         doc.output("dataurlnewwindow");
       }
     });
+  }
+
+//ked sa nahodov zmensi pole, ale by som ho pohol opopovat
+  sizeUpdate(){
+    // if (this.detailAboutRoute. > this.numberOfItems){
+    //   this.detailAboutRoute[]
+    // }
   }
 }

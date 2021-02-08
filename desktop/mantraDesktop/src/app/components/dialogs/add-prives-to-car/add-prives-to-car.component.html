@@ -1,0 +1,7 @@
+<h1>Pripojiť príves</h1>
+<table class="car" *ngFor="let prives of priveses" >
+  <tr>
+    <th>{{prives.ecv}}</th>
+    <th> <button (click)="addPricesToCar(prives)" class="addButton">+</button></th>
+  </tr>
+</table>

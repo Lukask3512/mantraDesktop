@@ -12,5 +12,6 @@ export default class Route {
   createdAt: number; //timestamps
   finishedAt?: number;
   estimatedTimeArrival?: string;
+  detailsAboutAdresses: string[]; // tu pojdu informacie - velkost, vaha, stohovatelnost, atd...model DetailedTransport
 
 }

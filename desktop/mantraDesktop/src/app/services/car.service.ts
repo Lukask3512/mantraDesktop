@@ -79,4 +79,12 @@ export class CarService {
       return query;
     }).valueChanges();
   }
+
+  updateCar(updateCar, id) {
+      return this.carsCollection.doc(id).update(updateCar);
+  }
+
+  addNavesToCar(updateCar, id) {
+    return this.carsCollection.doc(id).update(updateCar);
+  }
 }

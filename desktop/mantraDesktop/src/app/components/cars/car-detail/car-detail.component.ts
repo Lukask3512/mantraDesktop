@@ -192,6 +192,7 @@ export class CarDetailComponent implements OnInit {
 
 
       const route: Route = {
+        detailsAboutAdresses: [],
         carId: this.car.id,
         createdBy: this.createdById,
         nameOfTowns: this.routesTowns,
@@ -209,6 +210,7 @@ export class CarDetailComponent implements OnInit {
 
 
       const route: Route = {
+        detailsAboutAdresses: [],
         carId: this.car.id,
         createdBy: this.createdById,
         nameOfTowns: this.routesTowns,
@@ -302,6 +304,7 @@ export class CarDetailComponent implements OnInit {
               this.status.splice(i, 1);
               this.aboutRoute.splice(i,1);
               const route: Route = {
+                detailsAboutAdresses: [],
                 carId: this.car.id,
                 createdBy: this.createdById,
                 nameOfTowns: this.routesTowns,

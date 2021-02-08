@@ -1,6 +1,6 @@
 
   <div class="widthColumn" >
-  <div>
+  <div class="carsWrapper">
     <table mat-table [dataSource]="dataSource" matSort class="tabulka">
       <!-- Name Column -->
       <ng-container class="blackHeader" matColumnDef="ecv">
@@ -25,6 +25,23 @@ r
         <td mat-cell *matCellDef="let element"> <button class="button" (click)="sendCar(element)" routerLink="/view/cars/detail">Detail</button> </td>
       </ng-container>
 
+      <ng-container class="tbl-header" matColumnDef="naves">
+        <th mat-header-cell *matHeaderCellDef> Náves </th>
+        <td mat-cell *matCellDef="let element">
+          <button *ngIf="element.naves && element.navesis.length == 0" class="button" (click)="addNaves(element)">Pripojiť</button>
+          <button *ngIf="element.naves && element.navesis.length > 0" class="button" (click)="offNaves(element)">
+            {{this.privesService.getPrivesById(element.navesis[0]).ecv}}
+          </button>
+
+          <p *ngIf="!element.naves">Musíte upraviť vozidlo</p>
+        </td>
+      </ng-container>
+
+      <ng-container class="tbl-header" matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef> Upraviť </th>
+        <td mat-cell *matCellDef="let element"> <button class="button" (click)="updateCar(element)">Upraviť</button>  </td>
+      </ng-container>
+
       <ng-container class="tbl-header" matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
         <td mat-cell *matCellDef="let element"> <img alt="delete" (click)="deleteCar(element)" class="delete" src="./assets/logo/delete.svg"> </td>
@@ -36,24 +53,12 @@ r
 
 <!--    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
     <app-new-car></app-new-car>
-
   </div>
+    <div class="privesWrapper">
+      <app-prives-wrapper></app-prives-wrapper>
+    </div>
 
 
 </div>
 
-  <!--ked to budeme chciet triedit, budeme to musiet spravit podla tohto-->
-  <!--      <tr>-->
-  <!--        <th mat-sort-header="ecv">ECV</th>-->
-  <!--        <th mat-sort-header="phoneNumber">Tel.</th>-->
-  <!--        <th mat-sort-header="status">Status</th>-->
-  <!--&lt;!&ndash;        <th mat-sort-header="carbs">Carbs (g)</th>&ndash;&gt;-->
-  <!--&lt;!&ndash;        <th mat-sort-header="protein">Protein (g)</th>&ndash;&gt;-->
-  <!--      </tr>-->
-
-  <!--      <tr *ngFor="let dessert of sortedData">-->
-  <!--        <td>{{dessert.ecv}}</td>-->
-  <!--        <td>{{dessert.phoneNumber}}</td>-->
-  <!--        <td>{{dessert.status}}</td>-->
-  <!--      </tr>-->
 

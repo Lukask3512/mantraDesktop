@@ -10,6 +10,9 @@ import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-c
 import {RouteStatusService} from "../../../data/route-status.service";
 import {MatSort, Sort} from "@angular/material/sort";
 import {take} from "rxjs/operators";
+import {AddPrivesToCarComponent} from "../../dialogs/add-prives-to-car/add-prives-to-car.component";
+import {PrivesService} from "../../../services/prives.service";
+import {OffNavesDialogComponent} from "../../dialogs/off-naves-dialog/off-naves-dialog.component";
 
 @Component({
   selector: 'app-cars-wrapper',
@@ -18,9 +21,9 @@ import {take} from "rxjs/operators";
 })
 export class CarsWrapperComponent implements OnInit {
   dataSource;
-  displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'detail', 'delete'];
+  displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'detail', 'naves', 'update', 'delete'];
   constructor(private carService: CarService, private dataSerice: DataService, private dialog: MatDialog,
-              public routeStatusService: RouteStatusService) { }
+              public routeStatusService: RouteStatusService, public privesService: PrivesService) { }
   cars;
   sortedData: Cars[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,6 +51,49 @@ export class CarsWrapperComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+  updateCar(car){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = car;
+    const dialogRef = this.dialog.open(AddCarDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
+  }
+
+  offNaves(car){
+    const dialogRef = this.dialog.open(OffNavesDialogComponent, {
+      data: {car: car}
+    });
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
+
+  }
+
+  addNaves(car: Cars){
+
+    const dialogRef = this.dialog.open(AddPrivesToCarComponent, {
+      data: {car: car}
+    });
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
+
+
   }
 
   sendCar(car){

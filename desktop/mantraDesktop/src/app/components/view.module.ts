@@ -22,26 +22,37 @@ import {MatInputModule} from "@angular/material/input";
 import { DeleteRouteComponent } from './dialogs/delete-route/delete-route.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { DeleteDispecerComponent } from './dialogs/delete-dispecer/delete-dispecer.component';
+import { PrivesWrapperComponent } from './privesy/prives-wrapper/prives-wrapper.component';
+import { AddPrivesDialogComponent } from './dialogs/add-prives-dialog/add-prives-dialog.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatStepperModule} from "@angular/material/stepper";
+import { NewPrivesComponent } from './privesy/new-prives/new-prives.component';
+import { AddPrivesToCarComponent } from './dialogs/add-prives-to-car/add-prives-to-car.component';
+import { OffNavesDialogComponent } from './dialogs/off-naves-dialog/off-naves-dialog.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent
     ],
-    exports: [
-        OpenlayerComponent,
-        TheDispecerComponent,
-        FindCarByIdComponent
-    ],
-    imports: [
-        CommonModule,
-        ViewRoutingModule,
-        MatTableModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTooltipModule
-    ]
+  exports: [
+    OpenlayerComponent,
+    TheDispecerComponent,
+    FindCarByIdComponent,
+    NewPrivesComponent,
+    PrivesWrapperComponent
+  ],
+  imports: [
+    CommonModule,
+    ViewRoutingModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatStepperModule
+  ]
 })
 export class ViewModule { }
