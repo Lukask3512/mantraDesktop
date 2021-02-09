@@ -6,6 +6,6 @@ export default class DeatilAboutAdresses {
   weight: number;
   stohovatelnost: number; //ak ano kolko unesie
   vyskaNaklHrany: number;
-  polohaNakladania: number;
+  polohaNakladania: boolean[];
   specRezim?: number;
 }

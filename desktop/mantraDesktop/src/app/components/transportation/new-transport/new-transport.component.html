@@ -10,22 +10,7 @@
 <div class="wrapper">
 
 
-  <div [cdkDropListSortingDisabled]="!checkFinished()"  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>
-      <div class="routeTown">
-        <p>{{routeTown}}
-          <span *ngIf="type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-          <span *ngIf="type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-        </p>
-        <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
-        <img *ngIf=" checkFinished()"  (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
-      </div>
-      <div class="routeTown routeInfo">
-        <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
-        <img *ngIf="checkFinished()" (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
-      </div>
-    </div>
-  </div>
+
 
 <app-adresses #childGoogle *ngIf="checkFinished()"  (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
@@ -42,6 +27,43 @@
     </mat-radio-group>
   </section>
 
+  <h4>Možný dátum príjazdu</h4>
+  <mat-radio-group [(ngModel)]="datumPrichodu">
+    <mat-radio-button class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+    <mat-radio-button class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field appearance="fill" *ngIf="datumPrichodu == 'rozhoduje'">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" [min]="minDate">
+      <input formControlName="start" matStartDate placeholder="Start date">
+      <input formControlName="end" matEndDate placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <h4>Možný čas príjazdu</h4>
+
+  <mat-radio-group [(ngModel)]="casPrichodu">
+    <mat-radio-button class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+    <mat-radio-button class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
+  </mat-radio-group>
+
+  <div *ngIf="casPrichodu == 'rozhoduje'">
+    <mat-form-field class="sizeInput">
+      <mat-label>Časové okno od</mat-label>
+      <input matInput type="time">
+    </mat-form-field>
+
+    <mat-form-field class="sizeInput">
+      <mat-label>Časové okno do</mat-label>
+      <input matInput type="time">
+    </mat-form-field>
+  </div>
+
+
+  <h4>Počet kusov</h4>
   <mat-form-field appearance="standard" >
     <mat-label>Počet kusov</mat-label>
     <input (change)="sizeUpdate()" [(ngModel)]="numberOfItems" min="1" type="number" matInput placeholder="Počet....">
@@ -90,9 +112,11 @@
       <mat-radio-button class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
     </mat-radio-group>
 
-    <mat-checkbox [disabled]="!(this.transportForm.get('poziciaNakladania').value == 'rozhoduje')">Zo zadu</mat-checkbox>
-    <mat-checkbox [disabled]="!(this.transportForm.get('poziciaNakladania').value == 'rozhoduje')">Z boku</mat-checkbox>
-    <mat-checkbox [disabled]="!(this.transportForm.get('poziciaNakladania').value == 'rozhoduje')">Z vrchu</mat-checkbox>
+    <div *ngIf="this.transportForm.get('poziciaNakladania').value == 'rozhoduje'">
+      <mat-checkbox formControlName="fromBackSide">Zo zadu</mat-checkbox>
+      <mat-checkbox formControlName="fromSide">Z boku</mat-checkbox>
+      <mat-checkbox formControlName="fromUpSide">Z vrchu</mat-checkbox>
+    </div>
 
     <h4>Požadovaná výška nakladacej hrany</h4>
 
@@ -125,10 +149,12 @@
 <!--    <mat-checkbox>Chlad</mat-checkbox>-->
 
 
-  </div>
 
     <button [disabled]="!(actualItemInForm + 1 > 1)" (click)="previousItem()">Späť</button>
   <button [disabled]="!(actualItemInForm + 1 < numberOfItems)"  (click)="nextItem()">Ďalej</button>
+
+  </div>
+
   </form>
 
   <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="aboutRoute">
@@ -143,14 +169,33 @@
 
 
 
-  <div class="changeButtons" *ngIf="checkFinished()" >
-    <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
-    <button class="buttonTransport"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrať vozidlo</button>
-    <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>
-  </div>
 
 
 </div>
+
+  <div class="addresses">
+    <div [cdkDropListSortingDisabled]="!checkFinished()"  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>
+        <div class="routeTown">
+          <p>{{routeTown}}
+            <span *ngIf="type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+            <span *ngIf="type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+          </p>
+          <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
+          <img *ngIf=" checkFinished()"  (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
+        </div>
+        <div class="routeTown routeInfo">
+          <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
+          <img *ngIf="checkFinished()" (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
+        </div>
+      </div>
+    </div>
+    <div class="changeButtons" *ngIf="checkFinished()" >
+      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
+      <button class="buttonTransport"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrať vozidlo</button>
+      <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>
+    </div>
+  </div>
   <div class="map">
     <app-openlayer #child></app-openlayer>
   </div>

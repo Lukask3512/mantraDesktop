@@ -15,7 +15,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import 'firebase/storage';
 
 import {MatDialogModule} from '@angular/material/dialog';
-
+import { MatNativeDateModule } from '@angular/material/core';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -50,6 +50,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 @NgModule({
     declarations: [
@@ -82,6 +83,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         MatFormFieldModule,
         MatInputModule,
         MatTableModule,
+      MatNativeDateModule,
         MatListModule,
         MatSortModule,
         MatSnackBarModule,
@@ -103,7 +105,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         MatTooltipModule,
         MatSlideToggleModule,
         MatStepperModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatDatepickerModule
     ],
     exports: [
         MatFormFieldModule,

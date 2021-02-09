@@ -25,6 +25,7 @@ header{
   flex-direction: column;
   flex-grow: 1.5;
   justify-content: center;
+  width: 600px;
 }
 
 .center{
@@ -73,6 +74,11 @@ header{
   background: rgba(191, 191, 191, 0.7);
   font-size: xx-small;
   border-radius: 4px;
+}
+
+.size{
+  border: 2px solid gray;
+  border-radius: 2px;
 }
 
 
