@@ -5,6 +5,10 @@ import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RouteStatusService} from "../../../data/route-status.service";
+import {DetailAboutRouteService} from "../../../services/detail-about-route.service";
+import {CarService} from "../../../services/car.service";
+import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-route-to-car',
@@ -15,7 +19,8 @@ export class RouteToCarComponent implements OnInit {
 
   constructor(private dataService: DataService, private routeService: RouteService
               , @Inject(MAT_DIALOG_DATA) public data: any,
-  public dialogRef: MatDialogRef<RouteToCarComponent>, public routeStatusService: RouteStatusService) { }
+  public dialogRef: MatDialogRef<RouteToCarComponent>, public routeStatusService: RouteStatusService,
+              private detailAboutService: DetailAboutRouteService, private carService: CarService) { }
   cars:Cars[];
 
   routeStatus;
@@ -27,9 +32,14 @@ export class RouteToCarComponent implements OnInit {
   newRoute;
   routeId;
   aboutRoute;
+  detailAboutRoute;
+  detailAboutAddresses = [];
   ngOnInit(): void {
-    this.cars = this.dataService.getAllCars();
-    console.log(this.data)
+    // this.cars = this.dataService.getAllCars();
+    this.carService.cars$.subscribe(cars => {
+      this.cars = cars;
+    });
+
     this.routesTowns = this.data.routesTowns;
     this.routesLat = this.data.routesLat;
     this.routesLon = this.data.routesLon;
@@ -38,11 +48,29 @@ export class RouteToCarComponent implements OnInit {
     this.routeId = this.data.routeId;
     this.routeStatus = this.data.routeStatus;
     this.aboutRoute = this.data.aboutRoute;
+    this.detailAboutRoute = this.data.detailAboutRoute;
+    console.log(this.data);
 
   }
 
+  async saveDetailsFirst(car){
+      for (const [index, route] of this.detailAboutRoute.entries()){
+        const idcko = await this.detailAboutService.createDetail(route[0])
+        await this.detailAboutAddresses.push(idcko);
+      }
+  }
+
+   saveDetailToDatabase(car){
+    this.saveDetailsFirst(car).then(()=>{
+      this.addRouteToCar(car)
+    })
+  }
+
+
+
 
   addRouteToCar(car){
+
     console.log(car)
     var loggedDispecer = this.dataService.getDispecer();
     var dispecerId;
@@ -66,7 +94,7 @@ export class RouteToCarComponent implements OnInit {
         newRouteStatus.push(-1);
       });
         route = {
-          detailsAboutAdresses: [],
+          detailsAboutAdresses: this.detailAboutAddresses,
           carId: carId,
           createdBy: dispecerId,
           coordinatesOfTownsLat: this.routesLat,
@@ -89,7 +117,7 @@ export class RouteToCarComponent implements OnInit {
         carId2 = car.id
       }
       route = {
-        detailsAboutAdresses: [],
+        detailsAboutAdresses: this.detailAboutAddresses,
         id: this.routeId,
         carId: carId2,
         createdBy: dispecerId,

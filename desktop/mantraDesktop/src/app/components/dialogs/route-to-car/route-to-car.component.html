@@ -4,9 +4,11 @@
   <tr>
     <th>{{car.ecv}}</th>
     <th>{{routeStatusService.getStatus(car.status)}}</th>
-   <th> <button (click)="addRouteToCar(car)" class="addButton">+</button></th>
+   <th> <button (click)="saveDetailToDatabase(car)" class="addButton">+</button></th>
   </tr>
 </table>
+
+<!--  <button (click)="saveDetailsFirst()">SkusamDetailUlozit</button>-->
 
 <h1>Uložiť trasu bez priradenia?</h1>
 <button class="save_c" (click)="addRouteToCar(null)">Uložiť</button>

@@ -14,4 +14,13 @@ export default class Route {
   estimatedTimeArrival?: string;
   detailsAboutAdresses: string[]; // tu pojdu informacie - velkost, vaha, stohovatelnost, atd...model DetailedTransport
 
+  //info ked sa vytvara ponuka
+  price?: number;
+  priceFrom?: number[];
+  offerFrom? :string[];
+  forEveryone?: boolean;
+
+  takenBy: string;
+
+
 }

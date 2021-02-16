@@ -28,7 +28,10 @@ import {easeOut} from 'ol/easing';
 import {unByKey} from 'ol/Observable';
 import {getVectorContext} from 'ol/render';
 import {BehaviorSubject} from "rxjs";
-
+import {getDistance} from 'ol/sphere';
+import {getLength} from 'ol/sphere';
+import {toLonLat} from 'ol/proj';
+import {transform} from 'ol/proj';
 
 @Component({
   selector: 'app-map',
@@ -139,11 +142,16 @@ export class MapComponent {
         }
 
         else if(type == "town"){
+          console.log(feature.getGeometry())
           this.zoomToAddressOrCar(feature)
           this.onClickFindInfoAdress(feature.get('name'))
         }
         else if(type == "route"){
           this.zoomToRoute(feature)
+          console.log(feature.getGeometry())
+          // console.log(feature.getGeometry())
+          this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
+          // this.countDistance(feature.getGeometry(), [48.896324, 19.267890])
           this.onClickFindInfoAdress(feature.get('name'))
         }
         // $(element).popover('show');
@@ -155,6 +163,8 @@ export class MapComponent {
     this.checkFeatureUnderMouse(); //pointer
     },
       200);
+
+    this.countDistance([48.920836,19.180706], [48.920779,19.180593])
   }
 //ak kliknem na auto
   onClickFindInfo(id){
@@ -586,8 +596,6 @@ export class MapComponent {
   }
 
   zoomToRoute(address){
-    console.log(address)
-    console.log(address.getGeometry().getExtent())
     var celaCesta = address.getGeometry().getExtent()
 
     this.view.fit(celaCesta, {padding: [100,100,100,100],
@@ -605,6 +613,21 @@ export class MapComponent {
       ktoruFarbu = index;
       return this.colors[ktoruFarbu]
     }
+  }
+
+  //hodim lat lon od do a vrati mi dlzku v metroch
+  countDistance(from, to){
+    from.forEach(array => {
+      // console.log(array[0].toFixed(2));
+      // console.log(array[1].toFixed(2));
+
+      var pole = transform(array, 'EPSG:3857', 'EPSG:4326');
+      // console.log(toLonLat(pole))
+      let distance = getDistance(pole, to);
+      if (distance < 2000){
+        console.log(distance)
+      }
+    })
   }
 
 }

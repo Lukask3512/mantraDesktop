@@ -1,11 +1,13 @@
 export default class DeatilAboutAdresses {
   id?: string;
-  sizeV: number;
-  sizeS: number;
-  sizeD: number;
-  weight: number;
-  stohovatelnost: number; //ak ano kolko unesie
-  vyskaNaklHrany: number;
-  polohaNakladania: boolean[];
-  specRezim?: number;
+  routeId: string;
+  indexInRoute: number[];
+  sizeV: number[];
+  sizeS: number[];
+  sizeD: number[];
+  weight: number[];
+  stohovatelnost: number[]; //ak ano kolko unesie
+  vyskaNaklHrany: number[];
+  polohaNakladania: string[];
+  specRezim?: number[];
 }
