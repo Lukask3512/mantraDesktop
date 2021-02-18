@@ -32,6 +32,7 @@ import {getDistance} from 'ol/sphere';
 import {getLength} from 'ol/sphere';
 import {toLonLat} from 'ol/proj';
 import {transform} from 'ol/proj';
+import {OfferRouteService} from "../../services/offer-route.service";
 
 @Component({
   selector: 'app-map',
@@ -88,7 +89,7 @@ export class MapComponent {
   view;
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog, private offerRouteService: OfferRouteService) { }
 
 
   ngAfterViewInit(): void {
@@ -629,6 +630,8 @@ export class MapComponent {
       }
     })
   }
+
+
 
 }
 

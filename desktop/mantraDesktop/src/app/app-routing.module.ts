@@ -11,6 +11,8 @@ import {RegisterComponent} from "../login/account/register.component";
 import {AuthGuard} from "../login/_helpers/auth.guard";
 import {TransportationWrapperComponent} from "./components/transportation/transportation-wrapper/transportation-wrapper.component";
 import {NewTransportComponent} from "./components/transportation/new-transport/new-transport.component";
+import {WrapperComponent} from "./components/transportation/offer/wrapper/wrapper.component";
+import {DetailComponent} from "./components/transportation/offer/detail/detail.component";
 
 
 
@@ -55,6 +57,20 @@ const routes: Routes = [
     children: [{
       path: 'newRoute',
       component: NewTransportComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
+    children: [{
+      path: 'offerRoute',
+      component: WrapperComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
+    children: [{
+      path: 'offerDetail',
+      component: DetailComponent
     }]
   },
 

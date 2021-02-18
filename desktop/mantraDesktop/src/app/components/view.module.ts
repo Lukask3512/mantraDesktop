@@ -29,19 +29,25 @@ import {MatStepperModule} from "@angular/material/stepper";
 import { NewPrivesComponent } from './privesy/new-prives/new-prives.component';
 import { AddPrivesToCarComponent } from './dialogs/add-prives-to-car/add-prives-to-car.component';
 import { OffNavesDialogComponent } from './dialogs/off-naves-dialog/off-naves-dialog.component';
+import { DragAndDropListComponent } from './transportation/drag-and-drop-list/drag-and-drop-list.component';
+import { WrapperComponent } from './transportation/offer/wrapper/wrapper.component';
+import { DetailComponent } from './transportation/offer/detail/detail.component';
+import { OfferToRouteComponent } from './transportation/offer/offer-to-route/offer-to-route.component';
+import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/drag-drop-offer.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent
     ],
-  exports: [
-    OpenlayerComponent,
-    TheDispecerComponent,
-    FindCarByIdComponent,
-    NewPrivesComponent,
-    PrivesWrapperComponent
-  ],
+    exports: [
+        OpenlayerComponent,
+        TheDispecerComponent,
+        FindCarByIdComponent,
+        NewPrivesComponent,
+        PrivesWrapperComponent,
+        DragAndDropListComponent
+    ],
   imports: [
     CommonModule,
     ViewRoutingModule,
@@ -52,7 +58,8 @@ import { OffNavesDialogComponent } from './dialogs/off-naves-dialog/off-naves-di
     MatInputModule,
     MatTooltipModule,
     MatSlideToggleModule,
-    MatStepperModule
+    MatStepperModule,
+    DragDropModule
   ]
 })
 export class ViewModule { }

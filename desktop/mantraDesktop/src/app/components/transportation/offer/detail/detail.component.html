@@ -1,0 +1,46 @@
+<header>
+  <div *ngIf="this.route.takenBy == getDispecerId()" class="input">
+    <h4>
+      Ponuka priradená za <h5>{{this.route.price}}</h5>
+    </h4>
+    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
+  </div>
+</header>
+<div class="wrapper">
+
+    <app-drag-and-drop-list *ngIf="this.route.takenBy !== getDispecerId()" [route]="this.route" ></app-drag-and-drop-list>
+  <div>
+    <app-offer-to-route [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>
+  </div>
+
+
+  <div *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()" class="input">
+    <h4 *ngIf="this.offer">
+      Vaša ponuka {{this.offer}}
+    </h4>
+    <input *ngIf="this.route.ponuknuteTo !== getDispecerId()"  [(ngModel)]="price">
+    <button *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">Pridat ponuku</button>
+
+    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
+    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
+  </div>
+
+  <div *ngIf="createdBy() && this.route.takenBy !== getDispecerId()" class="input">
+    <h4>
+      Ponuky
+    </h4>
+    <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">
+      <h5>{{offer}}</h5>
+      <h5>{{this.route.priceFrom[i]}}</h5>
+      <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
+    </div>
+    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
+  </div>
+
+
+
+
+  <div class="map">
+    <app-openlayer #child></app-openlayer>
+  </div>
+</div>

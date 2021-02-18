@@ -55,6 +55,7 @@ export class OpenlayerComponent {
 
 
   notifyMe(lat, lon, car, route){
+    console.log(lat , lon, car , route)
     if (lat != undefined) {
       this.addMarker(lat, lon, car);
     }
@@ -158,7 +159,7 @@ export class OpenlayerComponent {
       this.places.push(this.coordinatesFeature);
     }
 
-    if (car !== undefined && car.lattitude != undefined){
+    if (car !==null && car !== undefined && car.lattitude != undefined){
       this.carFromDetail = car
       var carFeature1 = new Feature({
         geometry: new Point(fromLonLat([car.longtitude, car.lattitude])),

@@ -20,7 +20,7 @@ export default class Route {
   offerFrom? :string[];
   forEveryone?: boolean;
 
-  takenBy: string;
-
+  takenBy?: string;
+  ponuknuteTo?: string;
 
 }

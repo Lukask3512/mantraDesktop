@@ -1,4 +1,4 @@
-export class OneDetailRoute {
+export default class OneDetailRoute {
   polohaNakladania: string;
   sizeS: number;
   sizeV: number;

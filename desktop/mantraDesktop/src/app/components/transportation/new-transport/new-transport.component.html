@@ -14,9 +14,7 @@
 
 <app-adresses #childGoogle *ngIf="checkFinished()"  (placeName)="getAdress($event)"
               (placeLat)="getLat($event)"
-              (placeLon)="getLon($event)"
-              (type)="getType($event)"
-              (aboutRouteEmitter)="getAboutRoute($event)">
+              (placeLon)="getLon($event)">
 </app-adresses>
 
 <div>
@@ -157,7 +155,7 @@
 
   </form>
 
-  <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="aboutRoute">
+  <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="infoAboutRoute">
 
   <div class="addButton">
     <button class="buttonG" [disabled]="!labelPosition" (click)="add()">Pridať +</button>
@@ -174,26 +172,11 @@
 </div>
 
   <div class="addresses">
-    <div [cdkDropListSortingDisabled]="!checkFinished()"  cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let routeTown of routesTowns let i = index" cdkDrag>
-        <div class="routeTown" (click)="updateDetailOnTown(i)">
-          <p>{{routeTown}}
-            <span *ngIf="type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-            <span *ngIf="type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-          </p>
-          <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
-          <img *ngIf=" checkFinished()"  (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
-        </div>
-        <div class="routeTown routeInfo">
-          <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
-          <img *ngIf="checkFinished()" (click)="editInfo(aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
-        </div>
-      </div>
-    </div>
+    <app-drag-and-drop-list [route]="this.route" (outputRoute)="onDropListChange($event)"></app-drag-and-drop-list>
     <div class="changeButtons" *ngIf="checkFinished()" >
       <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
-      <button class="buttonTransport"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Vybrať vozidlo</button>
-<!--      <button class="buttonTransport"  *ngIf="carId == null" [disabled]="routesTowns.length <= 0 || routesTowns == null" (click)="openAddDialog()">Poúktnuť spoločnostiam</button>-->
+      <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined" [disabled]="this.route.nameOfTowns.length <= 0 || this.route.nameOfTowns == null" (click)="openAddDialog()">Vybrať vozidlo</button>
+      <button class="buttonTransport"  *ngIf="carId == null" [disabled]="this.route.nameOfTowns.length <= 0 || this.route.nameOfTowns == null" (click)="sendToAllDispecers()">Poúktnuť spoločnostiam</button>
       <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>
     </div>
   </div>

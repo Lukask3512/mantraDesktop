@@ -24,39 +24,26 @@ export class RouteToCarComponent implements OnInit {
   cars:Cars[];
 
   routeStatus;
-
-  routesTowns;
-  routesLat;
-  routesLon;
-  type;
+  route: Route;
   newRoute;
   routeId;
-  aboutRoute;
   detailAboutRoute;
-  detailAboutAddresses = [];
   ngOnInit(): void {
     // this.cars = this.dataService.getAllCars();
     this.carService.cars$.subscribe(cars => {
       this.cars = cars;
     });
-
-    this.routesTowns = this.data.routesTowns;
-    this.routesLat = this.data.routesLat;
-    this.routesLon = this.data.routesLon;
-    this.type = this.data.routesType;
     this.newRoute = this.data.newRoute;
-    this.routeId = this.data.routeId;
-    this.routeStatus = this.data.routeStatus;
-    this.aboutRoute = this.data.aboutRoute;
+    this.route = this.data.route;
     this.detailAboutRoute = this.data.detailAboutRoute;
-    console.log(this.data);
-
   }
 
   async saveDetailsFirst(car){
+    console.log(this.route.detailsAboutAdresses)
       for (const [index, route] of this.detailAboutRoute.entries()){
+        console.log(route)
         const idcko = await this.detailAboutService.createDetail(route[0])
-        await this.detailAboutAddresses.push(idcko);
+        await this.route.detailsAboutAdresses.push(idcko);
       }
   }
 
@@ -71,7 +58,7 @@ export class RouteToCarComponent implements OnInit {
 
   addRouteToCar(car){
 
-    console.log(car)
+    console.log(this.route)
     var loggedDispecer = this.dataService.getDispecer();
     var dispecerId;
     if (loggedDispecer.createdBy == 'master'){
@@ -90,20 +77,20 @@ export class RouteToCarComponent implements OnInit {
         carId = car.id
       }
       var newRouteStatus = []
-      this.routeStatus.forEach(route => {
+      this.route.status.forEach(route => {
         newRouteStatus.push(-1);
       });
         route = {
-          detailsAboutAdresses: this.detailAboutAddresses,
+          detailsAboutAdresses: this.route.detailsAboutAdresses,
           carId: carId,
           createdBy: dispecerId,
-          coordinatesOfTownsLat: this.routesLat,
-          coordinatesOfTownsLon: this.routesLon,
+          coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
+          coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
           finished: false,
-          nameOfTowns: this.routesTowns,
+          nameOfTowns: this.route.nameOfTowns,
           status: newRouteStatus,
-          type: this.type,
-          aboutRoute: this.aboutRoute,
+          type: this.route.type,
+          aboutRoute: this.route.aboutRoute,
           createdAt: (Date.now())
       }
       this.routeService.createRoute(route);
@@ -117,17 +104,17 @@ export class RouteToCarComponent implements OnInit {
         carId2 = car.id
       }
       route = {
-        detailsAboutAdresses: this.detailAboutAddresses,
+        detailsAboutAdresses: this.route.detailsAboutAdresses,
         id: this.routeId,
         carId: carId2,
         createdBy: dispecerId,
-        coordinatesOfTownsLat: this.routesLat,
-        coordinatesOfTownsLon: this.routesLon,
+        coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
+        coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
         finished: false,
-        nameOfTowns: this.routesTowns,
-        status: this.routeStatus,
-        type: this.type,
-        aboutRoute: this.aboutRoute,
+        nameOfTowns: this.route.nameOfTowns,
+        status: this.route.status,
+        type: this.route.type,
+        aboutRoute: this.route.aboutRoute,
         createdAt: (Date.now())
       }
       this.routeService.updateRoute(route);

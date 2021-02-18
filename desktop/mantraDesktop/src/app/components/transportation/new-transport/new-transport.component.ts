@@ -18,7 +18,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 
 import {DetailAboutRouteService} from "../../../services/detail-about-route.service";
-import {OneDetailRoute} from "../../../models/OneDetailRoute";
+import OneDetailRoute from "../../../models/OneDetailRoute";
 
 
 
@@ -30,13 +30,6 @@ import {OneDetailRoute} from "../../../models/OneDetailRoute";
 export class NewTransportComponent implements OnInit {
   //aby log sledoval zmeny ak zmenim trasu
   parentSubject:Subject<any> = new Subject();
-
-  routesTowns: string[] = [];
-  routesLat: string[] = [];
-  routesLon: string[] = [];
-  type: string[] = [];
-  status: number[]= [];
-  aboutRoute: string[] = [];
   carId: string;
   car: Cars;
   route: Route;
@@ -44,11 +37,12 @@ export class NewTransportComponent implements OnInit {
   latFromGoogle;
   lonFromGoogle;
   routeFromGoogle;
+  infoAboutRoute: string = "";
 
   numberOfItems:number = 1;
   actualItemInForm: number = 0;
 
-  detailAboutRoute: DeatilAboutAdresses[]; //detail ohladom 1 nakladky/vykladky... kde moze byt viacej ks
+  detailAboutRoute: any[]; //detail ohladom 1 nakladky/vykladky... kde moze byt viacej ks
   oneDetailAboutRoute: DeatilAboutAdresses;
   arrayOfDetailsAbRoute: any[] = [];
 
@@ -67,6 +61,7 @@ export class NewTransportComponent implements OnInit {
     vyskaHranySize: [""],
     stohovatelnost: ["nie", Validators.required],
     stohoSize: [0],
+
 
     zoZadu: false,
     zBoku: false,
@@ -110,28 +105,41 @@ export class NewTransportComponent implements OnInit {
               private detailAboutService: DetailAboutRouteService) { }
 
   ngOnInit(): void {
+    var loggedDispecer = this.dataService.getDispecer();
+    var dispecerId;
+    if (loggedDispecer.createdBy == 'master'){
+      dispecerId = loggedDispecer.id
+    }else {
+      dispecerId = loggedDispecer.createdBy;
+    }
+    this.route = {
+      aboutRoute: [],
+      carId: "",
+      coordinatesOfTownsLat: [],
+      coordinatesOfTownsLon: [],
+      createdAt: 0,
+      createdBy: dispecerId,
+      detailsAboutAdresses: [],
+      finished: false,
+      forEveryone: false,
+      id: null,
+      nameOfTowns: [],
+      offerFrom: [],
+      price: 0,
+      priceFrom: [],
+      status: [],
+      takenBy: "",
+      type: [],
+      ponuknuteTo: "",
+    }
     this.minDate = new Date();
     this.detailAboutRoute = []
     this.change = false;
-    this.routesTowns = [];
-    this.routesLon = [];
-    this.routesLat = [];
-    this.type = [];
-    this.status = [];
     this.carId = null;
     this.dataService.currentRoute.pipe(take(1)).subscribe(route => {
       console.log(route);
       if (route != null){
         this.route = route;
-
-        this.routesTowns = this.route.nameOfTowns;
-        this.routesLon = this.route.coordinatesOfTownsLon;
-        this.routesLat = this.route.coordinatesOfTownsLat;
-        this.type = this.route.type;
-        this.carId = this.route.carId;
-        this.status = this.route.status;
-        this.aboutRoute = this.route.aboutRoute;
-        this.arrayOfStringOfDetails = this.route.detailsAboutAdresses;
         this.getDetails();
 
         if (this.carId != undefined || this.carId != null){
@@ -141,7 +149,7 @@ export class NewTransportComponent implements OnInit {
             {
 
               this.notifyChildren(this.route.id);
-              this.child.notifyMe(this.routesLat, this.routesLon,  this.dataService.getOneCarById(this.carId), this.route);
+              this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon,  this.dataService.getOneCarById(this.carId), this.route);
             },
             800);
         }else{
@@ -158,23 +166,18 @@ export class NewTransportComponent implements OnInit {
     })
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.type, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.status, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.arrayOfStringOfDetails, event.previousIndex, event.currentIndex)
 
+  onDropListChange(changedRoute: Route){
+    this.route = changedRoute;
+    console.log(this.route)
     setTimeout(() =>
       {
         if (this.carId != undefined || this.carId !=  null){
-          this.child.notifyMe(this.routesLat, this.routesLon,  this.dataService.getOneCarById(this.carId), this.route);
+          this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon,  this.dataService.getOneCarById(this.carId), this.route);
 
         }
         else{
-          this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+          this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon,undefined, this.route);
 
         }
       },
@@ -183,17 +186,11 @@ export class NewTransportComponent implements OnInit {
     this.change = true;
   }
 
-  notifyChildren(routeId) {
-    console.log("somodoslal")
-    this.parentSubject.next(routeId);
-  }
 
   getAdress(adress){
     // this.status.push(-1);
     // this.routesTowns.push(adress);
     this.routeFromGoogle = adress;
-
-
   }
   getLat(lat){
     // this.routesLat.push(lat);
@@ -206,20 +203,15 @@ export class NewTransportComponent implements OnInit {
     // this.routesLon.push(lon);
     // this.child.notifyMe(this.routesLat, this.routesLon, null);
   }
-  getType(type){
-    // this.type.push(type);
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
-  }
 
-  getAboutRoute(aboutRoute){
-    // this.aboutRoute.push(aboutRoute);
-    console.log(aboutRoute);
 
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+  notifyChildren(routeId) {
+    console.log("somodoslal")
+    this.parentSubject.next(routeId);
   }
 
   async getDetails(){
-    for (const route of this.arrayOfStringOfDetails){
+    for (const route of this.route.detailsAboutAdresses){
       await this.detailAboutService.getOneDetail(route).pipe(take(1)).subscribe(oneDetail => {
 
           this.arrayOfDetailsAbRoute.push(oneDetail);
@@ -239,11 +231,16 @@ export class NewTransportComponent implements OnInit {
 
   add(){
     this.pushItemsToArray(0, this.actualItemInForm)
-    this.routesTowns.push(this.routeFromGoogle);
-    this.routesLon.push(this.lonFromGoogle);
-    this.routesLat.push(this.latFromGoogle);
-    this.type.push(this.labelPosition);
-    this.status.push(-1);
+    console.log(this.routeFromGoogle)
+    console.log(this.route)
+
+    this.route.nameOfTowns.push(this.routeFromGoogle);
+    this.route.coordinatesOfTownsLon.push(this.lonFromGoogle);
+    this.route.coordinatesOfTownsLat.push(this.latFromGoogle);
+    this.route.type.push(this.labelPosition);
+    this.route.aboutRoute.push(this.infoAboutRoute);
+    this.infoAboutRoute = "";
+    this.route.status.push(-1);
 
     this.childGoogle.resetGoogle();
     this.labelPosition = undefined;
@@ -262,9 +259,9 @@ export class NewTransportComponent implements OnInit {
     setTimeout(() =>
       {
         if (this.car == undefined){
-          this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
+          this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon,undefined, this.route);
         }else{
-          this.child.notifyMe(this.routesLat, this.routesLon,this.dataService.getOneCarById(this.carId), this.route);
+          this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon,this.dataService.getOneCarById(this.carId), this.route);
 
         }
       },
@@ -290,7 +287,6 @@ export class NewTransportComponent implements OnInit {
     }
 
   }
-
   pushItemsToArray(indexOfAddresses, indexOfPackage){
     console.log(this.getDetail());
     console.log(this.detailAboutRoute)
@@ -364,8 +360,8 @@ export class NewTransportComponent implements OnInit {
   saveDetailFormToArray(){
 
   }
-
-  getDetail(): OneDetailRoute{
+  //: OneDetailRoute toto tam bolo
+  getDetail(){
     var stohovatelnost = this.transportForm.get('stohovatelnost').value;
     if (stohovatelnost == 'nie'){
       stohovatelnost = 0;
@@ -463,73 +459,118 @@ export class NewTransportComponent implements OnInit {
   openAddDialog() {
     const dialogConfig = new MatDialogConfig();
 
-    if (this.route == undefined){
+    if (this.route.id == undefined){
       dialogConfig.data = {
         carId: this.carId,
-        routesTowns: this.routesTowns,
-        routesLat: this.routesLat,
-        routesLon: this.routesLon,
-        routesType: this.type,
-        routeStatus: this.status,
-        aboutRoute: this.aboutRoute,
+        route: this.route,
+        newRoute: true,
         detailAboutRoute: this.arrayOfDetailsAbRoute,
-        newRoute: true
       };
     }
 
     else if (this.route.id == null) {
       dialogConfig.data = {
         carId: this.carId,
-        routesTowns: this.routesTowns,
-        routesLat: this.routesLat,
-        routesLon: this.routesLon,
-        routesType: this.type,
-        routeStatus: this.status,
-        aboutRoute: this.aboutRoute,
-        newRoute: true
+        route: this.route,
+        newRoute: true,
+        detailAboutRoute: this.arrayOfDetailsAbRoute,
       };
     }else{
       dialogConfig.data = {
-        routesTowns: this.routesTowns,
-        routesLat: this.routesLat,
-        routesLon: this.routesLon,
-        routesType: this.type,
-        routeId: this.route.id,
-        routeStatus: this.status,
-        aboutRoute: this.aboutRoute,
-        newRoute: false
+        route: this.route,
+        newRoute: false,
+        detailAboutRoute: this.arrayOfDetailsAbRoute,
       };
     }
 
-    console.log(this.status)
 
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;
       }else if (value.event == true) {
-          this.routesTowns = [];
-          this.routesLon = [];
-          this.routesLat = [];
-          this.type = [];
-          this.status = []
-          this.aboutRoute = [];
+        var loggedDispecer = this.dataService.getDispecer();
+        var dispecerId;
+        if (loggedDispecer.createdBy == 'master'){
+          dispecerId = loggedDispecer.id
+        }else {
+          dispecerId = loggedDispecer.createdBy;
+        }
+          this.route = {
+            aboutRoute: [],
+            carId: "",
+            coordinatesOfTownsLat: [],
+            coordinatesOfTownsLon: [],
+            createdAt: 0,
+            createdBy: dispecerId,
+            detailsAboutAdresses: [],
+            estimatedTimeArrival: "",
+            finished: false,
+            finishedAt: 0,
+            forEveryone: false,
+            id: null,
+            nameOfTowns: [],
+            offerFrom: [],
+            price: 0,
+            priceFrom: [],
+            status: [],
+            takenBy: "",
+            type: [],
+            ponuknuteTo: "",
+
+          };
         this.change = false;
       }
     });
   }
 
+  sendToAllDispecers(){
+    this.route.forEveryone = true;
+    this.saveDetailsFirst().then(() =>{
+      this.routeService.createRoute(this.route);
+      var loggedDispecer = this.dataService.getDispecer();
+      var dispecerId;
+      if (loggedDispecer.createdBy == 'master'){
+        dispecerId = loggedDispecer.id
+      }else {
+        dispecerId = loggedDispecer.createdBy;
+      }
+      this.route = {
+        aboutRoute: [],
+        carId: "",
+        coordinatesOfTownsLat: [],
+        coordinatesOfTownsLon: [],
+        createdAt: 0,
+        createdBy: dispecerId,
+        detailsAboutAdresses: [],
+        finished: false,
+        forEveryone: false,
+        nameOfTowns: [],
+        offerFrom: [],
+        price: 0,
+        priceFrom: [],
+        status: [],
+        takenBy: "",
+        type: [],
+        ponuknuteTo: "",
+      }
+    })
+
+  }
+
+  async saveDetailsFirst(){
+    console.log(this.route.detailsAboutAdresses)
+    for (const [index, route] of this.arrayOfDetailsAbRoute.entries()){
+      console.log(route)
+      const idcko = await this.detailAboutService.createDetail(route[0])
+      await this.route.detailsAboutAdresses.push(idcko);
+    }
+  }
 
   openAddDialogChangeCar() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      routesTowns: this.routesTowns,
-      routesLat: this.routesLat,
-      routesLon: this.routesLon,
-      routesType: this.type,
-      routeId: this.route.id,
-      routeStatus: this.status,
-      aboutRoute: this.aboutRoute,
+      route: this.route,
       newRoute: false
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
@@ -550,14 +591,7 @@ export class NewTransportComponent implements OnInit {
       const route = {
         // carId: this.carId,
         // createdBy: this.createdById,
-        nameOfTowns: this.routesTowns,
-        coordinatesOfTownsLat: this.routesLat,
-        coordinatesOfTownsLon: this.routesLon,
-        id: this.route.id,
-        status: this.status,
-        type: this.type,
-        aboutRoute: this.aboutRoute,
-        // finished: false,
+        route: this.route,
         createdAt: (Date.now()/1000)
       };
       console.log(route);
@@ -566,47 +600,6 @@ export class NewTransportComponent implements OnInit {
     this.change = false;
   }
 
-
-
-  deleteTown(routeTown){
-    for (let i = 0; i < this.routesTowns.length; i++){
-      if (this.routesTowns[i] == routeTown){
-        this.routesTowns.splice(i,1);
-        this.routesLon.splice(i,1);
-        this.routesLat.splice(i,1);
-        this.type.splice(i,1);
-        this.status.splice(i, 1);
-        this.aboutRoute.splice(i,1);
-        setTimeout(() =>
-          {
-            this.child.notifyMe(this.routesLat, this.routesLon,undefined, this.route);
-          },
-          800);
-      }
-    }
-    this.change = true;
-  }
-
-  editInfo(routeInfo, id){
-    const dialogRef = this.dialog.open(EditInfoComponent, {
-      data: {routeInfo: routeInfo }
-    });
-    console.log(routeInfo)
-    dialogRef.afterClosed().subscribe(value => {
-
-      if (value.routeInfo !== undefined){
-        this.aboutRoute[id] = value.routeInfo;
-        this.change = true;
-      }else {
-        return;
-      }
-    });
-  }
-
-  estimatedTimeToLocal(dateUtc){
-    var date = (new Date(dateUtc));
-    return date.toLocaleString();
-  }
 
   checkFinished(){
     if (this.route !== undefined && this.route.finished){
@@ -618,16 +611,9 @@ export class NewTransportComponent implements OnInit {
     }
   }
 
-  downloadAsPDF(){
-    const DATA = this.pdfTable.nativeElement;
-
-    const doc: jsPDF = new jsPDF("p", "mm", "a4");
-
-    doc.html(DATA, {
-      callback: (doc) => {
-        doc.output("dataurlnewwindow");
-      }
-    });
+  estimatedTimeToLocal(dateUtc){
+    var date = (new Date(dateUtc));
+    return date.toLocaleString();
   }
 
 //ked sa nahodov zmensi pole, ale by som ho pohol opopovat
