@@ -1,7 +1,13 @@
 <div  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2">
-  <div class="example-box" *ngFor="let routeTown of this.route.nameOfTowns let i = index" cdkDrag>
-    <div class="routeTown">
+  <div class="example-box" *ngFor="let routeTown of this.route.nameOfTowns; let i = index" cdkDrag>
+    <div (click)="sendTown(i)" *ngIf="this.arrayOfDetail != undefined" class="bednaWrapper">
+      <div  class="bedna" *ngFor="let detail of this.arrayOfDetail[i].sizeS; let indexik = index">
+        <span class="numberOfBedna">{{indexik + 1}}</span>
+      </div>
+    </div>
+
+    <div class="routeTown" (click)="sendTown(i)">
       <p>{{routeTown}}
         <span *ngIf="this.route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
         <span *ngIf="this.route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>

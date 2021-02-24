@@ -3,8 +3,11 @@ import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firest
 import Dispecer from "../models/Dispecer";
 import {BehaviorSubject, Observable} from "rxjs";
 import {DataService} from "../data/data.service";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import Cars from "../models/Cars";
+import DeatilAboutAdresses from "../models/DeatilAboutAdresses";
+import {RouteService} from "./route.service";
+import {OfferRouteService} from "./offer-route.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +17,49 @@ export class DetailAboutRouteService {
   private details: Observable<Dispecer[]>;
   detailsCollectionRef: AngularFirestoreCollection<Dispecer>;
 
-  constructor(private afs: AngularFirestore, private dataService: DataService) {
+  constructor(private afs: AngularFirestore, private dataService: DataService, private routeService: RouteService,
+              private offerService: OfferRouteService) {
     this.detailCollection = this.afs.collection<any>('detailRoute');
 
     this.getDetails().subscribe(res => {
       this._details.next(res);
+    });
+
+    this.routeService.routes$.subscribe(routes => {
+      var poleDetailikov = [];
+      routes.forEach(route => {
+        route.detailsAboutAdresses.forEach(idDetail => {
+          this.getOneDetail(idDetail).pipe(take(1)).subscribe(detailik => {
+            // @ts-ignore
+            poleDetailikov.push({...detailik, id: idDetail});
+            this._details.next(poleDetailikov);
+
+          })
+        })
+      })
+    })
+
+    this.offerService.routes$.subscribe(routes => {
+      var poleDetailikov = [];
+      routes.forEach(route => {
+        route.detailsAboutAdresses.forEach(idDetail => {
+          this.getOneDetail(idDetail).pipe(take(1)).subscribe(detailik => {
+            // @ts-ignore
+            poleDetailikov.push({...detailik, id: idDetail});
+            this._offerDetails.next(poleDetailikov);
+
+          })
+        })
+      })
     })
 
   }
 
+  private _offerDetails = new BehaviorSubject<any>([]);
+  readonly offerDetails$ = this._offerDetails.asObservable();
+
   private _details = new BehaviorSubject<any>([]);
-  readonly details$ = this._details.asObservable();
+  readonly myDetails$ = this._details.asObservable();
 
   getDetails() {
     var createdBy;
@@ -82,7 +117,7 @@ export class DetailAboutRouteService {
     }).valueChanges();
   }
 
-  updateCar(updateCar, id) {
+  updateDetail(updateCar, id) {
     return this.detailCollection.doc(id).update(updateCar);
   }
 }

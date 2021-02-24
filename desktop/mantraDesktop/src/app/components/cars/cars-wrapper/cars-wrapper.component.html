@@ -29,7 +29,7 @@ r
         <th mat-header-cell *matHeaderCellDef> Náves </th>
         <td mat-cell *matCellDef="let element">
           <button *ngIf="element.naves && element.navesis.length == 0" class="button" (click)="addNaves(element)">Pripojiť</button>
-          <button *ngIf="element.naves && element.navesis.length > 0" class="button" (click)="offNaves(element)">
+          <button *ngIf="element.navesis[0] != undefined && element.naves && element.navesis.length > 0" class="button" (click)="offNaves(element)">
             {{this.privesService.getPrivesById(element.navesis[0]).ecv}}
           </button>
 

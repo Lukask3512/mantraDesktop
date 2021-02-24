@@ -7,6 +7,7 @@ import { AccountService } from 'src/login/_services/account.service';
 import {DispecerService} from "../../app/services/dispecer.service";
 import {DataService} from "../../app/data/data.service";
 import Dispecer from "../../app/models/Dispecer";
+import {DetailAboutRouteService} from "../../app/services/detail-about-route.service";
 
 
 
@@ -38,6 +39,8 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+
 
     this.firstFormGroup = this.formBuilder.group({
       firstCtrl: ['', Validators.required]

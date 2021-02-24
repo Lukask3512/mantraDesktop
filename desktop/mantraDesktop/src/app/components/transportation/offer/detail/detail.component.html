@@ -10,7 +10,7 @@
 
     <app-drag-and-drop-list *ngIf="this.route.takenBy !== getDispecerId()" [route]="this.route" ></app-drag-and-drop-list>
   <div>
-    <app-offer-to-route [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>
+    <app-offer-to-route (routeToMap)="changeRouteOnMap($event)" [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>
   </div>
 
 
@@ -25,7 +25,7 @@
     <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
   </div>
 
-  <div *ngIf="createdBy() && this.route.takenBy !== getDispecerId()" class="input">
+  <div *ngIf="createdBy() && this.route.takenBy === ''" class="input">
     <h4>
       Ponuky
     </h4>
@@ -37,10 +37,22 @@
     <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
   </div>
 
+  <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">
+    <h4>
+      Ponuku prijala firma: {{this.route.takenBy}} za {{this.route.price}}
+    </h4>
+    <button (click)="cancelOffer()">Zrusit ponuku</button>
+  </div>
+
 
 
 
   <div class="map">
     <app-openlayer #child></app-openlayer>
+  </div>
+
+  <div>
+    Log celej prepravy
+
   </div>
 </div>

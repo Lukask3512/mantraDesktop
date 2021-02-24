@@ -22,6 +22,7 @@ export class RouteService {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.getAllRoutes().subscribe(res => {
+      // res.
       this._routes.next(res);
     });
 

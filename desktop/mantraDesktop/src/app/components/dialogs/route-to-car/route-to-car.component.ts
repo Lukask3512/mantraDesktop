@@ -42,7 +42,7 @@ export class RouteToCarComponent implements OnInit {
     console.log(this.route.detailsAboutAdresses)
       for (const [index, route] of this.detailAboutRoute.entries()){
         console.log(route)
-        const idcko = await this.detailAboutService.createDetail(route[0])
+        const idcko = await this.detailAboutService.createDetail(route)
         await this.route.detailsAboutAdresses.push(idcko);
       }
   }

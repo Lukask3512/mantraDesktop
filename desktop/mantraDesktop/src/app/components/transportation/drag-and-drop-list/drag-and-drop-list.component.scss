@@ -9,6 +9,29 @@
   border-radius: 2px;
 }
 
+.bednaWrapper{
+  display: flex;
+}
+
+.bedna{
+  width: 18px;
+  height: 18px;
+  border: 2px solid gray;
+  border-radius: 1px;
+  margin: {
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+  };
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.numberOfBedna{
+  font-size: 15px;
+}
+
 .example-list {
   width: 500px;
   max-width: 100%;
@@ -21,7 +44,7 @@
 }
 
 .example-box {
-  padding: 20px 10px;
+  padding: 10px 10px;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;

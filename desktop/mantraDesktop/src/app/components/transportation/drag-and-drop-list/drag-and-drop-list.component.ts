@@ -15,7 +15,10 @@ import {DataService} from "../../../data/data.service";
 export class DragAndDropListComponent{
 
   @Input() route: Route;
+  arrayOfDetail;
+  @Output() arrayOfDetailEvent = new EventEmitter<any>();
   @Output() outputRoute = new EventEmitter<Route>();
+  @Output() clickedOnRoute = new EventEmitter<number>();
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService) { }
 
 
@@ -27,8 +30,9 @@ export class DragAndDropListComponent{
     moveItemInArray(this.route.status, event.previousIndex, event.currentIndex);
     moveItemInArray(this.route.aboutRoute, event.previousIndex, event.currentIndex);
     moveItemInArray(this.route.detailsAboutAdresses, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.arrayOfDetail, event.previousIndex, event.currentIndex);
     this.outputRoute.emit(this.route);
-
+    this.arrayOfDetailEvent.emit(this.arrayOfDetail);
   }
 
 
@@ -44,6 +48,18 @@ export class DragAndDropListComponent{
       }
     }
     this.outputRoute.emit(this.route);
+  }
+
+  setDetails(arrayOfDetails){
+    console.log("som dostal")
+    console.log(arrayOfDetails)
+    this.arrayOfDetail = arrayOfDetails;
+    // this.arrayOfDetail[i].sizeS
+    // console.log(this.arrayOfDetail[0])
+  }
+
+  sendTown(index){
+    this.clickedOnRoute.emit(index);
   }
 
   editInfo(routeInfo, id){

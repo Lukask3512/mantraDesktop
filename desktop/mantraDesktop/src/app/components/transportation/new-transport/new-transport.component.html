@@ -159,6 +159,7 @@
 
   <div class="addButton">
     <button class="buttonG" [disabled]="!labelPosition" (click)="add()">Pridať +</button>
+    <button class="buttonG" [disabled]="!clickedOnIndexDetail" (click)="updateArrayOfDetail()">Upraviť</button>
   </div>
 
 
@@ -172,9 +173,14 @@
 </div>
 
   <div class="addresses">
-    <app-drag-and-drop-list [route]="this.route" (outputRoute)="onDropListChange($event)"></app-drag-and-drop-list>
+    <app-drag-and-drop-list #dropList (clickedOnRoute)="updateDetailOnTown($event)"
+                            [route]="this.route"
+                            (outputRoute)="onDropListChange($event)"
+                            >
+
+    </app-drag-and-drop-list>
     <div class="changeButtons" *ngIf="checkFinished()" >
-      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.sendToDriver()">Odoslať vodičovi</button>
+      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.updateDetails()">Odoslať vodičovi</button>
       <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined" [disabled]="this.route.nameOfTowns.length <= 0 || this.route.nameOfTowns == null" (click)="openAddDialog()">Vybrať vozidlo</button>
       <button class="buttonTransport"  *ngIf="carId == null" [disabled]="this.route.nameOfTowns.length <= 0 || this.route.nameOfTowns == null" (click)="sendToAllDispecers()">Poúktnuť spoločnostiam</button>
       <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>

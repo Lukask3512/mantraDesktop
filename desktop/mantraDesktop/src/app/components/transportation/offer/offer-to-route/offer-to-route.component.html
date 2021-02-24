@@ -2,23 +2,24 @@
   <div class="drag1">
   <div *ngIf="offer" cdkDropList class="example-list"
        (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2">
-    <div class="example-box" *ngFor="let routeTown of this.offer.nameOfTowns let i = index" cdkDrag>
+    <div class="example-box" *ngFor="let routeTown of this.fakeOffer.nameOfTowns let i = index" cdkDrag>
       <div class="routeTown">
         <p>{{routeTown}}
-          <span *ngIf="this.offer.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-          <span *ngIf="this.offer.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+          <span *ngIf="this.fakeOffer.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+          <span *ngIf="this.fakeOffer.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
         </p>
-        <span>{{this.routeStatus.getStatus(this.offer.status[i])}}</span>
+        <span>{{this.routeStatus.getStatus(this.fakeOffer.status[i])}}</span>
         <!--      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">-->
       </div>
       <div class="routeTown routeInfo">
-        <p *ngIf="this.offer.aboutRoute != null || this.offer.aboutRoute != undefined">{{this.offer.aboutRoute[i]}}</p>
+        <p *ngIf="this.fakeOffer.aboutRoute != null || this.fakeOffer.aboutRoute != undefined">{{this.fakeOffer.aboutRoute[i]}}</p>
         <!--      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">-->
       </div>
     </div>
   </div>
   </div>
   <div class="drag2">
+    <button *ngIf="routeToDragList != undefined" (click)="chooseAnotherRoute()">Zmenit</button>
   <div *ngIf="routeToDragList" cdkDropList class="example-list"
        (cdkDropListDropped)="drop($event)" id="dragList2" cdkDropListConnectedTo="dragList1">
     <div class="example-box" *ngFor="let routeTown of this.routeToDragList.nameOfTowns let i = index" cdkDrag>
@@ -36,6 +37,7 @@
       </div>
     </div>
   </div>
+    <button (click)="updateRoute()">Ulozit trasu</button>
 </div>
 </div>
 
@@ -53,9 +55,9 @@
 <!--    </div>-->
   </div>
 
-  <h1 class="actFinHead">Aktívne</h1>
 
 <div *ngIf="!routeToDragList">
+  <button (click)="createNew()">Vytvorit novu trasu</button>
 
   <div  *ngFor="let route of this.routes; let i = index" class="oneRoute" >
     <div *ngIf="routes.length" class="nakladka" (click)="setRoute(route)">

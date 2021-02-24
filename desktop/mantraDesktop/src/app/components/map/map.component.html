@@ -1,3 +1,6 @@
+<div class="filter">
+  <app-filter (offersToMap)="this.offersUpdate($event)"></app-filter>
+</div>
 
 
 <div class="wrapper">
@@ -8,7 +11,7 @@
       <button (click)="closeInfo()" class="closeInfo">x</button>
     </div>
 
-      <div class="car">
+      <div *ngIf="this.offersToShow != null" class="car">
 <!--        <h2>Vozidlo</h2>-->
         <table id="t01">
           <tr>
@@ -23,18 +26,51 @@
           Priradiť autu</button>
       </div>
 
-      <div class="routes">
+      <div *ngIf="this.offersToShow == null" class="routes">
         <div class="route" *ngFor="let route of routesToShow">
           <table id="t01">
 <!--            <h3 *ngIf="route.estimatedTimeArrival != undefined">ETA:  {{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>-->
               <tr>
               <th><h2> Ciele: </h2><h4 *ngFor="let town of route.nameOfTowns; index as i">{{town}}<br>
             <span>Stav: {{this.routeStatusService.getStatus(route.status[i])}}</span><br>
-              <span>ETA: {{this.estimatedTimeToLocal(this.route.estimatedTimeArrival[i])}}</span></h4></th>
+              <span *ngIf="this.route.estimatedTimeArrival != undefined">ETA: {{this.estimatedTimeToLocal(this.route.estimatedTimeArrival[i])}}</span></h4></th>
             </tr>
           </table>
         </div>
       </div>
+
+    <div *ngIf="this.offersToShow != null" class="offers">
+      <h3>Ponuka</h3>
+      <h3>Celková vzialenosť: ~ {{this.distanceOfOffer}} km</h3>
+      <div class="routeWrapper" *ngFor="let route of offersToShow">
+              <ol>
+                <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}
+                  <div class="debnaSize">
+                    <div class="sizeD">{{route.detailArray[i].sizeD}} 2</div>
+                    <div class="sizeV">{{route.detailArray[i].sizeV}} 2</div>
+                    <div class="sizeS">{{route.detailArray[i].sizeS}}1</div>
+                  <img class="bedna" src="./assets/logo/cube.png">
+
+<!--                  <section class="sizeOfDebna">-->
+<!--&lt;!&ndash;                    <div class="sizeD">{{route.detailArray[i].sizeD}} 2 t</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="sizeV">{{route.detailArray[i].sizeV}} 2 t</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="sizeS">{{route.detailArray[i].sizeS}}1 t</div>&ndash;&gt;-->
+
+<!--                  </section>-->
+                    </div>
+                  <span>Váha: {{this.vypocitajVahuPreMesto(route.detailArray[i])}}</span>
+<!--                    <div class="vahaB">{{route.detailArray[i].weight}}t</div>-->
+
+
+                </li>
+              </ol>
+
+        <p>Vaša ponuka:</p>
+        <label>Pridať ponuku</label>
+        <input type="number">
+        <button>Pridat ponuku</button>
+      </div>
+    </div>
   </div>
 </div>
 

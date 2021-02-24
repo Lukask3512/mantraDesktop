@@ -34,11 +34,12 @@ import { WrapperComponent } from './transportation/offer/wrapper/wrapper.compone
 import { DetailComponent } from './transportation/offer/detail/detail.component';
 import { OfferToRouteComponent } from './transportation/offer/offer-to-route/offer-to-route.component';
 import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/drag-drop-offer.component';
+import { FilterComponent } from './map/filter/filter.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent, FilterComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -46,7 +47,8 @@ import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/d
         FindCarByIdComponent,
         NewPrivesComponent,
         PrivesWrapperComponent,
-        DragAndDropListComponent
+        DragAndDropListComponent,
+        FilterComponent
     ],
   imports: [
     CommonModule,
