@@ -53,6 +53,10 @@ export class PrivesService {
     );
   }
 
+  getAllPriveses(){
+    return this.allPrives;
+  }
+
   createPrives(prives: Prives){
     return this.afs.collection('prives').add(prives);
   }

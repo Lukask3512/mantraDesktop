@@ -23,7 +23,8 @@ export class DetailComponent implements OnInit {
   private child: OpenlayerComponent;
   ngOnInit(): void {
 
-    this.dataService.currentRoute.pipe(take(1)).subscribe(route => {
+    this.dataService.currentRoute.subscribe(route => {
+      console.log(route)
       this.route = route;
       this.offerService.routes$.subscribe(routes => {
         this.route = routes.find(oneRoute => oneRoute.id == route.id);

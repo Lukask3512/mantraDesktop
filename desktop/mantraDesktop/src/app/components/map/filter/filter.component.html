@@ -1,1 +1,11 @@
 <mat-slide-toggle [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
+    <mat-form-field>
+      <mat-label></mat-label>
+      <input matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label></mat-label>
+      <input matInput [(ngModel)]="maxDistance" type="number" placeholder="Max vzdialenost">
+    </mat-form-field>
+

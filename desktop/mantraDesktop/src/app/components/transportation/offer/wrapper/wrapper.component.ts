@@ -23,6 +23,7 @@ export class WrapperComponent implements OnInit {
   }
 
   routeDetail(route){
+    console.log(route)
     this.dataService.changeRealRoute(route);
   }
 

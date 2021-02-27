@@ -8,6 +8,10 @@ import Cars from "../models/Cars";
 import DeatilAboutAdresses from "../models/DeatilAboutAdresses";
 import {RouteService} from "./route.service";
 import {OfferRouteService} from "./offer-route.service";
+import {CarService} from "./car.service";
+import {PrivesService} from "./prives.service";
+import Prives from "../models/Prives";
+import Route from "../models/Route";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +22,8 @@ export class DetailAboutRouteService {
   detailsCollectionRef: AngularFirestoreCollection<Dispecer>;
 
   constructor(private afs: AngularFirestore, private dataService: DataService, private routeService: RouteService,
-              private offerService: OfferRouteService) {
+              private offerService: OfferRouteService, private carService: CarService,
+              private privesService: PrivesService) {
     this.detailCollection = this.afs.collection<any>('detailRoute');
 
     this.getDetails().subscribe(res => {
@@ -107,6 +112,41 @@ export class DetailAboutRouteService {
   //     return query;
   //   }).valueChanges();
   // }
+
+  countFreeWeightOfCarOnAdress(detail: DeatilAboutAdresses[], route: Route){
+    var poleVolnejVahy = [];
+    var car: Cars;
+    var prives: Prives;
+      car = this.carService.getAllCars().find(car => car.id == route.carId);
+
+        if (car.navesis != undefined && car.navesis[0] != undefined && car.navesis[0] != ""){
+            prives =  this.privesService.getAllPriveses().find(onePrives => onePrives.id == car.navesis[0])
+        }
+        var celkovaNosnost;
+        if (prives != undefined){
+          celkovaNosnost = car.nosnost + prives.nosnost;
+        }else{
+          celkovaNosnost = car.nosnost
+        }
+
+
+        var aktualaHmotnost = 0;
+        detail.forEach((oneDetail, index) => {
+          var vahaVMeste = 0;
+          oneDetail.weight.forEach(jednaVaha => {
+            // vahaVMeste += jednaVaha;
+            if (route.type[index] == 'nakladka'){
+              aktualaHmotnost += jednaVaha
+            }else{
+              aktualaHmotnost -= jednaVaha;
+            }
+          })
+          poleVolnejVahy.push(celkovaNosnost - aktualaHmotnost);
+        })
+
+        return poleVolnejVahy
+
+  }
 
   getCarByNumber(carNumber) {
     return this.afs.collection('cars', ref => {

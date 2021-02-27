@@ -14,12 +14,13 @@ export class CarService {
   private carsCollection: AngularFirestoreCollection<Dispecer>;
   private cars: Observable<Dispecer[]>;
   carsCollectionRef: AngularFirestoreCollection<Dispecer>;
-
+  allCars;
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.carsCollection = this.afs.collection<any>('cars');
 
     this.getCars().subscribe(res => {
       this._cars.next(res);
+      this.allCars = res;
     })
 
   }
@@ -48,6 +49,10 @@ export class CarService {
         });
       })
     );
+  }
+
+  getAllCars(){
+    return this.allCars;
   }
 
   createCar(car: Cars){

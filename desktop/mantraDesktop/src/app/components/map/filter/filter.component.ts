@@ -12,9 +12,12 @@ export class FilterComponent implements OnInit {
 
   checked:boolean = false;
 
+  maxDistance
+  minDistance;
+
   constructor(private offerService: OfferRouteService) { }
   offers: Route[];
-  @Output() offersToMap = new EventEmitter<Route[]>();
+  @Output() offersToMap = new EventEmitter<any>();
 
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
@@ -24,10 +27,11 @@ export class FilterComponent implements OnInit {
   }
 
   filterOffers(){
+    console.log(this.offers)
     if (!this.checked){
       this.offersToMap.emit(null);
     }else{
-      this.offersToMap.emit(this.offers);
+      this.offersToMap.emit({offers :this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000} );
     }
   }
 
