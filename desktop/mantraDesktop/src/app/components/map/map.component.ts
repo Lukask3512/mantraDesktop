@@ -735,12 +735,21 @@ export class MapComponent {
 
         var jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0, flag: 0}; //0 cervena, 1 zlta, 2 greeeen
         if (oneRouteOffer.takenBy == ""){
+
+        this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi prepravami
+          var sediVzdialenost = false;
+          var sediVaha = false;
+
           var adresaMinVzialenost = 100000000;
           var adresaMaxVzdialenost = 0;
-        this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi prepravami
-
           route.coordinatesOfTownsLon.forEach((lon, indexLon) => { //prechadzam miestami v preprave
 
+            //vaha
+            // @ts-ignore
+            if (route.volnaVahaPreAuto[indexLon] >= jednaPonuka.maxVaha){
+              sediVaha = true;
+            }
+            console.log(route)
               oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
                 var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
                   [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
@@ -753,20 +762,27 @@ export class MapComponent {
                   adresaMaxVzdialenost = vzdielenost;
                 }
 
-
+                  //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
+                  //ked som na konci skontrulujem ci sedi vzdialenost
                 if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
-                  console.log("mal by som tu byt")
-
+                  var flags = 0;
+                  if(adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost){
+                    // jednaPonuka.flag += 1;
+                    flags++;
+                  }
+                  if (sediVaha){
+                    flags++;
+                  }
+                  if (flags > jednaPonuka.flag){
+                    jednaPonuka.flag = flags;
+                  }
                 }
               })
 
             });
 
           })
-            //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
-          if(adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost){
-            jednaPonuka.flag += 1;
-          }
+
         poleSMinVzdialenostamiOdAdries.push(jednaPonuka);
         }
 
@@ -808,7 +824,7 @@ export class MapComponent {
         this.offersFromDatabase = poleSMinVzdialenostamiOdAdries
           this.drawOffers(poleSMinVzdialenostamiOdAdries);
       }, 500 );
-    }, 1500 );
+    }, 500 );
     // console.log(routes);
     }
 
