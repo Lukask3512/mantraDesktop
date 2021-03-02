@@ -20,6 +20,7 @@ import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 import {DetailAboutRouteService} from "../../../services/detail-about-route.service";
 import OneDetailRoute from "../../../models/OneDetailRoute";
 import {DragAndDropListComponent} from "../drag-and-drop-list/drag-and-drop-list.component";
+import {CountFreeSpaceService} from "../../../data/count-free-space.service";
 
 
 
@@ -109,7 +110,7 @@ export class NewTransportComponent implements OnInit {
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog,
               private dataService: DataService, private routeService: RouteService,
-              private detailAboutService: DetailAboutRouteService) { }
+              private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService) { }
 
   ngOnInit(): void {
     var loggedDispecer = this.dataService.getDispecer();
@@ -270,6 +271,8 @@ export class NewTransportComponent implements OnInit {
     this.labelPosition = undefined;
 
     this.arrayOfDetailsAbRoute.push(this.detailAboutRoute);
+    var vopchaSa = this.countFreeSpace.countFreeSpace(this.arrayOfDetailsAbRoute, null, null, this.route);
+    console.log(vopchaSa);
     console.log(this.arrayOfDetailsAbRoute)
     console.log(this.detailAboutRoute);
     this.childDropList.setDetails(this.arrayOfDetailsAbRoute);

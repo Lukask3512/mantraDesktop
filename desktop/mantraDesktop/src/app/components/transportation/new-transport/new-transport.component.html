@@ -75,21 +75,21 @@
   <div class="size">
     <mat-form-field appearance="standard" class="sizeInput">
       <mat-label>Šírka</mat-label>
-      <input formControlName="sizeS" matInput placeholder="Šírka....">
+      <input formControlName="sizeS" type="number" matInput placeholder="Šírka....">
       <span matSuffix> m </span>
       <mat-hint>V metroch</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="sizeInput">
       <mat-label>Výška</mat-label>
-      <input formControlName="sizeV" matInput placeholder="Výška....">
+      <input formControlName="sizeV" type="number" matInput placeholder="Výška....">
       <span matSuffix> m </span>
       <mat-hint>V metroch</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="sizeInput">
       <mat-label>Dĺžka</mat-label>
-      <input formControlName="sizeD" matInput placeholder="Dĺžka....">
+      <input formControlName="sizeD" type="number" matInput placeholder="Dĺžka....">
       <span matSuffix> m </span>
       <mat-hint>V metroch</mat-hint>
     </mat-form-field>
@@ -125,7 +125,7 @@
 
     <mat-form-field *ngIf="this.transportForm.get('vyskaHrany').value == 'rozhoduje'" appearance="standard" class="sizeInput">
       <mat-label>Výška nak. hrany</mat-label>
-      <input  min="0" formControlName="vyskaHranySize" matInput placeholder="Výška....">
+      <input type="number"  min="0" formControlName="vyskaHranySize" matInput placeholder="Výška....">
       <span matSuffix> m </span>
       <mat-hint>V metroch</mat-hint>
     </mat-form-field>
@@ -139,7 +139,7 @@
 
     <mat-form-field *ngIf="this.transportForm.get('stohovatelnost').value == 'ano'" appearance="standard" class="sizeInput">
       <mat-label>Max. nosnost</mat-label>
-      <input  min="0" formControlName="stohoSize" matInput placeholder="Výška....">
+      <input type="number"  min="0" formControlName="stohoSize" matInput placeholder="Výška....">
       <span matSuffix> kg </span>
       <mat-hint>V kilogramoch</mat-hint>
     </mat-form-field>
