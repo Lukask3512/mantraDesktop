@@ -12,8 +12,10 @@ export class FilterComponent implements OnInit {
 
   checked:boolean = false;
 
-  maxDistance
-  minDistance;
+  maxDistance = 500;
+  minDistance = 50;
+  weight = 0;
+  size = 0;
 
   constructor(private offerService: OfferRouteService) { }
   offers: Route[];
@@ -27,12 +29,19 @@ export class FilterComponent implements OnInit {
   }
 
   filterOffers(){
-    console.log(this.offers)
+    console.log(this.vypocitajPrekrocenie(this.weight));
+    console.log(this.vypocitajPrekrocenie(this.size));
     if (!this.checked){
       this.offersToMap.emit(null);
     }else{
-      this.offersToMap.emit({offers :this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000} );
+      this.offersToMap.emit({offers :this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
+      weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size)} );
     }
+  }
+
+  vypocitajPrekrocenie(prekrocenie){
+    var percentaNaCislo = (100 + prekrocenie) / 100;
+    return percentaNaCislo;
   }
 
 }

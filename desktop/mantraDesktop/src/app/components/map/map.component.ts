@@ -36,6 +36,7 @@ import {OfferRouteService} from "../../services/offer-route.service";
 import {Routes} from "@angular/router";
 import {DetailAboutRouteService} from "../../services/detail-about-route.service";
 import DeatilAboutAdresses from "../../models/DeatilAboutAdresses";
+import {CountFreeSpaceService} from "../../data/count-free-space.service";
 
 @Component({
   selector: 'app-map',
@@ -100,7 +101,7 @@ export class MapComponent {
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
-              private routeDetailService: DetailAboutRouteService) { }
+              private routeDetailService: DetailAboutRouteService, private countFreeSpaceService: CountFreeSpaceService) { }
 
 
   ngAfterViewInit(): void {
@@ -700,7 +701,10 @@ export class MapComponent {
       var offers = emitFromFilter.offers;
       var minVzdialenost = emitFromFilter.minDistance;
       var maxVzdialenost = emitFromFilter.maxDistance;
-
+      var maxPrekrocenieVahy = emitFromFilter.weight;
+      var maxPrekrocenieRozmerov = emitFromFilter.size;
+      console.log(maxPrekrocenieRozmerov)
+      console.log(maxPrekrocenieVahy)
     setTimeout( () => {
       var poleSMinVzdialenostamiOdAdries = [];
       offers.forEach((oneRouteOffer, indexOffer) => { //prechaedzam ponukami
@@ -737,8 +741,16 @@ export class MapComponent {
         if (oneRouteOffer.takenBy == ""){
 
         this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi prepravami
+          var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
+
+          // console.log(this.vectorLayerCoordinates.getFeatures())
+
+          // console.log(this.vectorLayerOffersRoutes.getDataFeatures())
           var sediVzdialenost = false;
           var sediVaha = false;
+          var sediVahaYellow = false;
+          // @ts-ignore
+          var vopchaSa = this.countFreeSpaceService.countFreeSpace(route.detailArray, jednaPonuka.detailArray, route.carId, route, maxPrekrocenieRozmerov);
 
           var adresaMinVzialenost = 100000000;
           var adresaMaxVzdialenost = 0;
@@ -748,36 +760,78 @@ export class MapComponent {
             // @ts-ignore
             if (route.volnaVahaPreAuto[indexLon] >= jednaPonuka.maxVaha){
               sediVaha = true;
+            }else { // @ts-ignore
+              if ((route.volnaVahaPreAuto[indexLon] * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
+                sediVahaYellow = true;
+              }
             }
-            console.log(route)
-              oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
-                var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
-                  [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
-                if (vzdielenost < jednaPonuka.minVzdialenost) {
-                  jednaPonuka.minVzdialenost = vzdielenost;
-                  adresaMinVzialenost = vzdielenost;
-                }
-                if (vzdielenost > jednaPonuka.maxVzdialenost) {
-                  jednaPonuka.maxVzdialenost = vzdielenost;
-                  adresaMaxVzdialenost = vzdielenost;
-                }
 
-                  //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
-                  //ked som na konci skontrulujem ci sedi vzdialenost
-                if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
-                  var flags = 0;
-                  if(adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost){
-                    // jednaPonuka.flag += 1;
-                    flags++;
-                  }
-                  if (sediVaha){
-                    flags++;
-                  }
-                  if (flags > jednaPonuka.flag){
-                    jednaPonuka.flag = flags;
-                  }
-                }
-              })
+
+            oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
+
+                             //toto treba kuknut vravia mi to interesting vzdialenosti
+                              var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
+
+
+                              var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
+                                [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
+                              //kontrolujem najkratsiu vzdialenost od trasy
+                              if (vzdialenostOdTrasy < jednaPonuka.minVzdialenost){
+                                jednaPonuka.minVzdialenost = vzdialenostOdTrasy;
+                                adresaMinVzialenost = vzdialenostOdTrasy;
+                              }
+                              if (vzdielenost < jednaPonuka.minVzdialenost) {
+                                jednaPonuka.minVzdialenost = vzdielenost;
+                                adresaMinVzialenost = vzdielenost;
+                              }
+                              if (vzdielenost > jednaPonuka.maxVzdialenost) {
+                                jednaPonuka.maxVzdialenost = vzdielenost;
+                                adresaMaxVzdialenost = vzdielenost;
+                              }
+
+                                //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
+                                //ked som na konci skontrulujem ci sedi vzdialenost
+                              if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
+                                var flags = 0;
+                                // if(adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost){
+                                //   // jednaPonuka.flag += 1;
+                                //   flags++;
+                                // }
+                                // if (sediVaha){
+                                //   flags++;
+                                // }
+                                //
+                                // //index miest kde sa vopcha nova preprava
+                                // if (indexLon == vopchaSa.find(oneId => oneId == indexLon)){
+                                //   flags++;
+                                // }
+                                //
+                                // if (flags > jednaPonuka.flag){
+                                //   jednaPonuka.flag = flags;
+                                // }
+
+                                var indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
+                                var prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; //ak false vopcha, ak true tak sa vopcha
+                                // console.log(indexVPoli);                                  //o uzivatelom definove % - yellow
+                                // console.log(prekrocil);
+
+                                // console.log(vopchaSa)
+                                if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+                                  flags = 3;
+                                }else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+                                  flags = 2;
+                                }
+                                else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+                                  flags = 2;
+                                }
+                                if (flags > jednaPonuka.flag){
+                                  jednaPonuka.flag = flags;
+                                }
+                              }
+                            })
 
             });
 
@@ -858,7 +912,7 @@ export class MapComponent {
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [207, 0, 15, 0.3]
+            color: [46, 49, 49, 0.3]
           })
         });
 
@@ -866,7 +920,7 @@ export class MapComponent {
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [247, 202, 24, 0.3]
+            color: [46, 49, 49, 0.3]
           })
         });
 
@@ -874,7 +928,7 @@ export class MapComponent {
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [10, 255, 10, 1]
+            color: [46, 49, 49, 0.3]
           })
         });
       }
@@ -917,7 +971,7 @@ export class MapComponent {
             type: "town"
           });
           var iconStyle;
-          if (route.flag == 0) {
+          if (route.flag < 2) {
             iconStyle = new Style({
               image: new CircleStyle({
                 radius: 10,
@@ -937,7 +991,7 @@ export class MapComponent {
               })
             });
           }
-          else if (route.flag == 1) {
+          else if (route.flag == 2) {
             iconStyle = new Style({
               image: new CircleStyle({
                 radius: 10,

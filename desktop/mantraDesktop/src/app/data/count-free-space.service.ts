@@ -15,13 +15,16 @@ export class CountFreeSpaceService {
   stohovatelnost = [];
   constructor(private carService: CarService) { }
 
-  countFreeSpace(oldDetail: DeatilAboutAdresses[], newDetail: DeatilAboutAdresses[], carId, route){
+  // vratim index miest kde sa dana preprava vopcha
+  countFreeSpace(oldDetail: DeatilAboutAdresses[], newDetail: DeatilAboutAdresses[], carId, route, prekrocenie){
    var nalozenievMestach = this.vypocitajPocetPalietVKazomMeste(oldDetail, route);
     var poleMiestKdeSaVopcha = [];
+    var prekrocenieOPercenta = [];
 
     var car: Cars; //0 vyska , 1 sirka, 2 dlzka
     car = this.carService.getAllCars().find(oneCar => oneCar.id == "LhMQxklO6AdvZDB7jyWw");
 
+    //pre kazme mesto osobitne pocitam ci sa votka
     nalozenievMestach.forEach((oneNalozenie, indexMesicka) => {
 
 
@@ -31,7 +34,6 @@ export class CountFreeSpaceService {
     this.weight = oneNalozenie.weight;
     this.stohovatelnost = oneNalozenie.stohovatelnost
 
-      console.log(this.sizesS);
 
     //priradim si velkosti, vahy, stohovatelnost do []
     // oldDetail.forEach(oneDetail => {
@@ -171,9 +173,13 @@ export class CountFreeSpaceService {
     });
     if (dlzka <= car.sizePriestoru[2]){
       poleMiestKdeSaVopcha.push(indexMesicka);
+      prekrocenieOPercenta.push(false);
+    }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie)){
+      poleMiestKdeSaVopcha.push(indexMesicka);
+      prekrocenieOPercenta.push(true);
     }
     })
-  return poleMiestKdeSaVopcha;
+  return {poleMiestKdeSaVopcha, prekrocenieOPercenta};
   }
 
   //pocitam si v ktorom meste sa toho kolko nachadza

@@ -1,11 +1,25 @@
 <mat-slide-toggle [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
     <mat-form-field>
-      <mat-label></mat-label>
-      <input matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost">
+      <mat-label>Min vzdialenost</mat-label>
+      <input (change)="filterOffers()" matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost" class="example-right-align">
+      <span matSuffix> km</span>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label></mat-label>
-      <input matInput [(ngModel)]="maxDistance" type="number" placeholder="Max vzdialenost">
+      <mat-label>Max vzdialenost</mat-label>
+      <input (change)="filterOffers()" matInput [(ngModel)]="maxDistance" type="number" placeholder="Max vzdialenost" class="example-right-align">
+      <span matSuffix> km</span>
     </mat-form-field>
+
+<mat-form-field>
+  <mat-label>Max prekročenie váhy</mat-label>
+  <input (change)="filterOffers()" matInput [(ngModel)]="weight" type="number" placeholder="Max prekročenie váhy..." class="example-right-align">
+  <span matSuffix> %</span>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Max prekročenie veľkosti</mat-label>
+  <input (change)="filterOffers()" matInput [(ngModel)]="size" type="number" placeholder="Max prekročenie veľkosti..." class="example-right-align">
+  <span matSuffix> %</span>
+</mat-form-field>
 

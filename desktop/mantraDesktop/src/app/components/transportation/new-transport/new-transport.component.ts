@@ -52,15 +52,13 @@ export class NewTransportComponent implements OnInit {
   datumPrichodu = 'nerozhoduje'
 
   transportForm = this.fb.group({
-   sizeD: ["", Validators.required],
-    sizeV: ["", Validators.required],
-    sizeS: ["", Validators.required],
-    weight: ["0", Validators.required],
-    nosnost: ["0"],
-    vyskaNakHrany: ["0", Validators.required],
-    poziciaNakladania: ["nerozhoduje", Validators.required], //0 nerozhoduje, 1 rozhoduje
+   sizeD: ['', Validators.required],
+    sizeV: [ '',Validators.required],
+    sizeS: ['', Validators.required],
+    weight: ['', Validators.required],
+    poziciaNakladania: ["nerozhoduje"], //0 nerozhoduje, 1 rozhoduje
     vyskaHrany: ["nerozhoduje", Validators.required],
-    vyskaHranySize: [""],
+    vyskaHranySize: [''],
     stohovatelnost: ["nie", Validators.required],
     stohoSize: [0],
 
@@ -91,7 +89,7 @@ export class NewTransportComponent implements OnInit {
     end: new FormControl(Validators.required)
   });
   minDate;
-  labelPosition: 'Nakladka' | 'Vykladka';
+  labelPosition: 'nakladka' | 'vykladka';
 
 
   change:boolean;
@@ -172,6 +170,52 @@ export class NewTransportComponent implements OnInit {
       }
     })
   }
+  //ci mozem ist na dalsi detail
+  checkIfCanSKipToNext(){
+    if (this.transportForm.valid && this.actualItemInForm + 1 < this.numberOfItems){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  updateMatLabelForm(){
+    if (this.transportForm.get('poziciaNakladania').value == 'rozhoduje') {
+      if (!this.transportForm.get('fromBackSide').value || !this.transportForm.get('fromSide').value || !this.transportForm.get('fromUpSide').value)
+        this.transportForm.get('fromBackSide').setValidators([Validators.requiredTrue]);
+    }else{
+      this.transportForm.get('fromBackSide').clearValidators();
+    }
+    this.transportForm.get('fromBackSide').updateValueAndValidity();
+  }
+
+  updateFormPosition(){
+    if (this.transportForm.get('poziciaNakladania').value == 'rozhoduje') {
+      this.transportForm.get('fromBackSide').clearValidators();
+    }else{
+      if (!this.transportForm.get('fromBackSide').value || !this.transportForm.get('fromSide').value || !this.transportForm.get('fromUpSide').value)
+      this.transportForm.get('fromBackSide').setValidators([Validators.requiredTrue]);
+    }
+    this.transportForm.get('fromBackSide').updateValueAndValidity();
+  }
+
+  updateValidFormHrana(){
+    if (this.transportForm.get('vyskaHrany').value == 'rozhoduje'){
+      this.transportForm.get('vyskaHranySize').clearValidators();
+    }else{
+      this.transportForm.get('vyskaHranySize').setValidators([Validators.required]);
+    }
+    this.transportForm.get('vyskaHranySize').updateValueAndValidity();
+  }
+
+  updateFormStoho(){
+    if (this.transportForm.get('stohovatelnost').value == 'ano'){
+      this.transportForm.get('stohoSize').clearValidators();
+    }else{
+      this.transportForm.get('stohoSize').setValidators(Validators.required);
+    }
+    this.transportForm.get('stohoSize').updateValueAndValidity();
+  }
 
 
   onDropListChange(changedRoute: Route){
@@ -192,12 +236,25 @@ export class NewTransportComponent implements OnInit {
 
     this.change = true;
   }
+  setForm(mestoIndex, bednaIndex){
+    // this.detailAboutRoute = this.arrayOfDetailsAbRoute[mestoIndex];
+    this.assignToDetail(mestoIndex,bednaIndex);
+  }
 
+  labelChange(){
+    console.log(this.labelPosition)
+    if (this.labelPosition == 'nakladka'){
+      this.transportForm.enable();
+    }else{
+      this.transportForm.disable();
+    }
+  }
 
   getAdress(adress){
     // this.status.push(-1);
     // this.routesTowns.push(adress);
     this.routeFromGoogle = adress;
+    this.resetFormToDefault(true);
   }
   getLat(lat){
     // this.routesLat.push(lat);
@@ -271,8 +328,8 @@ export class NewTransportComponent implements OnInit {
     this.labelPosition = undefined;
 
     this.arrayOfDetailsAbRoute.push(this.detailAboutRoute);
-    var vopchaSa = this.countFreeSpace.countFreeSpace(this.arrayOfDetailsAbRoute, null, null, this.route);
-    console.log(vopchaSa);
+    // var vopchaSa = this.countFreeSpace.countFreeSpace(this.arrayOfDetailsAbRoute, null, null, this.route);
+    // console.log(vopchaSa);
     console.log(this.arrayOfDetailsAbRoute)
     console.log(this.detailAboutRoute);
     this.childDropList.setDetails(this.arrayOfDetailsAbRoute);
@@ -318,8 +375,6 @@ export class NewTransportComponent implements OnInit {
 
   }
   pushItemsToArray(indexOfAddresses, indexOfPackage){
-    console.log(this.getDetail());
-    console.log(this.detailAboutRoute)
     if (this.detailAboutRoute.sizeV == undefined){
       this.detailAboutRoute = this.getDetail();
     }else{
@@ -409,7 +464,7 @@ export class NewTransportComponent implements OnInit {
       vyskaNakHrany = -1;
     }
 
-    console.log( this.transportForm.get('fromBackSide').value)
+
     var back = "0";
     var side = "0";
     var upside = "0";
@@ -443,10 +498,10 @@ export class NewTransportComponent implements OnInit {
     // console.log(this.detailAboutRoute)
     // console.log(this.detailAboutRoute[this.actualItemInForm].sizeD)
 
-      this.transportForm.controls['sizeD'].setValue(this.detailAboutRoute.sizeD[indexOfPackage]);
-    this.transportForm.controls['sizeV'].setValue(this.detailAboutRoute.sizeV[indexOfPackage]);
-    this.transportForm.controls['sizeS'].setValue(this.detailAboutRoute.sizeS[indexOfPackage]);
-    this.transportForm.controls['weight'].setValue(this.detailAboutRoute.weight[indexOfPackage]);
+      this.transportForm.controls['sizeD'].setValue(this.arrayOfDetailsAbRoute[indexOfAddresses].sizeD[indexOfPackage]);
+    this.transportForm.controls['sizeV'].setValue(this.arrayOfDetailsAbRoute[indexOfAddresses].sizeV[indexOfPackage]);
+    this.transportForm.controls['sizeS'].setValue(this.arrayOfDetailsAbRoute[indexOfAddresses].sizeS[indexOfPackage]);
+    this.transportForm.controls['weight'].setValue(this.arrayOfDetailsAbRoute[indexOfAddresses].weight[indexOfPackage]);
     if (this.detailAboutRoute.vyskaNaklHrany[indexOfPackage] >= 0){
       this.transportForm.controls['vyskaHranySize'].setValue(this.detailAboutRoute.vyskaNaklHrany[indexOfPackage]);
       this.transportForm.controls['vyskaHrany'].setValue("rozhoduje");
@@ -677,26 +732,33 @@ export class NewTransportComponent implements OnInit {
 
 //ked sa nahodov zmensi pole, ale by som ho pohol opopovat
   sizeUpdate(){
+
     if (this.numberOfItems <= this.detailAboutRoute.sizeV.length +1){
-
-    }
-
-    if (this.numberOfItems <= this.detailAboutRoute[0].sizeV.length +1){
       this.actualItemInForm = this.numberOfItems -1;
-      this.detailAboutRoute.sizeV = this.detailAboutRoute[0].sizeV.slice(0, this.numberOfItems -1);
-      this.detailAboutRoute.sizeS = this.detailAboutRoute[0].sizeS.slice(0, this.numberOfItems -1)
-      this.detailAboutRoute.sizeD = this.detailAboutRoute[0].sizeD.slice(0, this.numberOfItems -1)
-      this.detailAboutRoute.weight = this.detailAboutRoute[0].weight.slice(0, this.numberOfItems -1)
-      this.detailAboutRoute.vyskaNaklHrany = this.detailAboutRoute[0].vyskaNaklHrany.slice(0, this.numberOfItems -1)
-      this.detailAboutRoute.polohaNakladania = this.detailAboutRoute[0].polohaNakladania.slice(0, this.numberOfItems -1)
-      this.detailAboutRoute.stohovatelnost = this.detailAboutRoute[0].stohovatelnost.slice(0, this.numberOfItems -1)
+      this.detailAboutRoute.sizeV = this.detailAboutRoute.sizeV.slice(0, this.numberOfItems -1);
+      this.detailAboutRoute.sizeS = this.detailAboutRoute.sizeS.slice(0, this.numberOfItems -1)
+      this.detailAboutRoute.sizeD = this.detailAboutRoute.sizeD.slice(0, this.numberOfItems -1)
+      this.detailAboutRoute.weight = this.detailAboutRoute.weight.slice(0, this.numberOfItems -1)
+      this.detailAboutRoute.vyskaNaklHrany = this.detailAboutRoute.vyskaNaklHrany.slice(0, this.numberOfItems -1)
+      this.detailAboutRoute.polohaNakladania = this.detailAboutRoute.polohaNakladania.slice(0, this.numberOfItems -1)
+      this.detailAboutRoute.stohovatelnost = this.detailAboutRoute.stohovatelnost.slice(0, this.numberOfItems -1)
       // this.detailAboutRoute[0].specRezim.slice(0, this.numberOfItems)
     }
-    console.log(this.numberOfItems)
-    console.log(this.detailAboutRoute)
-    console.log(this.actualItemInForm)
-    // if (this.detailAboutRoute. > this.numberOfItems){
-    //   this.detailAboutRoute[]
-    // }
+  }
+
+  checkAllDetailsInserted(){
+    this.detailAboutRoute.sizeV.forEach((oneSize, index) => {
+      if (this.detailAboutRoute.sizeV[index] >= 0){
+        if (this.detailAboutRoute.sizeS[index] >= 0){
+          if (this.detailAboutRoute.sizeD[index] >= 0){
+            if (this.detailAboutRoute.weight[index] >= 0){
+              if (this.detailAboutRoute.sizeV[index] >= 0){
+
+              }
+            }
+          }
+        }
+      }
+    })
   }
 }

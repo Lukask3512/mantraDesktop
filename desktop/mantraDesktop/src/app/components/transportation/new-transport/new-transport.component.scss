@@ -159,6 +159,33 @@ header{
   border-radius: 2px;
 }
 
+.bednaWapper{
+  display: flex;
+  margin-bottom: 10px;
+}
+.bedna{
+  width: 60px;
+  margin: 6px;
+  cursor: pointer;
+}
+
+.vykladkaWrapper{
+  display: flex;
+}
+.nakladkaWrapper{
+  display: flex;
+}
+
+.bednaWapperNakl{
+  border-bottom: 2px solid green;
+  display: flex;
+}
+
+.bednaWapperVykl{
+  border-bottom: 2px solid red;
+  display: flex;
+}
+
 
 
 .example-list {

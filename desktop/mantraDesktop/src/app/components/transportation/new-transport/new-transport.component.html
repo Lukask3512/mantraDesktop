@@ -19,7 +19,7 @@
 
 <div>
   <section class="example-section">
-    <mat-radio-group class="radioButtons" [(ngModel)]="labelPosition">
+    <mat-radio-group (change)="labelChange()" class="radioButtons" [(ngModel)]="labelPosition">
       <mat-radio-button class="radios" value="nakladka">Nakládka</mat-radio-button>
       <mat-radio-button class="radios" value="vykladka">Vykládka</mat-radio-button>
     </mat-radio-group>
@@ -71,6 +71,21 @@
 
   <p>Parametre {{actualItemInForm + 1}} z {{numberOfItems}}</p>
 
+  <div class="bednaWapper" *ngFor="let detail of this.arrayOfDetailsAbRoute; let indexik = index">
+    <div class="nakladkaWrapper" *ngIf="this.route.type[indexik] == 'nakladka'" >
+      <div class="bednaWapperNakl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">
+        <img (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">
+      </div>
+    </div>
+
+  <div class="vykladkaWrapper" *ngIf="this.route.type[indexik] == 'vykladka'">
+    <div class="bednaWapperVykl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">
+      <img (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">
+    </div>
+  </div>
+
+
+  </div>
   <form class="gridContainer" [formGroup]="transportForm">
   <div class="size">
     <mat-form-field appearance="standard" class="sizeInput">
@@ -106,21 +121,21 @@
     <h4>Poloha nakladania</h4>
 
     <mat-radio-group formControlName="poziciaNakladania">
-      <mat-radio-button class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
-      <mat-radio-button class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
+      <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+      <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
     </mat-radio-group>
 
-    <div *ngIf="this.transportForm.get('poziciaNakladania').value == 'rozhoduje'">
-      <mat-checkbox formControlName="fromBackSide">Zo zadu</mat-checkbox>
-      <mat-checkbox formControlName="fromSide">Z boku</mat-checkbox>
-      <mat-checkbox formControlName="fromUpSide">Z vrchu</mat-checkbox>
+    <div  *ngIf="this.transportForm.get('poziciaNakladania').value == 'rozhoduje'">
+      <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromBackSide">Zo zadu</mat-checkbox>
+      <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromSide">Z boku</mat-checkbox>
+      <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromUpSide">Z vrchu</mat-checkbox>
     </div>
 
     <h4>Požadovaná výška nakladacej hrany</h4>
 
     <mat-radio-group formControlName="vyskaHrany">
-      <mat-radio-button class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
-      <mat-radio-button class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
+      <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+      <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
     </mat-radio-group>
 
     <mat-form-field *ngIf="this.transportForm.get('vyskaHrany').value == 'rozhoduje'" appearance="standard" class="sizeInput">
@@ -133,8 +148,8 @@
     <h4>Stohovateľnosť</h4>
 
     <mat-radio-group formControlName="stohovatelnost">
-      <mat-radio-button class="example-margin" value="nie">Nie</mat-radio-button>
-      <mat-radio-button class="example-margin" value="ano">Áno</mat-radio-button>
+      <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="nie">Nie</mat-radio-button>
+      <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="ano">Áno</mat-radio-button>
     </mat-radio-group>
 
     <mat-form-field *ngIf="this.transportForm.get('stohovatelnost').value == 'ano'" appearance="standard" class="sizeInput">
@@ -149,7 +164,7 @@
 
 
     <button [disabled]="!(actualItemInForm + 1 > 1)" (click)="previousItem()">Späť</button>
-  <button [disabled]="!(actualItemInForm + 1 < numberOfItems)"  (click)="nextItem()">Ďalej</button>
+  <button [disabled]="this.checkIfCanSKipToNext()" (click)="nextItem()">Ďalej</button>
 
   </div>
 
@@ -158,8 +173,9 @@
   <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="infoAboutRoute">
 
   <div class="addButton">
-    <button class="buttonG" [disabled]="!labelPosition" (click)="add()">Pridať +</button>
+    <button class="buttonG" [disabled]="!labelPosition && !this.transportForm.valid" (click)="add()">Pridať +</button>
     <button class="buttonG" [disabled]="!clickedOnIndexDetail" (click)="updateArrayOfDetail()">Upraviť</button>
+    <button class="buttonG" [disabled]="!this.transportForm.valid" >kuia kua</button>
   </div>
 
 
