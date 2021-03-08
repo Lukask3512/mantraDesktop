@@ -56,6 +56,7 @@ export class OfferRouteService {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('forEveryone', '==', false)
         .where('createdBy', '==', this.getDispecerId())
+        .where('takenBy', '!=', '')
       ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(

@@ -163,7 +163,7 @@
 
 
 
-    <button [disabled]="!(actualItemInForm + 1 > 1)" (click)="previousItem()">Späť</button>
+    <button [disabled]="this.checkIfCanSKipToPrevious()" (click)="previousItem()">Späť</button>
   <button [disabled]="this.checkIfCanSKipToNext()" (click)="nextItem()">Ďalej</button>
 
   </div>
@@ -173,9 +173,8 @@
   <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="infoAboutRoute">
 
   <div class="addButton">
-    <button class="buttonG" [disabled]="!labelPosition && !this.transportForm.valid" (click)="add()">Pridať +</button>
-    <button class="buttonG" [disabled]="!clickedOnIndexDetail" (click)="updateArrayOfDetail()">Upraviť</button>
-    <button class="buttonG" [disabled]="!this.transportForm.valid" >kuia kua</button>
+    <button class="buttonG" [disabled]="this.checkIfCanAddNextAdress()" (click)="add()">Pridať +</button>
+<!--    <button class="buttonG" [disabled]="!clickedOnIndexDetail" (click)="updateArrayOfDetail()">Upraviť</button>-->
   </div>
 
 

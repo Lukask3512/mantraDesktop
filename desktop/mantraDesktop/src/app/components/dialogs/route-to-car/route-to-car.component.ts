@@ -80,20 +80,25 @@ export class RouteToCarComponent implements OnInit {
       this.route.status.forEach(route => {
         newRouteStatus.push(-1);
       });
-        route = {
-          detailsAboutAdresses: this.route.detailsAboutAdresses,
-          carId: carId,
-          createdBy: dispecerId,
-          coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
-          coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
-          finished: false,
-          nameOfTowns: this.route.nameOfTowns,
-          status: newRouteStatus,
-          type: this.route.type,
-          aboutRoute: this.route.aboutRoute,
-          createdAt: (Date.now())
-      }
-      this.routeService.createRoute(route);
+      this.route.createdAt = (Date.now());
+      this.route.carId = carId;
+      this.route.finished = false;
+      this.route.createdBy = dispecerId;
+      this.route.status = newRouteStatus;
+      //   route = {
+      //     detailsAboutAdresses: this.route.detailsAboutAdresses,
+      //     carId: carId,
+      //     createdBy: dispecerId,
+      //     coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
+      //     coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
+      //     finished: false,
+      //     nameOfTowns: this.route.nameOfTowns,
+      //     status: newRouteStatus,
+      //     type: this.route.type,
+      //     aboutRoute: this.route.aboutRoute,
+      //     createdAt: (Date.now())
+      // }
+      this.routeService.createRoute(this.route);
     }
     //ked mam vytvorenu cestu a len ju chem priradit auto
     else {
@@ -103,21 +108,25 @@ export class RouteToCarComponent implements OnInit {
       }else{
         carId2 = car.id
       }
-      route = {
-        detailsAboutAdresses: this.route.detailsAboutAdresses,
-        id: this.routeId,
-        carId: carId2,
-        createdBy: dispecerId,
-        coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
-        coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
-        finished: false,
-        nameOfTowns: this.route.nameOfTowns,
-        status: this.route.status,
-        type: this.route.type,
-        aboutRoute: this.route.aboutRoute,
-        createdAt: (Date.now())
-      }
-      this.routeService.updateRoute(route);
+      this.route.createdAt = (Date.now());
+      this.route.carId = carId2;
+      this.route.finished = false;
+      this.route.createdBy = dispecerId;
+      // route = {
+      //   detailsAboutAdresses: this.route.detailsAboutAdresses,
+      //   id: this.routeId,
+      //   carId: carId2,
+      //   createdBy: dispecerId,
+      //   coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
+      //   coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
+      //   finished: false,
+      //   nameOfTowns: this.route.nameOfTowns,
+      //   status: this.route.status,
+      //   type: this.route.type,
+      //   aboutRoute: this.route.aboutRoute,
+      //   createdAt: (Date.now())
+      // }
+      this.routeService.updateRoute(this.route);
 
     }
 

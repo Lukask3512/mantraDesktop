@@ -35,6 +35,7 @@ import { DetailComponent } from './transportation/offer/detail/detail.component'
 import { OfferToRouteComponent } from './transportation/offer/offer-to-route/offer-to-route.component';
 import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/drag-drop-offer.component';
 import { FilterComponent } from './map/filter/filter.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 @NgModule({
@@ -50,18 +51,19 @@ import { FilterComponent } from './map/filter/filter.component';
         DragAndDropListComponent,
         FilterComponent
     ],
-  imports: [
-    CommonModule,
-    ViewRoutingModule,
-    MatTableModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MatStepperModule,
-    DragDropModule
-  ]
+    imports: [
+        CommonModule,
+        ViewRoutingModule,
+        MatTableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatStepperModule,
+        DragDropModule,
+        MatCheckboxModule
+    ]
 })
 export class ViewModule { }

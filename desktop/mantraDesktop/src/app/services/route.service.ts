@@ -82,6 +82,7 @@ export class RouteService {
         let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         query = query.where('createdBy', '==', id)
           .where('finished', '==', false)
+          .where('forEveryone', '==', false).where('takenBy', '==', '')
         ref.orderBy('createdAt');
         return query;
       }).snapshotChanges().pipe(

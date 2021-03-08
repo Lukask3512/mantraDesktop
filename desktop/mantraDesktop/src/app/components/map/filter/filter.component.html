@@ -23,3 +23,7 @@
   <span matSuffix> %</span>
 </mat-form-field>
 
+<mat-checkbox [(ngModel)]="vyhovuje" (change)="updateMatLabelForm()">Vyhovujúce</mat-checkbox>
+<mat-checkbox [(ngModel)]="povPre" (change)="updateMatLabelForm()">Povolené prekročenie</mat-checkbox>
+<mat-checkbox [(ngModel)]="prekrocenie" (change)="updateMatLabelForm()">Všetky</mat-checkbox>
+

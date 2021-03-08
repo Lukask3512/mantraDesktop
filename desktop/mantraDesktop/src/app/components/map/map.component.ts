@@ -47,7 +47,10 @@ export class MapComponent {
   map;
   vectorLayerAdress = new VectorLayer();
   vectorLayerCars = new VectorLayer();
-  vectorLayerOffers = new VectorLayer();
+  vectorLayerOffersGreen = new VectorLayer();
+  vectorLayerOffersRed = new VectorLayer();
+  vectorLayerOffersYellow = new VectorLayer();
+
   vectorLayerOffersRoutes = new VectorLayer();
   vectorLayerCoordinates;
   // vectorLayer;
@@ -63,7 +66,9 @@ export class MapComponent {
 
   //features pre mapu
   places = [];
-  offers = [];
+  offersGreen = [];
+  offersYellow = [];
+  offersRed = [];
   offersRoute = [];
   cars = [];
   routes = [];
@@ -695,7 +700,9 @@ export class MapComponent {
 
     if (emitFromFilter == null){
       this.map.removeLayer(this.vectorLayerOffersRoutes)
-      this.map.removeLayer(this.vectorLayerOffers)
+      this.map.removeLayer(this.vectorLayerOffersGreen);
+      this.map.removeLayer(this.vectorLayerOffersRed);
+      this.map.removeLayer(this.vectorLayerOffersYellow);
     }else{
       console.log(emitFromFilter)
       var offers = emitFromFilter.offers;
@@ -741,6 +748,7 @@ export class MapComponent {
         if (oneRouteOffer.takenBy == ""){
 
         this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi prepravami
+          if(this.vectorLayerCoordinates != undefined)
           var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
 
           // console.log(this.vectorLayerCoordinates.getFeatures())
@@ -770,17 +778,21 @@ export class MapComponent {
             oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
 
                              //toto treba kuknut vravia mi to interesting vzdialenosti
+              if (routeLine != undefined){
+
                               var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
 
 
-                              var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
-                                [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
+
                               //kontrolujem najkratsiu vzdialenost od trasy
                               if (vzdialenostOdTrasy < jednaPonuka.minVzdialenost){
                                 jednaPonuka.minVzdialenost = vzdialenostOdTrasy;
                                 adresaMinVzialenost = vzdialenostOdTrasy;
                               }
-                              if (vzdielenost < jednaPonuka.minVzdialenost) {
+              }
+              var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
+                [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
+              if (vzdielenost < jednaPonuka.minVzdialenost) {
                                 jednaPonuka.minVzdialenost = vzdielenost;
                                 adresaMinVzialenost = vzdielenost;
                               }
@@ -841,38 +853,7 @@ export class MapComponent {
         }
 
       });
-      console.log(poleSMinVzdialenostamiOdAdries);
 
-
-      //pridavam detail k prepravam
-      // var cestySDetailami = [];
-      // poleSMinVzdialenostamiOdAdries.forEach(preprava => {
-      //   var detailArray = [];
-      //   var prepravasDetailom;
-      //   preprava.detailsAboutAdresses.forEach(detail => {
-      //     this.routeDetailService.offerDetails$.subscribe(allDetails => {
-      //       detailArray.push(allDetails.find(oneMyDetail => oneMyDetail.id == detail));
-      //     });
-      //   });
-      //   var maxVaha = 0;
-      //   var sumVaha = 0;
-      //   detailArray.forEach((oneDetail, index ) => {
-      //
-      //     oneDetail.weight.forEach(vaha => {
-      //       if (preprava.type[index] == 'nakladka'){
-      //         sumVaha += vaha;
-      //         if (sumVaha > maxVaha){
-      //           maxVaha = sumVaha;
-      //         }
-      //       }else{
-      //         sumVaha -= vaha;
-      //       }
-      //     })
-      //   })
-      //   prepravasDetailom = {...preprava, detailArray, maxVaha};
-      //   cestySDetailami.push(prepravasDetailom)
-      // })
-      // console.log(cestySDetailami)
       setTimeout( () => {
         console.log(poleSMinVzdialenostamiOdAdries)
         this.offersFromDatabase = poleSMinVzdialenostamiOdAdries
@@ -884,10 +865,33 @@ export class MapComponent {
 
   }
 
+  offersShow(which){
+    console.log(which);
+    if (which.vyhovuje){
+      this.map.addLayer(this.vectorLayerOffersGreen);
+    }else{
+      this.map.removeLayer(this.vectorLayerOffersGreen);
+    }
+
+    if (which.trocha){
+      this.map.addLayer(this.vectorLayerOffersYellow);
+    }else{
+      this.map.removeLayer(this.vectorLayerOffersYellow);
+    }
+
+    if (which.vyhovuje){
+      this.map.addLayer(this.vectorLayerOffersRed);
+    }else{
+      this.map.removeLayer(this.vectorLayerOffersRed);
+    }
+  }
+
   drawOffers(offers){
-    this.offers = []
+    this.offersGreen = []
+    this.offersRed = [];
+    this.offersYellow = [];
+
     this.offersRoute = [];
-    var styles = [];
 
     offers.forEach((route, index) => {
       var coordinatesToArray = [];
@@ -908,19 +912,19 @@ export class MapComponent {
         name: route.id
       });
       var routeStyle;
-      if (route.flag == 0){
+      if (route.flag < 2){
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [46, 49, 49, 0.3]
+            color: [207, 0, 15, 0.45]
           })
         });
 
-      }else if (route.flag == 1){
+      }else if (route.flag == 2){
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [46, 49, 49, 0.3]
+            color: [247, 202, 24, 0.45]
           })
         });
 
@@ -928,11 +932,12 @@ export class MapComponent {
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [46, 49, 49, 0.3]
+            color: [10, 255, 10, 0.45]
           })
         });
       }
 
+      var styles = [];
 
       routeFeature.getGeometry().forEachSegment(function (start, end){
         var dx = end[0] - start[0];
@@ -1031,50 +1036,17 @@ export class MapComponent {
               })
             });
           }
-          // }
-          // else if (route.status[i] == 4){
-          //   var iconStyle = new Style({
-          //     image: new CircleStyle({
-          //       radius: 10,
-          //       stroke: new Stroke({
-          //         color: [10, 255, 10, 1]
-          //       }),
-          //       fill: new Fill({
-          //         color: [10, 255, 10, 0.55]
-          //       }),
-          //     }),
-          //     text: new Text({
-          //       text: (i+1).toString() + "X",
-          //       fill: new Fill({
-          //         color: '#fff',
-          //       }),
-          //     })
-          //   });
-          //   this.pulseMarker=true;
-          // }else{
-          //   var iconStyle = new Style({
-          //     image: new CircleStyle({
-          //       radius: 10,
-          //       stroke: new Stroke({
-          //         color: [10, 255, 10, 1]
-          //       }),
-          //       fill: new Fill({
-          //         color: [10, 255, 10, 0.55]
-          //       }),
-          //     }),
-          //     text: new Text({
-          //       text: (i+1).toString(),
-          //       fill: new Fill({
-          //         color: '#fff',
-          //       }),
-          //     })
-          //   });
-          // }
-
-
-
           iconFeature.setStyle(iconStyle);
-          this.offers.push(iconFeature);
+
+          //red offers
+          if (route.flag < 2){
+            this.offersRed.push(iconFeature);
+          }else if (route.flag == 2){
+            this.offersYellow.push(iconFeature)
+          }else{
+            this.offersGreen.push(iconFeature)
+          }
+
 
 
         }
@@ -1096,16 +1068,39 @@ export class MapComponent {
 
 
 
-    var vectorSource = new VectorSource({
-      features: this.offers
+    var vectorSourceGreen = new VectorSource({
+      features: this.offersGreen
     });
 
-    this.map.removeLayer(this.vectorLayerOffers)
-    this.vectorLayerOffers = new VectorLayer({
-      source: vectorSource,
+    var vectorSourceYellow = new VectorSource({
+      features: this.offersYellow
     });
+
+    var vectorSourceRed = new VectorSource({
+      features: this.offersRed
+    });
+
+
+    this.map.removeLayer(this.vectorLayerOffersRed);
+    this.map.removeLayer(this.vectorLayerOffersYellow);
+    this.map.removeLayer(this.vectorLayerOffersGreen);
+
+    // this.vectorLayerOffersGreen = new VectorLayer({
+    //   source: vectorSourceGreen,
+    // });
+    //
+    // this.vectorLayerOffersYellow = new VectorLayer({
+    //   source: vectorSourceYellow,
+    // });
+    //
+    // this.vectorLayerOffersRed = new VectorLayer({
+    //   source: vectorSourceRed,
+    // });
+
     this.vectorLayerAdress.setZIndex(2);
-    this.map.addLayer(this.vectorLayerOffers);
+    this.map.addLayer(this.vectorLayerOffersGreen);
+    this.map.addLayer(this.vectorLayerOffersYellow);
+    this.map.addLayer(this.vectorLayerOffersRed);
 
 
     // if (vectorSource.getFeatures()[0] != undefined) {

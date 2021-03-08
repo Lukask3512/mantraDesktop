@@ -17,9 +17,14 @@ export class FilterComponent implements OnInit {
   weight = 0;
   size = 0;
 
+  vyhovuje = true;
+  povPre = true;
+  prekrocenie = false;
+
   constructor(private offerService: OfferRouteService) { }
   offers: Route[];
   @Output() offersToMap = new EventEmitter<any>();
+  @Output() owhichToShow = new EventEmitter<any>();
 
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
@@ -42,6 +47,10 @@ export class FilterComponent implements OnInit {
   vypocitajPrekrocenie(prekrocenie){
     var percentaNaCislo = (100 + prekrocenie) / 100;
     return percentaNaCislo;
+  }
+
+  updateMatLabelForm(){
+    this.owhichToShow.emit({vyhovuje: this.vyhovuje, trocha: this.povPre, nie: this.prekrocenie})
   }
 
 }
