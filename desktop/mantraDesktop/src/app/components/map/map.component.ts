@@ -51,7 +51,9 @@ export class MapComponent {
   vectorLayerOffersRed = new VectorLayer();
   vectorLayerOffersYellow = new VectorLayer();
 
-  vectorLayerOffersRoutes = new VectorLayer();
+  vectorLayerOffersRoutesGreen = new VectorLayer();
+  vectorLayerOffersRoutesYellow = new VectorLayer();
+  vectorLayerOffersRoutesRed = new VectorLayer();
   vectorLayerCoordinates;
   // vectorLayer;
   coordinatesSkuska = [[2.173403, 40.385064], [2.273403,41.385064]];
@@ -69,7 +71,11 @@ export class MapComponent {
   offersGreen = [];
   offersYellow = [];
   offersRed = [];
-  offersRoute = [];
+
+  offersRouteGreen = [];
+  offersRouteYellow = [];
+  offersRouteRed = [];
+
   cars = [];
   routes = [];
 
@@ -103,6 +109,10 @@ export class MapComponent {
   });
 
   view;
+
+  red = false;
+  green = true;
+  yellow = true;
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
@@ -699,7 +709,9 @@ export class MapComponent {
   offersUpdate(emitFromFilter){
 
     if (emitFromFilter == null){
-      this.map.removeLayer(this.vectorLayerOffersRoutes)
+      this.map.removeLayer(this.vectorLayerOffersRoutesGreen)
+      this.map.removeLayer(this.vectorLayerOffersRoutesYellow)
+      this.map.removeLayer(this.vectorLayerOffersRoutesRed)
       this.map.removeLayer(this.vectorLayerOffersGreen);
       this.map.removeLayer(this.vectorLayerOffersRed);
       this.map.removeLayer(this.vectorLayerOffersYellow);
@@ -868,21 +880,30 @@ export class MapComponent {
   offersShow(which){
     console.log(which);
     if (which.vyhovuje){
-      this.map.addLayer(this.vectorLayerOffersGreen);
+      this.red = true
+      this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
+      this.map.addLayer(this.vectorLayerOffersRoutesGreen);
     }else{
-      this.map.removeLayer(this.vectorLayerOffersGreen);
+      this.red = false;
+      this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
     }
 
     if (which.trocha){
-      this.map.addLayer(this.vectorLayerOffersYellow);
+      this.yellow = true;
+      this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
+      this.map.addLayer(this.vectorLayerOffersRoutesYellow);
     }else{
-      this.map.removeLayer(this.vectorLayerOffersYellow);
+      this.yellow = false;
+      this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
     }
 
-    if (which.vyhovuje){
-      this.map.addLayer(this.vectorLayerOffersRed);
+    if (which.nie){
+      this.red = true;
+      this.map.removeLayer(this.vectorLayerOffersRoutesRed);
+      this.map.addLayer(this.vectorLayerOffersRoutesRed);
     }else{
-      this.map.removeLayer(this.vectorLayerOffersRed);
+      this.red = false;
+      this.map.removeLayer(this.vectorLayerOffersRoutesRed);
     }
   }
 
@@ -891,7 +912,9 @@ export class MapComponent {
     this.offersRed = [];
     this.offersYellow = [];
 
-    this.offersRoute = [];
+    this.offersRouteRed = [];
+    this.offersRouteGreen = [];
+    this.offersRouteYellow = [];
 
     offers.forEach((route, index) => {
       var coordinatesToArray = [];
@@ -960,7 +983,13 @@ export class MapComponent {
       styles.push(routeStyle)
       routeFeature.setStyle(styles);
 
-      this.offersRoute.push(routeFeature)
+      if (route.flag < 2){
+        this.offersRouteRed.push(routeFeature);
+      }else if (route.flag == 2){
+        this.offersRouteYellow.push(routeFeature);
+      }else{
+        this.offersRouteGreen.push(routeFeature);
+      }
 
 
       if (this.routesToShow != undefined && route.id == this.routesToShow[0].id){
@@ -1055,35 +1084,64 @@ export class MapComponent {
     });
   //offerroutes
   //   console.log
-    var vectorSourceRoutes = new VectorSource({
-      features: this.offersRoute
-    });
-    this.map.removeLayer(this.vectorLayerOffersRoutes)
-    this.vectorLayerOffersRoutes = new VectorLayer({
-      source: vectorSourceRoutes,
+    var vectorSourceRoutesGreen = new VectorSource({
+      features: this.offersRouteGreen
     });
 
-    this.vectorLayerOffersRoutes.setZIndex(1);
-    this.map.addLayer(this.vectorLayerOffersRoutes);
-
-
-
-    var vectorSourceGreen = new VectorSource({
-      features: this.offersGreen
+    var vectorSourceRoutesYellow = new VectorSource({
+      features: this.offersRouteYellow
     });
 
-    var vectorSourceYellow = new VectorSource({
-      features: this.offersYellow
-    });
-
-    var vectorSourceRed = new VectorSource({
-      features: this.offersRed
+    var vectorSourceRoutesRed = new VectorSource({
+      features: this.offersRouteRed
     });
 
 
-    this.map.removeLayer(this.vectorLayerOffersRed);
-    this.map.removeLayer(this.vectorLayerOffersYellow);
-    this.map.removeLayer(this.vectorLayerOffersGreen);
+    this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
+    this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
+    this.map.removeLayer(this.vectorLayerOffersRoutesRed);
+    this.vectorLayerOffersRoutesGreen = new VectorLayer({
+      source: vectorSourceRoutesGreen,
+    });
+    this.vectorLayerOffersRoutesYellow = new VectorLayer({
+      source: vectorSourceRoutesYellow,
+    });
+    this.vectorLayerOffersRoutesRed = new VectorLayer({
+      source: vectorSourceRoutesRed,
+    });
+
+    this.vectorLayerOffersRoutesGreen.setZIndex(1);
+    this.vectorLayerOffersRoutesYellow.setZIndex(1);
+    this.vectorLayerOffersRoutesRed.setZIndex(1);
+
+    if (this.green){
+      this.map.addLayer(this.vectorLayerOffersRoutesGreen);
+    }
+    if (this.yellow){
+      this.map.addLayer(this.vectorLayerOffersRoutesYellow);
+    }
+    if (this.red){
+      this.map.addLayer(this.vectorLayerOffersRoutesRed);
+    }
+
+
+
+    // var vectorSourceGreen = new VectorSource({
+    //   features: this.offersGreen
+    // });
+    //
+    // var vectorSourceYellow = new VectorSource({
+    //   features: this.offersYellow
+    // });
+    //
+    // var vectorSourceRed = new VectorSource({
+    //   features: this.offersRed
+    // });
+
+    //
+    // this.map.removeLayer(this.vectorLayerOffersRed);
+    // this.map.removeLayer(this.vectorLayerOffersYellow);
+    // this.map.removeLayer(this.vectorLayerOffersGreen);
 
     // this.vectorLayerOffersGreen = new VectorLayer({
     //   source: vectorSourceGreen,
