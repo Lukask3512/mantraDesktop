@@ -16,13 +16,16 @@ export class CountFreeSpaceService {
   constructor(private carService: CarService) { }
 
   // vratim index miest kde sa dana preprava vopcha
-  countFreeSpace(oldDetail: DeatilAboutAdresses[], newDetail: DeatilAboutAdresses[], carId, route, prekrocenie){
+  countFreeSpace(oldDetail: DeatilAboutAdresses[], newDetail: DeatilAboutAdresses[], carId, route, prekrocenie, offer){
    var nalozenievMestach = this.vypocitajPocetPalietVKazomMeste(oldDetail, route);
     var poleMiestKdeSaVopcha = [];
     var prekrocenieOPercenta = [];
 
     var car: Cars; //0 vyska , 1 sirka, 2 dlzka
-    car = this.carService.getAllCars().find(oneCar => oneCar.id == "LhMQxklO6AdvZDB7jyWw");
+    car = this.carService.getAllCars().find(oneCar => oneCar.id == carId);
+
+    if (newDetail != null && offer != null)
+    var nalozenieVPonuke = this.vypocitajPocetPalietVKazomMeste(newDetail, offer);
 
     //pre kazme mesto osobitne pocitam ci sa votka
     nalozenievMestach.forEach((oneNalozenie, indexMesicka) => {
@@ -45,20 +48,118 @@ export class CountFreeSpaceService {
     //     this.stohovatelnost.push(oneDetail.stohovatelnost[index]);
     //   });
     // });
+      var vaha = this.weight;
+    var sizeS =this.sizesS;
+    var sizeV = this.sizesV;
+    var sizeD = this.sizesD;
+    var stohovatelnost = this.stohovatelnost;
 
+
+      var vopchaSaDoMesta = 0;
     if (newDetail != null){
-    newDetail.forEach(oneDetail => {
-      oneDetail.sizeD.forEach((oneSizeD, index) => {
-        this.sizesS.push(oneDetail.sizeS[index]);
-        this.sizesD.push(oneDetail.sizeD[index]);
-        this.sizesV.push(oneDetail.sizeV[index]);
-        this. weight.push(oneDetail.weight[index]);
-        this.stohovatelnost.push(oneDetail.stohovatelnost[index]);
-      });
+    nalozenieVPonuke.forEach(jednoNalozenie => {
+        this.weight = jednoNalozenie.weight.concat(vaha);
+        this.sizesS = jednoNalozenie.sizeS.concat(sizeS);
+        this.sizesD = jednoNalozenie.sizeD.concat(sizeD);
+        this.sizesV = jednoNalozenie.sizeV.concat(sizeV);
+        this.stohovatelnost = jednoNalozenie.stohovatelnost.concat(stohovatelnost);
+
+
+    this.prejdiPaletyaUlozIch(car);
+
+    //final kontrola ci sa mi veci z pola vopchaju do autiska
+    var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
+    this.sizesD.forEach(jednaDlzka => {
+      dlzka += jednaDlzka;
     });
+    if (vopchaSaDoMesta != -1 && vopchaSaDoMesta != 2 && dlzka <= car.sizePriestoru[2]){
+      vopchaSaDoMesta = 1;
+    }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie) && vopchaSaDoMesta != -1){
+      vopchaSaDoMesta = 2
+      }else{
+      vopchaSaDoMesta = -1;
     }
 
-    //
+      });
+      if (vopchaSaDoMesta == 1){
+        poleMiestKdeSaVopcha.push(indexMesicka);
+        prekrocenieOPercenta.push(false);
+      }else if (vopchaSaDoMesta == 2){
+        poleMiestKdeSaVopcha.push(indexMesicka);
+        prekrocenieOPercenta.push(true);
+      }
+      }else{ // ked nemam offer ale len 1 ponuka
+          this.prejdiPaletyaUlozIch(car);
+      //final kontrola ci sa mi veci z pola vopchaju do autiska
+      var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
+      this.sizesD.forEach(jednaDlzka => {
+        dlzka += jednaDlzka;
+      });
+      if (dlzka <= car.sizePriestoru[2]){
+        poleMiestKdeSaVopcha.push(indexMesicka);
+        prekrocenieOPercenta.push(false);
+      }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie)){
+        poleMiestKdeSaVopcha.push(indexMesicka);
+        prekrocenieOPercenta.push(true);
+      }
+    }
+    })
+  return {poleMiestKdeSaVopcha, prekrocenieOPercenta};
+  }
+
+  //pocitam si v ktorom meste sa toho kolko nachadza
+  vypocitajPocetPalietVKazomMeste(detail: DeatilAboutAdresses[], route: Route){
+    var poleKsPalietPreKazduAdresu = [];
+    detail.forEach((oneDetail, index) => {
+      var oneAdress = {
+        sizeS: [],
+        sizeD: [],
+        sizeV: [],
+        weight: [],
+        stohovatelnost: []
+      }
+      if (route.type[index] == 'nakladka'){ //pri nakladke prikladam palety
+        oneDetail.sizeS.forEach((oneSize, indexSize) => {
+          oneAdress.sizeS.push(oneDetail.sizeS[indexSize]);
+          oneAdress.sizeD.push(oneDetail.sizeD[indexSize]);
+          oneAdress.sizeV.push(oneDetail.sizeV[indexSize]);
+          oneAdress.weight.push(oneDetail.weight[indexSize]);
+          oneAdress.stohovatelnost.push(oneDetail.stohovatelnost[indexSize]);
+        });
+        poleKsPalietPreKazduAdresu.push(oneAdress);
+      }else{ //tu sa snazim odsranit veci kedze je vykladka
+        var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length -1]));
+        oneDetail.sizeS.forEach((oneSize, indexSize) => {
+          for (var i =0; i < lastVeci.sizeS.length; i++){
+            if (lastVeci.sizeS[i] == oneDetail.sizeS[indexSize] && // ked najdem paletu z nakladky
+                lastVeci.sizeD[i] == oneDetail.sizeD[indexSize] &&
+                lastVeci.sizeV[i] == oneDetail.sizeV[indexSize] &&
+                lastVeci.weight[i] == oneDetail.weight[indexSize] &&
+                lastVeci.stohovatelnost[i] == oneDetail.stohovatelnost[indexSize]){
+
+                  lastVeci.sizeS.splice(i, 1); // tu to musim nejak osetrit aby nevymazalo viacero tych istch paliet
+                  lastVeci.sizeD.splice(i, 1);
+                   lastVeci.sizeV.splice(i, 1);
+                   lastVeci.weight.splice(i, 1);
+                   lastVeci.stohovatelnost.splice(i, 1);
+            }
+          }
+        });
+        poleKsPalietPreKazduAdresu.push(lastVeci);
+      }
+    });
+    return poleKsPalietPreKazduAdresu;
+  }
+
+  odstraneniePalety(index){
+    this.sizesV.splice(index, 1);
+    this.sizesD.splice(index, 1);
+    this.sizesS.splice(index, 1);
+    this.stohovatelnost.splice(index, 1);
+    this.weight.splice(index, 1);
+  }
+
+  prejdiPaletyaUlozIch(car){
     for (var i = 0; i < this.sizesS.length; i++) {
       //ak neni stohovatelne, skusim najst paletu na ktoru to moyem polozit
       if (this.stohovatelnost[i] == 0) {
@@ -166,91 +267,5 @@ export class CountFreeSpaceService {
         }
       }
     }
-    //final kontrola ci sa mi veci z pola vopchaju do autiska
-    var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
-    this.sizesD.forEach(jednaDlzka => {
-      dlzka += jednaDlzka;
-    });
-    if (dlzka <= car.sizePriestoru[2]){
-      poleMiestKdeSaVopcha.push(indexMesicka);
-      prekrocenieOPercenta.push(false);
-    }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie)){
-      poleMiestKdeSaVopcha.push(indexMesicka);
-      prekrocenieOPercenta.push(true);
-    }
-    })
-  return {poleMiestKdeSaVopcha, prekrocenieOPercenta};
-  }
-
-  //pocitam si v ktorom meste sa toho kolko nachadza
-  vypocitajPocetPalietVKazomMeste(detail: DeatilAboutAdresses[], route: Route){
-    var poleKsPalietPreKazduAdresu = [];
-    detail.forEach((oneDetail, index) => {
-      var oneAdress = {
-        sizeS: [],
-        sizeD: [],
-        sizeV: [],
-        weight: [],
-        stohovatelnost: []
-      }
-      if (route.type[index] == 'nakladka'){ //pri nakladke prikladam palety
-        oneDetail.sizeS.forEach((oneSize, indexSize) => {
-          oneAdress.sizeS.push(oneDetail.sizeS[indexSize]);
-          oneAdress.sizeD.push(oneDetail.sizeD[indexSize]);
-          oneAdress.sizeV.push(oneDetail.sizeV[indexSize]);
-          oneAdress.weight.push(oneDetail.weight[indexSize]);
-          oneAdress.stohovatelnost.push(oneDetail.stohovatelnost[indexSize]);
-        });
-        poleKsPalietPreKazduAdresu.push(oneAdress);
-      }else{ //tu sa snazim odsranit veci kedze je vykladka
-        var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length -1]));
-        oneDetail.sizeS.forEach((oneSize, indexSize) => {
-          for (var i =0; i < lastVeci.sizeS.length; i++){
-            if (lastVeci.sizeS[i] == oneDetail.sizeS[indexSize] && // ked najdem paletu z nakladky
-                lastVeci.sizeD[i] == oneDetail.sizeD[indexSize] &&
-                lastVeci.sizeV[i] == oneDetail.sizeV[indexSize] &&
-                lastVeci.weight[i] == oneDetail.weight[indexSize] &&
-                lastVeci.stohovatelnost[i] == oneDetail.stohovatelnost[indexSize]){
-
-                  lastVeci.sizeS.splice(i, 1); // tu to musim nejak osetrit aby nevymazalo viacero tych istch paliet
-                  lastVeci.sizeD.splice(i, 1);
-                   lastVeci.sizeV.splice(i, 1);
-                   lastVeci.weight.splice(i, 1);
-                   lastVeci.stohovatelnost.splice(i, 1);
-            }
-          }
-        });
-        poleKsPalietPreKazduAdresu.push(lastVeci);
-      }
-    });
-    return poleKsPalietPreKazduAdresu;
-  }
-
-//   oneDetail.sizeS.forEach((oneSize, indexSize) => {
-//   poleKsPalietPreKazduAdresu.forEach((jednaAdresa, indexVPoli) => {
-//   for (let indexVelkosti = 0; indexVelkosti < jednaAdresa.sizeS.length; indexVelkosti++){
-//   if (jednaAdresa.sizeS[indexVelkosti] == oneDetail.sizeS[indexSize] // ked najdem paletu z nakladky
-// && jednaAdresa.sizeD[indexVelkosti] == oneDetail.sizeD[indexSize] &&
-//   jednaAdresa.sizeV[indexVelkosti] == oneDetail.sizeV[indexSize] &&
-//   jednaAdresa.weight[indexVelkosti] == oneDetail.weight[indexSize] &&
-//   jednaAdresa.stohovatelnost[indexVelkosti] == oneDetail.stohovatelnost[indexSize]){
-//
-//   // poleKsPalietPreKazduAdresu[indexVPoli].sizeV.splice(indexVelkosti, 1); // tu to musim nejak osetrit aby nevymazalo viacero tych istch paliet
-//   // poleKsPalietPreKazduAdresu[indexVPoli].sizeD.splice(indexVelkosti, 1);
-//   // poleKsPalietPreKazduAdresu[indexVPoli].sizeS.splice(indexVelkosti, 1);
-//   // poleKsPalietPreKazduAdresu[indexVPoli].weight.splice(indexVelkosti, 1);
-//   // poleKsPalietPreKazduAdresu[indexVPoli].stohovatelnost.splice(indexVelkosti, 1);
-//   break;
-// }
-// }
-// })
-// });
-
-  odstraneniePalety(index){
-    this.sizesV.splice(index, 1);
-    this.sizesD.splice(index, 1);
-    this.sizesS.splice(index, 1);
-    this.stohovatelnost.splice(index, 1);
-    this.weight.splice(index, 1);
   }
 }

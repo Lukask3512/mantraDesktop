@@ -69,6 +69,23 @@
         <label>Pridať ponuku</label>
         <input type="number">
         <button>Pridat ponuku</button>
+        <div class="toRouteWrappers">
+          <div  *ngFor="let preprava of route.zelenePrepravy; index as i" class="oneRoute">
+            <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">
+              <h3 class="tuSaVopcha" *ngIf="countIndexisOfferAndRoute(preprava, this.offersToShow[0], iMesto ); else elseBlock">{{myTown}}</h3>
+              <ng-template #elseBlock>{{myTown}}</ng-template>
+            </div>
+          </div>
+
+          <div  *ngFor="let preprava of route.zltePrepravy; index as i" class="oneRoute">
+            <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">
+              <h3 class="tuSaVopchaYellow" *ngIf="countIndexisOfferAndRoute(preprava, this.offersToShow[0], iMesto ); else elseBlock">{{myTown}}</h3>
+              <ng-template #elseBlock>{{myTown}}</ng-template>
+            </div>
+          </div>
+
+
+        </div>
       </div>
     </div>
   </div>

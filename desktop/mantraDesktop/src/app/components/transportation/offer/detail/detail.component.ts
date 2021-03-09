@@ -69,6 +69,10 @@ export class DetailComponent implements OnInit {
       }
     }
 
+  vymazatPonuku(){
+    this.offerService.deleteRoute(this.route.id);
+  }
+
   changeRouteOnMap(route: Route){
     var carId = route.carId;
     var car;

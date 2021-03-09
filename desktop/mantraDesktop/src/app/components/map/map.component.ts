@@ -56,7 +56,6 @@ export class MapComponent {
   vectorLayerOffersRoutesRed = new VectorLayer();
   vectorLayerCoordinates;
   // vectorLayer;
-  coordinatesSkuska = [[2.173403, 40.385064], [2.273403,41.385064]];
   //skusam vytvorit trasu
   points;
 
@@ -78,6 +77,7 @@ export class MapComponent {
 
   cars = [];
   routes = [];
+  indexiMiestKdeNalozit = [];
 
   pointsFeature;
   coordinatesFeature;
@@ -109,7 +109,7 @@ export class MapComponent {
   });
 
   view;
-
+  maxPrekrocenieRozmerov;
   red = false;
   green = true;
   yellow = true;
@@ -235,13 +235,23 @@ export class MapComponent {
 
   //ak kliknem na auto
   onClickFindInfoOffer(id, feature){
-
     this.offersToShow = this.offersFromDatabase.filter(route => route.id == id);
+    // this.countFreeSpaceService.countFreeSpace(this.offersToShow[0].detailArray,this.offersToShow[0].detailArray, )
     this.distanceOfOffer = Math.round(((getLength(feature.getGeometry())/100) / 1000) * 100)
     this.carToShow = null;
     this.routesToShow = null;
     console.log(this.offersToShow)
+  }
 
+  //pri kliku na ponuku vratim pole indexov - aby som zobrazil kde je vhodne nalozit
+  countIndexisOfferAndRoute(route, offer, mestoIndex){
+    var index = this.countFreeSpaceService.countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
+    var jetam = index.poleMiestKdeSaVopcha.find(oneIndex => oneIndex == mestoIndex);
+    if (jetam){
+      return true
+    }else{
+      return false;
+    }
   }
 
   addRoute(routes) {
@@ -722,6 +732,7 @@ export class MapComponent {
       var maxVzdialenost = emitFromFilter.maxDistance;
       var maxPrekrocenieVahy = emitFromFilter.weight;
       var maxPrekrocenieRozmerov = emitFromFilter.size;
+      this.maxPrekrocenieRozmerov = maxPrekrocenieRozmerov;
       console.log(maxPrekrocenieRozmerov)
       console.log(maxPrekrocenieVahy)
     setTimeout( () => {
@@ -739,7 +750,7 @@ export class MapComponent {
         var maxVaha = 0;
         var sumVaha = 0;
         detailArray.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
-
+        if (oneDetail.weight != null){
           oneDetail.weight.forEach(vaha => {
             if (oneRouteOffer.type[index] == 'nakladka'){
               sumVaha += vaha;
@@ -750,15 +761,19 @@ export class MapComponent {
               sumVaha -= vaha;
             }
           })
+
+        }
         })
         prepravasDetailom = {...oneRouteOffer, detailArray, maxVaha};
 
         //tu konci priradovanie detialov a max vah
 
 
-        var jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0, flag: 0}; //0 cervena, 1 zlta, 2 greeeen
+        var jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0, flag: 0, zelenePrepravy: [], zltePrepravy: []}; //0 cervena, 1 zlta, 2 greeeen
         if (oneRouteOffer.takenBy == ""){
 
+          var zltePrepravy = [];
+          var zelenePrepravy = [];
         this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi prepravami
           if(this.vectorLayerCoordinates != undefined)
           var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
@@ -770,10 +785,11 @@ export class MapComponent {
           var sediVaha = false;
           var sediVahaYellow = false;
           // @ts-ignore
-          var vopchaSa = this.countFreeSpaceService.countFreeSpace(route.detailArray, jednaPonuka.detailArray, route.carId, route, maxPrekrocenieRozmerov);
+          var vopchaSa = this.countFreeSpaceService.countFreeSpace(route.detailArray, jednaPonuka.detailArray, route.carId, route, maxPrekrocenieRozmerov, oneRouteOffer);
 
           var adresaMinVzialenost = 100000000;
           var adresaMaxVzdialenost = 0;
+
           route.coordinatesOfTownsLon.forEach((lon, indexLon) => { //prechadzam miestami v preprave
 
             //vaha
@@ -843,13 +859,21 @@ export class MapComponent {
                                 if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
                                   flags = 3;
-                                }else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  zelenePrepravy.push(route);
+                                }else if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
                                   flags = 2;
+                                  zltePrepravy.push(route)
+                                }
+                                else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+                                  flags = 2;
+                                  zltePrepravy.push(route)
                                 }
                                 else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
                                   flags = 2;
+                                  zltePrepravy.push(route)
                                 }
                                 if (flags > jednaPonuka.flag){
                                   jednaPonuka.flag = flags;
@@ -858,7 +882,10 @@ export class MapComponent {
                             })
 
             });
-
+          zltePrepravy = [...new Set(zltePrepravy)]; //odstranujem duplikaty
+          zelenePrepravy = [...new Set(zelenePrepravy)];
+              jednaPonuka.zelenePrepravy = zelenePrepravy;
+              jednaPonuka.zltePrepravy = zltePrepravy;
           })
 
         poleSMinVzdialenostamiOdAdries.push(jednaPonuka);
@@ -947,7 +974,7 @@ export class MapComponent {
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: [247, 202, 24, 0.45]
+            color: [247, 202, 24, 0.6]
           })
         });
 
