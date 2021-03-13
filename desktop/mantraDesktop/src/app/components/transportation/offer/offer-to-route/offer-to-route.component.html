@@ -1,3 +1,9 @@
+<section class="infoPresun">
+  <h2 *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''">
+    Presun ponuku do prepravy ->
+  </h2>
+</section>
+
 <div class="dragAndDrop">
   <div class="drag1">
   <div *ngIf="offer" cdkDropList class="example-list"
@@ -19,7 +25,6 @@
   </div>
   </div>
   <div class="drag2">
-    <button *ngIf="routeToDragList != undefined" (click)="chooseAnotherRoute()">Zmenit</button>
   <div *ngIf="routeToDragList" cdkDropList class="example-list"
        (cdkDropListDropped)="drop($event)" id="dragList2" cdkDropListConnectedTo="dragList1">
     <div class="example-box" *ngFor="let routeTown of this.routeToDragList.nameOfTowns let i = index" cdkDrag>
@@ -37,7 +42,8 @@
       </div>
     </div>
   </div>
-    <button (click)="updateRoute()">Ulozit trasu</button>
+    <button *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''" (click)="chooseAnotherRoute()">Zmenit</button>
+    <button [disabled]="this.fakeOffer.nameOfTowns.length > 0" *ngIf="this.fakeOffer.offerInRoute == ''" (click)="updateRoute()">Ulozit trasu</button>
 </div>
 </div>
 
@@ -57,7 +63,7 @@
 
 
 <div *ngIf="!routeToDragList">
-  <button (click)="createNew()">Vytvorit novu trasu</button>
+  <button (click)="createNew()">Vytvorit novu prepravu</button>
 
   <div  *ngFor="let route of this.routes; let i = index" class="oneRoute" >
     <div *ngIf="routes.length" class="nakladka" (click)="setRoute(route)">

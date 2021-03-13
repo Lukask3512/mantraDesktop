@@ -74,13 +74,16 @@ export class OfferToRouteComponent implements OnInit {
   }
 
   chooseAnotherRoute(){
+    this.fakeOffer = JSON.parse(JSON.stringify(this.offer));
     this.routeToDragList = undefined;
   }
 
   updateRoute(){
     this.offer.offerInRoute = this.routeToDragList.id;
     this.routeService.updateRoute(this.routeToDragList);
-    this.offerService.updateRoute(this.offer)
+    this.offerService.updateRoute(this.offer);
+    console.log(this.routeToDragList);
+    console.log(this.offer)
   }
 
   drop(event: CdkDragDrop<string[]>) {

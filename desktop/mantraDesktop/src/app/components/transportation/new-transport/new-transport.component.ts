@@ -220,6 +220,8 @@ export class NewTransportComponent implements OnInit {
         }
       } else if (this.transportForm.valid && this.numberOfItems == 1 && this.labelPosition) {
         return false;
+      }else{
+        return true;
       }
 
     }else if (this.labelPosition == 'vykladka'){
@@ -242,8 +244,11 @@ export class NewTransportComponent implements OnInit {
 
   updateMatLabelForm(){
     if (this.transportForm.get('poziciaNakladania').value == 'rozhoduje') {
-      if (!this.transportForm.get('fromBackSide').value || !this.transportForm.get('fromSide').value || !this.transportForm.get('fromUpSide').value)
+      if (!this.transportForm.get('fromBackSide').value && !this.transportForm.get('fromSide').value && !this.transportForm.get('fromUpSide').value){
         this.transportForm.get('fromBackSide').setValidators([Validators.requiredTrue]);
+      }else{
+        this.transportForm.get('fromBackSide').clearValidators();
+      }
     }else{
       this.transportForm.get('fromBackSide').clearValidators();
     }
@@ -251,6 +256,7 @@ export class NewTransportComponent implements OnInit {
   }
 
   updateFormPosition(){
+
     if (this.transportForm.get('poziciaNakladania').value == 'rozhoduje') {
       this.transportForm.get('fromBackSide').clearValidators();
     }else{
@@ -351,6 +357,10 @@ export class NewTransportComponent implements OnInit {
 
       });
     }
+  }
+
+  date(){
+
   }
 
   updateArrayOfDetail(){
@@ -569,36 +579,36 @@ export class NewTransportComponent implements OnInit {
     this.transportForm.controls['sizeV'].setValue(detail.sizeV[indexOfPackage]);
     this.transportForm.controls['sizeS'].setValue(detail.sizeS[indexOfPackage]);
     this.transportForm.controls['weight'].setValue(detail.weight[indexOfPackage]);
-    if (this.detailAboutRoute.vyskaNaklHrany[indexOfPackage] != undefined && this.detailAboutRoute.vyskaNaklHrany[indexOfPackage] >= 0){
-      this.transportForm.controls['vyskaHranySize'].setValue(this.detailAboutRoute.vyskaNaklHrany[indexOfPackage]);
+    if (detail.vyskaNaklHrany[indexOfPackage] != undefined && detail.vyskaNaklHrany[indexOfPackage] >= 0){
+      this.transportForm.controls['vyskaHranySize'].setValue(detail.vyskaNaklHrany[indexOfPackage]);
       this.transportForm.controls['vyskaHrany'].setValue("rozhoduje");
     }else{
       this.transportForm.controls['vyskaHrany'].setValue("nerozhoduje");
     }
 
 
-    if (this.detailAboutRoute.stohovatelnost[indexOfPackage] != undefined &&this.detailAboutRoute.stohovatelnost[indexOfPackage] > 0){
-      this.transportForm.controls['stohoSize'].setValue(this.detailAboutRoute.stohovatelnost[indexOfPackage]);
+    if (detail.stohovatelnost[indexOfPackage] != undefined && detail.stohovatelnost[indexOfPackage] > 0){
+      this.transportForm.controls['stohoSize'].setValue(detail.stohovatelnost[indexOfPackage]);
       this.transportForm.controls['stohovatelnost'].setValue("ano");
     }else{
       this.transportForm.controls['stohovatelnost'].setValue("nie");
     }
 
-    if (this.detailAboutRoute.polohaNakladania[indexOfPackage] != undefined){
+    if (detail.polohaNakladania[indexOfPackage] != undefined){
 
-    if (this.detailAboutRoute.polohaNakladania[indexOfPackage].charAt(0) == '1'){
+    if (detail.polohaNakladania[indexOfPackage].charAt(0) == '1'){
       this.transportForm.controls['fromBackSide'].setValue(true);
     }
-    if (this.detailAboutRoute.polohaNakladania[indexOfPackage].charAt(1) == '1'){
+    if (detail.polohaNakladania[indexOfPackage].charAt(1) == '1'){
       this.transportForm.controls['fromSide'].setValue(true);
     }
-    if (this.detailAboutRoute.polohaNakladania[indexOfPackage].charAt(2) == '1'){
+    if (detail.polohaNakladania[indexOfPackage].charAt(2) == '1'){
       this.transportForm.controls['fromUpSide'].setValue(true);
     }
 
-    if (this.detailAboutRoute.polohaNakladania[indexOfPackage].charAt(0) == "1" ||
-      this.detailAboutRoute.polohaNakladania[indexOfPackage].charAt(1) == "1" ||
-      this.detailAboutRoute.polohaNakladania[indexOfPackage].charAt(2) == "1") {
+    if (detail.polohaNakladania[indexOfPackage].charAt(0) == "1" ||
+      detail.polohaNakladania[indexOfPackage].charAt(1) == "1" ||
+      detail.polohaNakladania[indexOfPackage].charAt(2) == "1") {
       this.transportForm.controls['poziciaNakladania'].setValue("rozhoduje");
     }else{
       this.transportForm.controls['poziciaNakladania'].setValue("nerozhoduje");

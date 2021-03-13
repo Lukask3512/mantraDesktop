@@ -21,25 +21,32 @@ export class DetailAboutRouteService {
   private details: Observable<Dispecer[]>;
   detailsCollectionRef: AngularFirestoreCollection<Dispecer>;
 
+  myDetailsForCheck = [];
+
   constructor(private afs: AngularFirestore, private dataService: DataService, private routeService: RouteService,
               private offerService: OfferRouteService, private carService: CarService,
               private privesService: PrivesService) {
     this.detailCollection = this.afs.collection<any>('detailRoute');
-
-    this.getDetails().subscribe(res => {
-      this._details.next(res);
-    });
+    //
+    // this.getDetails().subscribe(res => {
+    //   this._details.next(res);
+    // });
 
     this.routeService.routes$.subscribe(routes => {
       var poleDetailikov = [];
       routes.forEach(route => {
         route.detailsAboutAdresses.forEach(idDetail => {
-          this.getOneDetail(idDetail).pipe(take(1)).subscribe(detailik => {
-            // @ts-ignore
-            poleDetailikov.push({...detailik, id: idDetail});
-            this._details.next(poleDetailikov);
+        if (!this.isThereDetail(idDetail)){
 
-          })
+            this.getOneDetail(idDetail).subscribe(detailik => { // tu mi dakedy nenatiahne vsetky detaily dal som prec pipu
+              // @ts-ignore
+              poleDetailikov.push({...detailik, id: idDetail});
+              this._details.next(poleDetailikov);
+              this.setDetails(poleDetailikov);
+
+            })
+        }
+
         })
       })
     })
@@ -65,6 +72,13 @@ export class DetailAboutRouteService {
 
   private _details = new BehaviorSubject<any>([]);
   readonly myDetails$ = this._details.asObservable();
+
+  setDetails(detail){
+    this.myDetailsForCheck.push(detail)
+  }
+  isThereDetail(id){
+    return this.myDetailsForCheck.find(oneDetail => oneDetail.id == id);
+  }
 
   getDetails() {
     var createdBy;

@@ -14,6 +14,7 @@ import {DataService} from "../../../data/data.service";
 })
 export class DragAndDropListComponent{
 
+  @Input() draggable = false;
   @Input() route: Route;
   arrayOfDetail;
   @Output() arrayOfDetailEvent = new EventEmitter<any>();

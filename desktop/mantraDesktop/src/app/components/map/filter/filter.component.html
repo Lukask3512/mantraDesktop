@@ -1,29 +1,31 @@
 <mat-slide-toggle [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
     <mat-form-field>
       <mat-label>Min vzdialenost</mat-label>
-      <input (change)="filterOffers()" matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost" class="example-right-align">
-      <span matSuffix> km</span>
+      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost" class="example-right-align">
+      <span *ngIf="checked" matSuffix> km</span>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Max vzdialenost</mat-label>
-      <input (change)="filterOffers()" matInput [(ngModel)]="maxDistance" type="number" placeholder="Max vzdialenost" class="example-right-align">
-      <span matSuffix> km</span>
+      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="maxDistance" type="number" placeholder="Max vzdialenost" class="example-right-align">
+      <span *ngIf="checked" matSuffix> km</span>
     </mat-form-field>
 
 <mat-form-field>
   <mat-label>Max prekročenie váhy</mat-label>
-  <input (change)="filterOffers()" matInput [(ngModel)]="weight" type="number" placeholder="Max prekročenie váhy..." class="example-right-align">
-  <span matSuffix> %</span>
+  <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="weight" type="number" placeholder="Max prekročenie váhy..." class="example-right-align">
+  <span *ngIf="checked" matSuffix> %</span>
 </mat-form-field>
 
 <mat-form-field>
   <mat-label>Max prekročenie veľkosti</mat-label>
-  <input (change)="filterOffers()" matInput [(ngModel)]="size" type="number" placeholder="Max prekročenie veľkosti..." class="example-right-align">
-  <span matSuffix> %</span>
+  <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="size" type="number" placeholder="Max prekročenie veľkosti..." class="example-right-align">
+  <span *ngIf="checked" matSuffix> %</span>
 </mat-form-field>
 
-<mat-checkbox [(ngModel)]="vyhovuje" (change)="updateMatLabelForm()">Vyhovujúce</mat-checkbox>
-<mat-checkbox [(ngModel)]="povPre" (change)="updateMatLabelForm()">Povolené prekročenie</mat-checkbox>
-<mat-checkbox [(ngModel)]="prekrocenie" (change)="updateMatLabelForm()">Všetky</mat-checkbox>
+<mat-checkbox [disabled]="!checked" [(ngModel)]="vyhovuje" color="primary" (change)="updateMatLabelForm()">Vyhovujúce</mat-checkbox>
+<mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" color="accent" (change)="updateMatLabelForm()">Povolené prekročenie</mat-checkbox>
+<mat-checkbox [disabled]="!checked" [(ngModel)]="prekrocenie" color="warn" (change)="updateMatLabelForm()">Ostatne</mat-checkbox>
+
+<button [disabled]="!checked">Potvrdit</button>
 

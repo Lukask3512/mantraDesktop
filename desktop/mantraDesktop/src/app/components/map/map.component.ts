@@ -92,7 +92,7 @@ export class MapComponent {
 
   carToShow: Cars;
   routesToShow: Route[];
-  offersToShow: Route[];
+  offersToShow;
   distanceOfOffer: number;
 
   pulseCar:boolean = false;
@@ -100,6 +100,8 @@ export class MapComponent {
 
   firstZoomCars = false;
   firstZoomAddress = false;
+
+  indexisOfFreeTowns;
 
 
   tileLayer = new TileLayer({
@@ -113,11 +115,16 @@ export class MapComponent {
   red = false;
   green = true;
   yellow = true;
+
+  freeCars: Cars[] = [];
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
               private routeDetailService: DetailAboutRouteService, private countFreeSpaceService: CountFreeSpaceService) { }
 
+              routeDetail(route){
+              this.dataService.changeRealRoute(route);
+            }
 
   ngAfterViewInit(): void {
     setTimeout(() =>
@@ -139,34 +146,41 @@ export class MapComponent {
       this.carService.cars$.subscribe(newCars => {
         this.carsFromDatabase = newCars;
         this.addCars(this.carsFromDatabase);
-        console.log("nacitavam auto")
-        console.log(this.carsFromDatabase);
-
       });
 
-    this.routeService.routes$.subscribe(newRoutes => {
-      this.pulseMarker = false;
-      var cestySDetailami = [];
-      this.adressesFromDatabase = newRoutes;
-      this.adressesFromDatabase.forEach(preprava => {
-        var detailArray = [];
-        var prepravasDetailom;
-        preprava.detailsAboutAdresses.forEach(detail => {
-          this.routeDetailService.myDetails$.subscribe(allDetails => {
-            var oneDetail = allDetails.find(oneMyDetail => oneMyDetail.id == detail)
-            detailArray.push(oneDetail);
-          });
-        })
-        var volnaVahaPreAuto = this.routeDetailService.countFreeWeightOfCarOnAdress(detailArray, preprava);
-        prepravasDetailom = {...preprava, detailArray, volnaVahaPreAuto};
-        console.log(prepravasDetailom)
-        cestySDetailami.push(prepravasDetailom)
-      })
-      console.log(cestySDetailami)
-      this.adressesFromDatabase = cestySDetailami;
-      this.addMarker(this.adressesFromDatabase);
-    });
+      const myPromise = new Promise((resolve, reject) => {
+        this.routeService.routes$.subscribe(newRoutes => {
+          this.pulseMarker = false;
+          var cestySDetailami = [];
+          this.adressesFromDatabase = newRoutes;
+          this.adressesFromDatabase.forEach(preprava => {
 
+            var detailArray = [];
+            var prepravasDetailom;
+            preprava.detailsAboutAdresses.forEach(detail => {
+              this.routeDetailService.myDetails$.subscribe(allDetails => {
+                var oneDetail = allDetails.find(oneMyDetail => oneMyDetail.id == detail)
+                detailArray.push(oneDetail);
+              });
+            })
+            var volnaVahaPreAuto = this.routeDetailService.countFreeWeightOfCarOnAdress(detailArray, preprava);
+            prepravasDetailom = {...preprava, detailArray, volnaVahaPreAuto};
+            console.log(prepravasDetailom)
+            cestySDetailami.push(prepravasDetailom)
+          })
+          console.log(cestySDetailami)
+          this.adressesFromDatabase = cestySDetailami;
+          this.addMarker(this.adressesFromDatabase);
+          resolve(true);
+        });
+      });
+      myPromise.then(res => {
+        var carsArray = [];
+        this.adressesFromDatabase.forEach(oneRoute => {
+          carsArray.push(oneRoute.carId);
+        })
+        this.freeCars = this.carsFromDatabase.filter(oneCar => !carsArray.includes(oneCar.id))
+      });
 
 
     // this.sendCarsToRoute();
@@ -243,15 +257,21 @@ export class MapComponent {
     console.log(this.offersToShow)
   }
 
-  //pri kliku na ponuku vratim pole indexov - aby som zobrazil kde je vhodne nalozit
+  // pri kliku na ponuku vratim pole indexov - aby som zobrazil kde je vhodne nalozit
   countIndexisOfferAndRoute(route, offer, mestoIndex){
-    var index = this.countFreeSpaceService.countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
-    var jetam = index.poleMiestKdeSaVopcha.find(oneIndex => oneIndex == mestoIndex);
-    if (jetam){
-      return true
-    }else{
-      return false;
-    }
+    console.log(route);
+    console.log(offer)
+    // var index = this.countFreeSpaceService.countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
+    // var jetam = index.poleMiestKdeSaVopcha.find(oneIndex => oneIndex == mestoIndex);
+    // if (jetam == mestoIndex){
+    //   return true
+    // }else{
+    //   return false;
+    // }
+  }
+
+  countFreeIndexis(route, offer){
+    this.indexisOfFreeTowns =  this.countFreeSpaceService.countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
   }
 
   addRoute(routes) {
@@ -653,6 +673,7 @@ export class MapComponent {
   closeInfo(){
     this.carToShow = null;
     this.routesToShow = null;
+    this.offersToShow = null;
     var vectorNaZobrazenieAllFeatures = new VectorSource({
       features: this.places.concat(this.cars).concat(this.routes)
     });
@@ -718,14 +739,14 @@ export class MapComponent {
   // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
   offersUpdate(emitFromFilter){
 
-    if (emitFromFilter == null){
+    if (emitFromFilter == null && this.map != undefined){
       this.map.removeLayer(this.vectorLayerOffersRoutesGreen)
       this.map.removeLayer(this.vectorLayerOffersRoutesYellow)
       this.map.removeLayer(this.vectorLayerOffersRoutesRed)
       this.map.removeLayer(this.vectorLayerOffersGreen);
       this.map.removeLayer(this.vectorLayerOffersRed);
       this.map.removeLayer(this.vectorLayerOffersYellow);
-    }else{
+    }else if (emitFromFilter != null){
       console.log(emitFromFilter)
       var offers = emitFromFilter.offers;
       var minVzdialenost = emitFromFilter.minDistance;
@@ -769,8 +790,9 @@ export class MapComponent {
         //tu konci priradovanie detialov a max vah
 
 
-        var jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0, flag: 0, zelenePrepravy: [], zltePrepravy: []}; //0 cervena, 1 zlta, 2 greeeen
-        if (oneRouteOffer.takenBy == ""){
+        var jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0,
+          flag: 0, zelenePrepravy: [], zltePrepravy: [], zeleneAuta: [], zlteAuta: []}; //0 cervena, 1 zlta, 2 greeeen
+        if (oneRouteOffer.takenBy == "" && this.dataService.getMyIdOrMaster() != oneRouteOffer.createdBy){
 
           var zltePrepravy = [];
           var zelenePrepravy = [];
@@ -808,9 +830,7 @@ export class MapComponent {
                              //toto treba kuknut vravia mi to interesting vzdialenosti
               if (routeLine != undefined){
 
-                              var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
-
-
+                var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
 
                               //kontrolujem najkratsiu vzdialenost od trasy
                               if (vzdialenostOdTrasy < jednaPonuka.minVzdialenost){
@@ -833,47 +853,32 @@ export class MapComponent {
                                 //ked som na konci skontrulujem ci sedi vzdialenost
                               if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
                                 var flags = 0;
-                                // if(adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost){
-                                //   // jednaPonuka.flag += 1;
-                                //   flags++;
-                                // }
-                                // if (sediVaha){
-                                //   flags++;
-                                // }
-                                //
-                                // //index miest kde sa vopcha nova preprava
-                                // if (indexLon == vopchaSa.find(oneId => oneId == indexLon)){
-                                //   flags++;
-                                // }
-                                //
-                                // if (flags > jednaPonuka.flag){
-                                //   jednaPonuka.flag = flags;
-                                // }
 
                                 var indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
                                 var prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; //ak false vopcha, ak true tak sa vopcha
-                                // console.log(indexVPoli);                                  //o uzivatelom definove % - yellow
-                                // console.log(prekrocil);
+                                                                          //o uzivatelom definove % - yellow
 
-                                // console.log(vopchaSa)
+
+
+
                                 if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
                                   flags = 3;
-                                  zelenePrepravy.push(route);
+                                  zelenePrepravy.push({...route, vopchaSa});
                                 }else if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
                                   flags = 2;
-                                  zltePrepravy.push(route)
+                                  zltePrepravy.push(route, vopchaSa)
                                 }
                                 else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
                                   flags = 2;
-                                  zltePrepravy.push(route)
+                                  zltePrepravy.push(route, vopchaSa)
                                 }
                                 else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
                                   flags = 2;
-                                  zltePrepravy.push(route)
+                                  zltePrepravy.push(route, vopchaSa)
                                 }
                                 if (flags > jednaPonuka.flag){
                                   jednaPonuka.flag = flags;
@@ -887,7 +892,7 @@ export class MapComponent {
               jednaPonuka.zelenePrepravy = zelenePrepravy;
               jednaPonuka.zltePrepravy = zltePrepravy;
           })
-
+        this.kontrolaFreeAutOdPonuk(jednaPonuka, maxPrekrocenieVahy,maxPrekrocenieRozmerov, minVzdialenost, maxVzdialenost);
         poleSMinVzdialenostamiOdAdries.push(jednaPonuka);
         }
 
@@ -902,6 +907,73 @@ export class MapComponent {
     // console.log(routes);
     }
 
+  }
+
+  kontrolaFreeAutOdPonuk(ponuka, maxPrekrocenieVahy, maxPrekrocenieRozmerov, minVzdialenost, maxVzdialenost){
+    var jednaPonuka = ponuka
+
+    this.freeCars.forEach(oneCar => {
+      var vopchaSa = this.countFreeSpaceService.countFreeSpace(jednaPonuka.detailArray, null, oneCar.id, jednaPonuka, maxPrekrocenieRozmerov, null);
+      var adresaMinVzialenost = 100000000;
+      var adresaMaxVzdialenost = 0;
+      var sediVaha = false;
+      var sediVahaYellow = false;
+
+        if (oneCar.nosnost >= jednaPonuka.maxVaha){
+          sediVaha = true;
+        }else {
+          if ((oneCar.nosnost * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
+            sediVahaYellow = true;
+          }
+        }
+      jednaPonuka.coordinatesOfTownsLat.forEach((oneAdresa, indexTown) => {
+          var vzdielenost = this.countDistancePoints([oneCar.longtitude, oneCar.lattitude],
+            [jednaPonuka.coordinatesOfTownsLon[indexTown], jednaPonuka.coordinatesOfTownsLat[indexTown]]);
+          if (vzdielenost < adresaMinVzialenost) {
+            adresaMinVzialenost = vzdielenost;
+          }
+          if (vzdielenost > adresaMaxVzdialenost) {
+            adresaMaxVzdialenost = vzdielenost;
+          }
+        });
+        var flags = 0;
+
+        var pocetMiestKdeSaVopcha = vopchaSa.poleMiestKdeSaVopcha // ci do mesta vopcha
+        var prekrocil = false; //ak false vopcha, ak true tak sa vopcha
+        //o uzivatelom definove % - yellow
+
+      vopchaSa.prekrocenieOPercenta.forEach(onePrekrocenie => {
+        if (onePrekrocenie == true){
+          prekrocil = true;
+        }
+      })
+
+
+
+        if (sediVaha && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+          flags = 3;
+          jednaPonuka.zeleneAuta.push(oneCar);
+        }else if (sediVaha &&  pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+          flags = 2;
+          jednaPonuka.zlteAuta.push(oneCar);
+        }
+        else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+          flags = 2;
+          jednaPonuka.zlteAuta.push(oneCar);
+        }
+        else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+          flags = 2;
+          jednaPonuka.zlteAuta.push(oneCar);
+        }
+        if (flags > jednaPonuka.flag){
+          jednaPonuka.flag = flags;
+        }
+    })
+    return jednaPonuka
   }
 
   offersShow(which){

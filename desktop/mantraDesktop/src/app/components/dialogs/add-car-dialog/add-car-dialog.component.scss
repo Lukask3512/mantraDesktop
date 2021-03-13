@@ -9,6 +9,7 @@
   margin: 5px;
 
 }
+
 .gridItemStart{
   grid-column-start: 1;
   align-self: center;
@@ -49,7 +50,10 @@ button[type=submit] {
   cursor: pointer;
 }
 button[type=submit]:hover {
-  background-color: #45a049;
-}
 
+}
+button[disabled]{
+  background-color: #8d8d8d;
+  cursor: default;
+}
 

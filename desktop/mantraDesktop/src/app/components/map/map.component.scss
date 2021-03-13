@@ -23,27 +23,55 @@
 .sizeS{
   margin-left: 38px;
   margin-top: 34px;
-  position: fixed;
-  transform: rotate(-29deg);
-  border-bottom: 2px solid red;
+  position: absolute;
+  //transform: rotate(-29deg);
+  //border-bottom: 2px solid red;
   padding: 0 10px;
 }
 
 .sizeD{
   margin-left: 5px;
   margin-top: 34px;
-  position: fixed;
-  transform: rotate(28deg);
-  border-bottom: 2px solid red;
+  position: absolute;
+  //transform: rotate(28deg);
+  //border-bottom: 2px solid red;
   padding: 0 10px;
 }
 
+.nakaldkaVykladka{
+  font-weight: 800;
+  padding: {
+    top: 2px;
+    bottom: 2px;
+    left: 5px;
+    right: 5px;
+  };
+  background: rgba(191, 191, 191, 0.7);
+  font-size: xx-small;
+  border-radius: 4px;
+  height: 27px;
+}
+
 .sizeV{
-  margin-left: 64px;
+  margin-left: 77px;
   margin-top: 5px;
-  position: fixed;
-  border-right: 2px solid red;
+  position: absolute;
+  //border-right: 2px solid red;
   padding: 10px 0;
+}
+
+.greenLabel{
+  padding: 5px 3px;
+  background-color: limegreen;
+  border-radius: 3px;
+  border: none;
+}
+
+.yellowLabel{
+  padding: 5px 3px;
+  background-color: yellow;
+  border-radius: 3px;
+  border: none;
 }
 
 .zadnaStena{
@@ -51,13 +79,18 @@
 }
 
 .tuSaVopcha{
-  border: 2px solid limegreen;
+  padding: 5px 3px;
+  border: none;
   border-radius: 2px;
+  background-color: limegreen;
 }
 
+
 .tuSaVopchaYellow{
-  border: 2px solid yellow;
+  padding: 5px 3px;
+  border: none;
   border-radius: 2px;
+  background-color: yellow;
 }
 
 .bedna{
@@ -65,6 +98,10 @@
     width: 75px;
     margin-top: -15px;
 
+}
+
+.imageInRow{
+  display: flex;
 }
 #map{
   height: 90%;

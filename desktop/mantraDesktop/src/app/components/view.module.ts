@@ -36,11 +36,12 @@ import { OfferToRouteComponent } from './transportation/offer/offer-to-route/off
 import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/drag-drop-offer.component';
 import { FilterComponent } from './map/filter/filter.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { DetailImgComponent } from './transportation/detail-img/detail-img.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent, FilterComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent, FilterComponent, DetailImgComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -49,7 +50,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         NewPrivesComponent,
         PrivesWrapperComponent,
         DragAndDropListComponent,
-        FilterComponent
+        FilterComponent,
+        DetailImgComponent
     ],
     imports: [
         CommonModule,

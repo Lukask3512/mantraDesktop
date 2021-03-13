@@ -31,8 +31,8 @@ export class AddCarDialogComponent implements OnInit {
     minHrana: [''],
     maxHrana: [''],
 
-    zoZaduVyska: [''],
-    zoZaduSirka: [''],
+    zoZaduVyska: ['', Validators.required],
+    zoZaduSirka: ['', Validators.required],
     zPravaVyska: [''],
     zPravaSirka: [''],
     zLavaVyska: [''],
@@ -105,6 +105,79 @@ export class AddCarDialogComponent implements OnInit {
       }
 
     }
+  }
+
+  updateFormNakHrana(){
+    console.log(this.carForm.get('pohyblivaNakHrana').value)
+    if (this.carForm.get('pohyblivaNakHrana').value == true){
+      this.carForm.get('maxHrana').setValidators(Validators.required);
+      this.carForm.get('minHrana').setValidators(Validators.required);
+      this.carForm.get('vyskaHrany').clearValidators();
+
+    }else{
+      this.carForm.get('maxHrana').clearValidators();
+      this.carForm.get('minHrana').clearValidators();
+      this.carForm.get('vyskaHrany').setValidators(Validators.required);
+    }
+    this.carForm.get('vyskaHrany').updateValueAndValidity();
+    this.carForm.get('maxHrana').updateValueAndValidity();
+    this.carForm.get('minHrana').updateValueAndValidity();
+  }
+
+  updateFormFromBack(){
+    console.log(this.carForm.get('fromBack').value)
+    if (this.carForm.get('fromBack').value == true){
+      this.carForm.get('zoZaduVyska').setValidators(Validators.required);
+      this.carForm.get('zoZaduSirka').setValidators(Validators.required);
+
+    }else{
+      this.carForm.get('zoZaduVyska').clearValidators();
+      this.carForm.get('zoZaduSirka').clearValidators();
+    }
+    this.carForm.get('zoZaduSirka').updateValueAndValidity();
+    this.carForm.get('zoZaduVyska').updateValueAndValidity();
+  }
+
+  updateFormFromUp(){
+    console.log(this.carForm.get('fromUp').value)
+    if (this.carForm.get('fromUp').value == true){
+      this.carForm.get('zHoraVyska').setValidators(Validators.required);
+      this.carForm.get('zHoraSirka').setValidators(Validators.required);
+
+    }else{
+      this.carForm.get('zHoraVyska').clearValidators();
+      this.carForm.get('zHoraSirka').clearValidators();
+    }
+    this.carForm.get('zHoraVyska').updateValueAndValidity();
+    this.carForm.get('zHoraSirka').updateValueAndValidity();
+  }
+
+  updateFormFromLeft(){
+    console.log(this.carForm.get('fromLeft').value)
+    if (this.carForm.get('fromLeft').value == true){
+      this.carForm.get('zLavaVyska').setValidators(Validators.required);
+      this.carForm.get('zLavaSirka').setValidators(Validators.required);
+
+    }else{
+      this.carForm.get('zLavaVyska').clearValidators();
+      this.carForm.get('zLavaSirka').clearValidators();
+    }
+    this.carForm.get('zLavaVyska').updateValueAndValidity();
+    this.carForm.get('zLavaSirka').updateValueAndValidity();
+  }
+
+  updateFormFromRight(){
+    console.log(this.carForm.get('fromRight').value)
+    if (this.carForm.get('fromRight').value == true){
+      this.carForm.get('zPravaVyska').setValidators(Validators.required);
+      this.carForm.get('zPravaSirka').setValidators(Validators.required);
+
+    }else{
+      this.carForm.get('zPravaVyska').clearValidators();
+      this.carForm.get('zPravaSirka').clearValidators();
+    }
+    this.carForm.get('zPravaVyska').updateValueAndValidity();
+    this.carForm.get('zPravaSirka').updateValueAndValidity();
   }
 
   updateCar(){

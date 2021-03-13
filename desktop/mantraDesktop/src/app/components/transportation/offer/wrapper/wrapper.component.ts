@@ -3,6 +3,8 @@ import {OfferRouteService} from "../../../../services/offer-route.service";
 import Route from "../../../../models/Route";
 import {RouteStatusService} from "../../../../data/route-status.service";
 import {DataService} from "../../../../data/data.service";
+import {DeleteRouteComponent} from "../../../dialogs/delete-route/delete-route.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-wrapper',
@@ -12,7 +14,7 @@ import {DataService} from "../../../../data/data.service";
 export class WrapperComponent implements OnInit {
 
   constructor(private offerService: OfferRouteService, public routeStatusService: RouteStatusService,
-              private dataService: DataService) { }
+              private dataService: DataService,  private dialog: MatDialog) { }
 
   routes: Route[];
   ngOnInit(): void {
@@ -23,8 +25,36 @@ export class WrapperComponent implements OnInit {
   }
 
   routeDetail(route){
-    console.log(route)
     this.dataService.changeRealRoute(route);
   }
 
+  myOffer(){
+
+  }
+
+  vymazatPonuku(route){
+    this.offerService.deleteRoute(route.id);
+  }
+
+  getDispecerId(){
+    var idCreated;
+    if (this.dataService.getDispecer().createdBy == 'master'){
+      return this.dataService.getDispecer().id
+    }else{
+      return this.dataService.getDispecer().createdBy
+    }
+  }
+
+
+
+  deleteRoute(route: Route){
+    const dialogRef = this.dialog.open(DeleteRouteComponent);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        this.offerService.deleteRoute(route.id);
+      }
+    });
+  }
 }

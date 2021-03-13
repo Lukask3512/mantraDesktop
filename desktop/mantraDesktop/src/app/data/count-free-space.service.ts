@@ -48,11 +48,12 @@ export class CountFreeSpaceService {
     //     this.stohovatelnost.push(oneDetail.stohovatelnost[index]);
     //   });
     // });
-      var vaha = this.weight;
-    var sizeS =this.sizesS;
-    var sizeV = this.sizesV;
-    var sizeD = this.sizesD;
-    var stohovatelnost = this.stohovatelnost;
+      var vaha = JSON.parse(JSON.stringify(this.weight));
+    var sizeS = JSON.parse(JSON.stringify(this.sizesS));
+    var sizeV = JSON.parse(JSON.stringify(this.sizesV));
+    var sizeD = JSON.parse(JSON.stringify(this.sizesD));
+    var stohovatelnost = JSON.parse(JSON.stringify(this.stohovatelnost));
+      console.log(sizeS)
 
 
       var vopchaSaDoMesta = 0;
@@ -63,7 +64,6 @@ export class CountFreeSpaceService {
         this.sizesD = jednoNalozenie.sizeD.concat(sizeD);
         this.sizesV = jednoNalozenie.sizeV.concat(sizeV);
         this.stohovatelnost = jednoNalozenie.stohovatelnost.concat(stohovatelnost);
-
 
     this.prejdiPaletyaUlozIch(car);
 
@@ -119,6 +119,10 @@ export class CountFreeSpaceService {
         stohovatelnost: []
       }
       if (route.type[index] == 'nakladka'){ //pri nakladke prikladam palety
+        if (poleKsPalietPreKazduAdresu.length -1 >= 0) {
+          var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length - 1]));
+          oneAdress = lastVeci;
+        }
         oneDetail.sizeS.forEach((oneSize, indexSize) => {
           oneAdress.sizeS.push(oneDetail.sizeS[indexSize]);
           oneAdress.sizeD.push(oneDetail.sizeD[indexSize]);
@@ -199,7 +203,7 @@ export class CountFreeSpaceService {
           if (this.sizesD[i] < this.sizesD[indexPaletyNaSirku]){
             this.sizesD[i] = this.sizesD[indexPaletyNaSirku];
             //tu dakte by som si mal ulozit volny priestor co mi ostal
-            this.odstraneniePalety(indexPaletyNaKtoruToUlozim);
+            this.odstraneniePalety(indexPaletyNaSirku);
           }
         }
       }else{ // ked na tovar mozem nieco polozit

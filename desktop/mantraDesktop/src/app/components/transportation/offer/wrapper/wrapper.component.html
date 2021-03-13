@@ -58,6 +58,11 @@
 
 
     <div>
+      <div *ngIf="route.createdBy == this.getDispecerId()">
+        <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>
+        <button (click)="vymazatPonuku(route)">Odstranit</button>
+      </div>
+
       Ta tu bude nejaky popis psolocnosti
       <p>A tu 500€</p>
     </div>

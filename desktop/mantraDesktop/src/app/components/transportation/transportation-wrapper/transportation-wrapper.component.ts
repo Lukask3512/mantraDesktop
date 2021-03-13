@@ -143,7 +143,6 @@ export class TransportationWrapperComponent implements OnInit {
         return;
       }else {
         this.routeService.deleteRoute(route.id);
-
       }
     });
   }

@@ -1,4 +1,4 @@
-<header>
+<header *ngIf="this.route">
   <div *ngIf="this.route.takenBy == getDispecerId()" class="input">
     <h4>
       Ponuka priradená za <h5>{{this.route.price}}</h5>
@@ -6,9 +6,9 @@
     <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
   </div>
 </header>
-<div class="wrapper">
+<div *ngIf="this.route" class="wrapper">
 
-    <app-drag-and-drop-list *ngIf="this.route.takenBy !== getDispecerId()" [route]="this.route" ></app-drag-and-drop-list>
+    <app-drag-and-drop-list #dropList [draggable]="false" *ngIf="this.route.takenBy !== getDispecerId()" [route]="this.route" ></app-drag-and-drop-list>
   <div>
     <app-offer-to-route (routeToMap)="changeRouteOnMap($event)" [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>
   </div>
@@ -17,6 +17,8 @@
   <div *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()" class="input">
     <h4 *ngIf="this.offer">
       Vaša ponuka {{this.offer}}
+      <button (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
+
     </h4>
     <input *ngIf="this.route.ponuknuteTo !== getDispecerId()"  [(ngModel)]="price">
     <button *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">Pridat ponuku</button>
@@ -44,7 +46,6 @@
     <button (click)="cancelOffer()">Zrusit ponuku</button>
   </div>
 
-  <button (click)="vymazatPonuku()">Vymazat</button>
 
 
   <div class="map">
