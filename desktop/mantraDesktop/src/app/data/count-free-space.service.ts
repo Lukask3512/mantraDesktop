@@ -92,10 +92,18 @@ export class CountFreeSpaceService {
           this.prejdiPaletyaUlozIch(car);
       //final kontrola ci sa mi veci z pola vopchaju do autiska
       var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
-      this.sizesD.forEach(jednaDlzka => {
+      var maxVyska = 0;
+      var maxSirka = 0;
+      this.sizesD.forEach((jednaDlzka, index) => {
         dlzka += jednaDlzka;
+        if (this.sizesV[index] > maxVyska){
+          maxVyska = this.sizesV[index];
+        }
+        if (this.sizesV[index] > maxSirka){
+          maxSirka = this.sizesS[index];
+        }
       });
-      if (dlzka <= car.sizePriestoru[2]){
+      if (dlzka <= car.sizePriestoru[2] && maxVyska <= car.sizePriestoru[0] && maxSirka <= car.sizePriestoru[1]){
         poleMiestKdeSaVopcha.push(indexMesicka);
         prekrocenieOPercenta.push(false);
       }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie)){

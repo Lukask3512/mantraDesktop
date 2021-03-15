@@ -33,7 +33,7 @@
     </h4>
     <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">
       <h5>{{offer}}</h5>
-      <h5>{{this.route.priceFrom[i]}}</h5>
+      <h4>{{this.route.priceFrom[i]}}</h4>
       <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
     </div>
     <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>

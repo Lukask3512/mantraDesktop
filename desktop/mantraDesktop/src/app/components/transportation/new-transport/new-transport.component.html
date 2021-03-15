@@ -73,7 +73,7 @@
 
 <div class="formAndBedna">
 
-  <form class="gridContainer" [formGroup]="transportForm">
+  <form class="detailFormular" [formGroup]="transportForm">
   <div class="size">
     <mat-form-field appearance="standard" class="sizeInput">
       <mat-label>Šírka</mat-label>
@@ -157,7 +157,7 @@
 
   </form>
   <div>
-
+  <h4 *ngIf="labelPosition == 'vykladka'">Tu vyber</h4>
   <div class="bednaWapper" *ngFor="let detail of this.arrayOfDetailsAbRoute; let indexik = index">
     <div class="nakladkaWrapper" *ngIf="this.route.type[indexik] == 'nakladka'" >
       <div class="bednaWapperNakl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">
