@@ -11,7 +11,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.sygic.example.hello3dwiw.MainActivity">
+    tools:context="com.sygic.example.mantra.MainActivity">
 
     <include layout="@layout/appbar" />
 
@@ -105,7 +105,7 @@
             android:layout_height="match_parent">
 
             <fragment
-                android:name="com.sygic.example.hello3dwiw.SygicNaviFragment"
+                android:name="com.sygic.example.mantra.SygicNaviFragment"
                 android:layout_width="match_parent"
                 android:layout_height="467dp"
                 android:layout_gravity="center_horizontal" />

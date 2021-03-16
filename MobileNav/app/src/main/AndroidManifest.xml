@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sygic.example.hello3dwiw">
+    package="com.sygic.example.mantra">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -23,15 +23,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="icon, label, theme">
-        <activity android:name=".ChooseRoute"
+        <activity android:name="com.sygic.example.mantra.ChooseRoute"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".MainActivity"
+        <activity android:name="com.sygic.example.mantra.MainActivity"
             android:screenOrientation="portrait" />
         <activity
 
             android:screenOrientation="portrait"
-            android:name=".LoginPage"
+            android:name="com.sygic.example.mantra.LoginPage"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

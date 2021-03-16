@@ -1,4 +1,4 @@
-package com.sygic.example.hello3dwiw.Models;
+package com.sygic.example.mantra.Models;
 
 public class Route {
     private String carId;

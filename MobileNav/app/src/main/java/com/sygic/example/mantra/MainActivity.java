@@ -1,4 +1,4 @@
-package com.sygic.example.hello3dwiw;
+package com.sygic.example.mantra;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -11,33 +11,22 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.media.JetPlayer;
-import android.nfc.Tag;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,11 +35,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -58,17 +45,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.gson.internal.bind.ObjectTypeAdapter;
 import com.sygic.aura.ResourceManager;
-import com.sygic.aura.embedded.IApiCallback;
-import com.sygic.aura.feature.gps.LocationService;
 import com.sygic.aura.utils.PermissionsUtils;
-import com.sygic.example.hello3dwiw.Models.Route;
 import com.sygic.sdk.api.Api;
-import com.sygic.sdk.api.ApiCallback;
+import com.sygic.sdk.api.ApiItinerary;
 import com.sygic.sdk.api.ApiNavigation;
-import com.sygic.sdk.api.events.ApiEvents;
 import com.sygic.sdk.api.exception.GeneralException;
+import com.sygic.sdk.api.exception.NavigationException;
 import com.sygic.sdk.api.model.WayPoint;
 
 import org.jetbrains.annotations.NotNull;
@@ -78,20 +61,13 @@ import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActionMenuView;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -107,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private SygicNaviFragment fgm;
     private Api mApi;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private Button mLogoutBtn;
@@ -120,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static String routeId;
     public static String readRouteId;
     public Object routeInfo;
-    public Object routeInfoLon;
-    public Object routeInfoLat;
+    public static Object routeInfoLon;
+    public static Object routeInfoLat;
     public Object routeInfoType;
     public Object routeInfoStatus;
     public Object routeInfoAbout;
@@ -142,11 +118,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     Object oldRoutes;
 
-    public int actualIndexInArray;
+    public static int actualIndexInArray;
     public Spinner spino;
     public boolean townsLayoutOpen;
     private Handler handler;
     private boolean popUpPoPoZmene = false;
+
+    public static Handler UIHandler;
+
+    public static boolean dontSentRoute = false;
+    public static boolean dontRepeatNavi = false;
+
+    private static List<String> listPrichodov;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         spino.setOnItemSelectedListener(this);
+
 
         townsLayoutOpen = true;
         Intent intent = getIntent();
@@ -423,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         builder.setTitle("Vykládka");
                     }
                     String vypis = ((ArrayList<?>) routeInfoAbout).get(actualIndexInArray).toString();
-                    Log.e("NavigationTime2", "co to bude"+ vypis);
+
                     if (vypis.equals("")){
                         builder.setMessage("Žiadne informácie k dispozícii");
                     }else{
@@ -476,43 +460,168 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public static void sendRoute(){
-        if (routeId != null){
-            if (!routeId.equals("null")){
+    private static void repeatWhenRecaltulated(){
+        try {
+            dontSentRoute = false;
+            dontRepeatNavi = true;
 
-                String status = null;
-                String json = null;
-                try {
-
-                    json = ApiNavigation.getRoute(1, 0, 0);
-                    JSONObject jsonObject = new JSONObject(json);
-                    JSONObject jsonArray = (JSONObject) jsonObject.get("polygon");
-                    JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
-                    JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
-
-                    Log.e("NavigationTime2", "co to bude"+ jsonFinish);
-
-                    //ukladam textak do databazy s trasou
-                    StorageReference storageRef = storage.getReference();
-                    StorageReference mountainsRef = storageRef.child("Routes");
-                    mountainsRef.child(routeId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
+                        public void run() {
+                            dontRepeatNavi = false;
                         }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                        }
-                    });
-
-                } catch (GeneralException | JSONException e) {
-                    e.printStackTrace();
+                    }, 5000);
                 }
+            });
 
-            }}
+            Log.i("mojee", "nastavujem dontSentRoute na false v repeat");
+            ApiItinerary.setRoute("itin-63", 0, 0);
+
+//            final Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    dontSentRoute = true;
+
+                    findIndexOfTownAfterSendRoute(actualIndexInArray);
+
+
+//                }
+//            }, 5000);
+
+        } catch (NavigationException e) {
+            e.printStackTrace();
+            Log.e("Navigation", "Error code:"+ e);
+        }
+
+    }
+    //getujem status
+    private static boolean getStatusWat() throws GeneralException {
+        String status ;
+        status = ApiNavigation.getRouteStatus(0);
+
+        JSONObject jout = null;
+        try {
+            jout = new JSONObject(status);
+//            ArrayList<String> pole = new ArrayList<String>(jout);
+
+            JSONArray n1 = jout.getJSONArray("waypoints");
+            //tu si ukladam kolko mam waypointov... podla toho odoselm trasu do databazy
+            List<String> names = new ArrayList<String>();
+            String[] polePrichodov = new String[((ArrayList<Double>) routeInfoLat).size()];
+            for(int i = 1; i < n1.length(); i++){
+                names.add(n1.getString(i));
+                String prichod = n1.getJSONObject(i).getJSONObject("realtimeStatus").getString("estimatedTimeArrival");
+                polePrichodov[(actualIndexInArray + (i-1))] = prichod;
+            }
+
+
+            Log.e("Navigation", "odosielam00" + names.size());
+
+//daco treba tu porobit, lebo sa odosle najprv cele pole a potom sa prepisuje 1 hodnotou bodka
+            if (names.size() > 1){
+                Log.e("Navigation", "odosielam0");
+                listPrichodov = Arrays.asList(polePrichodov);
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("estimatedTimeArrival", listPrichodov);
+                db.collection("route").document(routeId)
+                        .update(data);
+                return true;
+            }
+            else if (names.size() == 1 && actualIndexInArray + 1 == ((ArrayList<Double>) routeInfoLat).size()){
+                Log.e("Navigation", "odosielam1");
+                return true;
+            }else{
+                Log.e("Navigation", "odosielam2");
+                return false;
+            }
+
+        } catch (JSONException e) {
+            Log.e("Navigation", "odosielam2fi");
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static void sendRoute(){
+        Log.i("mojee", "som v sendRoute");
+        Log.i("mojee", "" + dontSentRoute);
+        if (dontSentRoute){
+            return;
+        }
+        Log.i("mojee", "pokracujem");
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dontRepeatNavi = false;
+
+                        try {
+                            if (getStatusWat()) {
+                                Log.i("mojee", "pokracujem1");
+                                dontSentRoute = true;
+
+                                if (routeId != null) {
+                                    Log.i("mojee", "pokracujem2");
+                                    if (!routeId.equals("null")) {
+                                        Log.i("mojee", "pokracujem3");
+                                        String status = null;
+                                        String json = null;
+                                        try {
+
+                                            json = ApiNavigation.getRoute(1, 0, 0);
+                                            JSONObject jsonObject = new JSONObject(json);
+
+
+                                            JSONObject jsonArray = (JSONObject) jsonObject.get("polygon");
+                                            JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
+                                            JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
+
+
+                                            //ukladam textak do databazy s trasou
+                                            StorageReference storageRef = storage.getReference();
+                                            StorageReference mountainsRef = storageRef.child("Routes");
+                                            mountainsRef.child(routeId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    Log.e("NavigationTime2", "co to bude1");
+                                                }
+                                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    Log.e("NavigationTime2", "co to bude2");
+                                                }
+                                            });
+
+                //                    findIndexOfTownAfterSendRoute(actualIndexInArray);
+
+                                        } catch (GeneralException | JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+                            }
+                        } catch (GeneralException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 1000);
+            }
+        });
+        if (!dontRepeatNavi){
+            repeatWhenRecaltulated();
+        }
+
     }
 
     void demo()
@@ -538,39 +647,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             JSONObject jsonFinish = (JSONObject) jsonArray.get("lineString");
                             JSONArray jsonFinish2 = (JSONArray) jsonFinish.get("points");
 
-
-//                    File file = new File(this.getFilesDir(), "file-nameName");
-//                    FileReader fileReader = null;
-//                    FileWriter fileWriter = null;
-//                    BufferedReader bufferedReader = null;
-//                    BufferedWriter bufferedWriter = null;
-//                    String response = null;
-//                    if(!file.exists()){
-//                        file.createNewFile();
-//                        fileWriter = new FileWriter(file.getAbsoluteFile());
-//                        bufferedWriter = new BufferedWriter(fileWriter);
-//                        bufferedWriter.write("'" + jsonFinish2.toString() + "'"); // si vkladam uvodzovky pre json format
-//                        bufferedWriter.close();
-//
-//                    }
 //                    String skuska = "'" + jsonFinish.toString() + "'";
-                            Log.e("NavigationTime2", "co to bude" + jsonFinish);
 
-//                    //ukladam textak do databazy s trasou
-//                    StorageReference storageRef = storage.getReference();
-//                    StorageReference mountainsRef = storageRef.child("Routes");
-//                    mountainsRef.child(routeId + ".json").putBytes(jsonFinish2.toString().getBytes()).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            // Handle unsuccessful uploads
-//                        }
-//                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-//                            // ...
-//                        }
-//                    });
 
                         } catch (GeneralException | JSONException e) {
                             e.printStackTrace();
@@ -583,6 +661,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         timer.schedule(doAsynch, 0, 60000);
 
     }
+
 
     protected String ParseRouteStatus(String statusFromRoute) {
         try {
@@ -608,18 +687,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     trem = rts.getInt("timeRemaining");              // retrieve remaining time in seconds
                     Log.e("NavigationTime", "Error code:"+ eta + " " + trem);
                 }
-//                output += "waypointId=" + waypointId + ",";
-//                output += "status=" + status + "\n";
-//                output += "eta=" + eta + "\n";
-//                output += "distanceRemaining=" + String.valueOf(drem) + "\n";
-//                output += "timeRemaining=" + String.valueOf(trem) + "\n";
             }
             Log.e("NavigationTime", "Error code:"+ eta);
 
+//            if (listPrichodov == null){
+//                listPrichodov = new List[((ArrayList<Double>) routeInfoLat).size()];
+//            }
+            Log.e("Navigation", "odosielam5"+ listPrichodov);
+
+            if (listPrichodov != null){
+
+            listPrichodov.set(actualIndexInArray, eta);
+            Log.e("Navigation", "odosielam9"+ listPrichodov);
+
             Map<String, Object> data = new HashMap<>();
-            data.put("estimatedTimeArrival", eta);
+            data.put("estimatedTimeArrival", listPrichodov);  //totoc bude treba upravit na pole
             db.collection("route").document(routeId)
                     .update(data);
+            }
 
             return eta;
 
@@ -642,16 +727,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 new Thread() {
                     public void run() {
-                        try {
+//                        try {
 
-                            int flags = 0;
-                            boolean searchAddress = false;
+                            final int flags = 0;
+                            final boolean searchAddress = false;
                             int lat =(int)(lattitude * 100000);
                             int lon = (int)( longtitude * 100000);
-                            WayPoint wp = new WayPoint("A", lon, lat);
+                            final WayPoint wp = new WayPoint("A", lon, lat);
                             //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
 
-                            ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
+                        calculateAllRoute();
                             final TextView textView = (TextView) findViewById(R.id.textView4);
                             runOnUiThread(new Runnable() {
 
@@ -662,30 +747,223 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     String type = (String) ((ArrayList<?>) routeInfoType).get(townForThread);
                                     // Stuff that updates the UI
                                     textView.setText(town + ": " + type);
+
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Do something after 5s = 5000ms
+//                            demo();
+
+
+
                                     demo();
 
+//                                    try {
+//
+//                                        ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
+//                                    } catch (NavigationException e) {
+//                                        e.printStackTrace();
+//                                        Log.e("Navigation", "Error code:"+ e);
+//
+//                                        runOnUiThread(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                Toast.makeText(MainActivity.this, "Enter valid license or download correct maps.", Toast.LENGTH_LONG).show();
+//                                            }
+//                                        });
+//                                    }
+                                        }
+                                    }, 5000);
+
                                 }
                             });
 
 
 
 
-                        } catch (GeneralException e) {
-                            e.printStackTrace();
-                            Log.e("Navigation", "Error code:"+ e);
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MainActivity.this, "Enter valid license or download correct maps.", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
+//                        } catch (GeneralException e) {
+//                            e.printStackTrace();
+//                            Log.e("Navigation", "Error code:"+ e);
+//
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    Toast.makeText(MainActivity.this, "Enter valid license or download correct maps.", Toast.LENGTH_LONG).show();
+//                                }
+//                            });
+//                        }
                     }
                 }.start();
 //                break;
 //            }
 //        }
+    }
+
+    static
+    {
+        UIHandler = new Handler(Looper.getMainLooper());
+    }
+
+    public static void runOnUI(Runnable runnable) {
+        UIHandler.post(runnable);
+    }
+
+    private static void findIndexOfTownAfterSendRoute(final int town){
+
+        final double lattitude =  (double)((ArrayList<Double>) routeInfoLat).get(town);
+        final double longtitude = (double)((ArrayList<Double>) routeInfoLon).get(town);
+        final int townForThread = town;
+
+        new Thread() {
+            public void run() {
+//                        try {
+
+                final int flags = 0;
+                final boolean searchAddress = false;
+                int lat =(int)(lattitude * 100000);
+                int lon = (int)( longtitude * 100000);
+                final WayPoint wp = new WayPoint("A", lon, lat);
+                //ak to nejde treba zadat licenciu v appke / chybu vypise v logcate
+
+
+                MainActivity.runOnUI(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                try {
+                                    dontSentRoute = true;
+                                    Log.i("mojee", "nastavujem dontSentRoute na true");
+                                    ApiNavigation.startNavigation(wp, flags, searchAddress, 0);
+                                    final Handler handler2 = new Handler();
+                                    handler2.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dontSentRoute = false;
+                                            Log.i("mojee", "nastavujem dontSentRoute na false po 4 sek");
+                                        }
+                                    }, 6000);
+                                } catch (NavigationException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 3000);
+
+                    }
+                });
+            }
+        }.start();
+    }
+
+    private void changeRoute(){
+        calculateAllRoute();
+
+    }
+
+    private  void calculateAllRoute(){
+        ArrayList<TwWaypoint> lst = new ArrayList<TwWaypoint>();
+
+
+        for (int i = actualIndexInArray; i < ((ArrayList<Number>) routeInfoLat).size(); i++) {
+            if (i + 1 == ((ArrayList<Double>) routeInfoLat).size()){
+                lst.add(new TwWaypoint(((ArrayList<Double>) routeInfoLat).get(i), ((ArrayList<Double>) routeInfoLon).get(i), "2017-06-28T16:00:00Z", "2017-06-28T16:00:00Z", "finish"));
+            }else{
+                lst.add(new TwWaypoint(((ArrayList<Double>) routeInfoLat).get(i), ((ArrayList<Double>) routeInfoLon).get(i), "2017-06-28T16:00:00Z", "2017-06-28T16:00:00Z", "via"));
+            }
+        }
+//        lst.add(new TwWaypoint(48.11468, 17.13110, "2017-06-28T16:00:00Z", "2017-06-28T16:00:00Z", "via"));
+//        lst.add(new TwWaypoint(48.10039, 17.14722, "2017-06-28T18:00:00Z", "2017-06-28T18:30:00Z", "finish"));
+        Log.i("jsonik", "im here" + lst);
+
+        String json = CreateJsonItinerary(lst);
+        String itname = "itin-63";
+        Log.i("jsonik", json);
+        String jsonout = null;
+        try {
+            ApiItinerary.addItinerary(json, itname, 0);
+                repeatWhenRecaltulated();
+
+        } catch (GeneralException e) {
+            Log.i("Error", e.getCode() + " " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    JSONObject createWaypoint(double lat, double lon, String time1, String time2, int waypointId, String wtype)
+    {
+        int ilat = (int)(lat * 100000);
+        int ilon = (int)(lon * 100000);
+
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("lat", Integer.valueOf(ilat));
+            obj.put("lon", Integer.valueOf(ilon));
+            obj.put("waypointId", Integer.valueOf(waypointId));
+            obj.put("hitRadius", Integer.valueOf(200));
+            obj.put("type", wtype);
+            if (time1 != null && time2 != null)
+            {
+                JSONObject tw = new JSONObject();
+                tw.put("startTime", time1);
+                tw.put("endTime", time2);
+                tw.put("stopDelay", Integer.valueOf(180)); // tu musim nahodit delay pre kazde miesto kde sa zastavim
+                obj.put("timeWindow", tw);
+            }
+        }
+        catch (JSONException e)
+        {
+            obj = null;
+        }
+        return obj;
+    }
+
+     JSONObject createRoutepart(JSONObject wpFrom, JSONObject wpTo)
+    {
+        JSONObject obj = new JSONObject();
+        try {
+            if (wpFrom != null) obj.put("waypointFrom", wpFrom);
+            obj.put("waypointTo", wpTo);
+        }
+        catch (JSONException e)
+        {
+            obj = null;
+        }
+        return obj;
+    }
+
+    protected String CreateJsonItinerary(ArrayList<TwWaypoint> lst)
+    {
+        try {
+            JSONArray routeparts = new JSONArray();
+            JSONObject routepart;
+            JSONObject wpFrom;
+            JSONObject wpTo;
+            for (int i = 0; i < lst.size(); i++)
+            {
+                wpFrom = null;
+                if (i == 1) wpFrom = createWaypoint(lst.get(0).lat, lst.get(0).lon, lst.get(0).dtStart, lst.get(0).dtEnd, 0, lst.get(0).wpType);
+                wpTo = createWaypoint(lst.get(i).lat, lst.get(i).lon, lst.get(i).dtStart, lst.get(i).dtEnd, i, lst.get(i).wpType);
+                routepart = createRoutepart(wpFrom, wpTo);
+                if (routepart == null) return null;
+                routeparts.put(routepart);
+            }
+            JSONObject json = new JSONObject();
+            json.put("name", "Bratislava-pickup");
+            json.put("version", "2.2");
+            json.put("routeParts", routeparts);
+            Log.e("Erroriik", "se porantalo" + routeparts);
+            return json.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void changeRouteStatus(int id){
@@ -881,11 +1159,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 allertFinish();
             }
         }
-            if (position == 3){
-                deleteRoute();
-            }else{
-                sendRoute();
-            }
+//            if (position == 3){
+//                deleteRoute();
+//            }else{
+//                sendRoute();
+//            }
 
         if (actualIndexInArray+1 < ((ArrayList<Number>) routeInfoStatus).size() && (position == 3)){
 
@@ -1142,8 +1420,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     findIndexOfTown(actualIndexInArray);
                     updateRouteLog(actualIndexInArray, 1);
                 }
-
-
             }
         });
         builder.show();

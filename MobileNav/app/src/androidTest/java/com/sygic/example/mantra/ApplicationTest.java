@@ -1,4 +1,4 @@
-package com.sygic.example.hello3dwiw;
+package com.sygic.example.mantra;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

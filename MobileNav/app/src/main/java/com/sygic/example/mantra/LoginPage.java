@@ -1,4 +1,4 @@
-package com.sygic.example.hello3dwiw;
+package com.sygic.example.mantra;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.telephony.TelephonyManager;
 import android.view.View;
 
 import android.content.Intent;
@@ -18,9 +16,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
-import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -39,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class LoginPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

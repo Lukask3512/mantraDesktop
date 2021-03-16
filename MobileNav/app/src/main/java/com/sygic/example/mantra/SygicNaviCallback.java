@@ -1,8 +1,7 @@
-package com.sygic.example.hello3dwiw;
+package com.sygic.example.mantra;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sygic.aura.embedded.IApiCallback;
 import com.sygic.sdk.api.events.ApiEvents;
