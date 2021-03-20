@@ -8,6 +8,12 @@ export default class Route {
   coordinatesOfTownsLon: string[];
   type: string[];  //true nakladka , false vykladka
   status: number[]; //na ceste/nakladam/problem atd...
+  datumPrijazdu?: string[];
+  datumLastPrijazdy?: string[];
+  casPrijazdu?: string[];
+  casLastPrijazdu?: string[];
+
+
   finished: boolean;
   createdAt: number; //timestamps
   finishedAt?: number;

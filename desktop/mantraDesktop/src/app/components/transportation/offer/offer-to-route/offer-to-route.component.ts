@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {OfferRouteService} from "../../../../services/offer-route.service";
 import Route from "../../../../models/Route";
 import {RouteService} from "../../../../services/route.service";
@@ -14,6 +14,9 @@ import {RouteToCarComponent} from "../../../dialogs/route-to-car/route-to-car.co
   templateUrl: './offer-to-route.component.html',
   styleUrls: ['./offer-to-route.component.scss']
 })
+
+
+
 export class OfferToRouteComponent implements OnInit {
 
   constructor(private offerService: OfferRouteService, private routeService: RouteService, public routeStatus: RouteStatusService,
@@ -21,13 +24,21 @@ export class OfferToRouteComponent implements OnInit {
   routes: Route[];
   fakeRoutes: Route[];
   @Input() offer: Route;
+  disabled: boolean = false;
   @Output() routeToMap = new EventEmitter<Route>();
+
+  @ViewChild('buttonChange') buttonChange: ElementRef;
+  @ViewChild('buttonSave') buttonSave: ElementRef;
 
   fakeOffer: Route;
   routeToDragList: Route;
   ngOnInit(): void {
     console.log(this.offer)
     this.fakeOffer = JSON.parse(JSON.stringify(this.offer));
+    if (this.offer.offerInRoute != ''){
+      this.disabled = true;
+    }
+
     this.routeService.routes$.subscribe(allRoutes => {
       this.routes = allRoutes;
       this.fakeRoutes = JSON.parse(JSON.stringify(this.routes));
@@ -58,6 +69,7 @@ export class OfferToRouteComponent implements OnInit {
         route: this.fakeOffer,
         newRoute: true,
         detailAboutRoute: this.fakeOffer.detailsAboutAdresses,
+        offer: true,
       };
 
 
@@ -82,8 +94,8 @@ export class OfferToRouteComponent implements OnInit {
     this.offer.offerInRoute = this.routeToDragList.id;
     this.routeService.updateRoute(this.routeToDragList);
     this.offerService.updateRoute(this.offer);
-    console.log(this.routeToDragList);
-    console.log(this.offer)
+    this.buttonChange.nativeElement.style.display = 'none'
+    this.buttonSave.nativeElement.style.display = 'none'
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -95,6 +107,11 @@ export class OfferToRouteComponent implements OnInit {
       moveItemInArray(this.routeToDragList.status, event.previousIndex, event.currentIndex);
       moveItemInArray(this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
       moveItemInArray(this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
+
+      moveItemInArray(this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(this.fakeOffer.nameOfTowns, this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
       transferArrayItem(this.fakeOffer.coordinatesOfTownsLat, this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
@@ -103,6 +120,12 @@ export class OfferToRouteComponent implements OnInit {
       transferArrayItem(this.fakeOffer.status, this.routeToDragList.status, event.previousIndex, event.currentIndex);
       transferArrayItem(this.fakeOffer.aboutRoute, this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
       transferArrayItem(this.fakeOffer.detailsAboutAdresses, this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
+
+      transferArrayItem(this.fakeOffer.casPrijazdu, this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
+      transferArrayItem(this.fakeOffer.casLastPrijazdu, this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
+      transferArrayItem(this.fakeOffer.datumPrijazdu, this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
+      transferArrayItem(this.fakeOffer.datumLastPrijazdy, this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
+
     }
     this.routeToMap.emit(this.routeToDragList);
 

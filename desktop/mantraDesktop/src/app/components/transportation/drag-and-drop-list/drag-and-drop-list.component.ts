@@ -32,6 +32,11 @@ export class DragAndDropListComponent{
     moveItemInArray(this.route.aboutRoute, event.previousIndex, event.currentIndex);
     moveItemInArray(this.route.detailsAboutAdresses, event.previousIndex, event.currentIndex);
     moveItemInArray(this.arrayOfDetail, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.route.casPrijazdu, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.route.casLastPrijazdu, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.route.datumPrijazdu, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.route.datumLastPrijazdy, event.previousIndex, event.currentIndex);
+
     this.outputRoute.emit(this.route);
     this.arrayOfDetailEvent.emit(this.arrayOfDetail);
   }

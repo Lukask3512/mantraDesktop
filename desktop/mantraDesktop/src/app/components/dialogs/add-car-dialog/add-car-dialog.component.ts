@@ -301,4 +301,15 @@ export class AddCarDialogComponent implements OnInit {
     };
   }
 
+  checkBiggetSize(){
+    if (this.carForm.get('autoVyska').value < this.carForm.get('priestorVyska').value ||
+      this.carForm.get('autoSirka').value < this.carForm.get('priestorSirka').value ||
+      this.carForm.get('autoDlzka').value <  this.carForm.get('priestorDlzka').value){
+      return true
+    }else{
+      return false
+    }
+  }
+
+
 }

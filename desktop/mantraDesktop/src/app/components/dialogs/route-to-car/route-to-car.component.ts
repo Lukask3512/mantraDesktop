@@ -28,6 +28,7 @@ export class RouteToCarComponent implements OnInit {
   newRoute;
   routeId;
   detailAboutRoute;
+  isOffer: boolean = false;
   ngOnInit(): void {
     // this.cars = this.dataService.getAllCars();
     this.carService.cars$.subscribe(cars => {
@@ -36,6 +37,7 @@ export class RouteToCarComponent implements OnInit {
     this.newRoute = this.data.newRoute;
     this.route = this.data.route;
     this.detailAboutRoute = this.data.detailAboutRoute;
+    this.isOffer = this.data.offer;
   }
 
   async saveDetailsFirst(car){
@@ -47,13 +49,19 @@ export class RouteToCarComponent implements OnInit {
       }
   }
 
-   saveDetailToDatabase(car){
-    this.saveDetailsFirst(car).then(()=>{
-      this.addRouteToCar(car)
-    })
+  updateOffer(){
+
   }
 
-
+   saveDetailToDatabase(car){
+    if (this.isOffer){
+      this.addRouteToCar(car)
+    }else{
+      this.saveDetailsFirst(car).then(()=>{
+        this.addRouteToCar(car)
+      })
+    }
+  }
 
 
   addRouteToCar(car){
@@ -67,6 +75,9 @@ export class RouteToCarComponent implements OnInit {
       dispecerId = loggedDispecer.createdBy;
     }
     var route: Route;
+    route = JSON.parse(JSON.stringify(this.route));
+    delete route.id;
+    route.takenBy = '';
     console.log(this.newRoute)
     //ked nemam vytvorenu cestu
     if (this.newRoute){
@@ -80,25 +91,21 @@ export class RouteToCarComponent implements OnInit {
       this.route.status.forEach(route => {
         newRouteStatus.push(-1);
       });
-      this.route.createdAt = (Date.now());
-      this.route.carId = carId;
-      this.route.finished = false;
-      this.route.createdBy = dispecerId;
-      this.route.status = newRouteStatus;
-      //   route = {
-      //     detailsAboutAdresses: this.route.detailsAboutAdresses,
-      //     carId: carId,
-      //     createdBy: dispecerId,
-      //     coordinatesOfTownsLat: this.route.coordinatesOfTownsLat,
-      //     coordinatesOfTownsLon: this.route.coordinatesOfTownsLon,
-      //     finished: false,
-      //     nameOfTowns: this.route.nameOfTowns,
-      //     status: newRouteStatus,
-      //     type: this.route.type,
-      //     aboutRoute: this.route.aboutRoute,
-      //     createdAt: (Date.now())
-      // }
-      this.routeService.createRoute(this.route);
+      route.createdAt = (Date.now());
+      route.carId = carId;
+      route.finished = false;
+      route.createdBy = dispecerId;
+      route.status = newRouteStatus;
+      var idNewRouty = this.routeService.createRoute(route);
+
+      //ak je ponuka tak ju updatnem  idckom prepravy kde som ju ulozil
+      if (this.isOffer){
+        this.route.offerInRoute = idNewRouty;
+        console.log(this.route)
+        this.routeService.updateRoute(this.route);
+      }
+
+
     }
     //ked mam vytvorenu cestu a len ju chem priradit auto
     else {

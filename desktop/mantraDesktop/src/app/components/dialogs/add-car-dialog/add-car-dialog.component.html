@@ -39,40 +39,41 @@
   <h3>Veľkosť vozidla</h3>
   <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Výška vozidla</mat-label>
-      <input formControlName="autoVyska" matInput type="number" min="0" class="example-right-align" required>
+      <input formControlName="autoVyska" step="0.1" matInput type="number" min="0" class="example-right-align" required>
       <span matSuffix>m</span>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Dĺžka vozidla</mat-label>
-      <input formControlName="autoDlzka" matInput type="number" min="0" class="example-right-align" required>
+      <input formControlName="autoDlzka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
       <span matSuffix>m</span>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Šírka vozidla</mat-label>
-      <input formControlName="autoSirka" matInput type="number" min="0" class="example-right-align" required>
+      <input formControlName="autoSirka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
       <span matSuffix>m</span>
     </mat-form-field>
   <br>
   <h3>Veľkosť priestoru na tovar</h3>
   <mat-form-field appearance="standard" class="gridItem">
     <mat-label>Výška priestoru na tovar</mat-label>
-    <input formControlName="priestorVyska" matInput type="number" min="0" class="example-right-align" required>
+    <input formControlName="priestorVyska" step="0.1" matInput type="number" min="0" class="example-right-align" required>
     <span matSuffix>m</span>
   </mat-form-field>
 
   <mat-form-field appearance="standard" class="gridItem">
     <mat-label>Dĺžka priestoru na tovar</mat-label>
-    <input formControlName="priestorDlzka" matInput type="number" min="0" class="example-right-align" required>
+    <input formControlName="priestorDlzka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
     <span matSuffix>m</span>
   </mat-form-field>
 
   <mat-form-field appearance="standard" class="gridItem">
     <mat-label>Šírka priestoru na tovar</mat-label>
-    <input formControlName="priestorSirka" matInput type="number" min="0" class="example-right-align" required>
+    <input formControlName="priestorSirka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
     <span matSuffix>m</span>
   </mat-form-field>
+  <h4 *ngIf="checkBiggetSize()">Upozornenie! Veľkost priestoru je väčšia ako veľkosť vozidla!!</h4>
 </mat-step>
       <mat-step>
         <ng-template matStepLabel>Nakladacia hrana</ng-template>
@@ -83,7 +84,7 @@
         <div>
           <mat-form-field *ngIf="!this.carForm.get('pohyblivaNakHrana').value" appearance="standard" class="gridItem">
             <mat-label>Výška nakladacej hrany</mat-label>
-            <input formControlName="vyskaHrany" matInput type="number" min="0" class="example-right-align">
+            <input formControlName="vyskaHrany" step="0.1" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>m</span>
           </mat-form-field>
         </div>
@@ -91,13 +92,13 @@
         <div *ngIf="this.carForm.get('pohyblivaNakHrana').value">
           <mat-form-field appearance="standard" class="gridItem">
             <mat-label>Min. výška</mat-label>
-            <input formControlName="minHrana" matInput type="number" min="0" class="example-right-align">
+            <input formControlName="minHrana" step="0.1" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>m</span>
           </mat-form-field>
 
           <mat-form-field appearance="standard" class="gridItem">
             <mat-label>Max. výška</mat-label>
-            <input formControlName="maxHrana" matInput type="number" min="0" class="example-right-align">
+            <input formControlName="maxHrana" step="0.1" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>m</span>
           </mat-form-field>
         </div>
@@ -115,14 +116,14 @@
 
         <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Váha vozidla</mat-label>
-      <input formControlName="vahaVozidlo" matInput min="0" type="number" placeholder="V tonách...." required>
+      <input formControlName="vahaVozidlo" step="0.1" matInput min="0" type="number" placeholder="V tonách...." required>
       <span matSuffix> t </span>
       <mat-hint>V tonách</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Nosnosť vozidla</mat-label>
-      <input formControlName="nosnost" matInput type="number" min="0" placeholder="V tonách...." required>
+      <input formControlName="nosnost" step="0.1" matInput type="number" min="0" placeholder="V tonách...." required>
       <span matSuffix> t </span>
       <mat-hint>V tonách</mat-hint>
     </mat-form-field>
@@ -141,15 +142,15 @@
       <div class="DSV" *ngIf="this.carForm.get('fromBack').value">
         <mat-form-field  appearance="standard" class="gridItem">
           <mat-label>Výška nak. pristoru</mat-label>
-          <input formControlName="zoZaduVyska" matInput placeholder="Výška...">
+          <input formControlName="zoZaduVyska" step="0.1" type="number" matInput placeholder="Výška...">
           <span matSuffix> m </span>
-          <mat-hint>V centimetroch</mat-hint>
+          <mat-hint>V metroch</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="standard" class="gridItem">
           <mat-label>Šírka nak. pristoru</mat-label>
-          <input formControlName="zoZaduSirka" matInput placeholder="Šírka....">
+          <input formControlName="zoZaduSirka" step="0.1" type="number" matInput placeholder="Šírka....">
           <span matSuffix> m </span>
-          <mat-hint>V centimetroch</mat-hint>
+          <mat-hint>V metroch</mat-hint>
         </mat-form-field>
       </div>
 
@@ -158,15 +159,15 @@
   <div class="DSV" *ngIf="this.carForm.get('fromRight').value">
     <mat-form-field  appearance="standard" class="gridItem">
       <mat-label>Výška nak. pristoru</mat-label>
-      <input formControlName="zPravaVyska" matInput placeholder="Výška...">
+      <input formControlName="zPravaVyska" type="number" step="0.1" matInput placeholder="Výška...">
       <span matSuffix> m </span>
-      <mat-hint>V centimetroch</mat-hint>
+      <mat-hint>V metroch</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Šírka nak. pristoru</mat-label>
-      <input formControlName="zPravaSirka" matInput placeholder="Šírka....">
+      <input formControlName="zPravaSirka" type="number" step="0.1" matInput placeholder="Šírka....">
       <span matSuffix> m </span>
-      <mat-hint>V centimetroch</mat-hint>
+      <mat-hint>V metroch</mat-hint>
     </mat-form-field>
 
   </div>
@@ -175,15 +176,15 @@
   <div class="DSV" *ngIf="this.carForm.get('fromLeft').value">
     <mat-form-field  appearance="standard" class="gridItem">
       <mat-label>Výška nak. pristoru</mat-label>
-      <input formControlName="zLavaVyska" matInput placeholder="Výška...">
+      <input formControlName="zLavaVyska" type="number" step="0.1" matInput placeholder="Výška...">
       <span matSuffix> m </span>
-      <mat-hint>V centimetroch</mat-hint>
+      <mat-hint>V metroch</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Šírka nak. pristoru</mat-label>
-      <input formControlName="zLavaSirka" matInput placeholder="Šírka....">
+      <input formControlName="zLavaSirka" type="number" step="0.1" matInput placeholder="Šírka....">
       <span matSuffix> m </span>
-      <mat-hint>V centimetroch</mat-hint>
+      <mat-hint>V metroch</mat-hint>
     </mat-form-field>
 
   </div>
@@ -192,15 +193,15 @@
   <div class="DSV" *ngIf="this.carForm.get('fromUp').value">
     <mat-form-field  appearance="standard" class="gridItem">
       <mat-label>Výška nak. pristoru</mat-label>
-      <input formControlName="zHoraVyska" matInput placeholder="Výška...">
+      <input formControlName="zHoraVyska" step="0.1" matInput placeholder="Výška...">
       <span matSuffix> m </span>
-      <mat-hint>V centimetroch</mat-hint>
+      <mat-hint>V metroch</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>Šírka nak. pristoru</mat-label>
-      <input formControlName="zHoraSirka" matInput placeholder="Šírka....">
+      <input formControlName="zHoraSirka" step="0.1" matInput placeholder="Šírka....">
       <span matSuffix> m </span>
-      <mat-hint>V centimetroch</mat-hint>
+      <mat-hint>V metroch</mat-hint>
     </mat-form-field>
 
   </div>

@@ -5,8 +5,18 @@
 .map{
   width: 30%;
   height: auto;
+  margin: 10px;
+}
+
+.imageInRow{
+  display: flex;
+  margin-top: 30px;
 }
 
 .oneOffer{
   display: flex;
+}
+li{
+  display: flex;
+  align-items: center;
 }

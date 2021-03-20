@@ -55,8 +55,10 @@ export class RouteService {
 
   //toto i treba dorobit
   createRoute(route: Route){
-    console.log(route)
-    return this.afs.collection('route').add(route);
+    const id = this.afs.createId();
+    this.afs.collection('route').doc(id).set(route);
+    return id;
+    // return this.afs.collection('route').add(route);
   }
 
   updateRoute(newRoute) {

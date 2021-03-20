@@ -11,7 +11,7 @@
       <button (click)="closeInfo()" class="closeInfo">x</button>
     </div>
 
-      <div *ngIf="this.offersToShow != null" class="car">
+      <div *ngIf="this.offersToShow == null" class="car">
 <!--        <h2>Vozidlo</h2>-->
         <table id="t01">
           <tr>
@@ -49,12 +49,6 @@
                   <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
                   <span *ngIf="route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
                   <app-detail-img class="imageInRow" [detailArray]="route.detailArray[i]"></app-detail-img>
-<!--                  <div class="debnaSize" *ngFor="let debna of route.detailArray[i].sizeD; index as debnaIndex">-->
-<!--                    <div class="sizeD">{{route.detailArray[i].sizeD[debnaIndex]}}</div>-->
-<!--                    <div class="sizeV">{{route.detailArray[i].sizeV[debnaIndex]}}</div>-->
-<!--                    <div class="sizeS">{{route.detailArray[i].sizeS[debnaIndex]}}</div>-->
-<!--                    <img class="bedna" src="./assets/logo/cube.png">-->
-<!--                  </div>-->
                   <span *ngIf="route.type[i] == 'nakladka'">+{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>
                   <span *ngIf="route.type[i] == 'vykladka'">-{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>
                 </li>

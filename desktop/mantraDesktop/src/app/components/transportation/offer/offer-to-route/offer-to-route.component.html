@@ -7,7 +7,7 @@
 <div class="dragAndDrop">
   <div class="drag1">
   <div *ngIf="offer" cdkDropList class="example-list"
-       (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2">
+       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList1" cdkDropListConnectedTo="dragList2">
     <div class="example-box" *ngFor="let routeTown of this.fakeOffer.nameOfTowns let i = index" cdkDrag>
       <div class="routeTown">
         <p>{{routeTown}}
@@ -26,7 +26,7 @@
   </div>
   <div class="drag2">
   <div *ngIf="routeToDragList" cdkDropList class="example-list"
-       (cdkDropListDropped)="drop($event)" id="dragList2" cdkDropListConnectedTo="dragList1">
+       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList2" cdkDropListConnectedTo="dragList1">
     <div class="example-box" *ngFor="let routeTown of this.routeToDragList.nameOfTowns let i = index" cdkDrag>
       <div class="routeTown">
         <p>{{routeTown}}
@@ -42,8 +42,8 @@
       </div>
     </div>
   </div>
-    <button *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''" (click)="chooseAnotherRoute()">Zmenit</button>
-    <button [disabled]="this.fakeOffer.nameOfTowns.length > 0" *ngIf="this.fakeOffer.offerInRoute == ''" (click)="updateRoute()">Ulozit trasu</button>
+    <button #buttonChange *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''" (click)="chooseAnotherRoute()">Zmenit</button>
+    <button #buttonSave [disabled]="this.fakeOffer.nameOfTowns.length > 0" *ngIf="this.fakeOffer.offerInRoute == ''" (click)="updateRoute()">Ulozit trasu</button>
 </div>
 </div>
 

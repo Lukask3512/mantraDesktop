@@ -21,6 +21,7 @@ import {DetailAboutRouteService} from "../../../services/detail-about-route.serv
 import OneDetailRoute from "../../../models/OneDetailRoute";
 import {DragAndDropListComponent} from "../drag-and-drop-list/drag-and-drop-list.component";
 import {CountFreeSpaceService} from "../../../data/count-free-space.service";
+import {OfferPriceComponent} from "../../dialogs/offer-price/offer-price.component";
 
 
 
@@ -48,8 +49,8 @@ export class NewTransportComponent implements OnInit {
   oneDetailAboutRoute: DeatilAboutAdresses;
   arrayOfDetailsAbRoute: any[] =  [];
 
-  casPrichodu = 'nerozhoduje';
-  datumPrichodu = 'nerozhoduje'
+  casPrichodu : 'rozhoduje' | 'nerozhoduje' | '';
+  datumPrichodu : 'rozhoduje' | 'nerozhoduje'| '';
 
   transportForm = this.fb.group({
    sizeD: ['', Validators.required],
@@ -61,6 +62,8 @@ export class NewTransportComponent implements OnInit {
     vyskaHranySize: [''],
     stohovatelnost: ["nie", Validators.required],
     stohoSize: [0],
+
+
 
 
     zoZadu: false,
@@ -85,8 +88,10 @@ export class NewTransportComponent implements OnInit {
   arrayOfStringOfDetails;
 
   dateRange = new FormGroup({
-    start: new FormControl(Validators.required),
-    end: new FormControl(Validators.required)
+    startDate: new FormControl(Validators.required),
+    endDate: new FormControl(Validators.required),
+    timeFrom: new FormControl(Validators.required),
+    timeTo: new FormControl(Validators.required),
   });
   minDate;
   labelPosition: 'nakladka' | 'vykladka';
@@ -129,6 +134,10 @@ export class NewTransportComponent implements OnInit {
       finished: false,
       forEveryone: false,
       nameOfTowns: [],
+      datumPrijazdu: [],
+      datumLastPrijazdy: [],
+      casPrijazdu: [],
+      casLastPrijazdu: [],
       offerFrom: [],
       price: 0,
       priceFrom: [],
@@ -206,8 +215,12 @@ export class NewTransportComponent implements OnInit {
 
   //ci mozem pridat dalsiu adresu
   checkIfCanAddNextAdress(){
-    // console.log(this.numberOfItems);
-    // console.log(this.detailAboutRoute.sizeS.length);
+    if (this.datumPrichodu !== 'rozhoduje' && this.datumPrichodu !== 'nerozhoduje'){
+      return true
+    }
+    if (this.casPrichodu !== 'rozhoduje' && this.casPrichodu !== 'nerozhoduje'){
+      return true;
+    }
     if (this.labelPosition == 'nakladka') {
 
       if (this.detailAboutRoute.sizeS != undefined) {
@@ -374,18 +387,60 @@ export class NewTransportComponent implements OnInit {
   }
 
   updateDetailOnTown(index){
+    if (this.route.type[index] == 'nakladka'){
+      this.labelPosition = 'nakladka';
+    }else {
+      this.labelPosition = 'vykladka';
+    }
+    if (this.route.datumPrijazdu[index] != '0'){
+      this.datumPrichodu = 'rozhoduje';
+
+      this.dateRange.controls['startDate'].setValue(new Date(this.route.datumPrijazdu[index]));
+      this.dateRange.controls['endDate'].setValue(new Date(this.route.datumLastPrijazdy[index]));
+    }else{
+      this.datumPrichodu = 'nerozhoduje';
+    }
+
+    if (this.route.casPrijazdu[index] != '0'){
+      this.casPrichodu = 'rozhoduje';
+      this.dateRange.controls['timeFrom'].setValue(this.route.casPrijazdu[index]);
+      this.dateRange.controls['timeTo'].setValue(this.route.casLastPrijazdu[index]);
+    }else{
+      this.casPrichodu = 'nerozhoduje';
+    }
+
+
     this.detailAboutRoute = {};
     this.detailAboutRoute = this.arrayOfDetailsAbRoute[index];
     this.numberOfItems = this.arrayOfDetailsAbRoute[index].sizeV.length;
     console.log(this.arrayOfDetailsAbRoute);
     this.assignToDetail(0,0);
     this.clickedOnIndexDetail = index;
+    this.transportForm.updateValueAndValidity();
   }
 
   add(){
+  if (this.casPrichodu == 'nerozhoduje'){
+    this.route.casPrijazdu.push('0');
+    this.route.casLastPrijazdu.push('0');
+  }else{
+    this.route.casPrijazdu.push(this.dateRange.get('timeFrom').value);
+    this.route.casLastPrijazdu.push(this.dateRange.get('timeTo').value);
+  }
+
+  if (this.datumPrichodu == 'nerozhoduje'){
+    this.route.datumPrijazdu.push('0');
+    this.route.datumLastPrijazdy.push('0');
+  }else{
+    this.route.datumPrijazdu.push(this.dateRange.get('startDate').value.toString());
+    this.route.datumLastPrijazdy.push(this.dateRange.get('endDate').value.toString());
+  }
+
     this.pushItemsToArray(0, this.actualItemInForm)
-    console.log(this.routeFromGoogle)
-    console.log(this.route)
+
+
+
+
 
     this.route.nameOfTowns.push(this.routeFromGoogle);
     this.route.coordinatesOfTownsLon.push(this.lonFromGoogle);
@@ -394,7 +449,7 @@ export class NewTransportComponent implements OnInit {
     this.route.aboutRoute.push(this.infoAboutRoute);
     this.infoAboutRoute = "";
     this.route.status.push(-1);
-
+    console.log(this.route)
     this.childGoogle.resetGoogle();
     this.labelPosition = undefined;
 
@@ -440,11 +495,11 @@ export class NewTransportComponent implements OnInit {
     this.transportForm.controls['fromSide'].setValue(undefined);
     this.transportForm.controls['fromUpSide'].setValue(undefined);
     if (allForms){
-      this.casPrichodu = 'nerozhoduje';
-      this.datumPrichodu = 'nerozhoduje';
+      this.casPrichodu = '';
+      this.datumPrichodu = '';
     }
-
   }
+
   pushItemsToArray(indexOfAddresses, indexOfPackage){
     if (this.detailAboutRoute.sizeV == undefined){
       this.detailAboutRoute = this.getDetail();
@@ -691,8 +746,9 @@ export class NewTransportComponent implements OnInit {
     });
   }
 
-  sendToAllDispecers(){
+  sendToAllDispecers(price){
     this.route.forEveryone = true;
+    this.route.price = price;
     this.saveDetailsFirst().then(() =>{
       console.log(this.route);
       this.routeService.createRoute(this.route);
@@ -838,5 +894,17 @@ export class NewTransportComponent implements OnInit {
         }
       }
     })
+  }
+  openOfferDialog() {
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    const dialogRef = this.dialog.open(OfferPriceComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        this.sendToAllDispecers(value)
+      }
+    });
   }
 }

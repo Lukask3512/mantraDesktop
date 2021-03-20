@@ -38,6 +38,7 @@ export class DetailComponent implements OnInit {
       this.fakeRoute = JSON.parse(JSON.stringify(this.route));
       this.offerService.routes$.subscribe(routes => {
         this.route = routes.find(oneRoute => oneRoute.id == route.id);
+        this.getDetails();
         if (this.route == undefined){
           this.route = this.fakeRoute;
         }
@@ -85,18 +86,13 @@ export class DetailComponent implements OnInit {
     }
 
   async getDetails(){
-    this.detailService.offerDetails$.subscribe(res => {
-      console.log(res)
-    })
     for (const route of this.route.detailsAboutAdresses){
       this.detailService.offerDetails$.subscribe(res => {
        var detail =  res.find(offerDetail => offerDetail.id == route)
-        console.log(detail)
 
         // @ts-ignore
         var detailAboutAdd: DeatilAboutAdresses = detail;
 
-        console.log(detailAboutAdd)
         this.arrayOfDetailsAbRoute.push(detailAboutAdd);
         if (this.arrayOfDetailsAbRoute.length == this.route.detailsAboutAdresses.length){
           this.childDropList.setDetails(this.arrayOfDetailsAbRoute);
@@ -139,7 +135,9 @@ export class DetailComponent implements OnInit {
           this.route.priceFrom.splice(index, 1);
         }
       });
-      console.log(this.route.offerFrom);
+      if (this.price == undefined){
+        this.price = 0;
+      }
        this.route.offerFrom.push(idCreated);
       this.route.priceFrom.push(this.price);
       this.price = undefined;
@@ -167,17 +165,25 @@ export class DetailComponent implements OnInit {
 
   confirm(){
     this.route.takenBy = this.getDispecerId();
-    this.route.price = this.offer;
+    if (this.route.price == 0){ //ak cenu nenahodila spolocnost, cena sa nastavi podla prijatej ponuky
+      this.route.price = this.offer;
+    }
     this.route.forEveryone = false;
     this.offerService.updateRoute(this.route);
     this.fakeRoute = JSON.parse(JSON.stringify(this.route));
   }
 
   cancelOffer(){
-    this.route.forEveryone = true
-    this.route.price = 0;
+    this.route.forEveryone = true;
+    //tu skontrolujem komu to bolo zadane , a ak sa cena zhoduje s jeho znamena to ze cenu zmenim na 0;
+    var indexVOffer = this.route.offerFrom.findIndex(element => element == this.route.ponuknuteTo);
+    var ponukaZa = this.route.priceFrom[indexVOffer];
+    if (ponukaZa == this.route.price){
+      this.route.price = 0;
+    }
     this.route.ponuknuteTo = '';
     this.route.takenBy = '';
+    this.route.offerInRoute = '';
     this.offerService.updateRoute(this.route);
   }
 
@@ -185,6 +191,14 @@ export class DetailComponent implements OnInit {
     console.log(id);
     this.route.ponuknuteTo = id;
     this.offerService.updateRoute(this.route);
+  }
+
+  vypocitajVahuPreMesto(infoMesto: DeatilAboutAdresses){
+    var vahaVMeste = 0;
+    infoMesto.weight.forEach(vaha => {
+      vahaVMeste += vaha;
+    });
+    return vahaVMeste;
   }
 
 

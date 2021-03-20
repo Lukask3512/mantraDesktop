@@ -37,11 +37,12 @@ import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/d
 import { FilterComponent } from './map/filter/filter.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { DetailImgComponent } from './transportation/detail-img/detail-img.component';
+import { OfferPriceComponent } from './dialogs/offer-price/offer-price.component';
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent, FilterComponent, DetailImgComponent
+      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent, FilterComponent, DetailImgComponent, OfferPriceComponent
     ],
     exports: [
         OpenlayerComponent,

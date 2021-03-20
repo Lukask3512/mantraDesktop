@@ -422,11 +422,11 @@ export class MapComponent {
     var vectorNaZobrazenieAllFeatures =  new VectorSource({
       features: this.places.concat(this.cars).concat(this.routes)
     });
-    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-      duration: 800} )
+
 
     if (this.firstZoomCars == false){
-
+      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+        duration: 800} )
       this.firstZoomCars = true;
     }
 
@@ -1014,7 +1014,7 @@ export class MapComponent {
     this.offersRouteRed = [];
     this.offersRouteGreen = [];
     this.offersRouteYellow = [];
-
+    this.offersToShow = null
     offers.forEach((route, index) => {
       var coordinatesToArray = [];
       route.coordinatesOfTownsLat.forEach((lat, index) => {
