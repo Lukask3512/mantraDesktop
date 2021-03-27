@@ -4,6 +4,8 @@ import Dispecer from "../../../models/Dispecer";
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../../../data/data.service";
 import {AccountService} from "../../../../login/_services/account.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {DipecerPravaComponent} from "../../dialogs/dipecer-prava/dipecer-prava.component";
 
 @Component({
   selector: 'app-new-dispecer',
@@ -18,7 +20,7 @@ export class NewDispecerComponent implements OnInit {
     email: ['', Validators.required]
   });
 
-  constructor(private accountService: AccountService, private dispecerService: DispecerService, private fb: FormBuilder, private dataService: DataService) { }
+  constructor(private dialog: MatDialog, private accountService: AccountService, private dispecerService: DispecerService, private fb: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
 
@@ -59,6 +61,23 @@ export class NewDispecerComponent implements OnInit {
       status: false,
       createdBy: createdBy
     };
+  }
+
+  openDialog(){
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    // dialogConfig.data = {
+    //   dispecer: this.dispecer
+    // }
+    const dialogRef = this.dialog.open(DipecerPravaComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
   }
 
 }

@@ -48,6 +48,7 @@ export class NewTransportComponent implements OnInit {
   detailAboutRoute: any; //detail ohladom 1 nakladky/vykladky... kde moze byt viacej ks
   oneDetailAboutRoute: DeatilAboutAdresses;
   arrayOfDetailsAbRoute: any[] =  [];
+  fakeArrayOfDetailsAbRoute: any[] =  [];
 
   casPrichodu : 'rozhoduje' | 'nerozhoduje' | '';
   datumPrichodu : 'rozhoduje' | 'nerozhoduje'| '';
@@ -365,6 +366,7 @@ export class NewTransportComponent implements OnInit {
           this.arrayOfDetailsAbRoute.push(detailAboutAdd);
           if (this.arrayOfDetailsAbRoute.length == this.route.detailsAboutAdresses.length){
             this.childDropList.setDetails(this.arrayOfDetailsAbRoute);
+            this.fakeArrayOfDetailsAbRoute = this.arrayOfDetailsAbRoute;
             console.log(this.arrayOfDetailsAbRoute)
           }
 
@@ -454,6 +456,7 @@ export class NewTransportComponent implements OnInit {
     this.labelPosition = undefined;
 
     this.arrayOfDetailsAbRoute.push(this.detailAboutRoute);
+    this.fakeArrayOfDetailsAbRoute.push(this.detailAboutRoute);
     // var vopchaSa = this.countFreeSpace.countFreeSpace(this.arrayOfDetailsAbRoute, null, null, this.route);
     // console.log(vopchaSa);
     console.log(this.arrayOfDetailsAbRoute)
@@ -906,5 +909,43 @@ export class NewTransportComponent implements OnInit {
         this.sendToAllDispecers(value)
       }
     });
+  }
+
+  ciMozemVylozitBednu(detail,indexMesta, indexBedne){
+    var moznyPocetVylozenia = 0;
+    var pocetnalozeni = 0;
+    var nakladky = [];
+    // if (this.labelPosition == 'nakladka'){
+    //   // this.fakeArrayOfDetailsAbRoute
+    //   for (let i = 0; i < this.fakeArrayOfDetailsAbRoute.length; i++) {
+    //     for (let j = 0; j < this.fakeArrayOfDetailsAbRoute[i].sizeS; j++) {
+    //       if (indexMesta != i && indexBedne != j){ // aby som nenasiel sam seba
+    //         if (this.arrayOfDetailsAbRoute[indexMesta].sizeS[indexBedne] ==  this.arrayOfDetailsAbRoute[i].sizeS[j]  &&
+    //           this.arrayOfDetailsAbRoute[indexMesta].sizeD[indexBedne] ==  this.arrayOfDetailsAbRoute[i].sizeD[j] &&
+    //           this.arrayOfDetailsAbRoute[indexMesta].sizeV[indexBedne] ==  this.arrayOfDetailsAbRoute[i].sizeV[j] &&
+    //           this.arrayOfDetailsAbRoute[indexMesta].weight[indexBedne] ==  this.arrayOfDetailsAbRoute[i].weight[j] &&
+    //           this.arrayOfDetailsAbRoute[indexMesta].polohaNakladania[indexBedne] ==  this.arrayOfDetailsAbRoute[i].polohaNakladania[j] &&
+    //           this.arrayOfDetailsAbRoute[indexMesta].stohovatelnost[indexBedne] ==  this.arrayOfDetailsAbRoute[i].stohovatelnost[j]){
+    //           if (this.route.type[i] == 'nakladka'){
+    //             pocetnalozeni++;
+    //             nakladky.push({mesto: i, bedna: j});
+    //           }
+    //           if (this.route.type[i] == 'vykladka'){
+    //             moznyPocetVylozenia++;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    //   if (moznyPocetVylozenia != 0){
+    //     for (let j = 0; j < moznyPocetVylozenia; j++) {
+    //       this.fakeArrayOfDetailsAbRoute[nakladky[0].mesto].vylozene
+    //
+    //     }
+    //   }
+    //
+    // }
+
+    return true;
   }
 }

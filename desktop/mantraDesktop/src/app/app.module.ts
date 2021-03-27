@@ -52,6 +52,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -69,7 +70,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         AppComponent,
         ViewComponent,
         NewTransportComponent,
-        RouteLogComponent
+        RouteLogComponent,
     ],
     imports: [
         BrowserAnimationsModule,

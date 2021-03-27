@@ -80,7 +80,7 @@
           <h1 *ngIf="route.zltePrepravy.length > 0">Povolene prekrocenie</h1>
           <div  *ngFor="let preprava of route.zltePrepravy; index as i" class="oneRoute">
             <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">
-              <h3 class="tuSaVopchaYellow" *ngIf="preprava.vopchaSa.poleMiestKdeSaVopcha.find(i) else elseBlock">{{myTown}}</h3>
+              <h3 class="tuSaVopchaYellow" *ngIf="preprava.vopchaSa.poleMiestKdeSaVopcha.includes(iMesto); else elseBlock">{{myTown}}</h3>
               <ng-template #elseBlock>{{myTown}}</ng-template>
             </div>
           </div>

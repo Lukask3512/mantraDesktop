@@ -106,7 +106,15 @@ export class CountFreeSpaceService {
       if (dlzka <= car.sizePriestoru[2] && maxVyska <= car.sizePriestoru[0] && maxSirka <= car.sizePriestoru[1]){
         poleMiestKdeSaVopcha.push(indexMesicka);
         prekrocenieOPercenta.push(false);
-      }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie)){
+      }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie) && maxVyska <= car.sizePriestoru[0] && maxSirka <= car.sizePriestoru[1]){
+        poleMiestKdeSaVopcha.push(indexMesicka);
+        prekrocenieOPercenta.push(true);
+      }
+      else if (dlzka <= car.sizePriestoru[2] && maxVyska <= (car.sizePriestoru[0] * prekrocenie) && maxSirka <= car.sizePriestoru[1]){
+        poleMiestKdeSaVopcha.push(indexMesicka);
+        prekrocenieOPercenta.push(true);
+      }
+      else if (dlzka <= car.sizePriestoru[2] && maxVyska <= car.sizePriestoru[0] && maxSirka <= (car.sizePriestoru[1] * prekrocenie)){
         poleMiestKdeSaVopcha.push(indexMesicka);
         prekrocenieOPercenta.push(true);
       }

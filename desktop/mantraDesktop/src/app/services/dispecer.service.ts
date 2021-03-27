@@ -72,4 +72,8 @@ export class DispecerService {
     return this.dispecerCollection.doc(dispecerID).delete();
   }
 
+  updateDispecer(dispecer: Dispecer){
+    return this.dispecerCollection.doc(dispecer.id).update(dispecer);
+  }
+
 }

@@ -868,17 +868,17 @@ export class MapComponent {
                                 }else if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
                                   flags = 2;
-                                  zltePrepravy.push(route, vopchaSa)
+                                  zltePrepravy.push({...route, vopchaSa});
                                 }
                                 else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
                                   flags = 2;
-                                  zltePrepravy.push(route, vopchaSa)
+                                  zltePrepravy.push({...route, vopchaSa});
                                 }
                                 else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                                   adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
                                   flags = 2;
-                                  zltePrepravy.push(route, vopchaSa)
+                                  zltePrepravy.push({...route, vopchaSa});
                                 }
                                 if (flags > jednaPonuka.flag){
                                   jednaPonuka.flag = flags;
@@ -887,8 +887,11 @@ export class MapComponent {
                             })
 
             });
-          zltePrepravy = [...new Set(zltePrepravy)]; //odstranujem duplikaty
-          zelenePrepravy = [...new Set(zelenePrepravy)];
+          // zltePrepravy = [...new Set(zltePrepravy)]; //odstranujem duplikaty
+          // zelenePrepravy = [...new Set(zelenePrepravy)];
+          zltePrepravy = zltePrepravy.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
+          zelenePrepravy = zelenePrepravy.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
+          // console.log(zelenePrepravy)
               jednaPonuka.zelenePrepravy = zelenePrepravy;
               jednaPonuka.zltePrepravy = zltePrepravy;
           })

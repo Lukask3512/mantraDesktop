@@ -7,4 +7,6 @@ export default class Dispecer {
   photoUrl?: string;
   email: string;
   createdBy?: string;
+  myCars?: string[];
+  myPrives?: string[];
 }
