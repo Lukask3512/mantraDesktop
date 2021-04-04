@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
+import Address from "../../../models/Address";
 
 @Component({
   selector: 'app-detail-img',
@@ -8,7 +9,7 @@ import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 })
 export class DetailImgComponent implements OnInit {
 
-  @Input() detailArray: DeatilAboutAdresses;
+  @Input() address: Address;
   constructor() { }
 
   ngOnInit(): void {

@@ -1,10 +1,16 @@
 
 <div>
+  <mat-horizontal-stepper #stepper linear (selectionChange)="selectionChange($event)">
+    <mat-step>
+      <ng-template matStepLabel>Vyber auta</ng-template>
 <table class="car" *ngFor="let car of cars" >
   <tr>
     <th>{{car.ecv}}</th>
     <th>{{routeStatusService.getStatus(car.status)}}</th>
-   <th> <button (click)="saveDetailToDatabase(car)" class="addButton">+</button></th>
+   <th>
+<!--     <button (click)="saveDetailToDatabase(car)" class="addButton">+</button>-->
+   <button (click)="choosenCar(car)">+</button>
+   </th>
   </tr>
 </table>
 
@@ -12,6 +18,21 @@
 
 <h1>Uložiť trasu bez priradenia?</h1>
 <button class="save_c" (click)="addRouteToCar(null)">Uložiť</button>
+    </mat-step>
+
+    <mat-step >
+      <ng-template *ngIf="chosenCar" matStepLabel>Presun prepravy do itinerara {{this.chosenCar.ecv}}</ng-template>
+      <ng-template *ngIf="!chosenCar" matStepLabel>Vyberte vozidlo!</ng-template>
+      <app-route-to-itinerar *ngIf="this.chosenCar"
+                             [newRoute]="addressesToDragDrop"
+                             [car]="this.chosenCar"
+                              (addressesId)="saveRoute($event)">
+
+      </app-route-to-itinerar>
+
+    </mat-step>
+
+  </mat-horizontal-stepper>
 </div>
 
 

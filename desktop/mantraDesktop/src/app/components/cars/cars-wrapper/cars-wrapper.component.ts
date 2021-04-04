@@ -14,6 +14,7 @@ import {AddPrivesToCarComponent} from "../../dialogs/add-prives-to-car/add-prive
 import {PrivesService} from "../../../services/prives.service";
 import {OffNavesDialogComponent} from "../../dialogs/off-naves-dialog/off-naves-dialog.component";
 import {DetailAboutRouteService} from "../../../services/detail-about-route.service";
+import {AddressService} from "../../../services/address.service";
 
 @Component({
   selector: 'app-cars-wrapper',
@@ -25,7 +26,7 @@ export class CarsWrapperComponent implements OnInit {
   displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'detail', 'naves', 'update', 'delete'];
   constructor(private carService: CarService, private dataSerice: DataService, private dialog: MatDialog,
               public routeStatusService: RouteStatusService, public privesService: PrivesService,
-              private detailService: DetailAboutRouteService) { }
+              private detailService: DetailAboutRouteService, private addressService: AddressService) { }
   cars;
   sortedData: Cars[];
   @ViewChild(MatPaginator) paginator: MatPaginator;

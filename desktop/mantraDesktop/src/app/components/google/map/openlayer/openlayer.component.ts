@@ -19,6 +19,7 @@ import {take} from "rxjs/operators";
 import {easeOut} from 'ol/easing';
 import {unByKey} from 'ol/Observable';
 import {getVectorContext} from 'ol/render';
+import Address from "../../../../models/Address";
 
 
 @Component({
@@ -54,10 +55,10 @@ export class OpenlayerComponent {
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
-  notifyMe(lat, lon, car, route){
-    console.log(lat , lon, car , route)
-    if (lat != undefined) {
-      this.addMarker(lat, lon, car);
+  notifyMe(addresses: Address[], car, route){
+    console.log(addresses, car , route)
+    if (addresses != undefined) {
+      this.addMarker(addresses, car);
     }
 
     if (this.coordinatesFeature == undefined && car !== undefined && route != undefined) {
@@ -152,7 +153,7 @@ export class OpenlayerComponent {
 
   }
 
-  addMarker(lat, lon, car){
+  addMarker(addresses: Address[], car){
     this.places = [];
 
     if (this.coordinatesFeature != null || this.coordinatesFeature != undefined){
@@ -210,10 +211,10 @@ export class OpenlayerComponent {
 
 
 
-    if ( lat != undefined && lat.length > 0) {
-      for (let i = 0; i < lat.length; i++) {
+    if ( addresses != undefined) {
+      for (let i = 0; i < addresses.length; i++) {
         var iconFeature = new Feature({
-          geometry: new Point(fromLonLat([lon[i], lat[i]])),
+          geometry: new Point(fromLonLat([addresses[i].coordinatesOfTownsLon, addresses[i].coordinatesOfTownsLat])),
           name: 'place'
         });
 

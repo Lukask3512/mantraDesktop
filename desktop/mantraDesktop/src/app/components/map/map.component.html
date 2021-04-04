@@ -48,7 +48,7 @@
                 <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}
                   <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
                   <span *ngIf="route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-                  <app-detail-img class="imageInRow" [detailArray]="route.detailArray[i]"></app-detail-img>
+                  <app-detail-img class="imageInRow" [address]="route.detailArray[i]"></app-detail-img>
                   <span *ngIf="route.type[i] == 'nakladka'">+{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>
                   <span *ngIf="route.type[i] == 'vykladka'">-{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>
                 </li>

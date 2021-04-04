@@ -18,7 +18,7 @@ import {DeleteRouteComponent} from "../../dialogs/delete-route/delete-route.comp
   styleUrls: ['./transportation-wrapper.component.scss']
 })
 export class TransportationWrapperComponent implements OnInit {
-  allActiveRoutes;
+  allActiveRoutes: Route[];
   allFinishedRoutes;
   displayedColumns: string[] = ['naklady', 'vykladky'];
 
@@ -101,25 +101,25 @@ export class TransportationWrapperComponent implements OnInit {
     //   }
     // }
 
-    for(let i = route.status.length ; i >= 0; i--){
-      if (route.status[i] != -1){
-          return this.routeStatusService.getStatus(route.status[i]);
-        }
-      }
+    // for(let i = route.status.length ; i >= 0; i--){
+    //   if (route.status[i] != -1){
+    //       return this.routeStatusService.getStatus(route.status[i]);
+    //     }
+    //   }
 
   }
 
   openAddDialog(route: Route, newRoute: boolean, routeId: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      routesTowns: route.nameOfTowns,
-      routesLat: route.coordinatesOfTownsLat,
-      routesLon: route.coordinatesOfTownsLon,
-      routesType: route.type,
-      routeId: routeId,
-      routeStatus: route.status,
-      aboutRoute: route.aboutRoute,
-      newRoute: newRoute
+      // routesTowns: route.nameOfTowns,
+      // routesLat: route.coordinatesOfTownsLat,
+      // routesLon: route.coordinatesOfTownsLon,
+      // routesType: route.type,
+      // routeId: routeId,
+      // routeStatus: route.status,
+      // aboutRoute: route.aboutRoute,
+      // newRoute: newRoute
     };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {

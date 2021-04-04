@@ -39,36 +39,56 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { DetailImgComponent } from './transportation/detail-img/detail-img.component';
 import { OfferPriceComponent } from './dialogs/offer-price/offer-price.component';
 import { DipecerPravaComponent } from './dialogs/dipecer-prava/dipecer-prava.component';
+// import { NewFormComponent } from './transportation/new-transport/new-form/new-form.component';
+import {MatRadioModule} from "@angular/material/radio";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import { DetailFormComponent } from './transportation/new-transport/detail-form/detail-form.component';
+import { RouteToItinerarComponent } from './transportation/new-transport/route-to-itinerar/route-to-itinerar.component';
+import { OneAddressInfoComponent } from './transportation/transportation-wrapper/one-address-info/one-address-info.component';
 
 
 
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
-      TheDispecerComponent, TransportationWrapperComponent, RouteToCarComponent, FindCarByIdComponent, FindRouteStatusComponent, EditInfoComponent, DeleteRouteComponent, DeleteDispecerComponent, PrivesWrapperComponent, AddPrivesDialogComponent, NewPrivesComponent, AddPrivesToCarComponent, OffNavesDialogComponent, DragAndDropListComponent, WrapperComponent, DetailComponent, OfferToRouteComponent, DragDropOfferComponent, FilterComponent, DetailImgComponent, OfferPriceComponent, DipecerPravaComponent
+      TheDispecerComponent, TransportationWrapperComponent,
+      RouteToCarComponent, FindCarByIdComponent,
+      FindRouteStatusComponent, EditInfoComponent,
+      DeleteRouteComponent, DeleteDispecerComponent,
+      PrivesWrapperComponent, AddPrivesDialogComponent,
+      NewPrivesComponent, AddPrivesToCarComponent,
+      OffNavesDialogComponent, DragAndDropListComponent,
+      WrapperComponent, DetailComponent, OfferToRouteComponent,
+      DragDropOfferComponent, FilterComponent, DetailImgComponent,
+      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent
     ],
-    exports: [
-        OpenlayerComponent,
-        TheDispecerComponent,
-        FindCarByIdComponent,
-        NewPrivesComponent,
-        PrivesWrapperComponent,
-        DragAndDropListComponent,
-        FilterComponent,
-        DetailImgComponent
-    ],
-    imports: [
-        CommonModule,
-        ViewRoutingModule,
-        MatTableModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTooltipModule,
-        MatSlideToggleModule,
-        MatStepperModule,
-        DragDropModule,
-        MatCheckboxModule
-    ]
+  exports: [
+    OpenlayerComponent,
+    TheDispecerComponent,
+    FindCarByIdComponent,
+    NewPrivesComponent,
+    PrivesWrapperComponent,
+    DragAndDropListComponent,
+    FilterComponent,
+    DetailImgComponent,
+    DetailFormComponent,
+
+  ],
+  imports: [
+    CommonModule,
+    ViewRoutingModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatStepperModule,
+    DragDropModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatDatepickerModule,
+
+  ]
 })
 export class ViewModule { }

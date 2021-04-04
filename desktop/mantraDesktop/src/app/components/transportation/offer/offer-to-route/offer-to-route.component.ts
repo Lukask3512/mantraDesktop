@@ -61,14 +61,14 @@ export class OfferToRouteComponent implements OnInit {
     //   idCreated = this.dataService.getDispecer().createdBy
     // }
     this.fakeOffer.forEveryone = false;
-    this.fakeOffer.createdAt = (Date.now());
+    this.fakeOffer.createdAt = (new Date()).toString();
     const dialogConfig = new MatDialogConfig();
 
 
       dialogConfig.data = {
         route: this.fakeOffer,
         newRoute: true,
-        detailAboutRoute: this.fakeOffer.detailsAboutAdresses,
+        // detailAboutRoute: this.fakeOffer.detailsAboutAdresses,
         offer: true,
       };
 
@@ -99,34 +99,34 @@ export class OfferToRouteComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.type, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.status, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
-
-      moveItemInArray(this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(this.fakeOffer.nameOfTowns, this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.coordinatesOfTownsLat, this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.coordinatesOfTownsLon, this.routeToDragList.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.type, this.routeToDragList.type, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.status, this.routeToDragList.status, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.aboutRoute, this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.detailsAboutAdresses, this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
-
-      transferArrayItem(this.fakeOffer.casPrijazdu, this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.casLastPrijazdu, this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.datumPrijazdu, this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
-      transferArrayItem(this.fakeOffer.datumLastPrijazdy, this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
-
-    }
+    // if (event.previousContainer === event.container) {
+    //   moveItemInArray(this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.type, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.status, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
+    //
+    //   moveItemInArray(this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
+    //   moveItemInArray(this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
+    // } else {
+    //   transferArrayItem(this.fakeOffer.nameOfTowns, this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.coordinatesOfTownsLat, this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.coordinatesOfTownsLon, this.routeToDragList.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.type, this.routeToDragList.type, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.status, this.routeToDragList.status, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.aboutRoute, this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.detailsAboutAdresses, this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
+    //
+    //   transferArrayItem(this.fakeOffer.casPrijazdu, this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.casLastPrijazdu, this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.datumPrijazdu, this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
+    //   transferArrayItem(this.fakeOffer.datumLastPrijazdy, this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
+    //
+    // }
     this.routeToMap.emit(this.routeToDragList);
 
   }

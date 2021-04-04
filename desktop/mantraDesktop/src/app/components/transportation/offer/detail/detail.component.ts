@@ -38,7 +38,7 @@ export class DetailComponent implements OnInit {
       this.fakeRoute = JSON.parse(JSON.stringify(this.route));
       this.offerService.routes$.subscribe(routes => {
         this.route = routes.find(oneRoute => oneRoute.id == route.id);
-        this.getDetails();
+        // this.getDetails();
         if (this.route == undefined){
           this.route = this.fakeRoute;
         }
@@ -53,9 +53,9 @@ export class DetailComponent implements OnInit {
       setTimeout(() =>
         {
           if (this.childDropList){
-            this.getDetails();
+            // this.getDetails();
           }
-          this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon, null, undefined)
+          // this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon, null, undefined)
         },
         800);
     })
@@ -85,24 +85,24 @@ export class DetailComponent implements OnInit {
       }
     }
 
-  async getDetails(){
-    for (const route of this.route.detailsAboutAdresses){
-      this.detailService.offerDetails$.subscribe(res => {
-       var detail =  res.find(offerDetail => offerDetail.id == route)
-
-        // @ts-ignore
-        var detailAboutAdd: DeatilAboutAdresses = detail;
-
-        this.arrayOfDetailsAbRoute.push(detailAboutAdd);
-        if (this.arrayOfDetailsAbRoute.length == this.route.detailsAboutAdresses.length){
-          this.childDropList.setDetails(this.arrayOfDetailsAbRoute);
-          console.log(this.arrayOfDetailsAbRoute)
-        }
-      })
-
-
-    }
-  }
+  // async getDetails(){
+  //   for (const route of this.route.detailsAboutAdresses){
+  //     this.detailService.offerDetails$.subscribe(res => {
+  //      var detail =  res.find(offerDetail => offerDetail.id == route)
+  //
+  //       // @ts-ignore
+  //       var detailAboutAdd: DeatilAboutAdresses = detail;
+  //
+  //       this.arrayOfDetailsAbRoute.push(detailAboutAdd);
+  //       if (this.arrayOfDetailsAbRoute.length == this.route.detailsAboutAdresses.length){
+  //         this.childDropList.setDetails(this.arrayOfDetailsAbRoute);
+  //         console.log(this.arrayOfDetailsAbRoute)
+  //       }
+  //     })
+  //
+  //
+  //   }
+  // }
 
   vymazatPonuku(){
     this.offerService.deleteRoute(this.route.id);
@@ -116,7 +116,7 @@ export class DetailComponent implements OnInit {
     })
     setTimeout(() =>
       {
-        this.child.notifyMe(route.coordinatesOfTownsLat, route.coordinatesOfTownsLon, car, route)
+        // this.child.notifyMe(route.coordinatesOfTownsLat, route.coordinatesOfTownsLon, car, route)
       },
       800);
   }

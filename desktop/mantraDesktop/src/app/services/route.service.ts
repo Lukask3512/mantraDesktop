@@ -6,6 +6,7 @@ import Cars from "../models/Cars";
 import {BehaviorSubject, Observable} from "rxjs";
 import Route from "../models/Route";
 import {DataService} from "../data/data.service";
+import Address from "../models/Address";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class RouteService {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.getAllRoutes().subscribe(res => {
-      // res.
+      console.log(res);
       this._routes.next(res);
     });
 
@@ -69,6 +70,13 @@ export class RouteService {
     }else {
       return this.routesCollection.doc(newRoute.id).update(newRoute);
     }
+  }
+
+  createRouteWithId(address: Address) {
+    const id = this.afs.createId();
+    this.afs.collection('route').doc(id).set(address);
+    return id;
+
   }
 
   getAllRoutes(){

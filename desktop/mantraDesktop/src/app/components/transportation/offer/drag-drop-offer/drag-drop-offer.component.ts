@@ -17,21 +17,21 @@ export class DragDropOfferComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-    moveItemInArray(this.route.nameOfTowns, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.type, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.status, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.aboutRoute, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.detailsAboutAdresses, event.previousIndex, event.currentIndex);
-    } else {
-      console.log(event)
-      transferArrayItem(this.route.nameOfTowns,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
+    // if (event.previousContainer === event.container) {
+    // moveItemInArray(this.route.nameOfTowns, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.route.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.route.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.route.type, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.route.status, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.route.aboutRoute, event.previousIndex, event.currentIndex);
+    // moveItemInArray(this.route.detailsAboutAdresses, event.previousIndex, event.currentIndex);
+    // } else {
+    //   console.log(event)
+    //   transferArrayItem(this.route.nameOfTowns,
+    //     event.container.data,
+    //     event.previousIndex,
+    //     event.currentIndex);
+    // }
 
   }
 

@@ -1,0 +1,114 @@
+<!--<div class="formAndBedna">-->
+
+<!--  <h4>Počet kusov</h4>-->
+<!--  <mat-form-field appearance="standard" >-->
+<!--    <mat-label>Počet kusov</mat-label>-->
+<!--    <input (change)="sizeUpdate()" [(ngModel)]="numberOfItems" min="1" type="number" matInput placeholder="Počet....">-->
+<!--    <span matSuffix> ks </span>-->
+<!--    <mat-hint>Počet</mat-hint>-->
+<!--  </mat-form-field>-->
+
+<!--  <p>Parametre {{actualItemInForm + 1}} z {{numberOfItems}}</p>-->
+
+<!--  <form (change)="ifValifForm()"  class="detailFormular" [formGroup]="transportForm" #detailForm="ngForm">-->
+<!--    <div class="size">-->
+<!--      <mat-form-field appearance="standard" class="sizeInput">-->
+<!--        <mat-label>Šírka</mat-label>-->
+<!--        <input formControlName="sizeS" type="number" step="0.1" matInput placeholder="Šírka....">-->
+<!--        <span matSuffix> m </span>-->
+<!--        <mat-hint>V metroch</mat-hint>-->
+<!--      </mat-form-field>-->
+
+<!--      <mat-form-field appearance="standard" class="sizeInput">-->
+<!--        <mat-label>Výška</mat-label>-->
+<!--        <input formControlName="sizeV" type="number" step="0.1" matInput placeholder="Výška....">-->
+<!--        <span matSuffix> m </span>-->
+<!--        <mat-hint>V metroch</mat-hint>-->
+<!--      </mat-form-field>-->
+
+<!--      <mat-form-field appearance="standard" class="sizeInput">-->
+<!--        <mat-label>Dĺžka</mat-label>-->
+<!--        <input formControlName="sizeD" type="number" step="0.1" matInput placeholder="Dĺžka....">-->
+<!--        <span matSuffix> m </span>-->
+<!--        <mat-hint>V metroch</mat-hint>-->
+<!--      </mat-form-field>-->
+
+<!--      <h4>Váha</h4>-->
+
+<!--      <mat-form-field appearance="standard" class="sizeInput">-->
+<!--        <mat-label>Váha</mat-label>-->
+<!--        <input type="number" formControlName="weight" step="0.1" matInput placeholder="Váha....">-->
+<!--        <span matSuffix> t </span>-->
+<!--        <mat-hint>V tonách</mat-hint>-->
+<!--      </mat-form-field>-->
+
+<!--      <h4>Poloha nakladania</h4>-->
+
+<!--      <mat-radio-group formControlName="poziciaNakladania">-->
+<!--        <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>-->
+<!--        <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>-->
+<!--      </mat-radio-group>-->
+
+<!--      <div  *ngIf="this.transportForm.get('poziciaNakladania').value == 'rozhoduje'">-->
+<!--        <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromBackSide">Zo zadu</mat-checkbox>-->
+<!--        <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromSide">Z boku</mat-checkbox>-->
+<!--        <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromUpSide">Z vrchu</mat-checkbox>-->
+<!--      </div>-->
+
+<!--      <h4>Požadovaná výška nakladacej hrany</h4>-->
+
+<!--      <mat-radio-group formControlName="vyskaHrany">-->
+<!--        <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>-->
+<!--        <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>-->
+<!--      </mat-radio-group>-->
+
+<!--      <mat-form-field *ngIf="this.transportForm.get('vyskaHrany').value == 'rozhoduje'" appearance="standard" class="sizeInput">-->
+<!--        <mat-label>Výška nak. hrany</mat-label>-->
+<!--        <input type="number"  min="0" step="0.1" formControlName="vyskaHranySize" matInput placeholder="Výška....">-->
+<!--        <span matSuffix> m </span>-->
+<!--        <mat-hint>V metroch</mat-hint>-->
+<!--      </mat-form-field>-->
+
+<!--      <h4>Stohovateľnosť</h4>-->
+
+<!--      <mat-radio-group formControlName="stohovatelnost">-->
+<!--        <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="nie">Nie</mat-radio-button>-->
+<!--        <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="ano">Áno</mat-radio-button>-->
+<!--      </mat-radio-group>-->
+
+<!--      <mat-form-field *ngIf="this.transportForm.get('stohovatelnost').value == 'ano'" appearance="standard" class="sizeInput">-->
+<!--        <mat-label>Max. nosnost</mat-label>-->
+<!--        <input type="number"  min="0" step="0.1" formControlName="stohoSize" matInput placeholder="Výška....">-->
+<!--        <span matSuffix> kg </span>-->
+<!--        <mat-hint>V kilogramoch</mat-hint>-->
+<!--      </mat-form-field>-->
+
+<!--      &lt;!&ndash;    <mat-checkbox>Chlad</mat-checkbox>&ndash;&gt;-->
+
+<!--&lt;!&ndash;      &ndash;&gt;-->
+<!--&lt;!&ndash;      &ndash;&gt;-->
+<!--      <button [disabled]="this.checkIfCanSKipToPrevious()" (click)="previousItem()">Späť</button>-->
+<!--      <button [disabled]="this.checkIfCanSKipToNext()" (click)="nextItem()">Ďalej</button>-->
+
+<!--    </div>-->
+
+<!--  </form>-->
+<!--&lt;!&ndash;  <div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <h4 *ngIf="labelPosition == 'vykladka'">Tu vyber</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="bednaWapper" *ngFor="let detail of this.fakeArrayOfDetailsAbRoute; let indexik = index">&ndash;&gt;-->
+<!--&lt;!&ndash;      <div class="nakladkaWrapper" *ngIf="this.route.type[indexik] == 'nakladka'" >&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="bednaWapperNakl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">&ndash;&gt;-->
+<!--&lt;!&ndash;          <img *ngIf="ciMozemVylozitBednu(detail, indexik, indexBedne)" (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;      <div class="vykladkaWrapper" *ngIf="this.route.type[indexik] == 'vykladka'">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="bednaWapperVykl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">&ndash;&gt;-->
+<!--&lt;!&ndash;          <img (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--</div>-->

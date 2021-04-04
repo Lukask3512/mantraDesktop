@@ -32,24 +32,24 @@ export class DetailAboutRouteService {
     //   this._details.next(res);
     // });
 
-    this.routeService.routes$.subscribe(routes => {
-      var poleDetailikov = [];
-      routes.forEach(route => {
-        route.detailsAboutAdresses.forEach(idDetail => {
-        if (!this.isThereDetail(idDetail)){
-
-            this.getOneDetail(idDetail).subscribe(detailik => { // tu mi dakedy nenatiahne vsetky detaily dal som prec pipu
-              // @ts-ignore
-              poleDetailikov.push({...detailik, id: idDetail});
-              this._details.next(poleDetailikov);
-              this.setDetails(poleDetailikov);
-
-            })
-        }
-
-        })
-      })
-    })
+    // this.routeService.routes$.subscribe(routes => {
+    //   var poleDetailikov = [];
+    //   routes.forEach(route => {
+    //     route.detailsAboutAdresses.forEach(idDetail => {
+    //     if (!this.isThereDetail(idDetail)){
+    //
+    //         this.getOneDetail(idDetail).subscribe(detailik => { // tu mi dakedy nenatiahne vsetky detaily dal som prec pipu
+    //           // @ts-ignore
+    //           poleDetailikov.push({...detailik, id: idDetail});
+    //           this._details.next(poleDetailikov);
+    //           this.setDetails(poleDetailikov);
+    //
+    //         })
+    //     }
+    //
+    //     })
+    //   })
+    // })
 
     this.offerService.routes$.subscribe(routes => {
       var poleDetailikov = [];
@@ -149,11 +149,11 @@ export class DetailAboutRouteService {
           var vahaVMeste = 0;
           oneDetail.weight.forEach(jednaVaha => {
             // vahaVMeste += jednaVaha;
-            if (route.type[index] == 'nakladka'){
-              aktualaHmotnost += jednaVaha
-            }else{
-              aktualaHmotnost -= jednaVaha;
-            }
+            // if (route.type[index] == 'nakladka'){ //treba upravit
+            //   aktualaHmotnost += jednaVaha
+            // }else{
+            //   aktualaHmotnost -= jednaVaha;
+            // }
           })
           poleVolnejVahy.push(celkovaNosnost - aktualaHmotnost);
         })

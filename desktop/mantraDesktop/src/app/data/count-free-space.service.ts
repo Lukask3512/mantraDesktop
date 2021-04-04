@@ -134,39 +134,39 @@ export class CountFreeSpaceService {
         weight: [],
         stohovatelnost: []
       }
-      if (route.type[index] == 'nakladka'){ //pri nakladke prikladam palety
-        if (poleKsPalietPreKazduAdresu.length -1 >= 0) {
-          var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length - 1]));
-          oneAdress = lastVeci;
-        }
-        oneDetail.sizeS.forEach((oneSize, indexSize) => {
-          oneAdress.sizeS.push(oneDetail.sizeS[indexSize]);
-          oneAdress.sizeD.push(oneDetail.sizeD[indexSize]);
-          oneAdress.sizeV.push(oneDetail.sizeV[indexSize]);
-          oneAdress.weight.push(oneDetail.weight[indexSize]);
-          oneAdress.stohovatelnost.push(oneDetail.stohovatelnost[indexSize]);
-        });
-        poleKsPalietPreKazduAdresu.push(oneAdress);
-      }else{ //tu sa snazim odsranit veci kedze je vykladka
-        var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length -1]));
-        oneDetail.sizeS.forEach((oneSize, indexSize) => {
-          for (var i =0; i < lastVeci.sizeS.length; i++){
-            if (lastVeci.sizeS[i] == oneDetail.sizeS[indexSize] && // ked najdem paletu z nakladky
-                lastVeci.sizeD[i] == oneDetail.sizeD[indexSize] &&
-                lastVeci.sizeV[i] == oneDetail.sizeV[indexSize] &&
-                lastVeci.weight[i] == oneDetail.weight[indexSize] &&
-                lastVeci.stohovatelnost[i] == oneDetail.stohovatelnost[indexSize]){
-
-                  lastVeci.sizeS.splice(i, 1); // tu to musim nejak osetrit aby nevymazalo viacero tych istch paliet
-                  lastVeci.sizeD.splice(i, 1);
-                   lastVeci.sizeV.splice(i, 1);
-                   lastVeci.weight.splice(i, 1);
-                   lastVeci.stohovatelnost.splice(i, 1);
-            }
-          }
-        });
-        poleKsPalietPreKazduAdresu.push(lastVeci);
-      }
+      // if (route.type[index] == 'nakladka'){ //pri nakladke prikladam palety
+      //   if (poleKsPalietPreKazduAdresu.length -1 >= 0) {
+      //     var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length - 1]));
+      //     oneAdress = lastVeci;
+      //   }
+      //   oneDetail.sizeS.forEach((oneSize, indexSize) => {
+      //     oneAdress.sizeS.push(oneDetail.sizeS[indexSize]);
+      //     oneAdress.sizeD.push(oneDetail.sizeD[indexSize]);
+      //     oneAdress.sizeV.push(oneDetail.sizeV[indexSize]);
+      //     oneAdress.weight.push(oneDetail.weight[indexSize]);
+      //     oneAdress.stohovatelnost.push(oneDetail.stohovatelnost[indexSize]);
+      //   });
+      //   poleKsPalietPreKazduAdresu.push(oneAdress);
+      // }else{ //tu sa snazim odsranit veci kedze je vykladka
+      //   var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length -1]));
+      //   oneDetail.sizeS.forEach((oneSize, indexSize) => {
+      //     for (var i =0; i < lastVeci.sizeS.length; i++){
+      //       if (lastVeci.sizeS[i] == oneDetail.sizeS[indexSize] && // ked najdem paletu z nakladky
+      //           lastVeci.sizeD[i] == oneDetail.sizeD[indexSize] &&
+      //           lastVeci.sizeV[i] == oneDetail.sizeV[indexSize] &&
+      //           lastVeci.weight[i] == oneDetail.weight[indexSize] &&
+      //           lastVeci.stohovatelnost[i] == oneDetail.stohovatelnost[indexSize]){
+      //
+      //             lastVeci.sizeS.splice(i, 1); // tu to musim nejak osetrit aby nevymazalo viacero tych istch paliet
+      //             lastVeci.sizeD.splice(i, 1);
+      //              lastVeci.sizeV.splice(i, 1);
+      //              lastVeci.weight.splice(i, 1);
+      //              lastVeci.stohovatelnost.splice(i, 1);
+      //       }
+      //     }
+      //   });
+      //   poleKsPalietPreKazduAdresu.push(lastVeci);
+      // }
     });
     return poleKsPalietPreKazduAdresu;
   }

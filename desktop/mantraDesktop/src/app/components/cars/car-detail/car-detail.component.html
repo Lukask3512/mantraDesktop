@@ -1,4 +1,4 @@
-<div class="header">
+<div *ngIf="this.car" class="header">
     <h1>Vozidlo: {{this.car.ecv}}</h1>
   <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
     Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
@@ -12,33 +12,14 @@
 
 
   <div class="routes">
-    <h1>Aktívne cesty</h1>
-    <ul>
-      <li (click)="changeRoute(active)" *ngFor="let active of this.allActiveRoutes">Vytvorene: {{this.timestamptToDate(this.active.createdAt)}}</li>
-    </ul>
+    <h1>Itinerár</h1>
   </div>
 
-<div *ngIf="this.routes != undefined" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let route of routesTowns let i = index" cdkDrag>
-    <div class="routeTown">
-      <p>{{route}}
-        <span *ngIf="type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-        <span *ngIf="type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-      </p>
-      <span>{{this.routeStatus.getStatus(this.status[i])}}</span>
-      <img (click)="deleteRoute(route)" class="delete" src="./assets/logo/delete.svg">
-    </div>
-     <div class="routeTown routeInfo">
-        <p *ngIf="aboutRoute != null || aboutRoute != undefined">{{this.aboutRoute[i]}}</p>
-       <img (click)="editInfo(aboutRoute[i], i)" class="delete" src="./assets/logo/edit.svg">
-     </div>
-  </div>
-</div>
-  <div *ngIf="this.routes == undefined">Trasa bola dokončená
-    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonNewRoute  ">Nová trasa</button>
-  </div>
+  <app-drag-and-drop-list #dragDrop [draggable]="true">
 
-  <div  *ngIf="this.routes != undefined" class="button_cont" align="center">
+  </app-drag-and-drop-list>
+
+  <div *ngIf="this.myAddresses != undefined" class="button_cont" align="center">
 
     <button id="mySendButton" [disabled]="!change" (click)="this.sendToDriver()" class="oneButton greenSend" >
       Odoslať vodičovi</button>

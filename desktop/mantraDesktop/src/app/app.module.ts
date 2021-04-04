@@ -51,7 +51,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-
+import { NewFormComponent } from './components/transportation/new-transport/new-form/new-form.component';
 
 @NgModule({
     declarations: [
@@ -71,6 +71,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         ViewComponent,
         NewTransportComponent,
         RouteLogComponent,
+      NewFormComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -113,6 +114,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
         MatFormFieldModule,
         MatInputModule,
         AdressesComponent,
+      NewFormComponent
 
     ],
   providers: [

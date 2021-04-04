@@ -1,24 +1,25 @@
 <div  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
-  <div class="example-box" *ngFor="let routeTown of this.route.nameOfTowns; let i = index" cdkDrag>
-    <div (click)="sendTown(i)" *ngIf="this.arrayOfDetail != undefined" class="bednaWrapper">
-<!--      <app-detail-img  class="imageInRow" [detailArray]="arrayOfDetail[i]"></app-detail-img>-->
-      <div  class="bedna" *ngFor="let detail of this.arrayOfDetail[i].sizeS; let indexik = index">
+  <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
+    <div (click)="sendTown(i)" *ngIf="this.address[i].sizeS != undefined" class="bednaWrapper">
+<!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
+      <div  class="bedna" *ngFor="let detail of this.address[i].sizeS; let indexik = index">
         <span class="numberOfBedna">{{indexik + 1}}</span>
       </div>
     </div>
 
+
     <div class="routeTown" (click)="sendTown(i)">
-      <p>{{routeTown}}
-        <span *ngIf="this.route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-        <span *ngIf="this.route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+      <p>{{this.address[i].nameOfTown}}
+        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
       </p>
-      <span>{{this.routeStatus.getStatus(this.route.status[i])}}</span>
+      <span>{{this.routeStatus.getStatus(this.address[i].status)}}</span>
       <img  *ngIf="checkFinished() && draggable" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
     </div>
     <div *ngIf="draggable" class="routeTown routeInfo">
-      <p *ngIf="this.route.aboutRoute != null || this.route.aboutRoute != undefined">{{this.route.aboutRoute[i]}}</p>
-      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">
+      <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
+      <img *ngIf="checkFinished()" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">
     </div>
   </div>
 </div>

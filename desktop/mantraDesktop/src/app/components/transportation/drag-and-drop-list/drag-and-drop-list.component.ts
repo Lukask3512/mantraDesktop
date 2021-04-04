@@ -6,60 +6,53 @@ import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RouteStatusService} from "../../../data/route-status.service";
 import {DataService} from "../../../data/data.service";
+import Address from "../../../models/Address";
 
 @Component({
   selector: 'app-drag-and-drop-list',
   templateUrl: './drag-and-drop-list.component.html',
   styleUrls: ['./drag-and-drop-list.component.scss']
 })
-export class DragAndDropListComponent{
+export class DragAndDropListComponent implements OnInit {
 
   @Input() draggable = false;
-  @Input() route: Route;
-  arrayOfDetail;
-  @Output() arrayOfDetailEvent = new EventEmitter<any>();
-  @Output() outputRoute = new EventEmitter<Route>();
+  @Input() address: Address[];
+
+
+  @Output() outputRoute = new EventEmitter<Address[]>();
   @Output() clickedOnRoute = new EventEmitter<number>();
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService) { }
 
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.route.nameOfTowns, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.type, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.status, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.aboutRoute, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.detailsAboutAdresses, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.arrayOfDetail, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.casPrijazdu, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.casLastPrijazdu, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.datumPrijazdu, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.route.datumLastPrijazdy, event.previousIndex, event.currentIndex);
+  setAddresses(addresses: Address[]){
+    this.address = addresses;
+  }
 
-    this.outputRoute.emit(this.route);
-    this.arrayOfDetailEvent.emit(this.arrayOfDetail);
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.address, event.previousIndex, event.currentIndex);
+
+    this.outputRoute.emit(this.address);
+    // this.arrayOfDetailEvent.emit(this.arrayOfDetail);
   }
 
 
   deleteTown(routeTown){
-    for (let i = 0; i < this.route.nameOfTowns.length; i++){
-      if (this.route.nameOfTowns[i] == routeTown){
-        this.route.nameOfTowns.splice(i,1);
-        this.route.coordinatesOfTownsLon.splice(i,1);
-        this.route.coordinatesOfTownsLat.splice(i,1);
-        this.route.type.splice(i,1);
-        this.route.status.splice(i, 1);
-        this.route.aboutRoute.splice(i,1);
-      }
-    }
-    this.outputRoute.emit(this.route);
+    // for (let i = 0; i < this.route.nameOfTowns.length; i++){
+    //   if (this.route.nameOfTowns[i] == routeTown){
+    //     this.route.nameOfTowns.splice(i,1);
+    //     this.route.coordinatesOfTownsLon.splice(i,1);
+    //     this.route.coordinatesOfTownsLat.splice(i,1);
+    //     this.route.type.splice(i,1);
+    //     this.route.status.splice(i, 1);
+    //     this.route.aboutRoute.splice(i,1);
+    //   }
+    // }
+    // this.outputRoute.emit(this.route);
   }
 
   setDetails(arrayOfDetails){
     console.log("som dostal")
     console.log(arrayOfDetails)
-    this.arrayOfDetail = arrayOfDetails;
     // this.arrayOfDetail[i].sizeS
     // console.log(this.arrayOfDetail[0])
   }
@@ -76,8 +69,8 @@ export class DragAndDropListComponent{
     dialogRef.afterClosed().subscribe(value => {
 
       if (value.routeInfo !== undefined){
-        this.route.aboutRoute[id] = value.routeInfo;
-        this.outputRoute.emit(this.route);
+        // this.route.aboutRoute[id] = value.routeInfo;
+        this.outputRoute.emit(this.address);
       }else {
         return;
       }
@@ -85,23 +78,28 @@ export class DragAndDropListComponent{
   }
 
   checkFinished(){
-    var idCreated;
-    if (this.dataService.getDispecer().createdBy == 'master'){
-      idCreated = this.dataService.getDispecer().id
-    }else{
-      idCreated = this.dataService.getDispecer().createdBy
-    }
-    console.log()
-    if (this.route.createdBy !=  idCreated){
-      return false;
-    }
-    if (this.route !== undefined && this.route.finished){
-      return false;
-    }else if(this.route == undefined){
-      return true
-    }else {
-      return true;
-    }
+    return true;
+    // var idCreated;
+    // if (this.dataService.getDispecer().createdBy == 'master'){
+    //   idCreated = this.dataService.getDispecer().id
+    // }else{
+    //   idCreated = this.dataService.getDispecer().createdBy
+    // }
+    // console.log()
+    // if (this.address.createdBy !=  idCreated){
+    //   return false;
+    // }
+    // if (this.route !== undefined && this.route.finished){
+    //   return false;
+    // }else if(this.route == undefined){
+    //   return true
+    // }else {
+    //   return true;
+    // }
+  }
+
+  ngOnInit(): void {
+    console.log(this.address)
   }
 
 }

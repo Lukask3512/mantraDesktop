@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {RouteService} from "../../../services/route.service";
 import Route from "../../../models/Route";
@@ -12,13 +12,17 @@ import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 import { AngularFireStorage } from '@angular/fire/storage';
 import {HttpClient} from '@angular/common/http';
 import {CarService} from "../../../services/car.service";
+import Cars from "../../../models/Cars";
+import {AddressService} from "../../../services/address.service";
+import Address from "../../../models/Address";
+import {DragAndDropListComponent} from "../../transportation/drag-and-drop-list/drag-and-drop-list.component";
 
 @Component({
   selector: 'app-car-detail',
   templateUrl: './car-detail.component.html',
   styleUrls: ['./car-detail.component.scss']
 })
-export class CarDetailComponent implements OnInit {
+export class CarDetailComponent implements AfterViewInit {
   //aby log sledoval zmeny ak zmenim trasu
   parentSubject:Subject<any> = new Subject();
 
@@ -30,22 +34,26 @@ export class CarDetailComponent implements OnInit {
    status;
    aboutRoute: string[] = [];
   type: string[] = [];
-    car;
+    car: Cars;
   change:boolean;
 
   createdById;
 
+  myAddresses: Address[] = [];
   @ViewChild('child')
   private child: OpenlayerComponent;
 
+  @ViewChild('dragDrop')
+  private dragComponent: DragAndDropListComponent;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage, private routeService: RouteService,
               private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService,
-              private carService: CarService) {
+              private carService: CarService, private addressService: AddressService) {
 
   }
 
   @ViewChild('mySendButton') mySendButton: ElementRef;
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.change = false;
     this.routesTowns = [];
     this.routesLon = [];
@@ -53,87 +61,49 @@ export class CarDetailComponent implements OnInit {
     this.type = [];
     this.status = [];
     this.aboutRoute = [];
-    this.carService.cars$.subscribe()
+    // this.carService.cars$.subscribe()
     this.dataService.currentCar.subscribe(car => {
-      this.car = car;
+      // this.car = car;
       this.carService.cars$.subscribe(cars => {
-        this.car = cars.find(oneCarFromDt => oneCarFromDt.id == this.car.id);
-      console.log("update")
-      // console.log(this.car)
+        // @ts-ignore
+        this.car = cars.find(oneCarFromDt => oneCarFromDt.id == car.id);
+
+
+
         setTimeout(() =>
           {
             // console.log(this.car)
-            this.child.notifyMe(null, null, this.car, this.car);
+            this.child.notifyMe(null, this.car, this.car);
           },
           800);
-
-      this.routeService.getRoutes(this.car.id).subscribe(routes => {
-        if (routes[0] == undefined){
-          setTimeout(() =>
-            {
-              this.child.notifyMe(null, null,this.car, null);
-            },
-            800);
-        }
-
-        // @ts-ignore
-        this.allActiveRoutes = routes;
-
-        setTimeout(() =>
-          {
-            this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
-          },
-          800);
-
-        if (this.routes != undefined){
-          routes.forEach(route => {
-
-            if (route.id == this.routes.id){
-              this.routes = route;
-              this.routesTowns = this.routes.nameOfTowns;
-              this.routesLat = this.routes.coordinatesOfTownsLat;
-              this.routesLon = this.routes.coordinatesOfTownsLon;
-              this.type = this.routes.type;
-              this.status = this.routes.status;
-              this.aboutRoute = this.routes.aboutRoute;
-              console.log("rovnake")
-            }
-          })
-        }
-
-        // console.log(this.routes)
-
-        if (this.routes == undefined) {
-          this.routes = routes[0];
-
-          // @ts-ignore
-          this.actuallyCarRoutes = routes[0];
-          this.routesTowns = this.routes.nameOfTowns;
-          this.routesLat = this.routes.coordinatesOfTownsLat;
-          this.routesLon = this.routes.coordinatesOfTownsLon;
-          this.type = this.routes.type;
-          this.status = this.routes.status;
-          this.aboutRoute = this.routes.aboutRoute;
-          //doplnit ykladku nakladku
-
-          setTimeout(() =>
-            {
-              this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
-              this.notifyChildren(this.routes.id);
-
-            },
-            800);
-
-        }
-        if (this.routesTowns === undefined){
-          this.routesTowns = [];
-          this.routesLon = [];
-          this.routesLat = [];
-          this.type = [];
-          this.status = [];
-        }
       });
-      });
+
+      var allAddresses: Address[];
+       new Promise((resolve, reject) => {
+        this.addressService.address$.subscribe(vsetkyAdress => {
+        allAddresses = vsetkyAdress;
+        console.log(allAddresses)
+        resolve();
+      })
+      }).then(() => {
+
+      // var itinerarVAute: Address[] = [];
+      console.log(this.car)
+     new Promise((resolve, reject) => {
+       this.car.itinerar.forEach(oneAddresId => {
+         this.myAddresses.push(allAddresses.find(oneAddress => oneAddress.id == oneAddresId));
+         console.log(oneAddresId)
+         console.log(allAddresses)
+         console.log(allAddresses.find(oneAddress => oneAddress.id == oneAddresId))
+       });
+       resolve();
+     }).then(resolve => {
+        console.log(this.myAddresses);
+       this.dragComponent.setAddresses(this.myAddresses);
+
+      })
+      })
+
     });
 
     var loggedDispecer = this.dataService.getDispecer();
@@ -151,29 +121,15 @@ export class CarDetailComponent implements OnInit {
 
   changeRoute(route: Route){
     this.routes = route;
-    this.routesTowns = route.nameOfTowns;
-    this.routesLat = route.coordinatesOfTownsLat;
-    this.routesLon = route.coordinatesOfTownsLon;
-    this.type = route.type;
-    this.status = route.status;
-    this.aboutRoute = route.aboutRoute;
-    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
+    // this.routesTowns = route.nameOfTowns;
+    // this.routesLat = route.coordinatesOfTownsLat;
+    // this.routesLon = route.coordinatesOfTownsLon;
+    // this.type = route.type;
+    // this.status = route.status;
+    // this.aboutRoute = route.aboutRoute;
+    this.child.notifyMe(this.myAddresses,this.car, this.routes);
     this.notifyChildren(this.routes.id);
 
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.routesTowns, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.routesLat, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.routesLon, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.type, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.status, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.aboutRoute, event.previousIndex, event.currentIndex);
-    this.change = true;
-    this.mySendButton.nativeElement.style.backgroundColor = 'limegreen';
-
-    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
-    this.notifyChildren(this.routes.id);
   }
 
   timestamptToDate(timestamp){
@@ -191,39 +147,39 @@ export class CarDetailComponent implements OnInit {
     if (this.routes === undefined){
 
 
-      const route: Route = {
-        detailsAboutAdresses: [],
-        carId: this.car.id,
-        createdBy: this.createdById,
-        nameOfTowns: this.routesTowns,
-        coordinatesOfTownsLat: this.routesLat,
-        coordinatesOfTownsLon: this.routesLon,
-        status: emptyStatus,
-        type: this.type,
-        aboutRoute: this.aboutRoute,
-        finished: false,
-        createdAt: (Date.now()/1000)
-      };
-      this.routeService.createRoute(route);
+      // const route: Route = {
+      //   detailsAboutAdresses: [],
+      //   carId: this.car.id,
+      //   createdBy: this.createdById,
+      //   nameOfTowns: this.routesTowns,
+      //   coordinatesOfTownsLat: this.routesLat,
+      //   coordinatesOfTownsLon: this.routesLon,
+      //   status: emptyStatus,
+      //   type: this.type,
+      //   aboutRoute: this.aboutRoute,
+      //   finished: false,
+      //   createdAt: (Date.now()/1000)
+      // };
+      // this.routeService.createRoute(route);
     }else{
 
 
 
-      const route: Route = {
-        detailsAboutAdresses: [],
-        carId: this.car.id,
-        createdBy: this.createdById,
-        nameOfTowns: this.routesTowns,
-        coordinatesOfTownsLat: this.routesLat,
-        coordinatesOfTownsLon: this.routesLon,
-        id: this.routes.id,
-        status: emptyStatus,
-        aboutRoute: this.aboutRoute,
-        type: this.type,
-        finished: false,
-        createdAt: (Date.now()/1000)
-      };
-      this.routeService.updateRoute(route);
+      // const route: Route = {
+      //   detailsAboutAdresses: [],
+      //   carId: this.car.id,
+      //   createdBy: this.createdById,
+      //   nameOfTowns: this.routesTowns,
+      //   coordinatesOfTownsLat: this.routesLat,
+      //   coordinatesOfTownsLon: this.routesLon,
+      //   id: this.routes.id,
+      //   status: emptyStatus,
+      //   aboutRoute: this.aboutRoute,
+      //   type: this.type,
+      //   finished: false,
+      //   createdAt: (Date.now()/1000)
+      // };
+      // this.routeService.updateRoute(route);
     }
     this.change = false;
 
@@ -236,12 +192,12 @@ export class CarDetailComponent implements OnInit {
   }
   getLat(lat){
     this.routesLat.push(lat);
-    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
+    this.child.notifyMe(this.myAddresses,this.car, this.routes);
   }
   getLon(lon){
     this.routesLon.push(lon);
     console.log(lon);
-    this.child.notifyMe(this.routesLat, this.routesLon,this.car, this.routes);
+    this.child.notifyMe(this.myAddresses,this.car, this.routes);
   }
   getType(type){
     this.type.push(type);
@@ -303,21 +259,21 @@ export class CarDetailComponent implements OnInit {
               this.type.splice(i,1);
               this.status.splice(i, 1);
               this.aboutRoute.splice(i,1);
-              const route: Route = {
-                detailsAboutAdresses: [],
-                carId: this.car.id,
-                createdBy: this.createdById,
-                nameOfTowns: this.routesTowns,
-                coordinatesOfTownsLat: this.routesLat,
-                coordinatesOfTownsLon: this.routesLon,
-                id: this.routes.id,
-                aboutRoute: this.aboutRoute,
-                status: this.status,
-                type: this.type,
-                finished: false,
-                createdAt: (Date.now()/1000)
-              };
-              this.routeService.updateRoute(route);
+              // const route: Route = {
+              //   detailsAboutAdresses: [],
+              //   carId: this.car.id,
+              //   createdBy: this.createdById,
+              //   nameOfTowns: this.routesTowns,
+              //   coordinatesOfTownsLat: this.routesLat,
+              //   coordinatesOfTownsLon: this.routesLon,
+              //   id: this.routes.id,
+              //   aboutRoute: this.aboutRoute,
+              //   status: this.status,
+              //   type: this.type,
+              //   finished: false,
+              //   createdAt: (Date.now()/1000)
+              // };
+              // this.routeService.updateRoute(route);
             }
           }
         }else {

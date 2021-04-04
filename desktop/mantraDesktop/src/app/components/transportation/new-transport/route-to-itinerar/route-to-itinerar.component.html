@@ -1,0 +1,37 @@
+<div class="example-container">
+  <h2>Nová preprava</h2>
+  <div
+    id="all"
+    cdkDropList
+    [cdkDropListData]="newRouteCopy"
+    cdkDropListConnectedTo="even"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)"
+    [cdkDropListEnterPredicate]="noReturnPredicate">
+    <div
+      class="example-box"
+      *ngFor="let oneAddress of newRouteCopy"
+      [cdkDragData]="oneAddress"
+      cdkDrag>{{oneAddress.nameOfTown}}</div>
+  </div>
+  <button (click)="moveAll()">Presun vsetko</button>
+</div>
+
+<div class="example-container">
+  <h2>Itinerár</h2>
+  <div
+    id="even"
+    cdkDropList
+    [cdkDropListData]="carItinerarAddresses"
+    cdkDropListConnectedTo="all"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div
+      class="example-box"
+      *ngFor="let itiAddress of carItinerarAddresses"
+      cdkDrag
+      [cdkDragData]="itiAddress">{{itiAddress.nameOfTown}}</div>
+  </div>
+</div>
+
+<button (click)="addToItinerar()">Pridat</button>

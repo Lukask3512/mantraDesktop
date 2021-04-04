@@ -1,114 +1,114 @@
-<section class="infoPresun">
-  <h2 *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''">
-    Presun ponuku do prepravy ->
-  </h2>
-</section>
+<!--<section class="infoPresun">-->
+<!--  <h2 *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''">-->
+<!--    Presun ponuku do prepravy ->-->
+<!--  </h2>-->
+<!--</section>-->
 
-<div class="dragAndDrop">
-  <div class="drag1">
-  <div *ngIf="offer" cdkDropList class="example-list"
-       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList1" cdkDropListConnectedTo="dragList2">
-    <div class="example-box" *ngFor="let routeTown of this.fakeOffer.nameOfTowns let i = index" cdkDrag>
-      <div class="routeTown">
-        <p>{{routeTown}}
-          <span *ngIf="this.fakeOffer.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-          <span *ngIf="this.fakeOffer.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-        </p>
-        <span>{{this.routeStatus.getStatus(this.fakeOffer.status[i])}}</span>
-        <!--      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">-->
-      </div>
-      <div class="routeTown routeInfo">
-        <p *ngIf="this.fakeOffer.aboutRoute != null || this.fakeOffer.aboutRoute != undefined">{{this.fakeOffer.aboutRoute[i]}}</p>
-        <!--      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">-->
-      </div>
-    </div>
-  </div>
-  </div>
-  <div class="drag2">
-  <div *ngIf="routeToDragList" cdkDropList class="example-list"
-       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList2" cdkDropListConnectedTo="dragList1">
-    <div class="example-box" *ngFor="let routeTown of this.routeToDragList.nameOfTowns let i = index" cdkDrag>
-      <div class="routeTown">
-        <p>{{routeTown}}
-          <span *ngIf="this.routeToDragList.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-          <span *ngIf="this.routeToDragList.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-        </p>
-        <span>{{this.routeStatus.getStatus(this.routeToDragList.status[i])}}</span>
-        <!--      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">-->
-      </div>
-      <div class="routeTown routeInfo">
-        <p *ngIf="this.routeToDragList.aboutRoute != null || this.routeToDragList.aboutRoute != undefined">{{this.routeToDragList.aboutRoute[i]}}</p>
-        <!--      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">-->
-      </div>
-    </div>
-  </div>
-    <button #buttonChange *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''" (click)="chooseAnotherRoute()">Zmenit</button>
-    <button #buttonSave [disabled]="this.fakeOffer.nameOfTowns.length > 0" *ngIf="this.fakeOffer.offerInRoute == ''" (click)="updateRoute()">Ulozit trasu</button>
-</div>
-</div>
-
-<div *ngIf="routes" class="wrapper">
-  <div *ngIf="!routeToDragList" class="oneRouteHeader">
-    <div class="nakladka noCursor">
-      <h2>Nakládky ↓</h2>
-    </div>
-
-    <div class="vykladka noCursor">
-      <h2>Vykládky ↓</h2>
-    </div>
-<!--    <div class="status noCursor">-->
-<!--      <h2>Status ↓</h2>-->
+<!--<div class="dragAndDrop">-->
+<!--  <div class="drag1">-->
+<!--  <div *ngIf="offer" cdkDropList class="example-list"-->
+<!--       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList1" cdkDropListConnectedTo="dragList2">-->
+<!--    <div class="example-box" *ngFor="let routeTown of this.fakeOffer.nameOfTowns let i = index" cdkDrag>-->
+<!--      <div class="routeTown">-->
+<!--        <p>{{routeTown}}-->
+<!--          <span *ngIf="this.fakeOffer.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
+<!--          <span *ngIf="this.fakeOffer.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
+<!--        </p>-->
+<!--        <span>{{this.routeStatus.getStatus(this.fakeOffer.status[i])}}</span>-->
+<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">&ndash;&gt;-->
+<!--      </div>-->
+<!--      <div class="routeTown routeInfo">-->
+<!--        <p *ngIf="this.fakeOffer.aboutRoute != null || this.fakeOffer.aboutRoute != undefined">{{this.fakeOffer.aboutRoute[i]}}</p>-->
+<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">&ndash;&gt;-->
+<!--      </div>-->
 <!--    </div>-->
-  </div>
+<!--  </div>-->
+<!--  </div>-->
+<!--  <div class="drag2">-->
+<!--  <div *ngIf="routeToDragList" cdkDropList class="example-list"-->
+<!--       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList2" cdkDropListConnectedTo="dragList1">-->
+<!--    <div class="example-box" *ngFor="let routeTown of this.routeToDragList.nameOfTowns let i = index" cdkDrag>-->
+<!--      <div class="routeTown">-->
+<!--        <p>{{routeTown}}-->
+<!--          <span *ngIf="this.routeToDragList.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
+<!--          <span *ngIf="this.routeToDragList.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
+<!--        </p>-->
+<!--        <span>{{this.routeStatus.getStatus(this.routeToDragList.status[i])}}</span>-->
+<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">&ndash;&gt;-->
+<!--      </div>-->
+<!--      <div class="routeTown routeInfo">-->
+<!--        <p *ngIf="this.routeToDragList.aboutRoute != null || this.routeToDragList.aboutRoute != undefined">{{this.routeToDragList.aboutRoute[i]}}</p>-->
+<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--    <button #buttonChange *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''" (click)="chooseAnotherRoute()">Zmenit</button>-->
+<!--    <button #buttonSave [disabled]="this.fakeOffer.nameOfTowns.length > 0" *ngIf="this.fakeOffer.offerInRoute == ''" (click)="updateRoute()">Ulozit trasu</button>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div *ngIf="routes" class="wrapper">-->
+<!--  <div *ngIf="!routeToDragList" class="oneRouteHeader">-->
+<!--    <div class="nakladka noCursor">-->
+<!--      <h2>Nakládky ↓</h2>-->
+<!--    </div>-->
+
+<!--    <div class="vykladka noCursor">-->
+<!--      <h2>Vykládky ↓</h2>-->
+<!--    </div>-->
+<!--&lt;!&ndash;    <div class="status noCursor">&ndash;&gt;-->
+<!--&lt;!&ndash;      <h2>Status ↓</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--  </div>-->
 
 
-<div *ngIf="!routeToDragList">
-  <button (click)="createNew()">Vytvorit novu prepravu</button>
+<!--<div *ngIf="!routeToDragList">-->
+<!--  <button (click)="createNew()">Vytvorit novu prepravu</button>-->
 
-  <div  *ngFor="let route of this.routes; let i = index" class="oneRoute" >
-    <div *ngIf="routes.length" class="nakladka" (click)="setRoute(route)">
+<!--  <div  *ngFor="let route of this.routes; let i = index" class="oneRoute" >-->
+<!--    <div *ngIf="routes.length" class="nakladka" (click)="setRoute(route)">-->
 
-      <!--      <h2>Nakládky</h2>-->
+<!--      &lt;!&ndash;      <h2>Nakládky</h2>&ndash;&gt;-->
 
-      <ng-container  *ngFor="let town of route.nameOfTowns; index as i">
+<!--      <ng-container  *ngFor="let town of route.nameOfTowns; index as i">-->
 
-        <li *ngIf="route.type[i] != 'vykladka'">
+<!--        <li *ngIf="route.type[i] != 'vykladka'">-->
 
-          {{town}}
-          <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 3" class="spanG">{{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
+<!--          {{town}}-->
+<!--          <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 3" class="spanG">{{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
 
-        </li>
-
-
-      </ng-container>
-
-    </div>
-
-    <div *ngIf="routes.length" class="vykladka" (click)="setRoute(route)">
-      <!--      <h2>Vykládky</h2>-->
-      <ng-container *ngFor="let town of route.nameOfTowns; index as i">
-
-        <li *ngIf="route.type[i] != 'nakladka'">
-
-          {{town}}
-
-          <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatus.getStatus(route.status[i]) }}</span>
+<!--        </li>-->
 
 
-        </li>
+<!--      </ng-container>-->
 
-      </ng-container>
-    </div>
-  </div>
-</div>
+<!--    </div>-->
 
-<!--  <app-drag-drop-offer *ngIf="routeToDragList" [route]="routeToDragList"></app-drag-drop-offer>-->
-</div>
+<!--    <div *ngIf="routes.length" class="vykladka" (click)="setRoute(route)">-->
+<!--      &lt;!&ndash;      <h2>Vykládky</h2>&ndash;&gt;-->
+<!--      <ng-container *ngFor="let town of route.nameOfTowns; index as i">-->
+
+<!--        <li *ngIf="route.type[i] != 'nakladka'">-->
+
+<!--          {{town}}-->
+
+<!--          <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+<!--          <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatus.getStatus(route.status[i]) }}</span>-->
+
+
+<!--        </li>-->
+
+<!--      </ng-container>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;  <app-drag-drop-offer *ngIf="routeToDragList" [route]="routeToDragList"></app-drag-drop-offer>&ndash;&gt;-->
+<!--</div>-->

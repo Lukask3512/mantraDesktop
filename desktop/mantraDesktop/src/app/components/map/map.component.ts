@@ -157,12 +157,12 @@ export class MapComponent {
 
             var detailArray = [];
             var prepravasDetailom;
-            preprava.detailsAboutAdresses.forEach(detail => {
-              this.routeDetailService.myDetails$.subscribe(allDetails => {
-                var oneDetail = allDetails.find(oneMyDetail => oneMyDetail.id == detail)
-                detailArray.push(oneDetail);
-              });
-            })
+            // preprava.detailsAboutAdresses.forEach(detail => {
+            //   this.routeDetailService.myDetails$.subscribe(allDetails => {
+            //     var oneDetail = allDetails.find(oneMyDetail => oneMyDetail.id == detail)
+            //     detailArray.push(oneDetail);
+            //   });
+            // })
             var volnaVahaPreAuto = this.routeDetailService.countFreeWeightOfCarOnAdress(detailArray, preprava);
             prepravasDetailom = {...preprava, detailArray, volnaVahaPreAuto};
             console.log(prepravasDetailom)
@@ -523,86 +523,86 @@ export class MapComponent {
       this.onClickFindInfoAdress(route.id);
     }
 
-    if (route.coordinatesOfTownsLat.length > 0) {
-      for (let i = 0; i < route.coordinatesOfTownsLat.length; i++) {
-        var iconFeature = new Feature({
-          geometry: new Point(fromLonLat([route.coordinatesOfTownsLon[i], route.coordinatesOfTownsLat[i]])),
-          name: route.id,
-          type: "town"
-        });
-
-        if (route.status[i] == 3){
-          var iconStyle = new Style({
-            image: new CircleStyle({
-              radius: 8,
-              stroke: new Stroke({
-                color: '#7FFF00'
-              }),
-              fill: new Fill({
-                color: this.getColorByIndex(index)
-              }),
-            }),
-            text: new Text({
-              text: (i+1).toString() + "✓",
-              fill: new Fill({
-                color: '#fff',
-              }),
-            })
-          });
-        }
-        else if (route.status[i] == 4){
-          var iconStyle = new Style({
-            image: new CircleStyle({
-              radius: 10,
-              stroke: new Stroke({
-                color: '#FF0000'
-              }),
-              fill: new Fill({
-                color: this.getColorByIndex(index)
-              }),
-            }),
-            text: new Text({
-              text: (i+1).toString() + "X",
-              fill: new Fill({
-                color: '#fff',
-              }),
-            })
-          });
-          this.pulseMarker=true;
-        }else{
-          var iconStyle = new Style({
-            image: new CircleStyle({
-              radius: 8,
-              stroke: new Stroke({
-                color: '#fff'
-              }),
-              fill: new Fill({
-                color: this.getColorByIndex(index)
-              }),
-            }),
-            text: new Text({
-              text: (i+1).toString(),
-              fill: new Fill({
-                color: '#fff',
-              }),
-            })
-          });
-        }
-
-
-        iconFeature.setStyle(iconStyle);
-        this.places.push(iconFeature);
-        if (index + 1 == routes.length){
-          setTimeout(() =>
-            {
-              //chvilu pockam kym natiahnem cesty, ak by ju nahodou auto updatlo
-              this.addRoute(routes);
-            },
-            1500);
-        }
-
-      }
-    }
+    // if (route.coordinatesOfTownsLat.length > 0) {
+    //   for (let i = 0; i < route.coordinatesOfTownsLat.length; i++) {
+    //     var iconFeature = new Feature({
+    //       geometry: new Point(fromLonLat([route.coordinatesOfTownsLon[i], route.coordinatesOfTownsLat[i]])),
+    //       name: route.id,
+    //       type: "town"
+    //     });
+    //
+    //     if (route.status[i] == 3){
+    //       var iconStyle = new Style({
+    //         image: new CircleStyle({
+    //           radius: 8,
+    //           stroke: new Stroke({
+    //             color: '#7FFF00'
+    //           }),
+    //           fill: new Fill({
+    //             color: this.getColorByIndex(index)
+    //           }),
+    //         }),
+    //         text: new Text({
+    //           text: (i+1).toString() + "✓",
+    //           fill: new Fill({
+    //             color: '#fff',
+    //           }),
+    //         })
+    //       });
+    //     }
+    //     else if (route.status[i] == 4){
+    //       var iconStyle = new Style({
+    //         image: new CircleStyle({
+    //           radius: 10,
+    //           stroke: new Stroke({
+    //             color: '#FF0000'
+    //           }),
+    //           fill: new Fill({
+    //             color: this.getColorByIndex(index)
+    //           }),
+    //         }),
+    //         text: new Text({
+    //           text: (i+1).toString() + "X",
+    //           fill: new Fill({
+    //             color: '#fff',
+    //           }),
+    //         })
+    //       });
+    //       this.pulseMarker=true;
+    //     }else{
+    //       var iconStyle = new Style({
+    //         image: new CircleStyle({
+    //           radius: 8,
+    //           stroke: new Stroke({
+    //             color: '#fff'
+    //           }),
+    //           fill: new Fill({
+    //             color: this.getColorByIndex(index)
+    //           }),
+    //         }),
+    //         text: new Text({
+    //           text: (i+1).toString(),
+    //           fill: new Fill({
+    //             color: '#fff',
+    //           }),
+    //         })
+    //       });
+    //     }
+    //
+    //
+    //     iconFeature.setStyle(iconStyle);
+    //     this.places.push(iconFeature);
+    //     if (index + 1 == routes.length){
+    //       setTimeout(() =>
+    //         {
+    //           //chvilu pockam kym natiahnem cesty, ak by ju nahodou auto updatlo
+    //           this.addRoute(routes);
+    //         },
+    //         1500);
+    //     }
+    //
+    //   }
+    // }
 
   });
     var vectorSource = new VectorSource({
@@ -648,16 +648,16 @@ export class MapComponent {
 
   openAddDialog(route: Route, newRoute: boolean, routeId: string) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      routesTowns: route.nameOfTowns,
-      routesLat: route.coordinatesOfTownsLat,
-      routesLon: route.coordinatesOfTownsLon,
-      routesType: route.type,
-      routeId: routeId,
-      routeStatus: route.status,
-      aboutRoute: route.aboutRoute,
-      newRoute: newRoute
-    };
+    // dialogConfig.data = {
+    //   routesTowns: route.nameOfTowns,
+    //   routesLat: route.coordinatesOfTownsLat,
+    //   routesLon: route.coordinatesOfTownsLon,
+    //   routesType: route.type,
+    //   routeId: routeId,
+    //   routeStatus: route.status,
+    //   aboutRoute: route.aboutRoute,
+    //   newRoute: newRoute
+    // };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       console.log(value)
@@ -812,81 +812,81 @@ export class MapComponent {
           var adresaMinVzialenost = 100000000;
           var adresaMaxVzdialenost = 0;
 
-          route.coordinatesOfTownsLon.forEach((lon, indexLon) => { //prechadzam miestami v preprave
-
-            //vaha
-            // @ts-ignore
-            if (route.volnaVahaPreAuto[indexLon] >= jednaPonuka.maxVaha){
-              sediVaha = true;
-            }else { // @ts-ignore
-              if ((route.volnaVahaPreAuto[indexLon] * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
-                sediVahaYellow = true;
-              }
-            }
-
-
-            oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
-
-                             //toto treba kuknut vravia mi to interesting vzdialenosti
-              if (routeLine != undefined){
-
-                var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
-
-                              //kontrolujem najkratsiu vzdialenost od trasy
-                              if (vzdialenostOdTrasy < jednaPonuka.minVzdialenost){
-                                jednaPonuka.minVzdialenost = vzdialenostOdTrasy;
-                                adresaMinVzialenost = vzdialenostOdTrasy;
-                              }
-              }
-              var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
-                [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
-              if (vzdielenost < jednaPonuka.minVzdialenost) {
-                                jednaPonuka.minVzdialenost = vzdielenost;
-                                adresaMinVzialenost = vzdielenost;
-                              }
-                              if (vzdielenost > jednaPonuka.maxVzdialenost) {
-                                jednaPonuka.maxVzdialenost = vzdielenost;
-                                adresaMaxVzdialenost = vzdielenost;
-                              }
-
-                                //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
-                                //ked som na konci skontrulujem ci sedi vzdialenost
-                              if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
-                                var flags = 0;
-
-                                var indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
-                                var prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; //ak false vopcha, ak true tak sa vopcha
-                                                                          //o uzivatelom definove % - yellow
-
-
-
-
-                                if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-                                  flags = 3;
-                                  zelenePrepravy.push({...route, vopchaSa});
-                                }else if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-                                  flags = 2;
-                                  zltePrepravy.push({...route, vopchaSa});
-                                }
-                                else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-                                  flags = 2;
-                                  zltePrepravy.push({...route, vopchaSa});
-                                }
-                                else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-                                  adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-                                  flags = 2;
-                                  zltePrepravy.push({...route, vopchaSa});
-                                }
-                                if (flags > jednaPonuka.flag){
-                                  jednaPonuka.flag = flags;
-                                }
-                              }
-                            })
-
-            });
+          // route.coordinatesOfTownsLon.forEach((lon, indexLon) => { //prechadzam miestami v preprave
+          //
+          //   //vaha
+          //   // @ts-ignore
+          //   if (route.volnaVahaPreAuto[indexLon] >= jednaPonuka.maxVaha){
+          //     sediVaha = true;
+          //   }else { // @ts-ignore
+          //     if ((route.volnaVahaPreAuto[indexLon] * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
+          //       sediVahaYellow = true;
+          //     }
+          //   }
+          //
+          //
+          //   oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
+          //
+          //                    //toto treba kuknut vravia mi to interesting vzdialenosti
+          //     if (routeLine != undefined){
+          //
+          //       var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
+          //
+          //                     //kontrolujem najkratsiu vzdialenost od trasy
+          //                     if (vzdialenostOdTrasy < jednaPonuka.minVzdialenost){
+          //                       jednaPonuka.minVzdialenost = vzdialenostOdTrasy;
+          //                       adresaMinVzialenost = vzdialenostOdTrasy;
+          //                     }
+          //     }
+          //     var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
+          //       [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
+          //     if (vzdielenost < jednaPonuka.minVzdialenost) {
+          //                       jednaPonuka.minVzdialenost = vzdielenost;
+          //                       adresaMinVzialenost = vzdielenost;
+          //                     }
+          //                     if (vzdielenost > jednaPonuka.maxVzdialenost) {
+          //                       jednaPonuka.maxVzdialenost = vzdielenost;
+          //                       adresaMaxVzdialenost = vzdielenost;
+          //                     }
+          //
+          //                       //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
+          //                       //ked som na konci skontrulujem ci sedi vzdialenost
+          //                     if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
+          //                       var flags = 0;
+          //
+          //                       var indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
+          //                       var prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; //ak false vopcha, ak true tak sa vopcha
+          //                                                                 //o uzivatelom definove % - yellow
+          //
+          //
+          //
+          //
+          //                       if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+          //                         flags = 3;
+          //                         zelenePrepravy.push({...route, vopchaSa});
+          //                       }else if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+          //                         flags = 2;
+          //                         zltePrepravy.push({...route, vopchaSa});
+          //                       }
+          //                       else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+          //                         flags = 2;
+          //                         zltePrepravy.push({...route, vopchaSa});
+          //                       }
+          //                       else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+          //                         flags = 2;
+          //                         zltePrepravy.push({...route, vopchaSa});
+          //                       }
+          //                       if (flags > jednaPonuka.flag){
+          //                         jednaPonuka.flag = flags;
+          //                       }
+          //                     }
+          //                   })
+          //
+          //   });
           // zltePrepravy = [...new Set(zltePrepravy)]; //odstranujem duplikaty
           // zelenePrepravy = [...new Set(zelenePrepravy)];
           zltePrepravy = zltePrepravy.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);

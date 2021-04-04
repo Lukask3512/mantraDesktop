@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../../../data/data.service";
 import Cars from "../../../models/Cars";
 import {RouteService} from "../../../services/route.service";
@@ -9,6 +9,9 @@ import {DetailAboutRouteService} from "../../../services/detail-about-route.serv
 import {CarService} from "../../../services/car.service";
 import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 import {take} from "rxjs/operators";
+import Address from "../../../models/Address";
+import {AddressService} from "../../../services/address.service";
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-route-to-car',
@@ -20,32 +23,57 @@ export class RouteToCarComponent implements OnInit {
   constructor(private dataService: DataService, private routeService: RouteService
               , @Inject(MAT_DIALOG_DATA) public data: any,
   public dialogRef: MatDialogRef<RouteToCarComponent>, public routeStatusService: RouteStatusService,
-              private detailAboutService: DetailAboutRouteService, private carService: CarService) { }
+              private detailAboutService: DetailAboutRouteService, private carService: CarService,
+              private addressService: AddressService) { }
   cars:Cars[];
 
   routeStatus;
-  route: Route;
+  addresses: Address[];
+  addressesToDragDrop: Address[];
+  route: Route = new Route();
   newRoute;
   routeId;
-  detailAboutRoute;
+
   isOffer: boolean = false;
+  chosenCar: Cars;
+
+  @ViewChild('stepper') private myStepper: MatStepper;
   ngOnInit(): void {
     // this.cars = this.dataService.getAllCars();
     this.carService.cars$.subscribe(cars => {
       this.cars = cars;
     });
     this.newRoute = this.data.newRoute;
-    this.route = this.data.route;
-    this.detailAboutRoute = this.data.detailAboutRoute;
+    this.addresses = this.data.addresses;
+    this.addressesToDragDrop = JSON.parse(JSON.stringify(this.addresses));
     this.isOffer = this.data.offer;
+
   }
 
-  async saveDetailsFirst(car){
-    console.log(this.route.detailsAboutAdresses)
-      for (const [index, route] of this.detailAboutRoute.entries()){
+  selectionChange(event){
+      if(event.selectedIndex == 0){
+        this.chosenCar = undefined;
+      }
+  }
+
+  choosenCar(car){
+    this.chosenCar = car;
+    this.myStepper.next();
+  }
+
+  async saveRoutesFirsts(car){
+    console.log(this.addresses)
+      for (const [index, route] of this.addresses.entries()){
         console.log(route)
-        const idcko = await this.detailAboutService.createDetail(route)
-        await this.route.detailsAboutAdresses.push(idcko);
+        if (car == null){
+          route.carId = null;
+        }else{
+          route.carId = car.id;
+        }
+        var createdBy = this.dataService.getMyIdOrMaster();
+        route.createdBy = createdBy;
+        const idcko = await this.addressService.createAddressWithId({...route})
+        await this.route.addresses.push(idcko);
       }
   }
 
@@ -53,11 +81,17 @@ export class RouteToCarComponent implements OnInit {
 
   }
 
+  saveRoute(addressesId){
+    this.route.addresses = addressesId;
+    this.addRouteToCar(this.chosenCar);
+    this.dialogRef.close();
+  }
+
    saveDetailToDatabase(car){
     if (this.isOffer){
       this.addRouteToCar(car)
     }else{
-      this.saveDetailsFirst(car).then(()=>{
+      this.saveRoutesFirsts(car).then(()=>{
         this.addRouteToCar(car)
       })
     }
@@ -78,6 +112,7 @@ export class RouteToCarComponent implements OnInit {
     route = JSON.parse(JSON.stringify(this.route));
     delete route.id;
     route.takenBy = '';
+    route.forEveryone = false;
     console.log(this.newRoute)
     //ked nemam vytvorenu cestu
     if (this.newRoute){
@@ -88,14 +123,13 @@ export class RouteToCarComponent implements OnInit {
         carId = car.id
       }
       var newRouteStatus = []
-      this.route.status.forEach(route => {
-        newRouteStatus.push(-1);
-      });
-      route.createdAt = (Date.now());
+      // this.route.status.forEach(route => {
+      //   newRouteStatus.push(-1);
+      // });
+      route.createdAt = (new Date()).toString();
       route.carId = carId;
       route.finished = false;
       route.createdBy = dispecerId;
-      route.status = newRouteStatus;
       var idNewRouty = this.routeService.createRoute(route);
 
       //ak je ponuka tak ju updatnem  idckom prepravy kde som ju ulozil
@@ -115,7 +149,7 @@ export class RouteToCarComponent implements OnInit {
       }else{
         carId2 = car.id
       }
-      this.route.createdAt = (Date.now());
+      this.route.createdAt = (new Date()).toString();
       this.route.carId = carId2;
       this.route.finished = false;
       this.route.createdBy = dispecerId;

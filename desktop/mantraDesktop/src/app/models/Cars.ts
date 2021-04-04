@@ -27,5 +27,7 @@ export default class Cars {
 
   nakladaciaHrana: number[];
 
+  itinerar?: string[];
+
 
 }
