@@ -14,7 +14,10 @@
         <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
         <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
       </p>
-      <span>{{this.routeStatus.getStatus(this.address[i].status)}}</span>
+      <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
+
+      <span *ngIf="this.address[i].estimatedTimeArrival">ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
+
       <img  *ngIf="checkFinished() && draggable" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">
     </div>
     <div *ngIf="draggable" class="routeTown routeInfo">

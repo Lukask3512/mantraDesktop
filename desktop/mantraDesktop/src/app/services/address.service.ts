@@ -53,6 +53,12 @@ export class AddressService {
     return this.addressesGet;
   }
 
+  getOneAddresById(id): Observable<Address>{
+    return this.address$.pipe(
+      map(txs => txs.find(txn => txn.id === id))
+    );
+  }
+
   // getRoutesOrder(carId){
   //   return this.afs.collection('route').
   //

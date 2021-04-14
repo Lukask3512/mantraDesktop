@@ -35,6 +35,13 @@ export class DragAndDropListComponent implements OnInit {
     // this.arrayOfDetailEvent.emit(this.arrayOfDetail);
   }
 
+  estimatedTimeToLocal(dateUtc){
+    var date = (new Date(dateUtc));
+    if (dateUtc == null){
+      return "Neznámy"
+    }
+    return date.toLocaleString();
+  }
 
   deleteTown(routeTown){
     // for (let i = 0; i < this.route.nameOfTowns.length; i++){

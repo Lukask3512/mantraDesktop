@@ -12,6 +12,7 @@ import Address from "../models/Address";
   providedIn: 'root'
 })
 export class RouteService {
+  private myRoutes: Route[];
   private routesCollection: AngularFirestoreCollection<Dispecer>;
   private routes: Observable<Dispecer[]>;
 
@@ -25,6 +26,7 @@ export class RouteService {
     this.getAllRoutes().subscribe(res => {
       console.log(res);
       this._routes.next(res);
+      this.myRoutes = res;
     });
 
   }
@@ -62,6 +64,10 @@ export class RouteService {
     // return this.afs.collection('route').add(route);
   }
 
+  getRoutesNoSub(){
+    return this.myRoutes;
+  }
+
   updateRoute(newRoute) {
     console.log(newRoute)
     if (newRoute.id === undefined){
@@ -88,7 +94,7 @@ export class RouteService {
     }else{
       id = loggedDispecer.createdBy;
     }
-      return this.afs.collection<Dispecer>('route', ref => {
+      return this.afs.collection<Route>('route', ref => {
         let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         query = query.where('createdBy', '==', id)
           .where('finished', '==', false)

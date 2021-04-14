@@ -27,7 +27,7 @@ export class OfferRouteService {
     });
 
   }
-
+  //toto je zbytocne, urobim to tak ,ze stiahnem vsetky adresy po 1 ktore mi pridu z ponuk, ,,,
   private _routes = new BehaviorSubject<any>([]);
   readonly routes$ = this._routes.asObservable();
 

@@ -252,20 +252,26 @@ export class NewTransportComponent implements AfterViewInit {
     });
   }
 
+ async saveAddresses(){
+    var addressesId: string[] = [];
+    for (const oneAddres of this.addresses){
+      if (oneAddres.id){
+        addressesId.push(oneAddres.id);
+      }else{
+        var createdBy = this.dataService.getMyIdOrMaster();
+        const idcko = await this.addressService.createAddressWithId({...oneAddres});
+        addressesId.push(idcko);
+      }
+    }
+    this.route.addresses = addressesId;
+  }
+
   sendToAllDispecers(price){
     this.route.forEveryone = true;
     this.route.price = price;
 
       console.log(this.route);
-      this.routeService.createRoute(this.route);
-      var loggedDispecer = this.dataService.getDispecer();
-      var dispecerId;
-      if (loggedDispecer.createdBy == 'master'){
-        dispecerId = loggedDispecer.id
-      }else {
-        dispecerId = loggedDispecer.createdBy;
-      }
-
+      this.routeService.createRoute({...this.route});
 
   }
 
@@ -367,7 +373,9 @@ export class NewTransportComponent implements AfterViewInit {
       if (value === undefined){
         return;
       }else {
-        this.sendToAllDispecers(value)
+        this.saveAddresses().then(() => {
+          this.sendToAllDispecers(value)
+        })
       }
     });
   }

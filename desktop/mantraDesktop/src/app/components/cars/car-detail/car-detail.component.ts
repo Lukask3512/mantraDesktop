@@ -70,12 +70,7 @@ export class CarDetailComponent implements AfterViewInit {
 
 
 
-        setTimeout(() =>
-          {
-            // console.log(this.car)
-            this.child.notifyMe(null, this.car, this.car);
-          },
-          800);
+
       });
 
       var allAddresses: Address[];
@@ -100,7 +95,12 @@ export class CarDetailComponent implements AfterViewInit {
      }).then(resolve => {
         console.log(this.myAddresses);
        this.dragComponent.setAddresses(this.myAddresses);
-
+       setTimeout(() =>
+         {
+           // console.log(this.car)
+           this.child.notifyMe(this.myAddresses, this.car, this.car);
+         },
+         800);
       })
       })
 

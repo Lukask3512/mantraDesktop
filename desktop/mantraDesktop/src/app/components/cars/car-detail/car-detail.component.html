@@ -15,21 +15,12 @@
     <h1>Itinerár</h1>
   </div>
 
-  <app-drag-and-drop-list #dragDrop [draggable]="true">
-
-  </app-drag-and-drop-list>
+  <app-drag-and-drop-list #dragDrop [draggable]="true"></app-drag-and-drop-list>
 
   <div *ngIf="this.myAddresses != undefined" class="button_cont" align="center">
 
     <button id="mySendButton" [disabled]="!change" (click)="this.sendToDriver()" class="oneButton greenSend" >
       Odoslať vodičovi</button>
-
-    <app-adresses (placeName)="getAdress($event)"
-                  (placeLat)="getLat($event)"
-                  (placeLon)="getLon($event)"
-                  (type)="getType($event)"
-                  (aboutRouteEmitter)="getAboutRoute($event)">
-    </app-adresses>
   </div>
 </div>
 

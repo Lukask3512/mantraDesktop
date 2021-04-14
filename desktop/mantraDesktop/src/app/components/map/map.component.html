@@ -12,32 +12,33 @@
     </div>
 
       <div *ngIf="this.offersToShow == null" class="car">
-<!--        <h2>Vozidlo</h2>-->
-        <table id="t01">
-          <tr>
-            <th width="120px">Poznávacia značka:<h4 *ngIf="carToShow != undefined">{{carToShow.ecv}}</h4></th>
-            <th width="120px">Stav:<h4 *ngIf="carToShow != undefined">{{this.routeStatusService.getStatus(carToShow.status)}}</h4></th>
-            <th>Kontakt:<h5 *ngIf="carToShow != undefined">{{carToShow.phoneNumber}}</h5></th>
+        <table *ngIf="carToShow">
+          <tr class="tableHeader">
+            <th>EČV</th>
+            <th>STAV</th>
+            <th>KONTAKT</th>
+          </tr>
+
+          <tr class="tablerow" >
+            <td>{{carToShow.ecv}}</td>
+            <td>{{this.routeStatusService.getStatus(carToShow.status)}}</td>
+            <td>{{carToShow.phoneNumber}}</td>
           </tr>
         </table>
+
+        <h2 *ngIf="routesToShow">Preprava</h2>
+        <h2 *ngIf="!routesToShow && carToShow != undefined && carToShow.itinerar.length > 0">Itinerár</h2>
+        <app-drag-and-drop-list class="dragDropList" *ngIf="carToShow || routesToShow" #dragDrop [draggable]="false">
+
+        </app-drag-and-drop-list>
+
+
         <h4 *ngIf="carToShow == undefined && routesToShow == undefined">Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.</h4>
         <h4 *ngIf="carToShow == undefined && routesToShow != undefined">Nepriradená trasa</h4>
-        <button class="buttonG" *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">
-          Priradiť autu</button>
+<!--        <button class="buttonG" *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">-->
+<!--          Priradiť autu</button>-->
       </div>
 
-      <div *ngIf="this.offersToShow == null" class="routes">
-        <div class="route" *ngFor="let route of routesToShow">
-          <table id="t01">
-<!--            <h3 *ngIf="route.estimatedTimeArrival != undefined">ETA:  {{this.estimatedTimeToLocal(route.estimatedTimeArrival)}}</h3>-->
-              <tr>
-              <th><h2> Ciele: </h2><h4 *ngFor="let town of route.nameOfTowns; index as i">{{town}}<br>
-            <span>Stav: {{this.routeStatusService.getStatus(route.status[i])}}</span><br>
-              <span *ngIf="this.route.estimatedTimeArrival != undefined">ETA: {{this.estimatedTimeToLocal(this.route.estimatedTimeArrival[i])}}</span></h4></th>
-            </tr>
-          </table>
-        </div>
-      </div>
 
     <div *ngIf="this.offersToShow != null" class="offers">
       <h3>Ponuka</h3>

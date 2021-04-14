@@ -55,14 +55,14 @@ export class OpenlayerComponent {
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
-  notifyMe(addresses: Address[], car, route){
-    console.log(addresses, car , route)
+  notifyMe(addresses: Address[], car, carId){
+    console.log(addresses, car , carId)
     if (addresses != undefined) {
       this.addMarker(addresses, car);
     }
 
-    if (this.coordinatesFeature == undefined && car !== undefined && route != undefined) {
-      this.addRoute(route);
+    if (this.coordinatesFeature == undefined && car !== undefined && carId != undefined) {
+      this.addRoute(carId);
     }
   }
 

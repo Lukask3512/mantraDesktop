@@ -119,7 +119,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: 10px;
 }
+
+.dragDropList{
+  margin: 10px;
+}
+
 .car{
   display: flex;
   flex-direction: column;
@@ -156,34 +162,26 @@
 }
 
 table {
-  width: 100%;
+  font-family: arial, sans-serif;
   border-collapse: collapse;
-}
-/* Zebra striping */
-tr:nth-of-type(odd) {
-  background: #eee;
-}
-th {
-  background: #333;
-  color: white;
-  font-weight: bold;
-}
-td, th {
-  padding: 6px;
-  border: 1px solid #ccc;
-  text-align: left;
+  width: 100%;
 }
 
-#t01 tr:nth-child(even) {
-  background-color: #eee;
+.tableHeader{
+  font-weight: 400;
 }
-#t01 tr:nth-child(odd) {
-  background-color: #fff;
+
+.tablerow{
+  font-weight: 600;
 }
-#t01 th {
-  background-color: #50585f;
-  font-family: "Lato", sans-serif;
-  color: white;
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
 
 @media
