@@ -268,6 +268,8 @@ export class NewTransportComponent implements AfterViewInit {
 
   sendToAllDispecers(price){
     this.route.forEveryone = true;
+    this.route.offerFrom = [];
+    this.route.priceFrom = [];
     this.route.price = price;
 
       console.log(this.route);

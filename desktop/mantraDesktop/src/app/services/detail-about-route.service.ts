@@ -53,19 +53,19 @@ export class DetailAboutRouteService {
 
 
     //toto je zbytocne, urobim to tak ,ze stiahnem vsetky adresy po 1 ktore mi pridu z ponuk, ,,,
-    this.offerService.routes$.subscribe(routes => {
-      var poleDetailikov = [];
-      routes.forEach(route => {
-        route.detailsAboutAdresses.forEach(idDetail => {
-          this.getOneDetail(idDetail).pipe(take(1)).subscribe(detailik => {
-            // @ts-ignore
-            poleDetailikov.push({...detailik, id: idDetail});
-            this._offerDetails.next(poleDetailikov);
-
-          })
-        })
-      })
-    })
+    // this.offerService.routes$.subscribe(routes => {
+    //   var poleDetailikov = [];
+    //   routes.forEach(route => {
+    //     route.detailsAboutAdresses.forEach(idDetail => {
+    //       this.getOneDetail(idDetail).pipe(take(1)).subscribe(detailik => {
+    //         // @ts-ignore
+    //         poleDetailikov.push({...detailik, id: idDetail});
+    //         this._offerDetails.next(poleDetailikov);
+    //
+    //       })
+    //     })
+    //   })
+    // })
 
   }
 

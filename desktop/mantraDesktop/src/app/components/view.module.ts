@@ -45,6 +45,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import { DetailFormComponent } from './transportation/new-transport/detail-form/detail-form.component';
 import { RouteToItinerarComponent } from './transportation/new-transport/route-to-itinerar/route-to-itinerar.component';
 import { OneAddressInfoComponent } from './transportation/transportation-wrapper/one-address-info/one-address-info.component';
+import { ChoosCarToMoveComponent } from './transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
+import { ShowItinerarComponent } from './transportation/offer/offer-to-route/show-itinerar/show-itinerar.component';
 
 
 
@@ -59,7 +61,7 @@ import { OneAddressInfoComponent } from './transportation/transportation-wrapper
       OffNavesDialogComponent, DragAndDropListComponent,
       WrapperComponent, DetailComponent, OfferToRouteComponent,
       DragDropOfferComponent, FilterComponent, DetailImgComponent,
-      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent
+      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent
     ],
   exports: [
     OpenlayerComponent,

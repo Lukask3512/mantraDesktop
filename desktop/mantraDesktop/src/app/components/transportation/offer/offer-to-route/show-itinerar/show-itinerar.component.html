@@ -1,0 +1,15 @@
+<h2>Itinerár</h2>
+
+<div
+  id="all"
+  cdkDropList
+  [cdkDropListData]="this.addresses"
+  cdkDropListConnectedTo="even"
+  class="example-list"
+  (cdkDropListDropped)="drop($event)">
+  <div
+    class="example-box"
+    *ngFor="let adresa of addresses"
+    [cdkDragData]="adresa"
+    cdkDrag>{{adresa.nameOfTown}}</div>
+</div>

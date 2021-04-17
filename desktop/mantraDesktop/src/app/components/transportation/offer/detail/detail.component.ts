@@ -8,6 +8,8 @@ import {CarService} from "../../../../services/car.service";
 import DeatilAboutAdresses from "../../../../models/DeatilAboutAdresses";
 import {DetailAboutRouteService} from "../../../../services/detail-about-route.service";
 import {DragAndDropListComponent} from "../../drag-and-drop-list/drag-and-drop-list.component";
+import {AddressService} from "../../../../services/address.service";
+import Address from "../../../../models/Address";
 
 @Component({
   selector: 'app-detail',
@@ -17,12 +19,13 @@ import {DragAndDropListComponent} from "../../drag-and-drop-list/drag-and-drop-l
 export class DetailComponent implements OnInit {
 
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
-              private detailService: DetailAboutRouteService) { }
+              private detailService: DetailAboutRouteService, private addressesService: AddressService) { }
   route: Route;
   fakeRoute: Route;
   price: number;
   offer: number;
   arrayOfDetailsAbRoute: any[] =  [];
+  address: Address[];
 
   @ViewChild('child')
   private child: OpenlayerComponent;
@@ -33,7 +36,6 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
 
     this.dataService.currentRoute.subscribe(route => {
-      console.log(route)
       this.route = route;
       this.fakeRoute = JSON.parse(JSON.stringify(this.route));
       this.offerService.routes$.subscribe(routes => {
@@ -42,13 +44,21 @@ export class DetailComponent implements OnInit {
         if (this.route == undefined){
           this.route = this.fakeRoute;
         }
-        this.route.offerFrom.forEach((offer, index) => {
-          if (offer == this.getDispecerId()){
-            this.offer = this.route.priceFrom[index];
-            console.log(this.getDispecerId());
-            console.log(this.route)
-          }
+
+        this.addressesService.offerAddresses$.subscribe(alAdd => {
+          var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
+          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
+          this.address = adresy;
         })
+
+
+        if (this.route.offerFrom != undefined){
+          this.route.offerFrom.forEach((offer, index) => {
+            if (offer == this.getDispecerId()){
+              this.offer = this.route.priceFrom[index];
+            }
+          })
+        }
       });
       setTimeout(() =>
         {

@@ -16,22 +16,26 @@ export class RouteToItinerarComponent implements OnInit {
   @Input() car: Cars;
   @Input() newRoute: Address[];
   @Output() addressesId = new EventEmitter<string[]>();
+  @Output() offerInCar = new EventEmitter<Cars>();
   newRouteCopy: Address[];
   carItinerarAddresses: Address[] = [];
   constructor(private addressService: AddressService, private dataService: DataService,
-              private carService: CarService) { }
+              private carService: CarService, private addressesService: AddressService) { }
 
   ngOnInit(): void {
     var adresy = this.addressService.getAddresses();
 
-    if (this.car.itinerar){
-      this.car.itinerar.forEach(addId => {
-        this.carItinerarAddresses.push(adresy.find(oneAddress => oneAddress.id == addId));
-      })
-    }else{
-      this.car = {...this.car, itinerar: []}
-      this.carItinerarAddresses = [];
+    if (this.car){
+      if (this.car.itinerar){
+        this.car.itinerar.forEach(addId => {
+          this.carItinerarAddresses.push(adresy.find(oneAddress => oneAddress.id == addId));
+        })
+      }else{
+        this.car = {...this.car, itinerar: []}
+        this.carItinerarAddresses = [];
+      }
     }
+    // console.log(this.newRoute)
     this.newRouteCopy = JSON.parse(JSON.stringify(this.newRoute));
   }
 
@@ -47,6 +51,24 @@ export class RouteToItinerarComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
+  }
+
+  setCar(car: Cars){
+    this.car = car;
+    this.newRouteCopy = JSON.parse(JSON.stringify(this.newRoute));
+    this.setAddresses();
+  }
+
+  setAddresses(){
+      this.addressesService.address$.subscribe(allAddresses => {
+        var adresy = allAddresses.filter(jednaAdresa => this.car.itinerar.includes(jednaAdresa.id));
+        adresy = this.car.itinerar.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
+        // this.newRouteCopy = JSON.parse(JSON.stringify(adresy));
+        // this.newRoute = JSON.parse(JSON.stringify(adresy));
+
+        this.carItinerarAddresses = adresy
+      })
+
   }
 
   /** Predicate function that only allows even numbers to be dropped into a list. */
@@ -80,6 +102,7 @@ export class RouteToItinerarComponent implements OnInit {
     console.log(addressesId);
     console.log(newAddresses);
     this.addressesId.emit(newAddresses);
+    this.offerInCar.emit(this.car);
     //vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
   }
 

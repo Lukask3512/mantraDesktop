@@ -7,6 +7,10 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag
 import {DataService} from "../../../../data/data.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {RouteToCarComponent} from "../../../dialogs/route-to-car/route-to-car.component";
+import Cars from "../../../../models/Cars";
+import {ShowItinerarComponent} from "./show-itinerar/show-itinerar.component";
+import {RouteToItinerarComponent} from "../../new-transport/route-to-itinerar/route-to-itinerar.component";
+import Address from "../../../../models/Address";
 
 
 @Component({
@@ -23,17 +27,23 @@ export class OfferToRouteComponent implements OnInit {
               private dataService: DataService,  private dialog: MatDialog) { }
   routes: Route[];
   fakeRoutes: Route[];
+
   @Input() offer: Route;
+  @Input() offerAddresses: Address[];
+
   disabled: boolean = false;
   @Output() routeToMap = new EventEmitter<Route>();
 
   @ViewChild('buttonChange') buttonChange: ElementRef;
   @ViewChild('buttonSave') buttonSave: ElementRef;
 
+  @ViewChild(RouteToItinerarComponent)
+    private offerToItinerar: RouteToItinerarComponent;
+
   fakeOffer: Route;
   routeToDragList: Route;
   ngOnInit(): void {
-    console.log(this.offer)
+    console.log(this.offerAddresses)
     this.fakeOffer = JSON.parse(JSON.stringify(this.offer));
     if (this.offer.offerInRoute != ''){
       this.disabled = true;
@@ -51,6 +61,17 @@ export class OfferToRouteComponent implements OnInit {
   setRoute(route){
     this.routeToDragList = JSON.parse(JSON.stringify(route));
     this.routeToMap.emit(this.routeToDragList);
+  }
+
+  offerIrRoute(car: Cars){
+    this.offer.offerInRoute = car.id;
+    console.log(this.offer)
+    this.routeService.updateRoute(this.offer);
+  }
+
+  getChoosenCar(car: Cars){
+    console.log(car)
+    this.offerToItinerar.setCar(car);
   }
 
   createNew(){

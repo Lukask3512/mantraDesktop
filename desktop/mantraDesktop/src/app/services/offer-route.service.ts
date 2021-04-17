@@ -3,7 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firest
 import Dispecer from "../models/Dispecer";
 import {BehaviorSubject, combineLatest, Observable} from "rxjs";
 import {DataService} from "../data/data.service";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import Route from "../models/Route";
 
 @Injectable({

@@ -1,25 +1,29 @@
-<!--<header *ngIf="this.route">-->
-<!--  <div *ngIf="this.route.takenBy == getDispecerId()" class="input">-->
-<!--    <h4>-->
-<!--      Ponuka priradená za <h5>{{this.route.price}}</h5>-->
-<!--    </h4>-->
-<!--    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>-->
-<!--  </div>-->
-<!--</header>-->
-<!--<div *ngIf="this.route" class="wrapper">-->
+<header *ngIf="this.route">
+  <div *ngIf="this.route.takenBy == getDispecerId()" class="input">
+    <h4>
+      Ponuka priradená za <h5>{{this.route.price}}</h5>
+    </h4>
+    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
+  </div>
+</header>
+<div *ngIf="this.route" class="wrapper">
 
-<!--&lt;!&ndash;    <app-drag-and-drop-list #dropList [draggable]="false" *ngIf="this.route.takenBy !== getDispecerId()" [route]="this.route" ></app-drag-and-drop-list>&ndash;&gt;-->
-<!--  <ol *ngIf="this.route.takenBy !== getDispecerId()">-->
-<!--    <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}-->
-<!--      <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
-<!--      <span *ngIf="route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
-<!--      <app-detail-img class="imageInRow" [detailArray]="this.arrayOfDetailsAbRoute[i]"></app-detail-img>-->
-<!--      <span *ngIf="this.arrayOfDetailsAbRoute[i] != undefined && route.type[i] == 'nakladka'">+{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>-->
-<!--      <span *ngIf="this.arrayOfDetailsAbRoute[i] != undefined && route.type[i] == 'vykladka'">-{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>-->
+  <ol *ngIf="this.route.takenBy !== getDispecerId()">
+<!--    <li class="debnaWrapper" *ngFor="let town of address; index as i">{{town.nameOfTown}}-->
+<!--      <span *ngIf="town.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
+<!--      <span *ngIf="town.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
+<!--&lt;!&ndash;      <app-detail-img class="imageInRow" [detailArray]="this.arrayOfDetailsAbRoute[i]"></app-detail-img>&ndash;&gt;-->
+<!--&lt;!&ndash;      <span >+{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>&ndash;&gt;-->
+<!--&lt;!&ndash;      <span >-{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>&ndash;&gt;-->
 <!--    </li>-->
-<!--  </ol>-->
+    <app-drag-and-drop-list #dropList
+                            [address]="this.address"
+                            [draggable]="false">
+
+    </app-drag-and-drop-list>
+  </ol>
 <!--  <div>-->
-<!--    <app-offer-to-route (routeToMap)="changeRouteOnMap($event)" [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>-->
+    <app-offer-to-route (routeToMap)="changeRouteOnMap($event)" [offerAddresses]="this.address" [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>
 <!--    <ol *ngIf="this.route.takenBy == getDispecerId()">-->
 <!--      <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}-->
 <!--        <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
@@ -32,54 +36,56 @@
 <!--  </div>-->
 
 
-<!--  <div *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()" class="input">-->
-<!--    <h4 *ngIf="this.offer">-->
-<!--      Vaša ponuka {{this.offer}}-->
-<!--    </h4>-->
-<!--    <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>-->
-<!--    <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>-->
+  <div *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()" class="input">
+    <h4 *ngIf="this.offer">
+      Vaša ponuka {{this.offer}}
+    </h4>
+    <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
+    <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
 
-<!--    <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">-->
-<!--      <mat-label>Ponuknite cenu</mat-label>-->
-<!--      <input type="number" matInput placeholder="Cena...."  [(ngModel)]="price">-->
-<!--      <span matSuffix> € </span>-->
-<!--      <mat-hint>V eurách</mat-hint>-->
-<!--    </mat-form-field>-->
+    <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">
+      <mat-label>Ponuknite cenu</mat-label>
+      <input type="number" matInput placeholder="Cena...."  [(ngModel)]="price">
+      <span matSuffix> € </span>
+      <mat-hint>V eurách</mat-hint>
+    </mat-form-field>
 
-<!--    <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0" (click)="addPrice()">Pridat ponuku</button>-->
-<!--    <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>-->
-<!--    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>-->
-<!--    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>-->
+    <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>
+
+    <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0" (click)="addPrice()">Pridat ponuku</button>
+    <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>
+    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
+    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
+  </div>
+
+  <div *ngIf="createdBy() && this.route.takenBy === ''" class="input">
+    <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>
+    <h4>
+      Ponuky
+    </h4>
+    <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">
+      <h5>{{offer}}</h5>
+      <h4 *ngIf="this.route.price == 0">{{this.route.priceFrom[i]}}</h4>
+      <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
+    </div>
+    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
+  </div>
+
+  <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">
+    <h4>
+      Ponuku prijala firma: {{this.route.takenBy}} za {{this.route.price}}
+    </h4>
+    <button (click)="cancelOffer()">Zrusit ponuku</button>
+  </div>
+
+
+
+  <div class="map">
+    <app-openlayer #child></app-openlayer>
+  </div>
+
+<!--  <div>-->
+<!--    Log celej prepravy-->
+
 <!--  </div>-->
-
-<!--  <div *ngIf="createdBy() && this.route.takenBy === ''" class="input">-->
-<!--    <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>-->
-<!--    <h4>-->
-<!--      Ponuky-->
-<!--    </h4>-->
-<!--    <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">-->
-<!--      <h5>{{offer}}</h5>-->
-<!--      <h4 *ngIf="this.route.price == 0">{{this.route.priceFrom[i]}}</h4>-->
-<!--      <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>-->
-<!--    </div>-->
-<!--    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>-->
-<!--  </div>-->
-
-<!--  <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">-->
-<!--    <h4>-->
-<!--      Ponuku prijala firma: {{this.route.takenBy}} za {{this.route.price}}-->
-<!--    </h4>-->
-<!--    <button (click)="cancelOffer()">Zrusit ponuku</button>-->
-<!--  </div>-->
-
-
-
-<!--  <div class="map">-->
-<!--    <app-openlayer #child></app-openlayer>-->
-<!--  </div>-->
-
-<!--&lt;!&ndash;  <div>&ndash;&gt;-->
-<!--&lt;!&ndash;    Log celej prepravy&ndash;&gt;-->
-
-<!--&lt;!&ndash;  </div>&ndash;&gt;-->
-<!--</div>-->
+</div>

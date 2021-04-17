@@ -76,10 +76,12 @@ export class CarDetailComponent implements AfterViewInit {
       var allAddresses: Address[];
        new Promise((resolve, reject) => {
         this.addressService.address$.subscribe(vsetkyAdress => {
-        allAddresses = vsetkyAdress;
-        console.log(allAddresses)
-        resolve();
-      })
+          this.addressService.offerAddresses$.subscribe(vsetkyPonuky => {
+            allAddresses = vsetkyAdress.concat(vsetkyPonuky);
+            console.log(allAddresses)
+            resolve();
+          })
+        })
       }).then(() => {
 
       // var itinerarVAute: Address[] = [];
