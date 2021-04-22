@@ -39,7 +39,7 @@ export class NewFormComponent implements OnInit {
 
   });
 
-
+  detailsArray = [];
 
   dateRange = new FormGroup({
     startDate: new FormControl(Validators.required),

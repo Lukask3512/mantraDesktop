@@ -110,6 +110,12 @@ export class AddressService {
     );
   }
 
+  getOneAddresFromOfferById(id): Observable<Address>{
+    return this.offerAddresses$.pipe(
+      map(txs => txs.find(txn => txn.id === id))
+    );
+  }
+
   // getRoutesOrder(carId){
   //   return this.afs.collection('route').
   //

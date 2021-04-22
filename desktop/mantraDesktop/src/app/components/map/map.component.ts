@@ -15,7 +15,7 @@ import VectorSource from 'ol/source/Vector';
 import LineString from 'ol/geom/LineString';
 import {HttpClient} from "@angular/common/http";
 import {AngularFireStorage} from "@angular/fire/storage";
-import {take} from "rxjs/operators";
+import {getArea} from 'ol/sphere';
 import {DataService} from "../../data/data.service";
 import Route from "../../models/Route";
 import {RouteService} from "../../services/route.service";
@@ -162,6 +162,8 @@ export class MapComponent {
       }).then(()=> {
         this.addAddresses();
         this.addRoute();
+
+        this.skuskaVzdialenostiOdCiary(); // toto mak vymazat
       })
 
 
@@ -536,48 +538,55 @@ export class MapComponent {
   addAddresses(){
     var mojeAdresy: Address[];
 
-      this.addressService.address$.subscribe(allAddresses => {
+      this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
+        this.addressService.offerAddresses$.subscribe(allOffers => {
+
         this.places = [];
-      this.adressesFromDatabase = allAddresses;
+        this.adressesFromDatabase = allAddresses.concat(allOffers);
 
         // var mamTamAuto = this.carsWithItinerar.findIndex(onecar => onecar.id == car.id); //auto s iti
         var carsWithIti = [];
-       this.carsFromDatabase.forEach(oneCar => {
-         if (oneCar.itinerar){
-             var itinerarAuta: Address[] = [];
-             oneCar.itinerar.forEach(addId => {
-               this.addressService.getOneAddresById(addId).subscribe(oneAdd => {
-                 itinerarAuta.push(oneAdd);
-               });
-             });
-             carsWithIti.push({...oneCar, ...[itinerarAuta]});
-         }
+        this.carsFromDatabase.forEach(oneCar => {
+          if (oneCar.itinerar) {
+            var itinerarAuta: Address[] = [];
+            oneCar.itinerar.forEach(addId => {
+              this.addressService.getOneAddresById(addId).subscribe(oneAdd => {
+                if (oneAdd) {
+                  itinerarAuta.push(oneAdd);
+                } else {
+                  this.addressService.getOneAddresFromOfferById(addId).subscribe(offerAdd => {
+                    itinerarAuta.push(offerAdd);
+                  })
+                }
+              });
+            });
+            carsWithIti.push({...oneCar, ...[itinerarAuta]});
+          }
 
-       })
-      this.carsWithItinerar = carsWithIti;
+        })
+        this.carsWithItinerar = carsWithIti;
         // mojeAdresy = allAddresses.filter(oneAddress => oneAddress.status != 3);
-        mojeAdresy = allAddresses;
+        mojeAdresy = allAddresses.concat(allOffers);
 
 
         mojeAdresy.forEach((oneAddress, index) => {
-          var addressInCar:Cars;
+          var addressInCar: Cars;
           // this.carsFromDatabase.forEach(oneCar => {
           //   var car = oneCar.itinerar.find(addId => addId == oneAddress.id);
           // })
 
-          var car = this.carsFromDatabase.find(oneCar =>{
-            if (oneCar.itinerar){
-              if (oneCar.itinerar.includes(oneAddress.id)){
+          var car = this.carsFromDatabase.find(oneCar => {
+            if (oneCar.itinerar) {
+              if (oneCar.itinerar.includes(oneAddress.id)) {
                 return true;
               }
-            }});
-
+            }
+          });
 
 
           if (car) {
             var cisloAuta = this.carsFromDatabase.findIndex(oneCar => oneCar.id == car.id);
             var cisloItinerara = car.itinerar.findIndex(oneAdd => oneAdd == oneAddress.id);
-
 
 
             var iconFeature = new Feature({
@@ -624,21 +633,23 @@ export class MapComponent {
           var feature = vectorSource.getFeatures()[0];
           var polygon = feature.getGeometry();
 
-          setTimeout( () => {
+          setTimeout(() => {
             var vectorNaZobrazenieAllFeatures = new VectorSource({
               features: this.places.concat(this.cars).concat(this.routes)
             });
 
-            if (this.firstZoomAddress == false){
-              this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-                duration: 800} )
+            if (this.firstZoomAddress == false) {
+              this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {
+                padding: [100, 100, 100, 100], minResolution: 50,
+                duration: 800
+              })
               this.firstZoomAddress = true;
             }
-          }, 1500 );
+          }, 1500);
 
 
         }
-
+      });
       });
 
 
@@ -941,7 +952,7 @@ export class MapComponent {
       this.map.removeLayer(this.vectorLayerOffersYellow);
     }else if (emitFromFilter != null){
       console.log(emitFromFilter)
-      var offers = emitFromFilter.offers;
+      var offers: Route[] = emitFromFilter.offers;
       var minVzdialenost = emitFromFilter.minDistance;
       var maxVzdialenost = emitFromFilter.maxDistance;
       var maxPrekrocenieVahy = emitFromFilter.weight;
@@ -953,20 +964,24 @@ export class MapComponent {
       var poleSMinVzdialenostamiOdAdries = [];
       offers.forEach((oneRouteOffer, indexOffer) => { //prechaedzam ponukami
 
+        var adresyVPonuke: Address[] = [];
+        oneRouteOffer.addresses.forEach(addId => {
+          adresyVPonuke.push(this.adressesFromDatabase.find(oneAdd => oneAdd.id == addId));
+        })
         //tot si priradujem detail a maxVahu ponuky
         var detailArray = [];
         var prepravasDetailom;
-        oneRouteOffer.detailsAboutAdresses.forEach(detail => { // prechadzam detailami
-          this.routeDetailService.offerDetails$.subscribe(allDetails => {
-            detailArray.push(allDetails.find(oneMyDetail => oneMyDetail.id == detail));
-          });
-        });
+        // oneRouteOffer.detailsAboutAdresses.forEach(detail => { // prechadzam detailami
+        //   this.routeDetailService.offerDetails$.subscribe(allDetails => {
+        //     detailArray.push(allDetails.find(oneMyDetail => oneMyDetail.id == detail));
+        //   });
+        // });
         var maxVaha = 0;
         var sumVaha = 0;
-        detailArray.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
+        adresyVPonuke.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
         if (oneDetail.weight != null){
           oneDetail.weight.forEach(vaha => {
-            if (oneRouteOffer.type[index] == 'nakladka'){
+            if (oneDetail.type == 'nakladka'){
               sumVaha += vaha;
               if (sumVaha > maxVaha){
                 maxVaha = sumVaha;
@@ -978,8 +993,8 @@ export class MapComponent {
 
         }
         })
-        prepravasDetailom = {...oneRouteOffer, detailArray, maxVaha};
-
+        prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha};
+        console.log(prepravasDetailom)
         //tu konci priradovanie detialov a max vah
 
 
@@ -989,7 +1004,7 @@ export class MapComponent {
 
           var zltePrepravy = [];
           var zelenePrepravy = [];
-        this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi prepravami
+        this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi mojimi adresami
           if(this.vectorLayerCoordinates != undefined)
           var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
 
@@ -1201,6 +1216,125 @@ export class MapComponent {
       this.map.removeLayer(this.vectorLayerOffersRoutesRed);
     }
   }
+
+  countRandomArray(array1, array2){
+
+  }
+
+  skuskaVzdialenostiOdCiary(){
+    var routeString = new LineString([[14,49],[25,49]])
+      .transform('EPSG:4326', 'EPSG:3857');
+    var routeFeature = new Feature({
+      type: 'offer',
+      geometry: routeString,
+      name: "skuskaLiny"
+    });
+
+    var routeStyle;
+    routeStyle = new Style({
+      stroke: new Stroke({
+        width: 6,
+        color: [207, 0, 15, 0.45]
+      })
+    });
+    var styles = [];
+
+    routeFeature.getGeometry().forEachSegment(function (start, end){
+      var dx = end[0] - start[0];
+      var dy = end[1] - start[1];
+      var rotation = Math.atan2(dy, dx);
+      // arrows
+      styles.push(
+        new Style({
+          geometry: new Point(end),
+          image: new Icon({
+            src: 'assets/logo/arrow.png',
+            anchor: [0.75, 0.5],
+            scale: 0.05,
+            rotateWithView: true,
+            rotation: -rotation,
+          }),
+        })
+      );
+    })
+    styles.push(routeStyle)
+    routeFeature.setStyle(styles);
+    this.offersRouteRed.push(routeFeature);
+    var vectorSourceRoutesRed = new VectorSource({
+      features: this.offersRouteRed
+    });
+    this.vectorLayerOffersRoutesRed = new VectorLayer({
+      source: vectorSourceRoutesRed,
+    });
+    this.map.addLayer(this.vectorLayerOffersRoutesRed);
+
+    //bod
+    var iconFeature = new Feature({
+      geometry: new Point(fromLonLat([19, 51])),
+      name: "adresa.id",
+      type: "town"
+    });
+
+      var iconStyle = new Style({
+        image: new CircleStyle({
+          radius: 8,
+          stroke: new Stroke({
+            color: '#fff'
+          }),
+          fill: new Fill({
+            color: this.getColorByIndex(6)
+          }),
+        }),
+        text: new Text({
+          text: (1).toString(),
+          fill: new Fill({
+            color: '#fff',
+          }),
+        })
+      });
+
+iconFeature.setStyle(iconStyle)
+
+  var vectorSource = new VectorSource({
+    features: [iconFeature]
+  });
+
+  // this.map.removeLayer(this.vectorLayerAdress)
+  var skusobny = new VectorLayer({
+    source: vectorSource,
+  });
+  // this.vectorLayerAdress.setZIndex(2);
+  this.map.addLayer(skusobny);
+
+
+
+  // var coordinateOfNajblizsiBod = routeString.getClosestPoint([18.740801,49.219452])
+    // toto je cislo od 0 - zaciatok po 1 koniec liny...s tymto bnudem hladat najkratsiu vzdialenost k mojmo bodu
+    // var coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.5)
+    // console.log(coordinateOfNajblizsiBod)
+    // var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
+    // // var lon = lonlat[0];
+    // // var lat = lonlat[1];
+    // console.log(lonlat)
+    // console.log(this.countDistancePoints(lonlat, [18.740801,49.219452]));
+    var minVzdialenost = this.countClosesPoint(routeString, [19, 51]);
+    console.log(minVzdialenost);
+}
+
+    countClosesPoint(routeString, lonLatMy){
+      var closesPoint;
+      for (let i = 0; i < 21; i++) {
+        var coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.05 * i)
+        var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
+        var vzdialenost = this.countDistancePoints(lonlat, lonLatMy);
+          if (!closesPoint) {
+            closesPoint = vzdialenost;
+          } else if (closesPoint > vzdialenost) {
+            closesPoint = vzdialenost
+          }
+      }
+        return closesPoint;
+    }
 
   drawOffers(offers){
     this.offersGreen = []
