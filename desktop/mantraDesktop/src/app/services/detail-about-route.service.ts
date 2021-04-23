@@ -129,7 +129,7 @@ export class DetailAboutRouteService {
   //   }).valueChanges();
   // }
 
-  countFreeWeightOfCarOnAdress(detail: DeatilAboutAdresses[], route: Route){
+  countFreeWeightOfCarOnAdress(detail, route: Route){
     var poleVolnejVahy = [];
     var car: Cars;
     var prives: Prives;

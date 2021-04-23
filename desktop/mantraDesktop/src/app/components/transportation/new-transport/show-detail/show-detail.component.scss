@@ -1,0 +1,37 @@
+.bednaWapper{
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.nakladkaWrapper{
+  display: flex;
+}
+
+.bednaWapperNakl{
+  border-bottom: 2px solid green;
+  display: flex;
+}
+.vykladkaWrapper{
+  display: flex;
+}
+
+.bednaWapperVykl{
+  border-bottom: 2px solid red;
+  display: flex;
+}
+
+.bedna{
+  width: 60px;
+  margin: 6px;
+  cursor: pointer;
+}
+
+.transparent{
+  opacity: 0.6;
+  cursor: default;
+}
+
+
+
+
+

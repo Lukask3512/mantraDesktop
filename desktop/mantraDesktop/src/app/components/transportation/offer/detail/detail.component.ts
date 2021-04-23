@@ -203,7 +203,7 @@ export class DetailComponent implements OnInit {
     this.offerService.updateRoute(this.route);
   }
 
-  vypocitajVahuPreMesto(infoMesto: DeatilAboutAdresses){
+  vypocitajVahuPreMesto(infoMesto){
     var vahaVMeste = 0;
     infoMesto.weight.forEach(vaha => {
       vahaVMeste += vaha;

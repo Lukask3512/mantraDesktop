@@ -8,7 +8,7 @@
 
   <section class="example-section">
 <!--    (change)="labelChange()"-->
-    <mat-radio-group  class="radioButtons" [(ngModel)]="labelPosition">
+    <mat-radio-group (change)="formUpdate()"  class="radioButtons" [(ngModel)]="labelPosition">
       <mat-radio-button class="radios" value="nakladka">Nakládka</mat-radio-button>
       <mat-radio-button class="radios" value="vykladka">Vykládka</mat-radio-button>
     </mat-radio-group>
@@ -151,23 +151,7 @@
       </div>
 
     </form>
-    <!--  <div>-->
-    <!--    <h4 *ngIf="labelPosition == 'vykladka'">Tu vyber</h4>-->
-    <!--    <div class="bednaWapper" *ngFor="let detail of this.fakeArrayOfDetailsAbRoute; let indexik = index">-->
-    <!--      <div class="nakladkaWrapper" *ngIf="this.route.type[indexik] == 'nakladka'" >-->
-    <!--        <div class="bednaWapperNakl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">-->
-    <!--          <img *ngIf="ciMozemVylozitBednu(detail, indexik, indexBedne)" (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">-->
-    <!--        </div>-->
-    <!--      </div>-->
 
-    <!--      <div class="vykladkaWrapper" *ngIf="this.route.type[indexik] == 'vykladka'">-->
-    <!--        <div class="bednaWapperVykl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">-->
-    <!--          <img (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">-->
-    <!--        </div>-->
-    <!--      </div>-->
-
-    <!--    </div>-->
-    <!--  </div>-->
 
   </div>
 

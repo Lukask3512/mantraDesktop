@@ -30,6 +30,29 @@ export class DataService {
   private dispecerSource = new BehaviorSubject<string>('empty');
   private loggedDispecer: Dispecer;
 
+  //detaily v route
+  private detailSource = new BehaviorSubject<any>(null);
+  allCurrentDetail = this.detailSource.asObservable();
+  private currentDetails;
+
+  //detail v aktualnej adrese ktoru vytvaram
+  private actualDetailSource = new BehaviorSubject<any>(null);
+  actualDetail = this.actualDetailSource.asObservable();
+
+  setDetailSource(detail){
+    this.detailSource.next(detail);
+    this.currentDetails = detail;
+  }
+
+  getDetails(){
+    return this.currentDetails;
+  }
+
+  setActualDetailsInAddress(details){
+    this.actualDetailSource.next(details)
+  }
+
+
 
   constructor() { }
 

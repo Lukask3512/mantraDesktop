@@ -1612,7 +1612,7 @@ iconFeature.setStyle(iconStyle)
     // }
   }
 
-  vypocitajVahuPreMesto(infoMesto: DeatilAboutAdresses){
+  vypocitajVahuPreMesto(infoMesto){
     var vahaVMeste = 0;
     infoMesto.weight.forEach(vaha => {
       vahaVMeste += vaha;

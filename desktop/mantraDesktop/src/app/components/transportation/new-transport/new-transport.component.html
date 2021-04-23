@@ -15,11 +15,16 @@
 
 
 <app-new-form (adressOut)="receiveAddress($event)"
+              (detailOut)="receiveDetail($event)"
+              (detailPositionOut)="receiveDetailPosition($event)"
               (adressOutUpdate)="receiveAddressUpdate($event)"></app-new-form>
 
 
 
 
+  <div class="detail">
+    <app-show-detail (detailOut)="setDetailForm($event)"></app-show-detail>
+  </div>
 
 
 </div>
@@ -41,6 +46,8 @@
     </div>
 
   </div>
+
+
   <div class="map">
     <app-openlayer #child></app-openlayer>
   </div>

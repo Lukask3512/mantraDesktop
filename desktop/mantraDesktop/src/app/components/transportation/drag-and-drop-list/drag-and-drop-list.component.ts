@@ -16,7 +16,10 @@ import Address from "../../../models/Address";
 export class DragAndDropListComponent implements OnInit {
 
   @Input() draggable = false;
+
   @Input() address: Address[];
+  @Input() detailArray;
+  @Input() detailPositions;
 
 
   @Output() outputRoute = new EventEmitter<Address[]>();

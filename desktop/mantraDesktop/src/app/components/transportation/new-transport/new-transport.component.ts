@@ -25,6 +25,7 @@ import {OfferPriceComponent} from "../../dialogs/offer-price/offer-price.compone
 import Address from "../../../models/Address";
 import {AddressService} from "../../../services/address.service";
 import {NewFormComponent} from "./new-form/new-form.component";
+import {ShowDetailComponent} from "./show-detail/show-detail.component";
 
 
 
@@ -35,6 +36,8 @@ import {NewFormComponent} from "./new-form/new-form.component";
 })
 export class NewTransportComponent implements AfterViewInit {
   addresses: Address[] = [];
+  detail = []
+
 
   //aby log sledoval zmeny ak zmenim trasu
   parentSubject:Subject<any> = new Subject();
@@ -57,6 +60,9 @@ export class NewTransportComponent implements AfterViewInit {
 
   arrayOfStringOfDetails;
 
+  //pole
+  arrayOfDetailsPositions = [];
+
 
   minDate;
   labelPosition: 'nakladka' | 'vykladka';
@@ -77,6 +83,9 @@ export class NewTransportComponent implements AfterViewInit {
 
   @ViewChild(NewFormComponent)
   private newFormChild: NewFormComponent;
+
+  @ViewChild(ShowDetailComponent)
+  private detailChild: ShowDetailComponent;
 
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog,
@@ -150,6 +159,10 @@ export class NewTransportComponent implements AfterViewInit {
     this.newFormChild.setAddress(this.addresses[index], index);
   }
 
+  setDetailForm(detail){
+    this.newFormChild.setDetail(detail);
+  }
+
 
   onDropListChange(changedRoute: Address[]){
     this.addresses = changedRoute;
@@ -177,7 +190,18 @@ export class NewTransportComponent implements AfterViewInit {
   receiveAddress(address: Address){
     this.addresses.push(address);
     this.child.notifyMe(this.addresses,undefined, undefined);
-    console.log(this.addresses);
+  }
+
+  receiveDetail(detail){
+    this.detail.push(detail);
+    console.log(this.detail)
+    this.detailChild.setDetails(this.detail);
+    this.dataService.setDetailSource(this.detail)
+  }
+
+  receiveDetailPosition(detailPositions){
+    this.arrayOfDetailsPositions.push(detailPositions);
+    console.log(this.arrayOfDetailsPositions);
   }
 
 
