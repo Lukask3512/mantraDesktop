@@ -268,7 +268,7 @@ export class NewFormComponent implements OnInit {
     this.address = new Address();
     this.detailsArray = [];
     this.townIndex = [];
-    this.detailsArray = [];
+    this.detailIndex = [];
     this.childGoogle.resetGoogle();
     this.labelPosition = undefined;
 

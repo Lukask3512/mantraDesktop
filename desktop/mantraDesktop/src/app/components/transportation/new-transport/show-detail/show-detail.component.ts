@@ -56,6 +56,7 @@ export class ShowDetailComponent implements OnInit {
         this.detailsArray.forEach((oneDetail, index) => {
           if (oneDetail.townsArray !== undefined){
             oneDetail.townsArray.forEach((balik, indexBalika) => {
+              var balik = oneDetail;
               if (oneDetail.townsArray[indexBalika] == mesto && pozicia == oneDetail.detailArray[indexBalika]){
                 nasiel =  true;
               }
