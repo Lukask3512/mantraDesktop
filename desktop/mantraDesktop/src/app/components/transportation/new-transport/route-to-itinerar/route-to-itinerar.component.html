@@ -26,11 +26,15 @@
     cdkDropListConnectedTo="all"
     class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <div
-      class="example-box"
-      *ngFor="let itiAddress of carItinerarAddresses"
-      cdkDrag
-      [cdkDragData]="itiAddress">{{itiAddress.nameOfTown}}</div>
+    <div *ngIf="this.car.itinerar">
+
+        <div
+          class="example-box"
+          *ngFor="let itiAddress of carItinerarAddresses"
+          cdkDrag
+          [cdkDragData]="itiAddress">{{itiAddress.nameOfTown}}</div>
+    </div>
+
   </div>
 </div>
 

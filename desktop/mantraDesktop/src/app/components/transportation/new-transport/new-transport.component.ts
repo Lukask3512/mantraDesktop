@@ -128,7 +128,6 @@ export class NewTransportComponent implements AfterViewInit {
         this.carId = this.route.carId
         if (this.carId != undefined || this.carId != null){
           this.car = this.dataService.getOneCarById(this.carId);
-          console.log(this.car)
           setTimeout(() =>
             {
 
@@ -194,19 +193,16 @@ export class NewTransportComponent implements AfterViewInit {
 
   receiveDetail(detail){
     this.detail.push(detail);
-    console.log(this.detail)
     this.detailChild.setDetails(this.detail);
     this.dataService.setDetailSource(this.detail)
   }
 
   receiveDetailPosition(detailPositions){
     this.arrayOfDetailsPositions.push(detailPositions);
-    console.log(this.arrayOfDetailsPositions);
   }
 
 
   notifyChildren(routeId) {
-    console.log("somodoslal")
     this.parentSubject.next(routeId);
   }
 
@@ -241,6 +237,7 @@ export class NewTransportComponent implements AfterViewInit {
         carId: this.carId,
         addresses: this.addresses,
         newRoute: true,
+        packages: this.detail
       };
     }
 
@@ -249,11 +246,13 @@ export class NewTransportComponent implements AfterViewInit {
         carId: this.carId,
         addresses: this.addresses,
         newRoute: true,
+        packages: this.detail
       };
     }else{
       dialogConfig.data = {
         addresses: this.addresses,
         newRoute: false,
+        packages: this.detail
       };
     }
 

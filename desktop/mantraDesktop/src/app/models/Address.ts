@@ -16,13 +16,14 @@ export default class Address {
   estimatedTimeArrival?: string;
 
   //detail
-  sizeV: number[];
-  sizeS: number[];
-  sizeD: number[];
-  weight: number[];
-  stohovatelnost: number[]; //ak ano kolko unesie
-  vyskaNaklHrany: number[];
-  polohaNakladania: string[];
-  specRezim?: number[];
+  packagesId: string[] = [];
+  // sizeV: number[];
+  // sizeS: number[];
+  // sizeD: number[];
+  // weight: number[];
+  // stohovatelnost: number[]; //ak ano kolko unesie
+  // vyskaNaklHrany: number[];
+  // polohaNakladania: string[];
+  // specRezim?: number[];
 
 }

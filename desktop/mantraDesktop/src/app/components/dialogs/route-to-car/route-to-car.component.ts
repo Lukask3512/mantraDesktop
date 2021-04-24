@@ -30,6 +30,7 @@ export class RouteToCarComponent implements OnInit {
   routeStatus;
   addresses: Address[];
   addressesToDragDrop: Address[];
+  packages = [];
   route: Route = new Route();
   newRoute;
   routeId;
@@ -45,6 +46,8 @@ export class RouteToCarComponent implements OnInit {
     });
     this.newRoute = this.data.newRoute;
     this.addresses = this.data.addresses;
+    this.packages = this.data.packages;
+    console.log(this.packages);
     this.addressesToDragDrop = JSON.parse(JSON.stringify(this.addresses));
     this.isOffer = this.data.offer;
 

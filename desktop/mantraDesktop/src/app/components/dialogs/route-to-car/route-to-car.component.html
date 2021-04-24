@@ -26,6 +26,7 @@
       <app-route-to-itinerar *ngIf="this.chosenCar"
                              [newRoute]="addressesToDragDrop"
                              [car]="this.chosenCar"
+                             [newDetails]="this.packages"
                               (addressesId)="saveRoute($event)">
 
       </app-route-to-itinerar>

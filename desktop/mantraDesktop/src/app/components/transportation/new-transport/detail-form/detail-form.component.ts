@@ -51,101 +51,101 @@ export class DetailFormComponent implements OnInit, OnChanges {
   }
 
 
-  //: OneDetailRoute toto tam bolo
-  getDetail(){
-    var stohovatelnost = this.transportForm.get('stohovatelnost').value;
-    if (stohovatelnost == 'nie'){
-      stohovatelnost = 0;
-    }else{
-      stohovatelnost = this.transportForm.get('stohoSize').value;
-    }
-    var vyskaNakHrany;
-    if (this.transportForm.get('vyskaHrany').value == 'rozhoduje'){
-      vyskaNakHrany = this.transportForm.get('vyskaHranySize').value;
-    }else{
-      vyskaNakHrany = -1;
-    }
-
-
-    var back = "0";
-    var side = "0";
-    var upside = "0";
-    if (this.transportForm.get('fromBackSide').value){
-      back = "1";
-    }
-    if (this.transportForm.get('fromSide').value){
-      side = "1";
-    }
-    if (this.transportForm.get('fromUpSide').value){
-      upside = "1";
-    }
-
-    var polohaNakladania =  back + side + upside;
-
-    return{
-      polohaNakladania: [polohaNakladania],
-      sizeD: [this.transportForm.get('sizeD').value],
-      sizeS: [this.transportForm.get('sizeS').value],
-      sizeV: [this.transportForm.get('sizeV').value],
-      // specRezim: this.transportForm.get(''),
-      stohovatelnost: [stohovatelnost],
-      vyskaNaklHrany: [vyskaNakHrany],
-      weight: [this.transportForm.get('weight').value]
-
-    }
-
-  }
-
-  ifValifForm(){
-    if (this.transportForm.valid){
-      console.log(this.address);
-    }else{
-      console.log("nonValid");
-    }
-  }
-
-
-  pushItemsToArray(indexOfAddresses, indexOfPackage){
-    if (this.address.sizeV == undefined){
-      this.address.sizeV = this.getDetail().sizeV;
-      this.address.sizeD = this.getDetail().sizeD;
-      this.address.sizeS = this.getDetail().sizeS;
-      this.address.stohovatelnost = this.getDetail().stohovatelnost;
-      this.address.vyskaNaklHrany = this.getDetail().vyskaNaklHrany;
-      this.address.polohaNakladania = this.getDetail().polohaNakladania;
-      this.address.weight = this.getDetail().weight;
-    }else{
-      if (this.address.stohovatelnost[indexOfPackage] == undefined){
-
-        this.address.stohovatelnost.push(this.getDetail().stohovatelnost[0]);
-        this.address.weight.push(this.getDetail().weight[0]);
-        this.address.polohaNakladania.push(this.getDetail().polohaNakladania[0]);
-        this.address.sizeD.push(this.getDetail().sizeD[0]);
-        this.address.sizeS.push(this.getDetail().sizeS[0]);
-        this.address.sizeV.push(this.getDetail().sizeV[0]);
-        this.address.vyskaNaklHrany.push(this.getDetail().vyskaNaklHrany[0]);
-      }else{
-        this.address.stohovatelnost[indexOfPackage] = this.getDetail().stohovatelnost[0];
-        this.address.weight[indexOfPackage] = this.getDetail().weight[0];
-
-        if (this.transportForm.get('poziciaNakladania').value == 'nerozhoduje') {
-          this.transportForm.controls['fromBackSide'].setValue(undefined);
-          this.transportForm.controls['fromSide'].setValue(undefined);
-          this.transportForm.controls['fromUpSide'].setValue(undefined);
-          this.address.polohaNakladania[indexOfPackage] = "000";
-        }else{
-          this.address.polohaNakladania[indexOfPackage] = this.getDetail().polohaNakladania[0];
-        }
-
-        this.address.sizeD[indexOfPackage] = this.getDetail().sizeD[0];
-        this.address.sizeS[indexOfPackage] = this.getDetail().sizeS[0];
-        this.address.sizeV[indexOfPackage] = this.getDetail().sizeV[0];
-        this.address.vyskaNaklHrany[indexOfPackage] = this.getDetail().vyskaNaklHrany[0];
-      }
-
-    }
-
-  }
+  // //: OneDetailRoute toto tam bolo
+  // getDetail(){
+  //   var stohovatelnost = this.transportForm.get('stohovatelnost').value;
+  //   if (stohovatelnost == 'nie'){
+  //     stohovatelnost = 0;
+  //   }else{
+  //     stohovatelnost = this.transportForm.get('stohoSize').value;
+  //   }
+  //   var vyskaNakHrany;
+  //   if (this.transportForm.get('vyskaHrany').value == 'rozhoduje'){
+  //     vyskaNakHrany = this.transportForm.get('vyskaHranySize').value;
+  //   }else{
+  //     vyskaNakHrany = -1;
+  //   }
+  //
+  //
+  //   var back = "0";
+  //   var side = "0";
+  //   var upside = "0";
+  //   if (this.transportForm.get('fromBackSide').value){
+  //     back = "1";
+  //   }
+  //   if (this.transportForm.get('fromSide').value){
+  //     side = "1";
+  //   }
+  //   if (this.transportForm.get('fromUpSide').value){
+  //     upside = "1";
+  //   }
+  //
+  //   var polohaNakladania =  back + side + upside;
+  //
+  //   return{
+  //     polohaNakladania: [polohaNakladania],
+  //     sizeD: [this.transportForm.get('sizeD').value],
+  //     sizeS: [this.transportForm.get('sizeS').value],
+  //     sizeV: [this.transportForm.get('sizeV').value],
+  //     // specRezim: this.transportForm.get(''),
+  //     stohovatelnost: [stohovatelnost],
+  //     vyskaNaklHrany: [vyskaNakHrany],
+  //     weight: [this.transportForm.get('weight').value]
+  //
+  //   }
+  //
+  // }
+  //
+  // ifValifForm(){
+  //   if (this.transportForm.valid){
+  //     console.log(this.address);
+  //   }else{
+  //     console.log("nonValid");
+  //   }
+  // }
+  //
+  //
+  // pushItemsToArray(indexOfAddresses, indexOfPackage){
+  //   if (this.address.sizeV == undefined){
+  //     this.address.sizeV = this.getDetail().sizeV;
+  //     this.address.sizeD = this.getDetail().sizeD;
+  //     this.address.sizeS = this.getDetail().sizeS;
+  //     this.address.stohovatelnost = this.getDetail().stohovatelnost;
+  //     this.address.vyskaNaklHrany = this.getDetail().vyskaNaklHrany;
+  //     this.address.polohaNakladania = this.getDetail().polohaNakladania;
+  //     this.address.weight = this.getDetail().weight;
+  //   }else{
+  //     if (this.address.stohovatelnost[indexOfPackage] == undefined){
+  //
+  //       this.address.stohovatelnost.push(this.getDetail().stohovatelnost[0]);
+  //       this.address.weight.push(this.getDetail().weight[0]);
+  //       this.address.polohaNakladania.push(this.getDetail().polohaNakladania[0]);
+  //       this.address.sizeD.push(this.getDetail().sizeD[0]);
+  //       this.address.sizeS.push(this.getDetail().sizeS[0]);
+  //       this.address.sizeV.push(this.getDetail().sizeV[0]);
+  //       this.address.vyskaNaklHrany.push(this.getDetail().vyskaNaklHrany[0]);
+  //     }else{
+  //       this.address.stohovatelnost[indexOfPackage] = this.getDetail().stohovatelnost[0];
+  //       this.address.weight[indexOfPackage] = this.getDetail().weight[0];
+  //
+  //       if (this.transportForm.get('poziciaNakladania').value == 'nerozhoduje') {
+  //         this.transportForm.controls['fromBackSide'].setValue(undefined);
+  //         this.transportForm.controls['fromSide'].setValue(undefined);
+  //         this.transportForm.controls['fromUpSide'].setValue(undefined);
+  //         this.address.polohaNakladania[indexOfPackage] = "000";
+  //       }else{
+  //         this.address.polohaNakladania[indexOfPackage] = this.getDetail().polohaNakladania[0];
+  //       }
+  //
+  //       this.address.sizeD[indexOfPackage] = this.getDetail().sizeD[0];
+  //       this.address.sizeS[indexOfPackage] = this.getDetail().sizeS[0];
+  //       this.address.sizeV[indexOfPackage] = this.getDetail().sizeV[0];
+  //       this.address.vyskaNaklHrany[indexOfPackage] = this.getDetail().vyskaNaklHrany[0];
+  //     }
+  //
+  //   }
+  //
+  // }
 
   // nextItem(){
   //   console.log(this.actualItemInForm )

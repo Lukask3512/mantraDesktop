@@ -516,19 +516,19 @@ export class NewFormComponent implements OnInit {
 
   //ked sa nahodov zmensi pole, ale by som ho pohol opopovat
   sizeUpdate(){
-    if (this.address.sizeV != undefined){
-      if (this.numberOfItems <= this.address.sizeV.length +1){
-        this.actualItemInForm = this.numberOfItems -1;
-        this.address.sizeV = this.address.sizeV.slice(0, this.numberOfItems -1);
-        this.address.sizeS = this.address.sizeS.slice(0, this.numberOfItems -1)
-        this.address.sizeD = this.address.sizeD.slice(0, this.numberOfItems -1)
-        this.address.weight = this.address.weight.slice(0, this.numberOfItems -1)
-        this.address.vyskaNaklHrany = this.address.vyskaNaklHrany.slice(0, this.numberOfItems -1)
-        this.address.polohaNakladania = this.address.polohaNakladania.slice(0, this.numberOfItems -1)
-        this.address.stohovatelnost = this.address.stohovatelnost.slice(0, this.numberOfItems -1)
-        // this.detailAboutRoute[0].specRezim.slice(0, this.numberOfItems)
-      }
-    }
+    // if (this.address.sizeV != undefined){
+    //   if (this.numberOfItems <= this.address.sizeV.length +1){
+    //     this.actualItemInForm = this.numberOfItems -1;
+    //     this.address.sizeV = this.address.sizeV.slice(0, this.numberOfItems -1);
+    //     this.address.sizeS = this.address.sizeS.slice(0, this.numberOfItems -1)
+    //     this.address.sizeD = this.address.sizeD.slice(0, this.numberOfItems -1)
+    //     this.address.weight = this.address.weight.slice(0, this.numberOfItems -1)
+    //     this.address.vyskaNaklHrany = this.address.vyskaNaklHrany.slice(0, this.numberOfItems -1)
+    //     this.address.polohaNakladania = this.address.polohaNakladania.slice(0, this.numberOfItems -1)
+    //     this.address.stohovatelnost = this.address.stohovatelnost.slice(0, this.numberOfItems -1)
+    //
+    //   }
+    // }
 
   }
 

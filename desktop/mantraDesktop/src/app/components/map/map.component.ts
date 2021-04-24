@@ -978,6 +978,7 @@ export class MapComponent {
         // });
         var maxVaha = 0;
         var sumVaha = 0;
+
         adresyVPonuke.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
         if (oneDetail.weight != null){
           oneDetail.weight.forEach(vaha => {

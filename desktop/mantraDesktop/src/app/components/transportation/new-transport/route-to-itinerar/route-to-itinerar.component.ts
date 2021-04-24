@@ -5,6 +5,7 @@ import Address from "../../../../models/Address";
 import {AddressService} from "../../../../services/address.service";
 import {DataService} from "../../../../data/data.service";
 import {CarService} from "../../../../services/car.service";
+import {PackageService} from "../../../../services/package.service";
 
 @Component({
   selector: 'app-route-to-itinerar',
@@ -15,12 +16,13 @@ export class RouteToItinerarComponent implements OnInit {
 
   @Input() car: Cars;
   @Input() newRoute: Address[];
+  @Input() newDetails;
   @Output() addressesId = new EventEmitter<string[]>();
   @Output() offerInCar = new EventEmitter<Cars>();
   newRouteCopy: Address[];
   carItinerarAddresses: Address[] = [];
   constructor(private addressService: AddressService, private dataService: DataService,
-              private carService: CarService, private addressesService: AddressService) { }
+              private carService: CarService, private addressesService: AddressService, private packageService: PackageService) { }
 
   ngOnInit(): void {
     var adresy = this.addressService.getAddresses();
@@ -81,17 +83,47 @@ export class RouteToItinerarComponent implements OnInit {
     return false;
   }
 
+  najdiVykladkuTovaru(townId, detailId){
+    for (const [idTown, oneDetail] of this.newDetails.entries()) {
+      if (oneDetail.townsArray !== undefined){
+        for (const [idDetail, onePackage] of oneDetail.townsArray.entries()) {
+          if (oneDetail.townsArray[idDetail] == townId && oneDetail.detailArray[idDetail] == detailId){
+            return {idTown: idTown, idDetail: idDetail}
+          }
+        }
+      }
+    }
+  }
+
   async addToItinerar(){
+
+    for (const [idTown, oneDetail] of this.newDetails.entries()) {
+      if (oneDetail.townsArray == undefined){
+        for (const [idPackage, onePackage] of oneDetail.entries()) {
+          var packageId = this.packageService.createPackageWithId(onePackage);
+          if (this.carItinerarAddresses[idTown].packagesId == undefined){
+            this.carItinerarAddresses[idTown].packagesId = [];
+          }
+          this.carItinerarAddresses[idTown].packagesId.push(packageId);
+          var adresaVykladky = this.najdiVykladkuTovaru(idTown, idPackage);
+          this.carItinerarAddresses[adresaVykladky.idTown].packagesId.push(packageId)
+
+        }
+      }
+    }
+
     var addressesId: string[] = [];
     var newAddresses: string[] = [];
     console.log(this.carItinerarAddresses);
-    for (const oneAddres of this.carItinerarAddresses){
+    for (const [id, oneAddres] of this.carItinerarAddresses.entries()){
       if (oneAddres.id){
         addressesId.push(oneAddres.id);
       }else{
         var createdBy = this.dataService.getMyIdOrMaster();
         oneAddres.createdBy = createdBy;
         oneAddres.carId = this.car.id;
+
+
         const idcko = await this.addressService.createAddressWithId({...oneAddres});
         addressesId.push(idcko);
         newAddresses.push(idcko);
