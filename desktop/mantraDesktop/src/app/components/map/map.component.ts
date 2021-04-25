@@ -979,21 +979,22 @@ export class MapComponent {
         var maxVaha = 0;
         var sumVaha = 0;
 
-        adresyVPonuke.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
-        if (oneDetail.weight != null){
-          oneDetail.weight.forEach(vaha => {
-            if (oneDetail.type == 'nakladka'){
-              sumVaha += vaha;
-              if (sumVaha > maxVaha){
-                maxVaha = sumVaha;
-              }
-            }else{
-              sumVaha -= vaha;
-            }
-          })
-
-        }
-        })
+       // TODO: zakomentovane len pre zmenu modelu, dokoncit
+        // adresyVPonuke.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
+        // if (oneDetail.weight != null){
+        //   oneDetail.weight.forEach(vaha => {
+        //     if (oneDetail.type == 'nakladka'){
+        //       sumVaha += vaha;
+        //       if (sumVaha > maxVaha){
+        //         maxVaha = sumVaha;
+        //       }
+        //     }else{
+        //       sumVaha -= vaha;
+        //     }
+        //   })
+        //
+        // }
+        // })
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha};
         console.log(prepravasDetailom)
         //tu konci priradovanie detialov a max vah

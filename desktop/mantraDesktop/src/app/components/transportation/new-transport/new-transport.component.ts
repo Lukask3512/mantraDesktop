@@ -195,6 +195,7 @@ export class NewTransportComponent implements AfterViewInit {
     this.detail.push(detail);
     this.detailChild.setDetails(this.detail);
     this.dataService.setDetailSource(this.detail)
+    this.childDropList.setDetails(this.detail);
   }
 
   receiveDetailPosition(detailPositions){

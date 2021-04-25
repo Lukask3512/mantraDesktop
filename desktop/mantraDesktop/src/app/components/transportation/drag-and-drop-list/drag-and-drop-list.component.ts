@@ -7,6 +7,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {RouteStatusService} from "../../../data/route-status.service";
 import {DataService} from "../../../data/data.service";
 import Address from "../../../models/Address";
+import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -24,18 +26,74 @@ export class DragAndDropListComponent implements OnInit {
 
   @Output() outputRoute = new EventEmitter<Address[]>();
   @Output() clickedOnRoute = new EventEmitter<number>();
-  constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService) { }
+  constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
+              private _snackBar: MatSnackBar) { }
 
 
   setAddresses(addresses: Address[]){
     this.address = addresses;
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.address, event.previousIndex, event.currentIndex);
+  //kontrola ci mozem prehodit mesta - podla detailu
+  najdiCiMozemPresunut(detail, previous, current){
+    var mozemPresunut = true;
+    if (detail.townsArray){ // ked sa snazim presunut vykladku
+      for (const [index, detailElement] of detail.townsArray.entries()) {
+        var mestoNakladky = detail.townsArray[index];
+        //+1 lebo pred to som hodil novy item
+        if (mestoNakladky +1 > current){ // ak je mesto kde nakladam vyzsie ako aktualny index vykladky
+          mozemPresunut = false;
+        }
+      }
+    }else{ //a tu ked nakladku
+      for (const [indexNakBalika, detailElement] of detail.entries()) {
+        for (const [indexMesta, oneDetail] of this.detailArray.entries()) {
+          if (oneDetail.townsArray){
+            for (const [index, oneBalik] of oneDetail.townsArray.entries()) {
+              if (oneDetail.townsArray[index] == previous && oneDetail.detailArray[index] == indexNakBalika){
+                if (indexMesta-1 < current){
+                  mozemPresunut = false;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return mozemPresunut;
+  }
 
-    this.outputRoute.emit(this.address);
+  //kontrola ci mozem prehodit mesta - podla detailu
+  zmenIdckaVykladok(detail, previous, current){
+    var mozemPresunut = true;
+    if (detail.townsArray){ // ked sa snazim presunut vykladku
+      //podla previous a currnet budem muiset pomenit indexy vykladok
+    }else{ //a tu ked nakladku
+      //tu budem musiet tiez podla previous a currnet zmenit indexy + zmenit indexy vykladky
+    }
+    return mozemPresunut;
+  }
+
+
+  drop(event: CdkDragDrop<Address[]>) {
+    var presuvaciDetail = this.detailArray[event.previousIndex];
+    var mozemPresunut = this.najdiCiMozemPresunut(presuvaciDetail, event.previousIndex, event.currentIndex);
+    if (mozemPresunut){
+      //tu budem musiet este v detaile upravit indexes
+      moveItemInArray(this.detailArray, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.address, event.previousIndex, event.currentIndex);
+      this.outputRoute.emit(this.address);
+    }else{
+      this.openSnackBar("Túto zmenu nemôžete vykonať.", "OK")
+    }
+
     // this.arrayOfDetailEvent.emit(this.arrayOfDetail);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 3000
+    });
   }
 
   estimatedTimeToLocal(dateUtc){
@@ -61,10 +119,7 @@ export class DragAndDropListComponent implements OnInit {
   }
 
   setDetails(arrayOfDetails){
-    console.log("som dostal")
-    console.log(arrayOfDetails)
-    // this.arrayOfDetail[i].sizeS
-    // console.log(this.arrayOfDetail[0])
+    this.detailArray = arrayOfDetails;
   }
 
   sendTown(index){
