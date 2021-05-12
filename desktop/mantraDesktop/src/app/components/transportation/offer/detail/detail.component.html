@@ -6,9 +6,8 @@
     <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
   </div>
 </header>
-<div *ngIf="this.route" class="wrapper">
-
-  <ol *ngIf="this.route.takenBy !== getDispecerId()">
+<div  class="wrapper">
+<!--  <ol *ngIf="this.route.takenBy !== getDispecerId()">-->
 <!--    <li class="debnaWrapper" *ngFor="let town of address; index as i">{{town.nameOfTown}}-->
 <!--      <span *ngIf="town.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
 <!--      <span *ngIf="town.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
@@ -21,7 +20,9 @@
                             [draggable]="false">
 
     </app-drag-and-drop-list>
-  </ol>
+<div *ngIf="this.route" class="wrapper">
+
+<!--  </ol>-->
 <!--  <div>-->
     <app-offer-to-route (routeToMap)="changeRouteOnMap($event)" [offerAddresses]="this.address" [offer]="this.route" *ngIf="this.route.takenBy == getDispecerId()"></app-offer-to-route>
 <!--    <ol *ngIf="this.route.takenBy == getDispecerId()">-->
@@ -88,4 +89,5 @@
 <!--    Log celej prepravy-->
 
 <!--  </div>-->
+</div>
 </div>

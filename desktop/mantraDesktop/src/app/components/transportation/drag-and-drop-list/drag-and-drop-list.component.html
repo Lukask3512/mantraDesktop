@@ -1,7 +1,7 @@
 <div  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
   <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
-    <div (click)="sendTown(i)" *ngIf="this.detailArray[i] != undefined" class="bednaWrapper">
+    <div (click)="sendTown(i)" *ngIf="this.detailArray && this.detailArray[i] != undefined" class="bednaWrapper">
 <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
         <div class="bedna" *ngFor="let detail of this.detailArray[i].townsArray; let indexik = index">

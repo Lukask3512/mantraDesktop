@@ -26,6 +26,7 @@ import Address from "../../../models/Address";
 import {AddressService} from "../../../services/address.service";
 import {NewFormComponent} from "./new-form/new-form.component";
 import {ShowDetailComponent} from "./show-detail/show-detail.component";
+import {PackageService} from "../../../services/package.service";
 
 
 
@@ -91,7 +92,7 @@ export class NewTransportComponent implements AfterViewInit {
   constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog,
               private dataService: DataService, private routeService: RouteService,
               private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService,
-              private addressService: AddressService) { }
+              private addressService: AddressService, private packageService: PackageService) { }
 
   ngAfterViewInit(): void {
     var loggedDispecer = this.dataService.getDispecer();
@@ -123,6 +124,39 @@ export class NewTransportComponent implements AfterViewInit {
           var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
           adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
           this.addresses = adresy;
+
+          this.addresses.forEach(oneAddress => {
+            var myPackages = [];
+            var detailAr = {detailArray: [], townsArray: [], packageId: []}
+            oneAddress.packagesId.forEach( oneId => {
+              if (oneAddress.type == 'nakladka'){
+                var balik = this.packageService.getOnePackage(oneId);
+                myPackages.push(balik)
+              }else{
+                //tu by som mal vlozit len indexy do vykladky
+                this.detail.forEach((oneDetail, townId) => {
+                  if (oneDetail.townsArray == undefined){
+                    oneDetail.forEach((oneDetailId, packageId) => {
+                      if (oneDetailId.id == oneId){
+                          detailAr.detailArray.push(packageId);
+                          detailAr.townsArray.push(townId);
+                          detailAr.packageId.push(oneDetailId.id);
+                      }
+                    })
+                  }
+                })
+
+              }
+            })
+            if (myPackages.length != 0){
+              this.detail.push(myPackages);
+            }else{
+              this.detail.push(detailAr);
+            }
+
+          });
+
+          this.childDropList.setDetails(this.detail)
           this.childDropList.setAddresses(this.addresses);
         })
         this.carId = this.route.carId
@@ -160,6 +194,12 @@ export class NewTransportComponent implements AfterViewInit {
 
   setDetailForm(detail){
     this.newFormChild.setDetail(detail);
+  }
+
+
+  onDropListDetailChange(detail){
+    this.detail = detail;
+    console.log(this.detail)
   }
 
 
@@ -399,11 +439,84 @@ export class NewTransportComponent implements AfterViewInit {
       if (value === undefined){
         return;
       }else {
-        this.saveAddresses().then(() => {
-          this.sendToAllDispecers(value)
-        })
+        this.createRoute(value);
+        // this.saveAddresses().then(() => {
+        //   this.sendToAllDispecers(value)
+        // })
       }
     });
+  }
+
+  najdiVykladkuTovaru(townId, detailId){
+    for (const [idTown, oneDetail] of this.detail.entries()) {
+      if (oneDetail.townsArray !== undefined){
+        for (const [idDetail, onePackage] of oneDetail.townsArray.entries()) {
+          if (oneDetail.townsArray[idDetail] == townId && oneDetail.detailArray[idDetail] == detailId){
+            return {idTown: idTown, idDetail: idDetail}
+          }
+        }
+      }
+    }
+  }
+
+  async addPonuka(){
+
+    var carItinerarAddresses: Address[] = [];
+    for (const [idTown, oneDetail] of this.detail.entries()) {
+      if (oneDetail.townsArray == undefined){
+        for (const [idPackage, onePackage] of oneDetail.entries()) {
+          var packageId = this.packageService.createPackageWithId(onePackage);
+
+          this.addresses[idTown].packagesId.push(packageId);
+
+          // carItinerarAddresses[idTown].packagesId.push(packageId);
+          var adresaVykladky = this.najdiVykladkuTovaru(idTown, idPackage);
+          this.addresses[adresaVykladky.idTown].packagesId.push(packageId)
+        }
+      }
+    }
+
+    var addressesId: string[] = [];
+    var newAddresses: string[] = [];
+    console.log(carItinerarAddresses);
+    for (const [id, oneAddres] of this.addresses.entries()){
+      if (oneAddres.id){
+        addressesId.push(oneAddres.id);
+      }else{
+        var createdBy = this.dataService.getMyIdOrMaster();
+        oneAddres.createdBy = createdBy;
+        oneAddres.carId = null;
+
+
+        const idcko = await this.addressService.createAddressWithId({...oneAddres});
+        addressesId.push(idcko);
+        newAddresses.push(idcko);
+      }
+    }
+
+
+
+    this.route.addresses = addressesId;
+
+
+
+    //vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
+  }
+
+  createRoute(price){
+    this.addPonuka().then(() => {
+      var route: Route;
+      route = JSON.parse(JSON.stringify(this.route));
+      route.createdAt = (new Date()).toString();
+      route.carId = null;
+      route.finished = false;
+      route.forEveryone = true;
+      route.createdBy = this.dataService.getMyIdOrMaster();
+      route.offerFrom = [];
+      route.priceFrom = [];
+      route.price = price;
+      var idNewRouty = this.routeService.createRoute(route);
+    })
   }
 
   ciMozemVylozitBednu(detail,indexMesta, indexBedne){

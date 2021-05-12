@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../../../../data/data.service";
 import {take} from "rxjs/operators";
 import Route from "../../../../models/Route";
@@ -10,22 +10,25 @@ import {DetailAboutRouteService} from "../../../../services/detail-about-route.s
 import {DragAndDropListComponent} from "../../drag-and-drop-list/drag-and-drop-list.component";
 import {AddressService} from "../../../../services/address.service";
 import Address from "../../../../models/Address";
+import {PackageService} from "../../../../services/package.service";
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements AfterViewInit {
 
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
-              private detailService: DetailAboutRouteService, private addressesService: AddressService) { }
+              private detailService: DetailAboutRouteService, private addressesService: AddressService,
+              private packageService: PackageService) { }
   route: Route;
   fakeRoute: Route;
   price: number;
   offer: number;
   arrayOfDetailsAbRoute: any[] =  [];
   address: Address[];
+  detail: any[] = [];
 
   @ViewChild('child')
   private child: OpenlayerComponent;
@@ -33,7 +36,7 @@ export class DetailComponent implements OnInit {
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
 
     this.dataService.currentRoute.subscribe(route => {
       this.route = route;
@@ -45,10 +48,46 @@ export class DetailComponent implements OnInit {
           this.route = this.fakeRoute;
         }
 
+
         this.addressesService.offerAddresses$.subscribe(alAdd => {
           var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
           adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
           this.address = adresy;
+
+          this.address.forEach(oneAddress => {
+            var myPackages = [];
+            var detailAr = {detailArray: [], townsArray: [], packageId: []}
+            oneAddress.packagesId.forEach( oneId => {
+              if (oneAddress.type == 'nakladka'){
+                var balik = this.packageService.getOnePackage(oneId);
+                myPackages.push(balik)
+              }else{
+                //tu by som mal vlozit len indexy do vykladky
+                this.detail.forEach((oneDetail, townId) => {
+                  if (oneDetail.townsArray == undefined){
+                    oneDetail.forEach((oneDetailId, packageId) => {
+                      if (oneDetailId.id == oneId){
+                        detailAr.detailArray.push(packageId);
+                        detailAr.townsArray.push(townId);
+                        detailAr.packageId.push(oneDetailId.id);
+                      }
+                    })
+                  }
+                })
+
+              }
+            })
+            if (myPackages.length != 0){
+              this.detail.push(myPackages);
+            }else{
+              this.detail.push(detailAr);
+            }
+
+          });
+          console.log(this.detail)
+          if (this.detail)
+          this.childDropList.setDetails(this.detail);
+
         })
 
 
