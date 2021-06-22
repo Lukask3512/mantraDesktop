@@ -1,0 +1,23 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v5.0.639693989)
+
+newmtl Translucent_Glass_Gray
+Kd 0.50196081 0.50196081 0.50196081
+Ka 0.1 0.1 0.1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Tf 0.49803919 0.49803919 0.49803919
+d 0.50196075
+Ni 1
+Ns 10
+illum 2
+
+newmtl Color_M02
+Kd 0.90980393 0.90980393 0.90980393
+Ka 0.1 0.1 0.1
+Ks 0.40000001 0.40000001 0.40000001
+Ke 0 0 0
+Ni 1
+Ns 10
+illum 2
+

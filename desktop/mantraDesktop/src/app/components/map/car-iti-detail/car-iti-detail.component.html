@@ -1,0 +1,56 @@
+
+<div *ngIf="offer" class="example-container">
+  <h2>Ponuka</h2>
+  <div
+    id="all"
+    cdkDropList
+    [cdkDropListData]="offer.adresyVPonuke"
+    cdkDropListConnectedTo="even"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)"
+    >
+    <div
+      class="example-box"
+      *ngFor="let ponuka of offer.adresyVPonuke; index as i"
+      [cdkDragData]="ponuka"
+      cdkDrag
+      [cdkDragDisabled]="checkIndex(i)">{{ponuka.nameOfTown}}</div>
+  </div>
+</div>
+
+<div *ngIf="car" class="example-container">
+  <h2>Itinerar vozidla {{this.car.ecv}}</h2>
+
+  <div
+    id="even"
+    cdkDropList
+    [cdkDropListData]="this.car.itiAdresy"
+    cdkDropListConnectedTo="all"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+
+    <div
+      class="example-box"
+      [class]="getColorForTown(i)"
+      *ngFor="let address of this.car.itiAdresy; index as i"
+      cdkDrag
+      [cdkDragData]="address">
+      <div>
+        {{address.nameOfTown}}
+        <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
+      </div>
+      <div *ngIf="i !== this.car.itiAdresy.length -1 " class="bottomLine">
+        <p class="distance">
+          {{this.countDistancePoints(i)}}km
+        </p>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <h3>Povodna vzdusna vzdialenost {{this.distanceOfIti}}km</h3>
+  <h3>Nova vzdialenost {{this.countDistanceOfItinerarWithOffer()}}km</h3>
+  <h3>Rozdiel {{this.countDistanceOfItinerarWithOffer() - this.distanceOfIti}}km</h3>
+</div>

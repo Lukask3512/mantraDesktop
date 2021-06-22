@@ -1,0 +1,22 @@
+<a-scene embedded>
+
+  <a-box id="mojaABedna" material="opacity: 0.5; transparent: true" color="red" position="-1.2 1.5 -6" scale="2 2 2"></a-box>
+
+  <a-obj-model src="./assets/a-frame/truck/naves.obj"
+               mtl="./assets/a-frame/truck/naves.mtl"
+               material="opacity: 0.5; transparent: true"
+               scale="1 1 1" position="0 0 0" rotation="0 90 0">
+  </a-obj-model>
+
+  <a-plane geometry="height: 100; width: 100"
+           roughness="0.8"
+           material="src: ./assets/grass.png; side: double; color: #c0c0c0; repeat: 20 20"
+           position="0 0 -0.5" rotation="-90 0 0" static-body id="ground">
+  </a-plane>
+
+  <a-sky src="./assets/skybox.png" rotation="0 90 0"></a-sky>
+
+  <a-camera>
+    <a-cursor></a-cursor>
+  </a-camera>
+</a-scene>
