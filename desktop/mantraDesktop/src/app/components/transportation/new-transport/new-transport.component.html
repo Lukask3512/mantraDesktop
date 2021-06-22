@@ -46,12 +46,18 @@
       <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>
     </div>
 
+      <div class="aframe">
+        <app-size-of-box></app-size-of-box>
+      </div>
+
   </div>
 
 
   <div class="map">
     <app-openlayer #child></app-openlayer>
   </div>
+
+
 
 </div>
 <app-route-log *ngIf="route != undefined" [routeId]="parentSubject"></app-route-log>

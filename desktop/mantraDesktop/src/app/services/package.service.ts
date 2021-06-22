@@ -46,7 +46,7 @@ export class PackageService {
       })
     });
 
-    this.offerService.routes$.subscribe(allAddresses => {
+    this.addressService.offerAddresses$.subscribe(allAddresses => {
       this.myPackagesOffer = []
       allAddresses.forEach(jednaAdresa => {
         if (jednaAdresa.type == 'nakladka'){
@@ -71,7 +71,11 @@ export class PackageService {
 
 
   getOnePackage(id){
-    return this.myPackages.find(onePackage => onePackage.id == id);
+    let myPackage = this.myPackages.find(onePackage => onePackage.id === id);
+    if (!myPackage){
+      myPackage = this.myPackagesOffer.find(onePackage => onePackage.id === id);
+    }
+    return myPackage;
   }
 
   getOnePackageFromDatabase(packageID) {

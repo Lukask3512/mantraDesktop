@@ -2,16 +2,18 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {OfferRouteService} from "../../../services/offer-route.service";
 import Route from "../../../models/Route";
 
+
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-//prijima offer, filtruje a preposiela mape
+// prijima offer, filtruje a preposiela mape
 export class FilterComponent implements OnInit {
 
-  checked:boolean = false;
+  checked: boolean = false;
 
+  typeDistance = 'maxAll';
   maxDistance = 500;
   minDistance = 50;
   weight = 0;
@@ -26,9 +28,13 @@ export class FilterComponent implements OnInit {
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
 
+
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
       this.offers = routes;
+      // this.offers.forEach(oneOffer => {
+      //   oneOffer.addresses
+      // })
       this.filterOffers();
     });
   }
@@ -40,7 +46,7 @@ export class FilterComponent implements OnInit {
       this.offersToMap.emit(null);
     }else{
       this.offersToMap.emit({offers :this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
-      weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size)} );
+      weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance} );
     }
   }
 

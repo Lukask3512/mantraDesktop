@@ -1,7 +1,7 @@
 <div class="allWrapper">
 
   <div class="chooseCar">
-    <button *ngFor="let car of cars" (click)="setCar(car)">{{car.ecv}}</button>
+    <button [class]="chooseClass(car)" *ngFor="let car of cars" (click)="setCar(car)">{{car.ecv}}</button>
   </div>
 
 <!--  <div class="itinerar">-->

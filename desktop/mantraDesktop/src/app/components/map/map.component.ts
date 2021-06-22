@@ -1,8 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 
-import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style'
+import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style';
 import Icon from 'ol/style/Icon';
 import OSM from 'ol/source/OSM';
 import * as olProj from 'ol/proj';
@@ -13,40 +13,46 @@ import {fromLonLat} from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
 
 import LineString from 'ol/geom/LineString';
-import {HttpClient} from "@angular/common/http";
-import {AngularFireStorage} from "@angular/fire/storage";
+import {HttpClient} from '@angular/common/http';
+import {AngularFireStorage} from '@angular/fire/storage';
 import {getArea} from 'ol/sphere';
-import {DataService} from "../../data/data.service";
-import Route from "../../models/Route";
-import {RouteService} from "../../services/route.service";
-import {CarService} from "../../services/car.service";
-import Cars from "../../models/Cars";
-import {RouteStatusService} from "../../data/route-status.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {RouteToCarComponent} from "../dialogs/route-to-car/route-to-car.component";
+import {DataService} from '../../data/data.service';
+import Route from '../../models/Route';
+import {RouteService} from '../../services/route.service';
+import {CarService} from '../../services/car.service';
+import Cars from '../../models/Cars';
+import {RouteStatusService} from '../../data/route-status.service';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {RouteToCarComponent} from '../dialogs/route-to-car/route-to-car.component';
 import {easeOut} from 'ol/easing';
 import {unByKey} from 'ol/Observable';
 import {getVectorContext} from 'ol/render';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject} from 'rxjs';
 import {getDistance} from 'ol/sphere';
 import {getLength} from 'ol/sphere';
 import {toLonLat} from 'ol/proj';
 import {transform} from 'ol/proj';
-import {OfferRouteService} from "../../services/offer-route.service";
-import {Routes} from "@angular/router";
-import {DetailAboutRouteService} from "../../services/detail-about-route.service";
-import DeatilAboutAdresses from "../../models/DeatilAboutAdresses";
-import {CountFreeSpaceService} from "../../data/count-free-space.service";
-import {AddressService} from "../../services/address.service";
-import Address from "../../models/Address";
-import {DragAndDropListComponent} from "../transportation/drag-and-drop-list/drag-and-drop-list.component";
+import {OfferRouteService} from '../../services/offer-route.service';
+import {Routes} from '@angular/router';
+import {DetailAboutRouteService} from '../../services/detail-about-route.service';
+import DeatilAboutAdresses from '../../models/DeatilAboutAdresses';
+import {CountFreeSpaceService} from '../../data/count-free-space.service';
+import {AddressService} from '../../services/address.service';
+import Address from '../../models/Address';
+import {DragAndDropListComponent} from '../transportation/drag-and-drop-list/drag-and-drop-list.component';
+import {PackageService} from '../../services/package.service';
+import {DrawOfferService} from './draw-offer.service';
+import {CarItiDetailComponent} from './car-iti-detail/car-iti-detail.component';
+import {ChoosCarToMoveComponent} from '../transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
+
+
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent {
+export class MapComponent implements AfterViewInit {
   map;
   vectorLayerAdress = new VectorLayer();
   vectorLayerCars = new VectorLayer();
@@ -59,16 +65,16 @@ export class MapComponent {
   vectorLayerOffersRoutesRed = new VectorLayer();
   vectorLayerCoordinates;
   // vectorLayer;
-  //skusam vytvorit trasu
+  // skusam vytvorit trasu
   points;
 
   carWarningStatus = []; // ukladam si vectori sem, aby sa neduplikovali
 
   colors = ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#27AE60', '#E67E22', '#F1C40F', '#E67E22',
-  '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949']
+  '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949'];
 
 
-  //features pre mapu
+  // features pre mapu
   places = [];
   offersGreen = [];
   offersYellow = [];
@@ -100,8 +106,8 @@ export class MapComponent {
   offersToShow;
   distanceOfOffer: number;
 
-  pulseCar:boolean = false;
-  pulseMarker:boolean = false;
+  pulseCar = false;
+  pulseMarker = false;
 
   firstZoomCars = false;
   firstZoomAddress = false;
@@ -126,11 +132,17 @@ export class MapComponent {
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
+  @ViewChild(CarItiDetailComponent)
+  private carIti: CarItiDetailComponent;
+
+  @ViewChild(ChoosCarToMoveComponent)
+  private chooseCar: ChoosCarToMoveComponent;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
               private routeDetailService: DetailAboutRouteService, private countFreeSpaceService: CountFreeSpaceService,
-              private addressService: AddressService) { }
+              private addressService: AddressService, private packageService: PackageService, private drawOffer: DrawOfferService) { }
 
               routeDetail(route){
               this.dataService.changeRealRoute(route);
@@ -153,91 +165,52 @@ export class MapComponent {
     });
 
     // this.carsFromDatabase = this.dataService.getAllCars()
-      new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => {
         this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
           this.addCars(this.carsFromDatabase);
-            resolve();
+          resolve();
         });
-      }).then(()=> {
+      }).then(() => {
         this.addAddresses();
         this.addRoute();
 
-        this.skuskaVzdialenostiOdCiary(); // toto mak vymazat
-      })
+      });
 
 
 
-      // const myPromise = new Promise((resolve, reject) => {
-      //   this.routeService.routes$.subscribe(newRoutes => {
-      //     this.pulseMarker = false;
-      //     var cestySDetailami = [];
-      //     this.adressesFromDatabase = newRoutes;
-      //     this.adressesFromDatabase.forEach(preprava => {
-      //
-      //       var detailArray = [];
-      //       var prepravasDetailom;
-      //       // preprava.detailsAboutAdresses.forEach(detail => {
-      //       //   this.routeDetailService.myDetails$.subscribe(allDetails => {
-      //       //     var oneDetail = allDetails.find(oneMyDetail => oneMyDetail.id == detail)
-      //       //     detailArray.push(oneDetail);
-      //       //   });
-      //       // })
-      //       var volnaVahaPreAuto = this.routeDetailService.countFreeWeightOfCarOnAdress(detailArray, preprava);
-      //       prepravasDetailom = {...preprava, detailArray, volnaVahaPreAuto};
-      //       console.log(prepravasDetailom)
-      //       cestySDetailami.push(prepravasDetailom)
-      //     })
-      //     console.log(cestySDetailami)
-      //     this.adressesFromDatabase = cestySDetailami;
-      //     this.addMarker(this.adressesFromDatabase);
-      //     resolve(true);
-      //   });
-      // });
-      // myPromise.then(res => {
-      //   var carsArray = [];
-      //   this.adressesFromDatabase.forEach(oneRoute => {
-      //     carsArray.push(oneRoute.carId);
-      //   })
-      //   this.freeCars = this.carsFromDatabase.filter(oneCar => !carsArray.includes(oneCar.id))
-      // });
-
-
-    // this.sendCarsToRoute();
-
-
-    //onlick
+    // onlick
     this.map.on('click', evt => {
-      var feature = this.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+      const feature = this.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
         return feature;
       });
       if (feature) {
-        console.log(feature.get('type'))
-        var type = feature.get('type');
-        if (type == "car"){
+        console.log(feature.get('type'));
+        const type = feature.get('type');
+        if (type === 'car'){
           this.onClickFindInfo(feature.get('name'));
-          this.zoomToAddressOrCar(feature)
+          this.zoomToAddressOrCar(feature);
         }
 
-        else if(type == "town"){
+        else if (type === 'town'){
 
-          this.zoomToAddressOrCar(feature)
-          this.onClickFindInfoAdress(feature.get('name'))
+          this.zoomToAddressOrCar(feature);
+          this.onClickFindInfoAdress(feature.get('name'));
         }
-        else if(type == "route"){
-          this.zoomToRoute(feature)
+        else if (type === 'route'){
+          this.zoomToRoute(feature);
 
           // console.log(feature.getGeometry())
           // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
           // this.countDistance(feature.getGeometry(), [48.896324, 19.267890])
-          this.onClickFindInfo(feature.get('name'))
+          this.onClickFindInfo(feature.get('name'));
         }
-        else if(type == "offer"){
-          this.zoomToRoute(feature)
-          console.log(feature.getGeometry())          // console.log(feature.getGeometry())
+        else if (type === 'offer'){
+          this.zoomToRoute(feature);
+          console.log(feature.getGeometry());          // console.log(feature.getGeometry())
           // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
           // this.countDistance(feature.getGeometry(), [48.896324, 19.267890])
-          this.onClickFindInfoOffer(feature.get('name'), feature)
+          this.onClickFindInfoOffer(feature.get('name'), feature);
         }
         // $(element).popover('show');
       } else {
@@ -245,15 +218,15 @@ export class MapComponent {
       }
     });
 
-    this.checkFeatureUnderMouse(); //pointer
+    this.checkFeatureUnderMouse(); // pointer
     },
       200);
 
-    this.countDistance([48.920836,19.180706], [48.920779,19.180593])
+    this.countDistance([48.920836, 19.180706], [48.920779, 19.180593]);
   }
-//ak kliknem na auto
+// ak kliknem na auto
   onClickFindInfo(id){
-    this.carToShow = this.carsWithItinerar.find(car => car.id ==id);
+    this.carToShow = this.carsWithItinerar.find(car => car.id == id);
     this.offersToShow = null;
     this.routesToShow = undefined;
     setTimeout(() => {
@@ -262,87 +235,84 @@ export class MapComponent {
 
   }
 
-  //ak kliknem na adresu
+  // ak kliknem na adresu
   onClickFindInfoAdress(id){
-    var adresyVRoute = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(id));
-    var adresy = this.adressesFromDatabase.filter(oneAdresa => adresyVRoute.addresses.includes(oneAdresa.id));
+    const adresyVRoute = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(id));
+    const adresy = this.adressesFromDatabase.filter(oneAdresa => adresyVRoute.addresses.includes(oneAdresa.id));
     this.routesToShow = adresyVRoute.addresses.map((i) => adresy.find((j) => j.id === i));
     console.log(adresy);
     console.log(adresyVRoute);
     console.log(this.routesToShow);
     // this.routesToShow = this.carsWithItinerar.filter(route => route.id == id);
-    this.carToShow = this.carsFromDatabase.find(car => car.id == this.routesToShow[0].carId)
+    this.carToShow = this.carsFromDatabase.find(car => car.id === this.routesToShow[0].carId);
     // this.carToShow = this.carsFromDatabase.find(car => car.id == this.routesToShow[0].carId);
     this.offersToShow = null;
-    console.log(this.carToShow[0])
+    console.log(this.carToShow[0]);
     setTimeout(() => {
       this.dragComponent.setAddresses(this.routesToShow);
     }, 100);
   }
 
-  //ak kliknem na auto
-  onClickFindInfoOffer(id, feature){
-    this.offersToShow = this.offersFromDatabase.filter(route => route.id == id);
+  // ak kliknem na ponuku
+  async onClickFindInfoOffer(id, feature){
+    this.offersToShow = this.offersFromDatabase.find(route => route.id === id);
     // this.countFreeSpaceService.countFreeSpace(this.offersToShow[0].detailArray,this.offersToShow[0].detailArray, )
-    this.distanceOfOffer = Math.round(((getLength(feature.getGeometry())/100) / 1000) * 100)
+    this.distanceOfOffer = Math.round(((getLength(feature.getGeometry()) / 100) / 1000) * 100);
     this.carToShow = null;
     this.routesToShow = null;
-    console.log(this.offersToShow)
-  }
+    console.log(this.offersToShow);
+    await this.sleep(200);
+    this.chooseCar.setFarby(this.offersToShow);
+    this.carIti.setPonuka(this.offersToShow);
+    this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
+    // this.carIti.setPrekrocenieVahy(this.va);
 
-  // pri kliku na ponuku vratim pole indexov - aby som zobrazil kde je vhodne nalozit
-  countIndexisOfferAndRoute(route, offer, mestoIndex){
-    console.log(route);
-    console.log(offer)
-    // var index = this.countFreeSpaceService.countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
-    // var jetam = index.poleMiestKdeSaVopcha.find(oneIndex => oneIndex == mestoIndex);
-    // if (jetam == mestoIndex){
-    //   return true
-    // }else{
-    //   return false;
-    // }
+  }
+  sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   countFreeIndexis(route, offer){
-    this.indexisOfFreeTowns =  this.countFreeSpaceService.countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
+    // this.indexisOfFreeTowns =  this.countFreeSpaceService
+    // .countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
   }
 
   addRoute() {
-    var route = {id: "LhMQxklO6AdvZDB7jyWw"}
+    const route = {id: 'LhMQxklO6AdvZDB7jyWw'};
     this.routes = [];
-    var outputData;
+    let outputData;
 
     // routes.forEach((route, index) => {
 
 
 
     const ref = this.storage.ref('Routes/' + route.id + '.json');
-    var stahnute = ref.getDownloadURL().subscribe(data => {
+    const stahnute = ref.getDownloadURL().subscribe(data => {
 
 
       this.http.get(data, {responseType: 'text' as 'json'}).subscribe(text => {
-        console.log("stahujem cestu");
+        console.log('stahujem cestu');
         outputData = text;
 
-        //zmena na json
+        // zmena na json
         outputData = JSON.parse(outputData);
-        //zmena na pole
+        // zmena na pole
         outputData = outputData.map(Object.values);
 
         // zo sygicu mi pridu hodnoty * 100000 - mapy podporuju len normalny format preto to delim 100000
-        var finishArray = outputData.map(prvePole =>
+        const finishArray = outputData.map(prvePole =>
           prvePole.map(prvok => prvok / 100000));
         this.points = finishArray;
         // console.log(this.points)
-        var routeString = new LineString(this.points)
+        const routeString = new LineString(this.points)
           .transform('EPSG:4326', 'EPSG:3857');
 
-        var routeFeature = new Feature({
+        const routeFeature = new Feature({
           type: 'route',
           geometry: routeString,
           name: route.id
         });
-        var routeStyle = new Style({
+        const routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
             color: this.getColorByIndex(1)
@@ -353,14 +323,14 @@ export class MapComponent {
       // console.log(routeFeature);
       // console.log(route)
         this.routes.push(routeFeature);
-      this.pridajCestyNaMapu();
+        this.pridajCestyNaMapu();
 
 
       }, (error) => {
-        console.log("trasa nenajdena1")
-      })
+        console.log('trasa nenajdena1');
+      });
     }, error => {
-      console.log("trasa nenajdena2")
+      console.log('trasa nenajdena2');
     });
 
   // });
@@ -370,10 +340,10 @@ export class MapComponent {
   }
 
   pridajCestyNaMapu(){
-    var vectorSource = new VectorSource({
+    const vectorSource = new VectorSource({
       features: this.routes
     });
-    this.map.removeLayer(this.vectorLayerCoordinates)
+    this.map.removeLayer(this.vectorLayerCoordinates);
     this.vectorLayerCoordinates = new VectorLayer({
       source: vectorSource,
     });
@@ -382,10 +352,10 @@ export class MapComponent {
   }
 
   checkFeatureUnderMouse(){
-    this.map.on("pointermove", function (evt)
-    {   var hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) { return true; });
-      if (hit) this.getViewport().style.cursor = 'pointer';
-      else this.getViewport().style.cursor = '';
+    this.map.on('pointermove', function(evt)
+    {   const hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) { return true; });
+        if (hit) { this.getViewport().style.cursor = 'pointer'; }
+      else { this.getViewport().style.cursor = ''; }
     });
   }
 
@@ -395,25 +365,25 @@ export class MapComponent {
       this.pulseCar = false;
 
 
-    if (car !== undefined){
-        for (let i = 0; i<car.length; i++){
+      if (car !== undefined){
+        for (let i = 0; i < car.length; i++){
 
-          //update vozidla ak mam nakliknute nejake
-          if ( this.carToShow != undefined && car[i].id == this.carToShow.id){
+          // update vozidla ak mam nakliknute nejake
+          if ( this.carToShow !== undefined && car[i].id === this.carToShow.id){
             this.onClickFindInfo(car[i].id);
-            console.log("som nasiel same")
+            console.log('som nasiel same');
           }
 
-          if (car[i].lattitude != undefined){
+          if (car[i].lattitude !== undefined){
 
-            var carFeature = new Feature({
+            const carFeature = new Feature({
               geometry: new Point(fromLonLat([car[i].longtitude, car[i].lattitude])),
               name: car[i].id,
-              type: "car"
+              type: 'car'
             });
 
 
-            var carStyle = new Style({
+            const carStyle = new Style({
               image: new Icon({
                 color: '#8959A8',
                 crossOrigin: 'anonymous',
@@ -423,14 +393,14 @@ export class MapComponent {
             });
             carFeature.setStyle(carStyle);
             this.cars.push(carFeature);
-            if (car[i].status == 4) {
+            if (car[i].status === 4) {
               this.pulseCar = true;
 
 
-              //pre blikanie
-              var isThereCar = this.carWarningStatus.filter(findCar => findCar.id == car[i].id);
+              // pre blikanie
+              const isThereCar = this.carWarningStatus.filter(findCar => findCar.id == car[i].id);
 
-              if (isThereCar.length == 0 ){
+              if (isThereCar.length === 0 ){
                 this.flashCar(carFeature, 1000, car[i]);
                 this.carWarningStatus.push(car[i]);
               }
@@ -439,71 +409,71 @@ export class MapComponent {
               this.carWarningStatus = this.carWarningStatus.filter(findCar => findCar.id != car[i].id);
             }
           }
-          //tot mam auto a mohol by som relativne itinerar odoslat na vykreslenie aj s farbou
+          // tot mam auto a mohol by som relativne itinerar odoslat na vykreslenie aj s farbou
 
         }
       }
-    this.map.removeLayer(this.vectorLayerCars)
+      this.map.removeLayer(this.vectorLayerCars);
 
-      var vectorSource = new VectorSource({
+      const vectorSource = new VectorSource({
         features: this.cars
       });
 
       this.vectorLayerCars = new VectorLayer({
         source: vectorSource,
       });
-    this.vectorLayerCars.setZIndex(3);
+      this.vectorLayerCars.setZIndex(3);
       this.map.addLayer(this.vectorLayerCars);
 
-    var vectorNaZobrazenieAllFeatures =  new VectorSource({
+      const vectorNaZobrazenieAllFeatures =  new VectorSource({
       features: this.places.concat(this.cars).concat(this.routes)
     });
 
 
-    if (this.firstZoomCars == false){
-      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-        duration: 800} )
+      if (this.firstZoomCars === false){
+      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
+        duration: 800} );
       this.firstZoomCars = true;
     }
 
     }
 
    flashCar(feature, duration, car) {
-     var boolean = false;
-    if (this.pulseCar) {
-      var start = +new Date();
+     // let boolean = false;
+     if (this.pulseCar) {
+      let start = +new Date();
 
-      //setCenter
-        this.map.getView().setCenter(fromLonLat([car.longtitude, car.lattitude]))
-        this.map.getView().setZoom(8);
+      // setCenter
+      this.map.getView().setCenter(fromLonLat([car.longtitude, car.lattitude]));
+      this.map.getView().setZoom(8);
 
 
       // var flash = this.flash(feature, duration);
-       let animate =  (event) => {
-         let carInData = this.carsFromDatabase.find(findCar => findCar.id == car.id);
-         if (carInData.status != 4){
+      const animate =  (event) => {
+         const carInData = this.carsFromDatabase.find(findCar => findCar.id == car.id);
+         if (carInData.status !== 4){
               return;
          }
 
         // canvas context where the effect will be drawn
-        var vectorContext = getVectorContext(event);
-        var frameState = event.frameState;
+         const vectorContext = getVectorContext(event);
+         const frameState = event.frameState;
 
         // create a clone of the original ol.Feature
         // on each browser frame a new style will be applied
-        var flashGeom = feature.getGeometry().clone();
-        var elapsed = frameState.time - start;
-        var elapsedRatio = elapsed / duration;
+         const flashGeom = feature.getGeometry().clone();
+         const elapsed = frameState.time - start;
+         const elapsedRatio = elapsed / duration;
         // radius will be 5 at start and 30 at end.
-        var radius = easeOut(elapsedRatio) * 25 + 5;
-        var opacity = easeOut(1 - elapsedRatio);
+         const radius = easeOut(elapsedRatio) * 25 + 5;
+         const opacity = easeOut(1 - elapsedRatio);
 
 
         // you can customize here the style
         // like color, width
-        var style = new Style({
+         const style = new Style({
           image: new CircleStyle({
-            radius: radius,
+            radius,
             snapToPixel: false,
             fill: new Fill({
               color: [240, 51, 51, opacity / 2]
@@ -516,66 +486,74 @@ export class MapComponent {
           })
         });
 
-         var styledelete = new Style({
+         const styledelete = new Style({
          });
 
          vectorContext.setStyle(styledelete);
-          vectorContext.setStyle(style);
-        vectorContext.drawGeometry(flashGeom);
+         vectorContext.setStyle(style);
+         vectorContext.drawGeometry(flashGeom);
 
-        if (elapsed > duration) { // stop the effect
+         if (elapsed > duration) { // stop the effect
             start = +new Date();
             this.tileLayer.on('postrender', animate);
-            boolean = true;
+            // boolean = true;
         }
-        this.map.render();
-      }
-      var listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
+         this.map.render();
+      };
+      const listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
 
     }
   }
 
   addAddresses(){
-    var mojeAdresy: Address[];
+    let mojeAdresy: Address[];
 
-      this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
+    this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
         this.addressService.offerAddresses$.subscribe(allOffers => {
 
         this.places = [];
         this.adressesFromDatabase = allAddresses.concat(allOffers);
 
         // var mamTamAuto = this.carsWithItinerar.findIndex(onecar => onecar.id == car.id); //auto s iti
-        var carsWithIti = [];
+        const carsWithIti = [];
         this.carsFromDatabase.forEach(oneCar => {
           if (oneCar.itinerar) {
-            var itinerarAuta: Address[] = [];
+            const itinerarAuta: Address[] = [];
+            const detailAuta: any[] = [];
             oneCar.itinerar.forEach(addId => {
+              const detailVMeste = [];
               this.addressService.getOneAddresById(addId).subscribe(oneAdd => {
                 if (oneAdd) {
                   itinerarAuta.push(oneAdd);
+                  oneAdd.packagesId.forEach(onePackId => {
+                    detailVMeste.push(this.packageService.getOnePackage(onePackId));
+                  });
                 } else {
                   this.addressService.getOneAddresFromOfferById(addId).subscribe(offerAdd => {
                     itinerarAuta.push(offerAdd);
-                  })
+                    oneAdd.packagesId.forEach(onePackId => {
+                      detailVMeste.push(this.packageService.getOnePackage(onePackId));
+                    });
+                  });
                 }
               });
+              detailAuta.push(detailVMeste);
             });
-            carsWithIti.push({...oneCar, ...[itinerarAuta]});
+            carsWithIti.push({...oneCar, itiAdresy: itinerarAuta, detailIti: detailAuta});
           }
 
-        })
+        });
         this.carsWithItinerar = carsWithIti;
         // mojeAdresy = allAddresses.filter(oneAddress => oneAddress.status != 3);
         mojeAdresy = allAddresses.concat(allOffers);
 
 
         mojeAdresy.forEach((oneAddress, index) => {
-          var addressInCar: Cars;
           // this.carsFromDatabase.forEach(oneCar => {
           //   var car = oneCar.itinerar.find(addId => addId == oneAddress.id);
           // })
 
-          var car = this.carsFromDatabase.find(oneCar => {
+          const car = this.carsFromDatabase.find(oneCar => {
             if (oneCar.itinerar) {
               if (oneCar.itinerar.includes(oneAddress.id)) {
                 return true;
@@ -585,17 +563,17 @@ export class MapComponent {
 
 
           if (car) {
-            var cisloAuta = this.carsFromDatabase.findIndex(oneCar => oneCar.id == car.id);
-            var cisloItinerara = car.itinerar.findIndex(oneAdd => oneAdd == oneAddress.id);
+            const cisloAuta = this.carsFromDatabase.findIndex(oneCar => oneCar.id == car.id);
+            const cisloItinerara = car.itinerar.findIndex(oneAdd => oneAdd == oneAddress.id);
 
 
-            var iconFeature = new Feature({
+            const iconFeature = new Feature({
               geometry: new Point(fromLonLat([oneAddress.coordinatesOfTownsLon, oneAddress.coordinatesOfTownsLat])),
               name: oneAddress.id,
-              type: "town"
+              type: 'town'
             });
 
-            var iconStyle = new Style({
+            const iconStyle = new Style({
               image: new CircleStyle({
                 radius: 8,
                 stroke: new Stroke({
@@ -617,32 +595,32 @@ export class MapComponent {
             this.places.push(iconFeature);
           }
         });
-        var vectorSource = new VectorSource({
+        const vectorSource = new VectorSource({
           features: this.places
         });
 
-        this.map.removeLayer(this.vectorLayerAdress)
+        this.map.removeLayer(this.vectorLayerAdress);
         this.vectorLayerAdress = new VectorLayer({
           source: vectorSource,
         });
         this.vectorLayerAdress.setZIndex(2);
         this.map.addLayer(this.vectorLayerAdress);
-        if (vectorSource.getFeatures()[0] != undefined) {
+        if (vectorSource.getFeatures()[0] !== undefined) {
 
 
-          var feature = vectorSource.getFeatures()[0];
-          var polygon = feature.getGeometry();
+          const feature = vectorSource.getFeatures()[0];
+          const polygon = feature.getGeometry();
 
           setTimeout(() => {
-            var vectorNaZobrazenieAllFeatures = new VectorSource({
+            const vectorNaZobrazenieAllFeatures = new VectorSource({
               features: this.places.concat(this.cars).concat(this.routes)
             });
 
-            if (this.firstZoomAddress == false) {
+            if (this.firstZoomAddress === false) {
               this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {
                 padding: [100, 100, 100, 100], minResolution: 50,
                 duration: 800
-              })
+              });
               this.firstZoomAddress = true;
             }
           }, 1500);
@@ -662,16 +640,16 @@ export class MapComponent {
     // if (this.coordinatesFeature != null || this.coordinatesFeature != undefined){
     //   this.places.push(this.coordinatesFeature);
     // }
-    var color = -1;
+    const color = -1;
 
-    if (cars.length == 0){
+    if (cars.length === 0){
       this.map.removeLayer(this.vectorLayerCoordinates);
       this.map.removeLayer(this.vectorLayerCoordinates);
     }
-    var adresa: Address;
+    let adresa: Address;
     this.addressService.address$.subscribe(allAddresses => {
       // adresa =
-    })
+    });
     cars.forEach((car, index) => {
 
 
@@ -687,18 +665,19 @@ export class MapComponent {
       new Promise((resolve, reject) => {
         if (car.itinerar && car.itinerar.length > 0) {
           for (let i = 0; i < car.itinerar.length; i++) {
-            console.log("som in da for" + car)
+            console.log('som in da for' + car);
 
 
 
-              var iconFeature = new Feature({
+            const iconFeature = new Feature({
                 geometry: new Point(fromLonLat([adresa.coordinatesOfTownsLon, adresa.coordinatesOfTownsLat])),
                 name: adresa.id,
-                type: "town"
+                type: 'town'
               });
 
-              if (adresa.status == 3) {
-                var iconStyle = new Style({
+            let iconStyle;
+            if (adresa.status === 3) {
+                iconStyle = new Style({
                   image: new CircleStyle({
                     radius: 8,
                     stroke: new Stroke({
@@ -709,14 +688,14 @@ export class MapComponent {
                     }),
                   }),
                   text: new Text({
-                    text: (i + 1).toString() + "✓",
+                    text: (i + 1).toString() + '✓',
                     fill: new Fill({
                       color: '#fff',
                     }),
                   })
                 });
-              } else if (adresa.status == 4) {
-                var iconStyle = new Style({
+              } else if (adresa.status === 4) {
+                 iconStyle = new Style({
                   image: new CircleStyle({
                     radius: 10,
                     stroke: new Stroke({
@@ -727,15 +706,15 @@ export class MapComponent {
                     }),
                   }),
                   text: new Text({
-                    text: (i + 1).toString() + "X",
+                    text: (i + 1).toString() + 'X',
                     fill: new Fill({
                       color: '#fff',
                     }),
                   })
                 });
-                this.pulseMarker = true;
+                 this.pulseMarker = true;
               } else {
-                var iconStyle = new Style({
+                 iconStyle = new Style({
                   image: new CircleStyle({
                     radius: 8,
                     stroke: new Stroke({
@@ -755,8 +734,8 @@ export class MapComponent {
               }
 
 
-              iconFeature.setStyle(iconStyle);
-              this.places.push(iconFeature);
+            iconFeature.setStyle(iconStyle);
+            this.places.push(iconFeature);
 
 
 
@@ -769,14 +748,14 @@ export class MapComponent {
       if (adresa){
         setTimeout(() =>
           {
-            //chvilu pockam kym natiahnem cesty, ak by ju nahodou auto updatlo
+            // chvilu pockam kym natiahnem cesty, ak by ju nahodou auto updatlo
             // this.addRoute(car);
           },
           1500);
       }
 
       console.log(this.places);
-      var vectorSource = new VectorSource({
+      const vectorSource = new VectorSource({
         features: this.places
       });
 
@@ -789,24 +768,24 @@ export class MapComponent {
       if (vectorSource.getFeatures()[0] != undefined) {
 
 
-        var feature = vectorSource.getFeatures()[0];
-        var polygon = feature.getGeometry();
+        const feature = vectorSource.getFeatures()[0];
+        const polygon = feature.getGeometry();
 
         setTimeout( () => {
-          var vectorNaZobrazenieAllFeatures = new VectorSource({
+          const vectorNaZobrazenieAllFeatures = new VectorSource({
             features: this.places.concat(this.cars).concat(this.routes)
           });
 
-          if (this.firstZoomAddress == false){
-            this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-              duration: 800} )
+          if (this.firstZoomAddress === false){
+            this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
+              duration: 800} );
             this.firstZoomAddress = true;
           }
         }, 1500 );
 
 
       }
-      })
+      });
 
   });
     // var vectorSource = new VectorSource({
@@ -843,9 +822,9 @@ export class MapComponent {
   }
 
   estimatedTimeToLocal(dateUtc){
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
     if (dateUtc == null){
-      return "Neznámy"
+      return 'Neznámy';
     }
     return date.toLocaleString();
   }
@@ -864,7 +843,7 @@ export class MapComponent {
     // };
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
-      console.log(value)
+      console.log(value);
       if (value === undefined){
         return;
       }else{
@@ -878,15 +857,15 @@ export class MapComponent {
     this.carToShow = null;
     this.routesToShow = null;
     this.offersToShow = null;
-    var vectorNaZobrazenieAllFeatures = new VectorSource({
+    const vectorNaZobrazenieAllFeatures = new VectorSource({
       features: this.places.concat(this.cars).concat(this.routes)
     });
-    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
+    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
       duration: 800} );
   }
 
   zoomToAddressOrCar(address){
-    var poloha = address.getGeometry().getCoordinates()
+    const poloha = address.getGeometry().getCoordinates();
     this.view.animate({
       center: poloha,
       duration: 500,
@@ -895,226 +874,276 @@ export class MapComponent {
   }
 
   zoomToRoute(address){
-    var celaCesta = address.getGeometry().getExtent()
+    const celaCesta = address.getGeometry().getExtent();
 
-    this.view.fit(celaCesta, {padding: [100,100,100,100],
+    this.view.fit(celaCesta, {padding: [100, 100, 100, 100],
       minResolution: 50,
-      duration: 800} )
+      duration: 800} );
 
   }
 
   getColorByIndex(index){
-    var ktoruFarbu;
+    let ktoruFarbu;
     if (index >= this.colors.length){
       ktoruFarbu = index % this.colors.length;
       return this.colors[ktoruFarbu];
     }else{
       ktoruFarbu = index;
-      return this.colors[ktoruFarbu]
+      return this.colors[ktoruFarbu];
     }
   }
 
-  //vrati najkratsiu vzdialenost od trasy
+  // vrati najkratsiu vzdialenost od trasy
   countDistance(from, to){
     let distance = 100000000;
     from.forEach(array => {
-      var pole = transform(array, 'EPSG:3857', 'EPSG:4326');
-        var oneDistance = getDistance(pole, to);
-        if (oneDistance < distance){
+      const pole = transform(array, 'EPSG:3857', 'EPSG:4326');
+      const oneDistance = getDistance(pole, to);
+      if (oneDistance < distance){
           distance = oneDistance;
         }
     });
     return distance;
   }
 
-  //hodim lat lon od do a vrati mi dlzku v metroch
+  // hodim lat lon od do a vrati mi dlzku v metroch
   countDistancePoints(from, to){
-      // console.log(array[0].toFixed(2));
-      // console.log(array[1].toFixed(2));
-
-      // var fromPoint = transform(from, 'EPSG:3857', 'EPSG:4326');
-      // var toPoint = transform(to, 'EPSG:3857', 'EPSG:4326');
-      // console.log(toLonLat(pole))
-      let distance = getDistance(from, to);
-      // if (distance < 2000){
-        return distance;
-      // }
+      const distance = getDistance(from, to);
+      return distance;
   }
+
   // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
   offersUpdate(emitFromFilter){
-
-    if (emitFromFilter == null && this.map != undefined){
-      this.map.removeLayer(this.vectorLayerOffersRoutesGreen)
-      this.map.removeLayer(this.vectorLayerOffersRoutesYellow)
-      this.map.removeLayer(this.vectorLayerOffersRoutesRed)
+    console.log(this.carsWithItinerar);
+    if (emitFromFilter == null && this.map !== undefined){
+      this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
+      this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
+      this.map.removeLayer(this.vectorLayerOffersRoutesRed);
       this.map.removeLayer(this.vectorLayerOffersGreen);
       this.map.removeLayer(this.vectorLayerOffersRed);
       this.map.removeLayer(this.vectorLayerOffersYellow);
     }else if (emitFromFilter != null){
-      console.log(emitFromFilter)
-      var offers: Route[] = emitFromFilter.offers;
-      var minVzdialenost = emitFromFilter.minDistance;
-      var maxVzdialenost = emitFromFilter.maxDistance;
-      var maxPrekrocenieVahy = emitFromFilter.weight;
-      var maxPrekrocenieRozmerov = emitFromFilter.size;
+      const offers: Route[] = emitFromFilter.offers;
+      const minVzdialenost = emitFromFilter.minDistance;
+      const maxVzdialenost = emitFromFilter.maxDistance;
+      const maxPrekrocenieVahy = emitFromFilter.weight;
+      const maxPrekrocenieRozmerov = emitFromFilter.size;
+      const typeOfDistance = emitFromFilter.typeDistance;
       this.maxPrekrocenieRozmerov = maxPrekrocenieRozmerov;
-      console.log(maxPrekrocenieRozmerov)
-      console.log(maxPrekrocenieVahy)
-    setTimeout( () => {
-      var poleSMinVzdialenostamiOdAdries = [];
-      offers.forEach((oneRouteOffer, indexOffer) => { //prechaedzam ponukami
 
-        var adresyVPonuke: Address[] = [];
-        oneRouteOffer.addresses.forEach(addId => {
-          adresyVPonuke.push(this.adressesFromDatabase.find(oneAdd => oneAdd.id == addId));
-        })
-        //tot si priradujem detail a maxVahu ponuky
-        var detailArray = [];
-        var prepravasDetailom;
+      setTimeout( () => {
+      const poleSMinVzdialenostamiOdAdries = [];
+      offers.forEach((oneRouteOffer, indexOffer) => { // prechaedzam ponukami
+
+        const adresyVPonuke: Address[] = [];
+        const detailVPonuke: any[] = [];
+        oneRouteOffer.addresses.forEach((addId, indexAdresa)  => {
+          const adresa: Address = this.adressesFromDatabase.find(oneAdd => oneAdd.id === addId);
+          adresyVPonuke.push(adresa);
+
+          const packageVPoradiPreAdresu: DeatilAboutAdresses[] = [];
+          adresa.packagesId.forEach(onePackageId => {
+            const balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
+            balik.id = onePackageId;
+            packageVPoradiPreAdresu.push(balik);
+          });
+          detailVPonuke.push(packageVPoradiPreAdresu);
+        });
+        console.log(detailVPonuke);
+        // tot si priradujem detail a maxVahu ponuky
+        const detailArray = [];
+        let prepravasDetailom;
         // oneRouteOffer.detailsAboutAdresses.forEach(detail => { // prechadzam detailami
         //   this.routeDetailService.offerDetails$.subscribe(allDetails => {
         //     detailArray.push(allDetails.find(oneMyDetail => oneMyDetail.id == detail));
         //   });
         // });
-        var maxVaha = 0;
-        var sumVaha = 0;
+        let maxVaha = 0;
+        let sumVaha = 0;
 
        // TODO: zakomentovane len pre zmenu modelu, dokoncit
-        // adresyVPonuke.forEach((oneDetail, index ) => { //detailom a zistujem max vahu
-        // if (oneDetail.weight != null){
-        //   oneDetail.weight.forEach(vaha => {
-        //     if (oneDetail.type == 'nakladka'){
-        //       sumVaha += vaha;
-        //       if (sumVaha > maxVaha){
-        //         maxVaha = sumVaha;
-        //       }
-        //     }else{
-        //       sumVaha -= vaha;
-        //     }
-        //   })
-        //
-        // }
-        // })
-        prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha};
-        console.log(prepravasDetailom)
-        //tu konci priradovanie detialov a max vah
+        detailVPonuke.forEach((oneDetail, indexTown ) => { // detailom a zistujem max vahu
+          oneDetail.forEach((onePackage, indexPackage) => {
+                if (adresyVPonuke[indexTown].type === 'nakladka'){
+                  sumVaha += onePackage.weight;
+                  if (sumVaha > maxVaha){
+                    maxVaha = sumVaha;
+                  }
+                }else{
+                  sumVaha -= onePackage.weight;
+                }
+          });
+        });
+
+        console.log(maxVaha);
+
+        prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
+        const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
+        const pocetTonVPonuke = this.countFreeSpaceService.pocetTonVKazdomMeste(ponukaPreMesta);
+        console.log(pocetTonVPonuke);
+        // tu konci priradovanie detialov a max vah
 
 
-        var jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0,
-          flag: 0, zelenePrepravy: [], zltePrepravy: [], zeleneAuta: [], zlteAuta: []}; //0 cervena, 1 zlta, 2 greeeen
-        if (oneRouteOffer.takenBy == "" && this.dataService.getMyIdOrMaster() != oneRouteOffer.createdBy){
+        const jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0,
+          flag: 0, zelenePrepravy: [], zltePrepravy: [], zeleneAuta: [], zlteAuta: []}; // 0 cervena, 1 zlta, 2 greeeen
+        if (oneRouteOffer.takenBy === '' ){
+        // && this.dataService.getMyIdOrMaster() != oneRouteOffer.createdBy //toto tam pridat potom..
+          let zltePrepravy = [];
+          let zelenePrepravy = [];
+          // this.drawOffer.vypocitajFreeCiSaVopcha(this.carsWithItinerar, jednaPonuka, maxPrekrocenieRozmerov)
+        // this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi mojimi adresami
 
-          var zltePrepravy = [];
-          var zelenePrepravy = [];
-        this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi mojimi adresami
-          if(this.vectorLayerCoordinates != undefined)
-          var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
+          this.carsWithItinerar.forEach(car => { // prechadzam autami
+            const itinerarAutaPocetPalietVMeste = this.countFreeSpaceService.vypocitajPocetPalietVKazomMeste(car);
+            console.log(itinerarAutaPocetPalietVMeste);
+            const pocetTonVIti = this.countFreeSpaceService.pocetTonVKazdomMeste(itinerarAutaPocetPalietVMeste);
+            console.log(pocetTonVIti);
+
+            const volnaVahaPreAutovIti = this.countFreeSpaceService.volnaVahaPreAutoVMeste(car, pocetTonVIti, 1);
+            const volnaVahaPreAutovItiSPrekrocenim = this.countFreeSpaceService.volnaVahaPreAutoVMeste(car, pocetTonVIti, maxPrekrocenieVahy);
+            console.log(volnaVahaPreAutovIti);
+            const vopchaSa = this.countFreeSpaceService.countFreeSpace(car, jednaPonuka, maxPrekrocenieRozmerov);
+
+
+            if (this.vectorLayerCoordinates !== undefined) {
+          // var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
 
           // console.log(this.vectorLayerCoordinates.getFeatures())
 
           // console.log(this.vectorLayerOffersRoutes.getDataFeatures())
-          var sediVzdialenost = false;
-          var sediVaha = false;
-          var sediVahaYellow = false;
+          const sediVzdialenost = false;
+              }
+            let sediVaha = false;
+            let sediVahaYellow = false;
           // @ts-ignore
-          var vopchaSa = this.countFreeSpaceService.countFreeSpace(route.detailArray, jednaPonuka.detailArray, route.carId, route, maxPrekrocenieRozmerov, oneRouteOffer);
+          //  var vopchaSa = this.countFreeSpaceService.countFreeSpace(ca maxPrekrocenieRozmerov, oneRouteOffer);
 
-          var adresaMinVzialenost = 100000000;
-          var adresaMaxVzdialenost = 0;
+            const adresaMinVzialenost = 100000000;
+            const adresaMaxVzdialenost = 0;
 
+            let maxVzdialenostOdCelehoItinerara;
+            car.itiAdresy.forEach((route, indexLon) => { // prechadzam itinerarom auta
           // route.coordinatesOfTownsLon.forEach((lon, indexLon) => { //prechadzam miestami v preprave
-          //
-          //   //vaha
-          //   // @ts-ignore
-          //   if (route.volnaVahaPreAuto[indexLon] >= jednaPonuka.maxVaha){
-          //     sediVaha = true;
-          //   }else { // @ts-ignore
-          //     if ((route.volnaVahaPreAuto[indexLon] * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
-          //       sediVahaYellow = true;
-          //     }
-          //   }
-          //
-          //
-          //   oneRouteOffer.coordinatesOfTownsLat.forEach((offerLat, offerLatIndex) => { //prechadzam miestami v ponuke
-          //
-          //                    //toto treba kuknut vravia mi to interesting vzdialenosti
-          //     if (routeLine != undefined){
-          //
-          //       var vzdialenostOdTrasy = this.countDistance(routeLine.getGeometry().getCoordinates(), [oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]]);
-          //
-          //                     //kontrolujem najkratsiu vzdialenost od trasy
-          //                     if (vzdialenostOdTrasy < jednaPonuka.minVzdialenost){
-          //                       jednaPonuka.minVzdialenost = vzdialenostOdTrasy;
-          //                       adresaMinVzialenost = vzdialenostOdTrasy;
-          //                     }
-          //     }
-          //     var vzdielenost = this.countDistancePoints([oneRouteOffer.coordinatesOfTownsLon[offerLatIndex], oneRouteOffer.coordinatesOfTownsLat[offerLatIndex]],
-          //       [route.coordinatesOfTownsLon[indexLon], route.coordinatesOfTownsLat[indexLon]]);
-          //     if (vzdielenost < jednaPonuka.minVzdialenost) {
-          //                       jednaPonuka.minVzdialenost = vzdielenost;
-          //                       adresaMinVzialenost = vzdielenost;
-          //                     }
-          //                     if (vzdielenost > jednaPonuka.maxVzdialenost) {
-          //                       jednaPonuka.maxVzdialenost = vzdielenost;
-          //                       adresaMaxVzdialenost = vzdielenost;
-          //                     }
-          //
-          //                       //tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
-          //                       //ked som na konci skontrulujem ci sedi vzdialenost
-          //                     if (offerLatIndex == oneRouteOffer.coordinatesOfTownsLat.length - 1) {
-          //                       var flags = 0;
-          //
-          //                       var indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
-          //                       var prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; //ak false vopcha, ak true tak sa vopcha
-          //                                                                 //o uzivatelom definove % - yellow
-          //
-          //
-          //
-          //
-          //                       if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-          //                         flags = 3;
-          //                         zelenePrepravy.push({...route, vopchaSa});
-          //                       }else if (sediVaha &&  indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-          //                         flags = 2;
-          //                         zltePrepravy.push({...route, vopchaSa});
-          //                       }
-          //                       else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-          //                         flags = 2;
-          //                         zltePrepravy.push({...route, vopchaSa});
-          //                       }
-          //                       else if ((sediVahaYellow && !sediVaha) && indexLon == vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
-          //                         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-          //                         flags = 2;
-          //                         zltePrepravy.push({...route, vopchaSa});
-          //                       }
-          //                       if (flags > jednaPonuka.flag){
-          //                         jednaPonuka.flag = flags;
-          //                       }
-          //                     }
-          //                   })
-          //
-          //   });
-          // zltePrepravy = [...new Set(zltePrepravy)]; //odstranujem duplikaty
-          // zelenePrepravy = [...new Set(zelenePrepravy)];
-          zltePrepravy = zltePrepravy.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
-          zelenePrepravy = zelenePrepravy.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i);
-          // console.log(zelenePrepravy)
-              jednaPonuka.zelenePrepravy = zelenePrepravy;
-              jednaPonuka.zltePrepravy = zltePrepravy;
-          })
-        this.kontrolaFreeAutOdPonuk(jednaPonuka, maxPrekrocenieVahy,maxPrekrocenieRozmerov, minVzdialenost, maxVzdialenost);
-        poleSMinVzdialenostamiOdAdries.push(jednaPonuka);
-        }
+              console.log(route);
 
+
+               // vaha
+              if (volnaVahaPreAutovIti[indexLon] >= jednaPonuka.maxVaha){
+              sediVaha = true;
+              }else { // @ts-ignore
+                if (volnaVahaPreAutovItiSPrekrocenim[indexLon] >= jednaPonuka.maxVaha){
+                  sediVahaYellow = true;
+                }
+              }
+
+              let routeStringBetweenAdresses;
+
+              if (car.itiAdresy.length > indexLon + 1){
+                routeStringBetweenAdresses = new LineString([[
+                  car.itiAdresy[indexLon].coordinatesOfTownsLon,
+                  car.itiAdresy[indexLon].coordinatesOfTownsLat],
+                  [car.itiAdresy[indexLon + 1 ].coordinatesOfTownsLon,
+                    car.itiAdresy[indexLon + 1 ].coordinatesOfTownsLat]]);
+
+              }else{
+                routeStringBetweenAdresses = new LineString([[
+                  car.itiAdresy[indexLon].coordinatesOfTownsLon,
+                  car.itiAdresy[indexLon].coordinatesOfTownsLat],
+                  [car.itiAdresy[indexLon].coordinatesOfTownsLon,
+                    car.itiAdresy[indexLon].coordinatesOfTownsLat]]);
+              }
+
+              // tu si zistim maximalne vzdialenosti od itinerara pre vsetky adresy v ponuke...
+              if (indexLon === 0){
+                maxVzdialenostOdCelehoItinerara = 0;
+                if (typeOfDistance === 'maxAll'){ // ked hladam maximalnu vzdialenost vsetkych adriest
+                // tu si poskladam vlastnu cestu z itinerara
+                const poleKadePojdem = [];
+                car.itiAdresy.forEach(jednaAdresa => {
+                  poleKadePojdem.push([jednaAdresa.coordinatesOfTownsLon, jednaAdresa.coordinatesOfTownsLat]);
+                });
+                const myItiString = new LineString(poleKadePojdem);
+                prepravasDetailom.adresyVPonuke.forEach((jednaAdPonuka, indexAd) => {
+                  const vzdialenostOdTrasy = this.countClosesPoint(myItiString,
+                    [jednaAdPonuka.coordinatesOfTownsLon,
+                      jednaAdPonuka.coordinatesOfTownsLat] );
+
+                  if (vzdialenostOdTrasy > maxVzdialenostOdCelehoItinerara){
+                        maxVzdialenostOdCelehoItinerara = vzdialenostOdTrasy;
+                      }
+
+                    });
+                }
+                else{ // ak hladam len max vzdialenost 1. adresy
+                  const from = [car.longtitude , car.lattitude];
+                  const to = [prepravasDetailom.adresyVPonuke[0].coordinatesOfTownsLon ,
+                    prepravasDetailom.adresyVPonuke[0].coordinatesOfTownsLat];
+                  maxVzdialenostOdCelehoItinerara = this.countDistancePoints(from, to);
+                }
+              }
+
+              // tu si ulozim najvacsiu vzdialenost od mesta v itinerari
+              const maximalnaVzialenostOdMesta = 0;
+              prepravasDetailom.adresyVPonuke.forEach((offerLat, offerLatIndex) => { // prechadzam miestami v ponuke
+
+
+                                // tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
+                                // ked som na konci skontrulujem ci sedi vzdialenost
+                if (offerLatIndex === oneRouteOffer.addresses.length - 1) {
+                                let flags = 0;
+
+                                const indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
+                                const prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; // ak false vopcha, ak true tak sa vopcha
+                                                                          // o uzivatelom definove % - yellow
+
+
+
+
+                                if (sediVaha &&  indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
+                                  flags = 3;
+                                  zelenePrepravy.push({...car, vopchaSa});
+                                }else if (sediVaha &&  indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                                  maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil){
+                                  flags = 2;
+                                  zltePrepravy.push({...car, vopchaSa});
+                                }
+                                else if ((sediVahaYellow && !sediVaha) && indexLon === vopchaSa.poleMiestKdeSaVopcha
+                                  .find(oneId => oneId === indexLon) &&
+                                  maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil){
+                                   flags = 2;
+                                   zltePrepravy.push({...car, vopchaSa});
+                                }
+                                else if ((sediVahaYellow && !sediVaha) && indexLon === vopchaSa.poleMiestKdeSaVopcha.
+                                  find(oneId => oneId === indexLon) &&
+                                  maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
+                                  flags = 2;
+                                  zltePrepravy.push({...car, vopchaSa});
+                                }
+                                if (flags > jednaPonuka.flag){
+                                  jednaPonuka.flag = flags;
+                                }
+                              }
+                            });
+
+            });
+
+            zltePrepravy = zltePrepravy.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+            zelenePrepravy = zelenePrepravy.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+
+            zelenePrepravy = zelenePrepravy.filter(({ id: id1 }) => !zltePrepravy.some(({ id: id2 }) => id2 === id1));
+            jednaPonuka.zelenePrepravy = zelenePrepravy;
+            jednaPonuka.zltePrepravy = zltePrepravy;
+            poleSMinVzdialenostamiOdAdries.push(jednaPonuka);
+          });
+
+        }
       });
 
       setTimeout( () => {
-        console.log(poleSMinVzdialenostamiOdAdries)
-        this.offersFromDatabase = poleSMinVzdialenostamiOdAdries
-          this.drawOffers(poleSMinVzdialenostamiOdAdries);
+        console.log(poleSMinVzdialenostamiOdAdries);
+        this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
+        this.drawOffers(poleSMinVzdialenostamiOdAdries);
       }, 500 );
     }, 500 );
     // console.log(routes);
@@ -1122,77 +1151,78 @@ export class MapComponent {
 
   }
 
-  kontrolaFreeAutOdPonuk(ponuka, maxPrekrocenieVahy, maxPrekrocenieRozmerov, minVzdialenost, maxVzdialenost){
-    var jednaPonuka = ponuka
-
-    this.freeCars.forEach(oneCar => {
-      var vopchaSa = this.countFreeSpaceService.countFreeSpace(jednaPonuka.detailArray, null, oneCar.id, jednaPonuka, maxPrekrocenieRozmerov, null);
-      var adresaMinVzialenost = 100000000;
-      var adresaMaxVzdialenost = 0;
-      var sediVaha = false;
-      var sediVahaYellow = false;
-
-        if (oneCar.nosnost >= jednaPonuka.maxVaha){
-          sediVaha = true;
-        }else {
-          if ((oneCar.nosnost * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
-            sediVahaYellow = true;
-          }
-        }
-      jednaPonuka.coordinatesOfTownsLat.forEach((oneAdresa, indexTown) => {
-          var vzdielenost = this.countDistancePoints([oneCar.longtitude, oneCar.lattitude],
-            [jednaPonuka.coordinatesOfTownsLon[indexTown], jednaPonuka.coordinatesOfTownsLat[indexTown]]);
-          if (vzdielenost < adresaMinVzialenost) {
-            adresaMinVzialenost = vzdielenost;
-          }
-          if (vzdielenost > adresaMaxVzdialenost) {
-            adresaMaxVzdialenost = vzdielenost;
-          }
-        });
-        var flags = 0;
-
-        var pocetMiestKdeSaVopcha = vopchaSa.poleMiestKdeSaVopcha // ci do mesta vopcha
-        var prekrocil = false; //ak false vopcha, ak true tak sa vopcha
-        //o uzivatelom definove % - yellow
-
-      vopchaSa.prekrocenieOPercenta.forEach(onePrekrocenie => {
-        if (onePrekrocenie == true){
-          prekrocil = true;
-        }
-      })
-
-
-
-        if (sediVaha && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-          flags = 3;
-          jednaPonuka.zeleneAuta.push(oneCar);
-        }else if (sediVaha &&  pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-          flags = 2;
-          jednaPonuka.zlteAuta.push(oneCar);
-        }
-        else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-          flags = 2;
-          jednaPonuka.zlteAuta.push(oneCar);
-        }
-        else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-          adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-          flags = 2;
-          jednaPonuka.zlteAuta.push(oneCar);
-        }
-        if (flags > jednaPonuka.flag){
-          jednaPonuka.flag = flags;
-        }
-    })
-    return jednaPonuka
-  }
+  // kontrolaFreeAutOdPonuk(ponuka, maxPrekrocenieVahy, maxPrekrocenieRozmerov, minVzdialenost, maxVzdialenost){
+  //   var jednaPonuka = ponuka
+  //
+  //   this.freeCars.forEach(oneCar => {
+  //     var vopchaSa = this.countFreeSpaceService.countFreeSpace(jednaPonuka.detailArray, null,
+  //     oneCar.id, jednaPonuka, maxPrekrocenieRozmerov, null);
+  //     var adresaMinVzialenost = 100000000;
+  //     var adresaMaxVzdialenost = 0;
+  //     var sediVaha = false;
+  //     var sediVahaYellow = false;
+  //
+  //       if (oneCar.nosnost >= jednaPonuka.maxVaha){
+  //         sediVaha = true;
+  //       }else {
+  //         if ((oneCar.nosnost * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
+  //           sediVahaYellow = true;
+  //         }
+  //       }
+  //     jednaPonuka.coordinatesOfTownsLat.forEach((oneAdresa, indexTown) => {
+  //         var vzdielenost = this.countDistancePoints([oneCar.longtitude, oneCar.lattitude],
+  //           [jednaPonuka.coordinatesOfTownsLon[indexTown], jednaPonuka.coordinatesOfTownsLat[indexTown]]);
+  //         if (vzdielenost < adresaMinVzialenost) {
+  //           adresaMinVzialenost = vzdielenost;
+  //         }
+  //         if (vzdielenost > adresaMaxVzdialenost) {
+  //           adresaMaxVzdialenost = vzdielenost;
+  //         }
+  //       });
+  //       var flags = 0;
+  //
+  //       var pocetMiestKdeSaVopcha = vopchaSa.poleMiestKdeSaVopcha // ci do mesta vopcha
+  //       var prekrocil = false; //ak false vopcha, ak true tak sa vopcha
+  //       //o uzivatelom definove % - yellow
+  //
+  //     vopchaSa.prekrocenieOPercenta.forEach(onePrekrocenie => {
+  //       if (onePrekrocenie == true){
+  //         prekrocil = true;
+  //       }
+  //     })
+  //
+  //
+  //
+  //       if (sediVaha && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+  //         flags = 3;
+  //         jednaPonuka.zeleneAuta.push(oneCar);
+  //       }else if (sediVaha &&  pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+  //         flags = 2;
+  //         jednaPonuka.zlteAuta.push(oneCar);
+  //       }
+  //       else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
+  //         flags = 2;
+  //         jednaPonuka.zlteAuta.push(oneCar);
+  //       }
+  //       else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
+  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
+  //         flags = 2;
+  //         jednaPonuka.zlteAuta.push(oneCar);
+  //       }
+  //       if (flags > jednaPonuka.flag){
+  //         jednaPonuka.flag = flags;
+  //       }
+  //   })
+  //   return jednaPonuka
+  // }
 
   offersShow(which){
     console.log(which);
     if (which.vyhovuje){
-      this.red = true
+      this.red = true;
       this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
       this.map.addLayer(this.vectorLayerOffersRoutesGreen);
     }else{
@@ -1219,153 +1249,153 @@ export class MapComponent {
     }
   }
 
-  countRandomArray(array1, array2){
-
-  }
-
-  skuskaVzdialenostiOdCiary(){
-    var routeString = new LineString([[14,49],[25,49]])
-      .transform('EPSG:4326', 'EPSG:3857');
-    var routeFeature = new Feature({
-      type: 'offer',
-      geometry: routeString,
-      name: "skuskaLiny"
-    });
-
-    var routeStyle;
-    routeStyle = new Style({
-      stroke: new Stroke({
-        width: 6,
-        color: [207, 0, 15, 0.45]
-      })
-    });
-    var styles = [];
-
-    routeFeature.getGeometry().forEachSegment(function (start, end){
-      var dx = end[0] - start[0];
-      var dy = end[1] - start[1];
-      var rotation = Math.atan2(dy, dx);
-      // arrows
-      styles.push(
-        new Style({
-          geometry: new Point(end),
-          image: new Icon({
-            src: 'assets/logo/arrow.png',
-            anchor: [0.75, 0.5],
-            scale: 0.05,
-            rotateWithView: true,
-            rotation: -rotation,
-          }),
-        })
-      );
-    })
-    styles.push(routeStyle)
-    routeFeature.setStyle(styles);
-    this.offersRouteRed.push(routeFeature);
-    var vectorSourceRoutesRed = new VectorSource({
-      features: this.offersRouteRed
-    });
-    this.vectorLayerOffersRoutesRed = new VectorLayer({
-      source: vectorSourceRoutesRed,
-    });
-    this.map.addLayer(this.vectorLayerOffersRoutesRed);
-
-    //bod
-    var iconFeature = new Feature({
-      geometry: new Point(fromLonLat([19, 51])),
-      name: "adresa.id",
-      type: "town"
-    });
-
-      var iconStyle = new Style({
-        image: new CircleStyle({
-          radius: 8,
-          stroke: new Stroke({
-            color: '#fff'
-          }),
-          fill: new Fill({
-            color: this.getColorByIndex(6)
-          }),
-        }),
-        text: new Text({
-          text: (1).toString(),
-          fill: new Fill({
-            color: '#fff',
-          }),
-        })
-      });
-
-iconFeature.setStyle(iconStyle)
-
-  var vectorSource = new VectorSource({
-    features: [iconFeature]
-  });
-
-  // this.map.removeLayer(this.vectorLayerAdress)
-  var skusobny = new VectorLayer({
-    source: vectorSource,
-  });
-  // this.vectorLayerAdress.setZIndex(2);
-  this.map.addLayer(skusobny);
-
-
-
-  // var coordinateOfNajblizsiBod = routeString.getClosestPoint([18.740801,49.219452])
-    // toto je cislo od 0 - zaciatok po 1 koniec liny...s tymto bnudem hladat najkratsiu vzdialenost k mojmo bodu
-    // var coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.5)
-    // console.log(coordinateOfNajblizsiBod)
-    // var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
-    // // var lon = lonlat[0];
-    // // var lat = lonlat[1];
-    // console.log(lonlat)
-    // console.log(this.countDistancePoints(lonlat, [18.740801,49.219452]));
-    var minVzdialenost = this.countClosesPoint(routeString, [19, 51]);
-    console.log(minVzdialenost);
-}
+//   countRandomArray(array1, array2){
+//
+//   }
+//
+//   skuskaVzdialenostiOdCiary(){
+//     const routeString = new LineString([[14, 49], [25, 49], [28, 40]])
+//       .transform('EPSG:4326', 'EPSG:3857');
+//     const routeFeature = new Feature({
+//       type: 'offer',
+//       geometry: routeString,
+//       name: 'skuskaLiny'
+//     });
+//
+//     let routeStyle;
+//     routeStyle = new Style({
+//       stroke: new Stroke({
+//         width: 6,
+//         color: [207, 0, 15, 0.45]
+//       })
+//     });
+//     const styles = [];
+//
+//     routeFeature.getGeometry().forEachSegment((start, end) => {
+//       const dx = end[0] - start[0];
+//       const dy = end[1] - start[1];
+//       const rotation = Math.atan2(dy, dx);
+//       // arrows
+//       styles.push(
+//         new Style({
+//           geometry: new Point(end),
+//           image: new Icon({
+//             src: 'assets/logo/arrow.png',
+//             anchor: [0.75, 0.5],
+//             scale: 0.05,
+//             rotateWithView: true,
+//             rotation: -rotation,
+//           }),
+//         })
+//       );
+//     });
+//     styles.push(routeStyle);
+//     routeFeature.setStyle(styles);
+//     this.offersRouteRed.push(routeFeature);
+//     const vectorSourceRoutesRed = new VectorSource({
+//       features: this.offersRouteRed
+//     });
+//     this.vectorLayerOffersRoutesRed = new VectorLayer({
+//       source: vectorSourceRoutesRed,
+//     });
+//     this.map.addLayer(this.vectorLayerOffersRoutesRed);
+//
+//     // bod
+//     const iconFeature = new Feature({
+//       geometry: new Point(fromLonLat([19, 51])),
+//       name: 'adresa.id',
+//       type: 'town'
+//     });
+//
+//     const iconStyle = new Style({
+//         image: new CircleStyle({
+//           radius: 8,
+//           stroke: new Stroke({
+//             color: '#fff'
+//           }),
+//           fill: new Fill({
+//             color: this.getColorByIndex(6)
+//           }),
+//         }),
+//         text: new Text({
+//           text: (1).toString(),
+//           fill: new Fill({
+//             color: '#fff',
+//           }),
+//         })
+//       });
+//
+//     iconFeature.setStyle(iconStyle);
+//
+//     const vectorSource = new VectorSource({
+//     features: [iconFeature]
+//   });
+//
+//   // this.map.removeLayer(this.vectorLayerAdress)
+//     const skusobny = new VectorLayer({
+//     source: vectorSource,
+//   });
+//   // this.vectorLayerAdress.setZIndex(2);
+//     this.map.addLayer(skusobny);
+//
+//
+//
+//   // var coordinateOfNajblizsiBod = routeString.getClosestPoint([18.740801,49.219452])
+//     // toto je cislo od 0 - zaciatok po 1 koniec liny...s tymto bnudem hladat najkratsiu vzdialenost k mojmo bodu
+//     // var coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.5)
+//     // console.log(coordinateOfNajblizsiBod)
+//     // var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
+//     // // var lon = lonlat[0];
+//     // // var lat = lonlat[1];
+//     // console.log(lonlat)
+//     // console.log(this.countDistancePoints(lonlat, [18.740801,49.219452]));
+//     const minVzdialenost = this.countClosesPoint(routeString, [19, 51]);
+//     console.log(minVzdialenost);
+// }
 
     countClosesPoint(routeString, lonLatMy){
-      var closesPoint;
+      let closesPoint;
       for (let i = 0; i < 21; i++) {
-        var coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.05 * i)
-        var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
-        var vzdialenost = this.countDistancePoints(lonlat, lonLatMy);
-          if (!closesPoint) {
+        const coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.05 * i);
+        // var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
+        const vzdialenost = this.countDistancePoints(coordinateOfNajblizsiBod, lonLatMy);
+        if (!closesPoint) {
             closesPoint = vzdialenost;
           } else if (closesPoint > vzdialenost) {
-            closesPoint = vzdialenost
+            closesPoint = vzdialenost;
           }
       }
-        return closesPoint;
+      return closesPoint;
     }
 
   drawOffers(offers){
-    this.offersGreen = []
+    this.offersGreen = [];
     this.offersRed = [];
     this.offersYellow = [];
 
     this.offersRouteRed = [];
     this.offersRouteGreen = [];
     this.offersRouteYellow = [];
-    this.offersToShow = null
+    this.offersToShow = null;
     offers.forEach((route, index) => {
-      var coordinatesToArray = [];
-      route.coordinatesOfTownsLat.forEach((lat, index) => {
-        coordinatesToArray.push([route.coordinatesOfTownsLon[index], route.coordinatesOfTownsLat[index]])
-      })
-      //draw lines
-      var routeString = new LineString(coordinatesToArray)
+      const coordinatesToArray = [];
+      route.adresyVPonuke.forEach((adresa, index) => {
+        coordinatesToArray.push([adresa.coordinatesOfTownsLon, adresa.coordinatesOfTownsLat]);
+      });
+      // draw lines
+      const routeString = new LineString(coordinatesToArray)
         .transform('EPSG:4326', 'EPSG:3857');
 
       // var indexInArray = this.offersFromDatabase.findIndex(onerRute => onerRute == route)
       // this.offersFromDatabase[indexInArray].
       // console.log(routeString.getLength())
 
-      var routeFeature = new Feature({
+      const routeFeature = new Feature({
         type: 'offer',
         geometry: routeString,
         name: route.id
       });
-      var routeStyle;
+      let routeStyle;
       if (route.flag < 2){
         routeStyle = new Style({
           stroke: new Stroke({
@@ -1374,7 +1404,7 @@ iconFeature.setStyle(iconStyle)
           })
         });
 
-      }else if (route.flag == 2){
+      }else if (route.flag === 2){
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
@@ -1391,12 +1421,12 @@ iconFeature.setStyle(iconStyle)
         });
       }
 
-      var styles = [];
+      const styles = [];
 
-      routeFeature.getGeometry().forEachSegment(function (start, end){
-        var dx = end[0] - start[0];
-        var dy = end[1] - start[1];
-        var rotation = Math.atan2(dy, dx);
+      routeFeature.getGeometry().forEachSegment((start, end) => {
+        const dx = end[0] - start[0];
+        const dy = end[1] - start[1];
+        const rotation = Math.atan2(dy, dx);
         // arrows
         styles.push(
           new Style({
@@ -1410,32 +1440,32 @@ iconFeature.setStyle(iconStyle)
             }),
           })
         );
-      })
-      styles.push(routeStyle)
+      });
+      styles.push(routeStyle);
       routeFeature.setStyle(styles);
 
       if (route.flag < 2){
         this.offersRouteRed.push(routeFeature);
-      }else if (route.flag == 2){
+      }else if (route.flag === 2){
         this.offersRouteYellow.push(routeFeature);
       }else{
         this.offersRouteGreen.push(routeFeature);
       }
 
 
-      if (this.routesToShow != undefined && route.id == this.routesToShow[0].id){
+      // if (this.routesToShow !== undefined && route.id === this.routesToShow[0].id){
+      //
+      //   // this.onClickFindInfoOffer(route.id);
+      // }
 
-        // this.onClickFindInfoOffer(route.id);
-      }
-
-      if (route.coordinatesOfTownsLat.length > 0) {
-        for (let i = 0; i < route.coordinatesOfTownsLat.length; i++) {
-          var iconFeature = new Feature({
-            geometry: new Point(fromLonLat([route.coordinatesOfTownsLon[i], route.coordinatesOfTownsLat[i]])),
+      if (route.adresyVPonuke.length > 0) {
+        for (let i = 0; i < route.adresyVPonuke.length; i++) {
+          const iconFeature = new Feature({
+            geometry: new Point(fromLonLat([route.adresyVPonuke[i].coordinatesOfTownsLon, route.adresyVPonuke[i].coordinatesOfTownsLat])),
             name: route.id,
-            type: "town"
+            type: 'town'
           });
-          var iconStyle;
+          let iconStyle;
           if (route.flag < 2) {
             iconStyle = new Style({
               image: new CircleStyle({
@@ -1456,7 +1486,7 @@ iconFeature.setStyle(iconStyle)
               })
             });
           }
-          else if (route.flag == 2) {
+          else if (route.flag === 2) {
             iconStyle = new Style({
               image: new CircleStyle({
                 radius: 10,
@@ -1498,13 +1528,13 @@ iconFeature.setStyle(iconStyle)
           }
           iconFeature.setStyle(iconStyle);
 
-          //red offers
+          // red offers
           if (route.flag < 2){
             this.offersRed.push(iconFeature);
-          }else if (route.flag == 2){
-            this.offersYellow.push(iconFeature)
+          }else if (route.flag === 2){
+            this.offersYellow.push(iconFeature);
           }else{
-            this.offersGreen.push(iconFeature)
+            this.offersGreen.push(iconFeature);
           }
 
 
@@ -1513,17 +1543,17 @@ iconFeature.setStyle(iconStyle)
       }
 
     });
-  //offerroutes
+  // offerroutes
   //   console.log
-    var vectorSourceRoutesGreen = new VectorSource({
+    const vectorSourceRoutesGreen = new VectorSource({
       features: this.offersRouteGreen
     });
 
-    var vectorSourceRoutesYellow = new VectorSource({
+    const vectorSourceRoutesYellow = new VectorSource({
       features: this.offersRouteYellow
     });
 
-    var vectorSourceRoutesRed = new VectorSource({
+    const vectorSourceRoutesRed = new VectorSource({
       features: this.offersRouteRed
     });
 
@@ -1615,7 +1645,7 @@ iconFeature.setStyle(iconStyle)
   }
 
   vypocitajVahuPreMesto(infoMesto){
-    var vahaVMeste = 0;
+    let vahaVMeste = 0;
     infoMesto.weight.forEach(vaha => {
       vahaVMeste += vaha;
     });
@@ -1630,6 +1660,11 @@ iconFeature.setStyle(iconStyle)
   //   return vahaVMeste;
   // }
 
+  // ked kliknem na ponuku a potom na auto, tak odoslem auto s itinerarnom do componentu carIti
+  choosenCar(car){
+    var carWithIti = this.carsWithItinerar.find(oneCar => oneCar.id == car.id);
+    this.carIti.setCar(carWithIti);
+  }
 
 }
 

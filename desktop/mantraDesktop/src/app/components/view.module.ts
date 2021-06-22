@@ -48,7 +48,9 @@ import { OneAddressInfoComponent } from './transportation/transportation-wrapper
 import { ChoosCarToMoveComponent } from './transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
 import { ShowItinerarComponent } from './transportation/offer/offer-to-route/show-itinerar/show-itinerar.component';
 import { ShowDetailComponent } from './transportation/new-transport/show-detail/show-detail.component';
-
+import { CarItiDetailComponent } from './map/car-iti-detail/car-iti-detail.component';
+import { SizeOfBoxComponent } from './aframe/size-of-box/size-of-box.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 
 @NgModule({
@@ -62,7 +64,7 @@ import { ShowDetailComponent } from './transportation/new-transport/show-detail/
       OffNavesDialogComponent, DragAndDropListComponent,
       WrapperComponent, DetailComponent, OfferToRouteComponent,
       DragDropOfferComponent, FilterComponent, DetailImgComponent,
-      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent
+      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -75,6 +77,9 @@ import { ShowDetailComponent } from './transportation/new-transport/show-detail/
         DetailImgComponent,
         DetailFormComponent,
         ShowDetailComponent,
+        ChoosCarToMoveComponent,
+        CarItiDetailComponent,
+        SizeOfBoxComponent,
 
     ],
   imports: [
@@ -93,6 +98,7 @@ import { ShowDetailComponent } from './transportation/new-transport/show-detail/
     MatRadioModule,
     MatDatepickerModule,
 
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ViewModule { }

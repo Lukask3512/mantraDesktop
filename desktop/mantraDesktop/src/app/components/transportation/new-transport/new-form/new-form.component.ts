@@ -80,6 +80,14 @@ export class NewFormComponent implements OnInit {
     this.minDate = new Date();
   }
 
+  upravBednu(){
+    const x = this.transportForm.get('sizeS').value;
+    const y = this.transportForm.get('sizeV').value;
+    const z = this.transportForm.get('sizeD').value;
+    // @ts-ignore
+    document.getElementById('mojaABedna').setAttribute('scale', {x: x, y: y, z: z});
+  }
+
   //ci mozem pridat dalsiu adresu
   checkIfCanAddNextAdress(update: boolean){
     if (this.addressIndexUpdate){

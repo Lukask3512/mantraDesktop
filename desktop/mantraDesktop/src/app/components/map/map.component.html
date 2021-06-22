@@ -41,54 +41,58 @@
 
 
     <div *ngIf="this.offersToShow != null" class="offers">
-      <h3>Ponuka</h3>
+
       <h3>Celková vzialenosť: ~ {{this.distanceOfOffer}} km</h3>
 
-      <div class="routeWrapper" *ngFor="let route of offersToShow">
-              <ol>
-                <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}
-                  <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-                  <span *ngIf="route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
-                  <app-detail-img class="imageInRow" [address]="route.detailArray[i]"></app-detail-img>
-                  <span *ngIf="route.type[i] == 'nakladka'">+{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>
-                  <span *ngIf="route.type[i] == 'vykladka'">-{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>
-                </li>
-              </ol>
+      Vyberte vozidlo
+      <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
+      <app-car-iti-detail></app-car-iti-detail>
+
+<!--      <div class="routeWrapper" *ngFor="let route of offersToShow">-->
+<!--              <ol>-->
+<!--                <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}-->
+<!--                  <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
+<!--                  <span *ngIf="route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
+<!--                  <app-detail-img class="imageInRow" [address]="route.detailArray[i]"></app-detail-img>-->
+<!--                  <span *ngIf="route.type[i] == 'nakladka'">+{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>-->
+<!--                  <span *ngIf="route.type[i] == 'vykladka'">-{{this.vypocitajVahuPreMesto(route.detailArray[i])}}t</span>-->
+<!--                </li>-->
+<!--              </ol>-->
 
 
-        <button (click)="routeDetail(route)" routerLink="/view/offerDetail">Prejdi na ponuku</button>
+<!--        <button (click)="routeDetail(route)" routerLink="/view/offerDetail">Prejdi na ponuku</button>-->
 
-        <div *ngIf="this.offersToShow[0].zeleneAuta.length > 0 || this.offersToShow[0].zlteAuta.length > 0" class="freeCars">
-          <h1>Vhodné volne vozidlá</h1>
-          <div class="oneCar" *ngFor="let auto of this.offersToShow[0].zeleneAuta">
-            <span class="greenLabel">{{auto.ecv}}</span>
-          </div>
+<!--        <div *ngIf="this.offersToShow[0].zeleneAuta.length > 0 || this.offersToShow[0].zlteAuta.length > 0" class="freeCars">-->
+<!--          <h1>Vhodné volne vozidlá</h1>-->
+<!--          <div class="oneCar" *ngFor="let auto of this.offersToShow[0].zeleneAuta">-->
+<!--            <span class="greenLabel">{{auto.ecv}}</span>-->
+<!--          </div>-->
 
-          <div class="oneCar" *ngFor="let auto of this.offersToShow[0].zlteAuta">
-            <span class="yellowLabel">{{auto.ecv}}</span>
-          </div>
-        </div>
+<!--          <div class="oneCar" *ngFor="let auto of this.offersToShow[0].zlteAuta">-->
+<!--            <span class="yellowLabel">{{auto.ecv}}</span>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <div class="toRouteWrappers">
-          <h1 *ngIf="route.zelenePrepravy.length > 0">Vhodné prepravy</h1>
+<!--        <div class="toRouteWrappers">-->
+<!--          <h1 *ngIf="route.zelenePrepravy.length > 0">Vhodné prepravy</h1>-->
 
-          <div  *ngFor="let preprava of route.zelenePrepravy; index as i" class="oneRoute">
-            <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">
-              <h3 class="tuSaVopcha" *ngIf="preprava.vopchaSa.poleMiestKdeSaVopcha.includes(iMesto); else elseBlock">{{myTown}}</h3>
-              <ng-template #elseBlock>{{myTown}}</ng-template>
-            </div>
-          </div>
-          <h1 *ngIf="route.zltePrepravy.length > 0">Povolene prekrocenie</h1>
-          <div  *ngFor="let preprava of route.zltePrepravy; index as i" class="oneRoute">
-            <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">
-              <h3 class="tuSaVopchaYellow" *ngIf="preprava.vopchaSa.poleMiestKdeSaVopcha.includes(iMesto); else elseBlock">{{myTown}}</h3>
-              <ng-template #elseBlock>{{myTown}}</ng-template>
-            </div>
-          </div>
+<!--          <div  *ngFor="let preprava of route.zelenePrepravy; index as i" class="oneRoute">-->
+<!--            <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">-->
+<!--              <h3 class="tuSaVopcha" *ngIf="preprava.vopchaSa.poleMiestKdeSaVopcha.includes(iMesto); else elseBlock">{{myTown}}</h3>-->
+<!--              <ng-template #elseBlock>{{myTown}}</ng-template>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <h1 *ngIf="route.zltePrepravy.length > 0">Povolene prekrocenie</h1>-->
+<!--          <div  *ngFor="let preprava of route.zltePrepravy; index as i" class="oneRoute">-->
+<!--            <div *ngFor="let myTown of preprava.nameOfTowns; index as iMesto">-->
+<!--              <h3 class="tuSaVopchaYellow" *ngIf="preprava.vopchaSa.poleMiestKdeSaVopcha.includes(iMesto); else elseBlock">{{myTown}}</h3>-->
+<!--              <ng-template #elseBlock>{{myTown}}</ng-template>-->
+<!--            </div>-->
+<!--          </div>-->
 
 
-        </div>
-      </div>
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </div>

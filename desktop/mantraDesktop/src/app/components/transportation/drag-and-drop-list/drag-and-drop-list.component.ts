@@ -65,7 +65,7 @@ export class DragAndDropListComponent implements OnInit {
   }
 
 
-  //kontrola ci mozem prehodit mesta - podla detailu
+  // kontrola ci mozem prehodit mesta - podla detailu
   zmenIdckaVykladok(detail, previous, current){
     var mozemPresunut = true;
     if (detail.townsArray){ // ked sa snazim presunut vykladku
@@ -236,7 +236,7 @@ export class DragAndDropListComponent implements OnInit {
     var mozemPresunut = this.najdiCiMozemPresunut(presuvaciDetail, event.previousIndex, event.currentIndex);
     if (mozemPresunut){
       this.zmenIdckaVykladok(presuvaciDetail, event.previousIndex, event.currentIndex);
-      //tu budem musiet este v detaile upravit indexes
+      // tu budem musiet este v detaile upravit indexes
       moveItemInArray(this.detailArray, event.previousIndex, event.currentIndex);
       moveItemInArray(this.address, event.previousIndex, event.currentIndex);
       this.outputRoute.emit(this.address);

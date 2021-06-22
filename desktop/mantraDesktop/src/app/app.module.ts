@@ -10,7 +10,7 @@ import { DispecerComponent } from './components/dispecer/dispecer-wrapper/dispec
 import { NewDispecerComponent } from './components/dispecer/new-dispecer/new-dispecer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
-
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import 'firebase/storage';
 
@@ -124,6 +124,7 @@ import { NewFormComponent } from './components/transportation/new-transport/new-
     // provider used to create fake backend
     fakeBackendProvider
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

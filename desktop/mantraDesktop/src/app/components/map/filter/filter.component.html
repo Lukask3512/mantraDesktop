@@ -1,9 +1,21 @@
 <mat-slide-toggle [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
-    <mat-form-field>
-      <mat-label>Min vzdialenost</mat-label>
-      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost" class="example-right-align">
-      <span *ngIf="checked" matSuffix> km</span>
-    </mat-form-field>
+<!--    <mat-form-field>-->
+<!--      <mat-label>Min vzdialenost</mat-label>-->
+<!--      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="minDistance" type="number" placeholder="Min vzdialenost" class="example-right-align">-->
+<!--      <span *ngIf="checked" matSuffix> km</span>-->
+<!--    </mat-form-field>-->
+
+<section class="example-section">
+  <label class="example-margin">Typ vzdialenosti</label>
+  <mat-radio-group (change)="filterOffers()" [disabled]="!checked" [(ngModel)]="typeDistance">
+    <mat-radio-button  class="example-margin" value="maxAll">
+      Maximalna vzdialenost vsetkych bodov
+    </mat-radio-button>
+    <mat-radio-button class="example-margin" value="maxFirst">
+      Max vzdialenost 1. bodu
+    </mat-radio-button>
+  </mat-radio-group>
+</section>
 
     <mat-form-field>
       <mat-label>Max vzdialenost</mat-label>
