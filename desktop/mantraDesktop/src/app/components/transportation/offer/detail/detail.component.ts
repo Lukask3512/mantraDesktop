@@ -11,6 +11,7 @@ import {DragAndDropListComponent} from "../../drag-and-drop-list/drag-and-drop-l
 import {AddressService} from "../../../../services/address.service";
 import Address from "../../../../models/Address";
 import {PackageService} from "../../../../services/package.service";
+import {PosliPonukuComponent} from './posli-ponuku/posli-ponuku.component';
 
 @Component({
   selector: 'app-detail',
@@ -36,6 +37,9 @@ export class DetailComponent implements AfterViewInit {
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
 
+  @ViewChild(PosliPonukuComponent)
+  private posliPonuku: PosliPonukuComponent;
+
   ngAfterViewInit(): void {
 
     this.dataService.currentRoute.subscribe(route => {
@@ -44,9 +48,10 @@ export class DetailComponent implements AfterViewInit {
       this.offerService.routes$.subscribe(routes => {
         this.route = routes.find(oneRoute => oneRoute.id == route.id);
         // this.getDetails();
-        if (this.route == undefined){
+        if (this.route === undefined){
           this.route = this.fakeRoute;
         }
+
 
 
         this.addressesService.offerAddresses$.subscribe(alAdd => {
@@ -101,6 +106,8 @@ export class DetailComponent implements AfterViewInit {
       });
       setTimeout(() =>
         {
+          this.posliPonuku.setRoute(this.route);
+
           if (this.childDropList){
             // this.getDetails();
           }

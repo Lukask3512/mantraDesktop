@@ -1,6 +1,8 @@
 
 <div *ngIf="offer" class="example-container">
   <h2>Ponuka</h2>
+  <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>
+  <app-ulozenie-ponuky [idPonuky]="this.offer.id" (itiOutput)="spracujPredpoklad($event)"></app-ulozenie-ponuky>
   <div
     id="all"
     cdkDropList
@@ -49,6 +51,8 @@
     </div>
   </div>
 
+  <h3>Chcete si ulozit ulozenie ponuky v itinerari auta?</h3>
+  <button (click)="ulozPredbezneUlozenie()">Ulozit</button>
 
   <h3>Povodna vzdusna vzdialenost {{this.distanceOfIti}}km</h3>
   <h3>Nova vzdialenost {{this.countDistanceOfItinerarWithOffer()}}km</h3>

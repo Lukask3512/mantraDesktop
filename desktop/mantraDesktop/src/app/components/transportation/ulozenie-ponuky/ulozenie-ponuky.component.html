@@ -1,0 +1,12 @@
+<div *ngIf="predUlozenie && predUlozenie.length > 0" class="wrapper">
+
+  <h2>Ulozene ulozenia vo vozidlach</h2>
+
+  <div *ngFor="let ulozenie of this.predUlozenie">
+    <button (click)="this.sendIti(ulozenie)">{{ulozenie.ecv}}</button>
+  </div>
+
+</div>
+
+
+

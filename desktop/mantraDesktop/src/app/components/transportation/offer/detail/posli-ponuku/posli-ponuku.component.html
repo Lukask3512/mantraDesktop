@@ -1,0 +1,21 @@
+<div *ngIf="this.route" class="input">
+  <h4 *ngIf="this.offer">
+    Vaša ponuka {{this.offer}}
+  </h4>
+  <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
+  <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
+
+  <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">
+    <mat-label>Ponuknite cenu</mat-label>
+    <input type="number" matInput placeholder="Cena...."  [(ngModel)]="price">
+    <span matSuffix> € </span>
+    <mat-hint>V eurách</mat-hint>
+  </mat-form-field>
+
+  <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>
+
+  <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0" (click)="addPrice()">Pridat ponuku</button>
+  <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>
+  <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
+  <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
+</div>

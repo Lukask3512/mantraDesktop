@@ -51,6 +51,8 @@ import { ShowDetailComponent } from './transportation/new-transport/show-detail/
 import { CarItiDetailComponent } from './map/car-iti-detail/car-iti-detail.component';
 import { SizeOfBoxComponent } from './aframe/size-of-box/size-of-box.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { PosliPonukuComponent } from './transportation/offer/detail/posli-ponuku/posli-ponuku.component';
+import { UlozeniePonukyComponent } from './transportation/ulozenie-ponuky/ulozenie-ponuky.component';
 
 
 @NgModule({
@@ -64,7 +66,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
       OffNavesDialogComponent, DragAndDropListComponent,
       WrapperComponent, DetailComponent, OfferToRouteComponent,
       DragDropOfferComponent, FilterComponent, DetailImgComponent,
-      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent
+      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent, PosliPonukuComponent, UlozeniePonukyComponent
     ],
     exports: [
         OpenlayerComponent,

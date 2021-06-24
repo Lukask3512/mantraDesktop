@@ -1,7 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {CountFreeSpaceService} from '../../../data/count-free-space.service';
 import {getDistance} from 'ol/sphere';
+import {PosliPonukuComponent} from '../../transportation/offer/detail/posli-ponuku/posli-ponuku.component';
+import {PredpokladaneUlozenieService} from '../../../services/predpokladane-ulozenie.service';
+import Predpoklad from '../../../models/Predpoklad';
+import {DataService} from '../../../data/data.service';
+import {UlozeniePonukyComponent} from '../../transportation/ulozenie-ponuky/ulozenie-ponuky.component';
 
 @Component({
   selector: 'app-car-iti-detail',
@@ -16,7 +21,15 @@ export class CarItiDetailComponent implements OnInit {
   distanceOfIti: number;
   prekrocenieVelkosti = 1;
   prekrocenieVahy = 1;
-  constructor(private countService: CountFreeSpaceService) { }
+
+  @ViewChild(PosliPonukuComponent)
+  private posliPonukuComponent: PosliPonukuComponent;
+
+  @ViewChild(UlozeniePonukyComponent)
+  private ulozeniePonukyComponent: UlozeniePonukyComponent;
+
+  constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
+              private dataService: DataService) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +45,12 @@ export class CarItiDetailComponent implements OnInit {
     console.log(offer);
     this.offer = JSON.parse(JSON.stringify(offer));
     this.realOffer = JSON.parse(JSON.stringify(offer));
+    if (this.posliPonukuComponent) {
+    this.posliPonukuComponent.setOfferId(this.offer.id);
+    }
+    if (this.ulozeniePonukyComponent){
+      this.ulozeniePonukyComponent.setPredpokladane(this.offer.id);
+    }
   }
   // na presunutie prvkov v poli
   arraymove(arr, fromIndex, toIndex) {
@@ -313,5 +332,42 @@ export class CarItiDetailComponent implements OnInit {
   checkIndex(indexOfElement){
     return indexOfElement !== 0;
 }
+
+  ulozPredbezneUlozenie(){
+    const predpoklad: Predpoklad = {
+      ecv: this.car.ecv,
+      itinerar: this.car.itinerar,
+      creatorId: this.dataService.getMyIdOrMaster(),
+      ponukaId: this.offer.id
+    };
+    this.predpokladService.createPredpoklad(predpoklad);
+  }
+
+  // ked kliknem na auto dostanem ulozeny predpoklad a snazim sa ho spracovat ak auto medzi tym ukoncilo nejaku prepravu
+  // a zobrazit v itinerari, ak sa mi to nepodari, vypisem o tom spravu a zobrazim osobitne itinerar a ponuku
+  spracujPredpoklad(predpoklad: Predpoklad){
+    // tu musim natiahnut auto do this.car
+
+    // najprv kontrolujem ci sme do itinerara auta pridali nieco nove
+    this.car.itinerar.forEach(oneId => {
+      if (!predpoklad.itinerar.includes(oneId)){
+        console.log('V aute je nova adresa a neviem kde ju dat');
+      }
+    });
+    // tu konrolujem ci auto medzicasom nahodou nieco nedokoncilo
+    predpoklad.itinerar.forEach(oneId => {
+      if (!this.car.itinerar.includes(oneId) && !this.offer.itinerar.includes(oneId)){
+        console.log('Auto dokoncilo nejaku adresu, vymaz to z predpokladu a oznam pouzivatelovi');
+      }
+    });
+
+    var order = {};
+    // tu uz iba ulov sicko do this.car ....
+    this.car.itiAdresy.concat(this.offer.adresyVPonuke);
+    predpoklad.itinerar.forEach(function (a, i) { order[a] = i; });
+    this.car.itiAdresy.sort(function (a, b) {
+      return order[a.id] - order[b.id];
+    });
+  }
 
 }
