@@ -1,8 +1,8 @@
 export default class Address {
   id?: string;
   carId?: string;
-  createdBy?: string
-  nameOfTown: string; //nazov mesta
+  createdBy?: string;
+  nameOfTown: string; // nazov mesta
   coordinatesOfTownsLat: string;
   coordinatesOfTownsLon: string;
   type: string; // nakladka vykladka V/N
@@ -15,7 +15,7 @@ export default class Address {
   casLastPrijazdu?: string;
   estimatedTimeArrival?: string;
 
-  //detail
+  // detail
   packagesId: string[] = [];
   // sizeV: number[];
   // sizeS: number[];

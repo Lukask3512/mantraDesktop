@@ -17,7 +17,7 @@
   <button (click)="moveAll()">Presun vsetko</button>
 </div>
 
-<div class="example-container">
+<div *ngIf="this.car" class="example-container">
   <h2>Itinerár</h2>
   <div
     id="even"

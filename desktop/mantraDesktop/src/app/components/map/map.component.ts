@@ -44,6 +44,7 @@ import {PackageService} from '../../services/package.service';
 import {DrawOfferService} from './draw-offer.service';
 import {CarItiDetailComponent} from './car-iti-detail/car-iti-detail.component';
 import {ChoosCarToMoveComponent} from '../transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
+import Predpoklad from '../../models/Predpoklad';
 
 
 
@@ -173,7 +174,7 @@ export class MapComponent implements AfterViewInit {
         });
       }).then(() => {
         this.addAddresses();
-        this.addRoute();
+        // this.addRoute();
 
       });
 
@@ -230,14 +231,17 @@ export class MapComponent implements AfterViewInit {
     this.offersToShow = null;
     this.routesToShow = undefined;
     setTimeout(() => {
-      this.dragComponent.setAddresses(this.carToShow[0]);
+      this.dragComponent.setAddresses(this.carToShow.itiAdresy);
     }, 100);
 
   }
 
   // ak kliknem na adresu
   onClickFindInfoAdress(id){
-    const adresyVRoute = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(id));
+    let adresyVRoute = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(id));
+    if (!adresyVRoute){
+      adresyVRoute = this.offerRouteService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(id));
+    }
     const adresy = this.adressesFromDatabase.filter(oneAdresa => adresyVRoute.addresses.includes(oneAdresa.id));
     this.routesToShow = adresyVRoute.addresses.map((i) => adresy.find((j) => j.id === i));
     console.log(adresy);
@@ -277,8 +281,8 @@ export class MapComponent implements AfterViewInit {
     // .countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
   }
 
-  addRoute() {
-    const route = {id: 'LhMQxklO6AdvZDB7jyWw'};
+  addRoute(carId, colorIndex) {
+    const route = {id: carId};
     this.routes = [];
     let outputData;
 
@@ -291,7 +295,6 @@ export class MapComponent implements AfterViewInit {
 
 
       this.http.get(data, {responseType: 'text' as 'json'}).subscribe(text => {
-        console.log('stahujem cestu');
         outputData = text;
 
         // zmena na json
@@ -315,7 +318,7 @@ export class MapComponent implements AfterViewInit {
         const routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
-            color: this.getColorByIndex(1)
+            color: this.getColorByIndex(colorIndex)
           })
         });
         routeFeature.setStyle(routeStyle);
@@ -566,6 +569,7 @@ export class MapComponent implements AfterViewInit {
             const cisloAuta = this.carsFromDatabase.findIndex(oneCar => oneCar.id == car.id);
             const cisloItinerara = car.itinerar.findIndex(oneAdd => oneAdd == oneAddress.id);
 
+            this.addRoute(this.carsFromDatabase[cisloAuta].id, cisloAuta);
 
             const iconFeature = new Feature({
               geometry: new Point(fromLonLat([oneAddress.coordinatesOfTownsLon, oneAddress.coordinatesOfTownsLat])),
@@ -986,7 +990,8 @@ export class MapComponent implements AfterViewInit {
 
         const jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0,
           flag: 0, zelenePrepravy: [], zltePrepravy: [], zeleneAuta: [], zlteAuta: []}; // 0 cervena, 1 zlta, 2 greeeen
-        if (oneRouteOffer.takenBy === '' ){
+        if (oneRouteOffer.takenBy === '' || (oneRouteOffer.takenBy === this.dataService.getMyIdOrMaster() &&
+        oneRouteOffer.offerInRoute === '')){
         // && this.dataService.getMyIdOrMaster() != oneRouteOffer.createdBy //toto tam pridat potom..
           let zltePrepravy = [];
           let zelenePrepravy = [];
@@ -1141,7 +1146,6 @@ export class MapComponent implements AfterViewInit {
       });
 
       setTimeout( () => {
-        console.log(poleSMinVzdialenostamiOdAdries);
         this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
         this.drawOffers(poleSMinVzdialenostamiOdAdries);
       }, 500 );
@@ -1662,8 +1666,13 @@ export class MapComponent implements AfterViewInit {
 
   // ked kliknem na ponuku a potom na auto, tak odoslem auto s itinerarnom do componentu carIti
   choosenCar(car){
-    var carWithIti = this.carsWithItinerar.find(oneCar => oneCar.id == car.id);
+    let carWithIti = this.carsWithItinerar.find(oneCar => oneCar.id == car.id);
     this.carIti.setCar(carWithIti);
+  }
+
+  getPredpoklad(predpoklad: Predpoklad){
+    const car = this.carsWithItinerar.find(oneCar => oneCar.ecv === predpoklad.ecv);
+    this.carIti.spracujPredpoklad(predpoklad, car);
   }
 
 }

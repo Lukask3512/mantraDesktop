@@ -79,6 +79,10 @@ export class AddressService {
     })
   }
 
+  getAddressesFromOffer(){
+    return this.addressesOfferGet;
+  }
+
   getRoutes(){
     var createdId = this.dataService.getMyIdOrMaster();
     return this.afs.collection<Address>('address', ref => {
@@ -114,6 +118,10 @@ export class AddressService {
     return this.offerAddresses$.pipe(
       map(txs => txs.find(txn => txn.id === id))
     );
+  }
+
+  updateAddress(address){
+    return this.addressCollection.doc(address.id).update(address);
   }
 
   // getRoutesOrder(carId){

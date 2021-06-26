@@ -14,8 +14,13 @@
 
   <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>
 
-  <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0" (click)="addPrice()">Pridat ponuku</button>
-  <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>
-  <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
-  <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
+  <div *ngIf="this.route.takenBy == ''">
+      <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0" (click)="addPrice()">Pridat ponuku</button>
+      <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>
+      <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
+      <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
+  </div>
+  <h2>Ziskali ste ponuku</h2>
+  <h3 *ngIf="this.route.takenBy == getDispecerId()">Presunte ponuku do itinerara auta</h3>
+
 </div>

@@ -16,22 +16,27 @@ export class OfferRouteService {
   private allRoutesSource = new BehaviorSubject<any>(null);
   allRoutes = this.allRoutesSource.asObservable();
 
+  routesForGet;
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.readAllQueries().subscribe(res => {
       var allKindTogether = res[0].concat(res[1], res[2]);
-      console.log(allKindTogether)
+      this.routesForGet = allKindTogether;
       this._routes.next(allKindTogether);
     });
 
   }
-  //toto je zbytocne, urobim to tak ,ze stiahnem vsetky adresy po 1 ktore mi pridu z ponuk, ,,,
+  // toto je zbytocne, urobim to tak ,ze stiahnem vsetky adresy po 1 ktore mi pridu z ponuk, ,,,
   private _routes = new BehaviorSubject<any>([]);
   readonly routes$ = this._routes.asObservable();
 
-  //vsetky nepriradene
+  getRoutesNoSub(){
+    return this.routesForGet;
+  }
+
+  // vsetky nepriradene
   getRoutes(){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
@@ -50,7 +55,7 @@ export class OfferRouteService {
     );
   }
 
-  //vsetky moje
+  // vsetky moje
   getRoutesMine(){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
@@ -70,7 +75,7 @@ export class OfferRouteService {
     );
   }
 
-  //vsetky moje
+  // vsetky moje
   getRoutesPriradeneMne(){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
