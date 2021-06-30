@@ -20,7 +20,7 @@ export class PosliPonukuComponent implements OnInit {
     this.offerService.routes$.subscribe(allRoutes => {
       this.route = allRoutes.find(oneOffer => oneOffer.id === this.offerId);
 
-      if (this.route.offerFrom !== undefined){
+      if (this.route && this.route.offerFrom !== undefined){
         this.route.offerFrom.forEach((offer, index) => {
           if (offer === this.getDispecerId()){
             this.offer = this.route.priceFrom[index];

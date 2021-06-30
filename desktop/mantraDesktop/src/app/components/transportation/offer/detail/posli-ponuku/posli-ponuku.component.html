@@ -20,7 +20,11 @@
       <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
       <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
   </div>
-  <h2>Ziskali ste ponuku</h2>
-  <h3 *ngIf="this.route.takenBy == getDispecerId()">Presunte ponuku do itinerara auta</h3>
+
+  <div *ngIf="this.route.takenBy == getDispecerId()">
+    <h2>Ziskali ste ponuku</h2>
+    <h3 >Presunte ponuku do itinerara auta</h3>
+  </div>
+
 
 </div>

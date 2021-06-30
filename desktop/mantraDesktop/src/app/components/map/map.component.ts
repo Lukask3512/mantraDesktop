@@ -231,6 +231,7 @@ export class MapComponent implements AfterViewInit {
     this.offersToShow = null;
     this.routesToShow = undefined;
     setTimeout(() => {
+      // @ts-ignore
       this.dragComponent.setAddresses(this.carToShow.itiAdresy);
     }, 100);
 
@@ -534,9 +535,11 @@ export class MapComponent implements AfterViewInit {
                 } else {
                   this.addressService.getOneAddresFromOfferById(addId).subscribe(offerAdd => {
                     itinerarAuta.push(offerAdd);
-                    oneAdd.packagesId.forEach(onePackId => {
+                    if (oneAdd){
+                      oneAdd.packagesId.forEach(onePackId => {
                       detailVMeste.push(this.packageService.getOnePackage(onePackId));
-                    });
+                      });
+                    }
                   });
                 }
               });
@@ -948,7 +951,9 @@ export class MapComponent implements AfterViewInit {
           const packageVPoradiPreAdresu: DeatilAboutAdresses[] = [];
           adresa.packagesId.forEach(onePackageId => {
             const balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
-            balik.id = onePackageId;
+            if (balik){
+              balik.id = onePackageId;
+            }
             packageVPoradiPreAdresu.push(balik);
           });
           detailVPonuke.push(packageVPoradiPreAdresu);
@@ -968,6 +973,7 @@ export class MapComponent implements AfterViewInit {
        // TODO: zakomentovane len pre zmenu modelu, dokoncit
         detailVPonuke.forEach((oneDetail, indexTown ) => { // detailom a zistujem max vahu
           oneDetail.forEach((onePackage, indexPackage) => {
+            if (onePackage){
                 if (adresyVPonuke[indexTown].type === 'nakladka'){
                   sumVaha += onePackage.weight;
                   if (sumVaha > maxVaha){
@@ -976,10 +982,10 @@ export class MapComponent implements AfterViewInit {
                 }else{
                   sumVaha -= onePackage.weight;
                 }
+            }
           });
         });
 
-        console.log(maxVaha);
 
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
         const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
@@ -1380,7 +1386,17 @@ export class MapComponent implements AfterViewInit {
     this.offersRouteRed = [];
     this.offersRouteGreen = [];
     this.offersRouteYellow = [];
-    this.offersToShow = null;
+    // aby som si aktualizoval ponuku
+    if (this.offersToShow){
+      offers.forEach(onePonuka => {
+        if (onePonuka.id === this.offersToShow.id){
+          this.offersToShow = onePonuka;
+          this.carIti.setPonuka(this.offersToShow);
+        }
+      })
+    }
+
+    // this.offersToShow = null;
     offers.forEach((route, index) => {
       const coordinatesToArray = [];
       route.adresyVPonuke.forEach((adresa, index) => {
@@ -1673,6 +1689,14 @@ export class MapComponent implements AfterViewInit {
   getPredpoklad(predpoklad: Predpoklad){
     const car = this.carsWithItinerar.find(oneCar => oneCar.ecv === predpoklad.ecv);
     this.carIti.spracujPredpoklad(predpoklad, car);
+  }
+
+  otvorAuto(car){
+    this.offersToShow = undefined;
+    this.routesToShow = undefined;
+    setTimeout(() => {
+      this.carToShow = this.carsWithItinerar.find(oneCar => oneCar.id === car.id);
+    }, 300);
   }
 
 }

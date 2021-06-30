@@ -53,6 +53,7 @@ import { SizeOfBoxComponent } from './aframe/size-of-box/size-of-box.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { PosliPonukuComponent } from './transportation/offer/detail/posli-ponuku/posli-ponuku.component';
 import { UlozeniePonukyComponent } from './transportation/ulozenie-ponuky/ulozenie-ponuky.component';
+import { DeleteFromItiComponent } from './dialogs/delete-from-iti/delete-from-iti.component';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { UlozeniePonukyComponent } from './transportation/ulozenie-ponuky/ulozen
       OffNavesDialogComponent, DragAndDropListComponent,
       WrapperComponent, DetailComponent, OfferToRouteComponent,
       DragDropOfferComponent, FilterComponent, DetailImgComponent,
-      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent, PosliPonukuComponent, UlozeniePonukyComponent
+      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent, PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent
     ],
     exports: [
         OpenlayerComponent,

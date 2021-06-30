@@ -36,9 +36,9 @@ export class DetailComponent implements AfterViewInit {
 
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
-
-  @ViewChild(PosliPonukuComponent)
-  private posliPonuku: PosliPonukuComponent;
+  //
+  // @ViewChild(PosliPonukuComponent)
+  // private posliPonuku: PosliPonukuComponent;
 
   ngAfterViewInit(): void {
 
@@ -56,9 +56,8 @@ export class DetailComponent implements AfterViewInit {
 
         this.addressesService.offerAddresses$.subscribe(alAdd => {
           var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
-          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
+          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
           this.address = adresy;
-
           this.address.forEach(oneAddress => {
             var myPackages = [];
             var detailAr = {detailArray: [], townsArray: [], packageId: []}
@@ -106,7 +105,8 @@ export class DetailComponent implements AfterViewInit {
       });
       setTimeout(() =>
         {
-          this.posliPonuku.setRoute(this.route);
+          // this.posliPonuku.setRoute(this.route);
+          this.child.notifyMe(this.address, null, null);
 
           if (this.childDropList){
             // this.getDetails();
@@ -140,6 +140,14 @@ export class DetailComponent implements AfterViewInit {
         return this.dataService.getDispecer().createdBy
       }
     }
+
+  getCarById(){
+    return this.carService.getAllCars().find(oneCar => oneCar.id === this.route.offerInRoute);
+  }
+
+  sendCar(car){
+    this.dataService.changRoute(car);
+  }
 
   // async getDetails(){
   //   for (const route of this.route.detailsAboutAdresses){

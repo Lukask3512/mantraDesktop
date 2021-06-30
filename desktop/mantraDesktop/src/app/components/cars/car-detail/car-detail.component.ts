@@ -16,6 +16,7 @@ import Cars from "../../../models/Cars";
 import {AddressService} from "../../../services/address.service";
 import Address from "../../../models/Address";
 import {DragAndDropListComponent} from "../../transportation/drag-and-drop-list/drag-and-drop-list.component";
+import {DeleteFromItiComponent} from '../../dialogs/delete-from-iti/delete-from-iti.component';
 
 @Component({
   selector: 'app-car-detail',
@@ -65,8 +66,10 @@ export class CarDetailComponent implements AfterViewInit {
     this.dataService.currentCar.subscribe(car => {
       // this.car = car;
       this.carService.cars$.subscribe(cars => {
+
         // @ts-ignore
-        this.car = cars.find(oneCarFromDt => oneCarFromDt.id == car.id);
+        this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
+
 
 
 
@@ -78,24 +81,18 @@ export class CarDetailComponent implements AfterViewInit {
         this.addressService.address$.subscribe(vsetkyAdress => {
           this.addressService.offerAddresses$.subscribe(vsetkyPonuky => {
             allAddresses = vsetkyAdress.concat(vsetkyPonuky);
-            console.log(allAddresses)
+            this.findMyAdresses(allAddresses);
+            if (this.dragComponent){
+              this.dragComponent.setAddresses(this.myAddresses);
+            }
             resolve();
           })
         })
       }).then(() => {
-
-      // var itinerarVAute: Address[] = [];
-      console.log(this.car)
      new Promise((resolve, reject) => {
-       this.car.itinerar.forEach(oneAddresId => {
-         this.myAddresses.push(allAddresses.find(oneAddress => oneAddress.id == oneAddresId));
-         console.log(oneAddresId)
-         console.log(allAddresses)
-         console.log(allAddresses.find(oneAddress => oneAddress.id == oneAddresId))
-       });
+       this.findMyAdresses(allAddresses);
        resolve();
      }).then(resolve => {
-        console.log(this.myAddresses);
        this.dragComponent.setAddresses(this.myAddresses);
        setTimeout(() =>
          {
@@ -120,6 +117,12 @@ export class CarDetailComponent implements AfterViewInit {
     this.parentSubject.next(routeId);
   }
 
+  findMyAdresses(allAddresses){
+    this.myAddresses = [];
+    this.car.itinerar.forEach(oneAddresId => {
+      this.myAddresses.push(allAddresses.find(oneAddress => oneAddress.id === oneAddresId));
+    });
+  }
 
   changeRoute(route: Route){
     this.routes = route;
@@ -292,6 +295,23 @@ export class CarDetailComponent implements AfterViewInit {
 
   routeDetail(route: Route){
     this.dataService.changeRealRoute(route);
+  }
+
+  deleteFromIti(address: Address){
+    const dialogRef = this.dialog.open(DeleteFromItiComponent, {
+      data: {adresa: address }
+    });
+    dialogRef.afterClosed().subscribe(value => {
+
+      if (value && value.event !== undefined){
+        console.log(value);
+        this.car.itinerar = this.car.itinerar.filter(ids => ids !== address.id);
+        this.carService.updateCar(this.car, this.car.id);
+
+      }else {
+        return;
+      }
+    });
   }
 
 }

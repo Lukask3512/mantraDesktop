@@ -9,6 +9,7 @@ import {DataService} from "../../../data/data.service";
 import Address from "../../../models/Address";
 import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {AddressService} from '../../../services/address.service';
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -27,8 +28,10 @@ export class DragAndDropListComponent implements OnInit {
   @Output() outputRoute = new EventEmitter<Address[]>();
   @Output() outputDetails = new EventEmitter<any[]>();
   @Output() clickedOnRoute = new EventEmitter<number>();
+
+  @Output() deleteFromIti = new EventEmitter<Address>();
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
-              private _snackBar: MatSnackBar) { }
+              private _snackBar: MatSnackBar, private addressService: AddressService) { }
 
 
   setAddresses(addresses: Address[]){
@@ -262,18 +265,8 @@ export class DragAndDropListComponent implements OnInit {
     return date.toLocaleString();
   }
 
-  deleteTown(routeTown){
-    // for (let i = 0; i < this.route.nameOfTowns.length; i++){
-    //   if (this.route.nameOfTowns[i] == routeTown){
-    //     this.route.nameOfTowns.splice(i,1);
-    //     this.route.coordinatesOfTownsLon.splice(i,1);
-    //     this.route.coordinatesOfTownsLat.splice(i,1);
-    //     this.route.type.splice(i,1);
-    //     this.route.status.splice(i, 1);
-    //     this.route.aboutRoute.splice(i,1);
-    //   }
-    // }
-    // this.outputRoute.emit(this.route);
+  deleteTownFromIti(townId){
+    this.deleteFromIti.emit(townId);
   }
 
   setDetails(arrayOfDetails){
@@ -291,7 +284,9 @@ export class DragAndDropListComponent implements OnInit {
     console.log(routeInfo)
     dialogRef.afterClosed().subscribe(value => {
 
-      if (value.routeInfo !== undefined){
+      if (value && value.routeInfo !== undefined){
+        this.address[id].aboutRoute = value.routeInfo;
+        this.addressService.updateAddress(this.address[id]);
         // this.route.aboutRoute[id] = value.routeInfo;
         this.outputRoute.emit(this.address);
       }else {

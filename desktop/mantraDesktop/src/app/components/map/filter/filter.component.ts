@@ -31,17 +31,15 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
-      this.offers = routes;
-      // this.offers.forEach(oneOffer => {
-      //   oneOffer.addresses
-      // })
-      this.filterOffers();
+      setTimeout(() => {
+        this.offers = routes;
+        this.filterOffers();
+      }, 200);
+
     });
   }
 
   filterOffers(){
-    console.log(this.vypocitajPrekrocenie(this.weight));
-    console.log(this.vypocitajPrekrocenie(this.size));
     if (!this.checked){
       this.offersToMap.emit(null);
     }else{

@@ -15,7 +15,7 @@
     <h1>Itinerár</h1>
   </div>
 
-  <app-drag-and-drop-list #dragDrop [draggable]="true"></app-drag-and-drop-list>
+  <app-drag-and-drop-list  (deleteFromIti)="deleteFromIti($event)" #dragDrop [draggable]="true"></app-drag-and-drop-list>
 
   <div *ngIf="this.myAddresses != undefined" class="button_cont" align="center">
 

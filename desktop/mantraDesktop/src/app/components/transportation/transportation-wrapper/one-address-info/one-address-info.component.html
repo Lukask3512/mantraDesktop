@@ -1,5 +1,7 @@
 <div *ngIf="address">
-  <p>{{this.address.nameOfTown}}</p>
-  <span>{{this.routeStatusService.getStatus(this.address.status)}}</span>
+  <p>{{this.address.nameOfTown}}
+    <span *ngIf="this.address.status === 0" class="spanY">{{this.routeStatusService.getStatus(this.address.status)}}</span>
+    <span *ngIf="this.address.status > 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
+  </p>
 </div>
 

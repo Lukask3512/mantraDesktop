@@ -36,6 +36,8 @@ export class CarItiDetailComponent implements OnInit {
   @ViewChild(UlozeniePonukyComponent)
   private ulozeniePonukyComponent: UlozeniePonukyComponent;
 
+  @Output() uspecnePriradenie = new EventEmitter<any>();
+
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
               private addressService: AddressService) { }
@@ -418,6 +420,7 @@ export class CarItiDetailComponent implements OnInit {
       this.addressService.updateAddress(oneAdresa);
     });
     this.offerService.updateRoute(offer);
+    this.uspecnePriradenie.emit(this.car);
   }
 
 }
