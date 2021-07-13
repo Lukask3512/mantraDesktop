@@ -1,0 +1,12 @@
+<div class="allWrap" >
+
+  <div class="dispecerWrapper">
+    <div *ngFor="let vodic of allVodici">
+      <app-the-vodic [vodic]="vodic"></app-the-vodic>
+    </div>
+
+    <app-new-vodic *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-vodic>
+    <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
+      Pridať nového dispečéra môže len master konto.</h2>
+  </div>
+</div>
