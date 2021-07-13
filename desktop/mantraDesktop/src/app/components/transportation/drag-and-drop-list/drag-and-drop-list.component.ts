@@ -317,7 +317,6 @@ export class DragAndDropListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.address)
   }
 
 }

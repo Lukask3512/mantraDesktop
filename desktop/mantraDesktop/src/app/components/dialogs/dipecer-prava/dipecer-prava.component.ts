@@ -133,7 +133,6 @@ export class DipecerPravaComponent implements OnInit {
       this.dispecer.phone = valuesForm.phone;
       this.dispecer.email = valuesForm.email;
       this.dispecer.createdBy = valuesForm.createdBy;
-      console.log(this.dispecer)
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
         if (user.length > 0){
           //tento pouzivatel uz je v databaze
@@ -141,10 +140,16 @@ export class DipecerPravaComponent implements OnInit {
           return;
         }
         else {
-          this.dispecerService.createDispecer(this.assignToDirector());
           this.accountService.signup(this.dispecerForm.get('email').value, "123456");
-          this.dispecerForm.reset();
-          this.dialogRef.close();
+
+          setTimeout(() =>  {
+            this.dispecerService.createDispecer(this.assignToDirector());
+
+            this.dispecerForm.reset();
+            this.dialogRef.close();
+          }, 400);
+
+
         }
       })
     }

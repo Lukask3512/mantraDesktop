@@ -19,9 +19,16 @@ export class CarService {
     this.carsCollection = this.afs.collection<any>('cars');
 
     this.getCars().subscribe(res => {
-      this._cars.next(res);
-      this.allCars = res;
-    })
+      const dispecer: Dispecer = this.dataService.getDispecer();
+      // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
+      let vyfiltrovanerRouty = res;
+      if (dispecer.createdBy !== 'master'){
+        vyfiltrovanerRouty = res.filter(oneCar =>
+          dispecer.myCars.includes(oneCar.id));
+      }
+      this._cars.next(vyfiltrovanerRouty);
+      this.allCars = vyfiltrovanerRouty;
+    });
 
   }
 
@@ -38,7 +45,7 @@ export class CarService {
     }
     return this.afs.collection<Dispecer>('cars', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-      query = query.where('createdBy', '==', createdBy); // na upravu stahujem len novsie sporty
+      query = query.where('createdBy', '==', createdBy);
       return query;
     }).snapshotChanges().pipe(
       map(actions => {

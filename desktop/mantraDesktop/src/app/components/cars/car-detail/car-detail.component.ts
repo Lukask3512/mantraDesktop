@@ -17,6 +17,7 @@ import {AddressService} from "../../../services/address.service";
 import Address from "../../../models/Address";
 import {DragAndDropListComponent} from "../../transportation/drag-and-drop-list/drag-and-drop-list.component";
 import {DeleteFromItiComponent} from '../../dialogs/delete-from-iti/delete-from-iti.component';
+import {ItinerarDaDComponent} from './itinerar-da-d/itinerar-da-d.component';
 
 @Component({
   selector: 'app-car-detail',
@@ -45,7 +46,7 @@ export class CarDetailComponent implements AfterViewInit {
   private child: OpenlayerComponent;
 
   @ViewChild('dragDrop')
-  private dragComponent: DragAndDropListComponent;
+  private dragComponent: ItinerarDaDComponent;
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private routeService: RouteService,
               private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService,
@@ -66,14 +67,8 @@ export class CarDetailComponent implements AfterViewInit {
     this.dataService.currentCar.subscribe(car => {
       // this.car = car;
       this.carService.cars$.subscribe(cars => {
-
         // @ts-ignore
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
-
-
-
-
-
       });
 
       var allAddresses: Address[];
@@ -83,17 +78,17 @@ export class CarDetailComponent implements AfterViewInit {
             allAddresses = vsetkyAdress.concat(vsetkyPonuky);
             this.findMyAdresses(allAddresses);
             if (this.dragComponent){
-              this.dragComponent.setAddresses(this.myAddresses);
+              this.dragComponent.setAddress(this.myAddresses, this.car);
             }
             resolve();
-          })
-        })
+          });
+        });
       }).then(() => {
      new Promise((resolve, reject) => {
        this.findMyAdresses(allAddresses);
        resolve();
      }).then(resolve => {
-       this.dragComponent.setAddresses(this.myAddresses);
+       this.dragComponent.setAddress(this.myAddresses, this.car);
        setTimeout(() =>
          {
            // console.log(this.car)

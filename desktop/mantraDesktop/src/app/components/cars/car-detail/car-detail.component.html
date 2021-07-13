@@ -1,5 +1,7 @@
 <div *ngIf="this.car" class="header">
     <h1>Vozidlo: {{this.car.ecv}}</h1>
+  <app-car-naklad [car]="this.car"></app-car-naklad>
+
   <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
     Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
   </p>
@@ -15,7 +17,7 @@
     <h1>Itinerár</h1>
   </div>
 
-  <app-drag-and-drop-list  (deleteFromIti)="deleteFromIti($event)" #dragDrop [draggable]="true"></app-drag-and-drop-list>
+  <app-itinerar-da-d #dragDrop ></app-itinerar-da-d>
 
   <div *ngIf="this.myAddresses != undefined" class="button_cont" align="center">
 

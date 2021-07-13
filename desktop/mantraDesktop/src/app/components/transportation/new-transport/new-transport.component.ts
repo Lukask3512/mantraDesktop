@@ -189,7 +189,16 @@ export class NewTransportComponent implements AfterViewInit {
   }
 
   updateDetailOnTown(index: number){
+    console.log(this.detail);
+    if (this.detail[index][0] !== undefined){
+    this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
     this.newFormChild.setAddress(this.addresses[index], index);
+    }
+else{
+
+      this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
+      this.newFormChild.setAddress(this.addresses[index], index);
+    }
   }
 
   setDetailForm(detail){

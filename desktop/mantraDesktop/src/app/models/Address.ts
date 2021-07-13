@@ -15,6 +15,8 @@ export default class Address {
   casLastPrijazdu?: string;
   estimatedTimeArrival?: string;
 
+  obsluznyCas: string;
+
   // detail
   packagesId: string[] = [];
   // sizeV: number[];

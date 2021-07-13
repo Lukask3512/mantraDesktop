@@ -174,6 +174,17 @@ export class CountFreeSpaceService {
       }
 
     });
+    if (poleKsPalietPreKazduAdresu.length === 0){
+      const oneAdress = {
+        sizeS: [0],
+        sizeD: [0],
+        sizeV: [0],
+        weight: [0],
+        stohovatelnost: [0],
+        id: [0]
+      };
+      poleKsPalietPreKazduAdresu.push(oneAdress);
+    }
     return poleKsPalietPreKazduAdresu;
   }
 

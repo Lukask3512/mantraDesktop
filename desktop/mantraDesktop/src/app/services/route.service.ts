@@ -24,9 +24,15 @@ export class RouteService {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.getAllRoutes().subscribe(res => {
-      console.log(res);
-      this._routes.next(res);
-      this.myRoutes = res;
+      const dispecer: Dispecer = this.dataService.getDispecer();
+      // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
+      let vyfiltrovanerRouty = res;
+      if (dispecer.createdBy !== 'master'){
+        vyfiltrovanerRouty = res.filter(oneAddress =>
+          dispecer.myCars.includes(oneAddress.carId) || oneAddress.carId === null);
+      }
+      this._routes.next(vyfiltrovanerRouty);
+      this.myRoutes = vyfiltrovanerRouty;
     });
 
   }

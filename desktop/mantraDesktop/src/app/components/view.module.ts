@@ -3,29 +3,29 @@ import { CommonModule } from '@angular/common';
 
 import { ViewRoutingModule } from './view-routing.module';
 import { OpenlayerComponent } from './google/map/openlayer/openlayer.component';
-//import { RoutesComponent } from 'src/routes/routes.component';
+// import { RoutesComponent } from 'src/routes/routes.component';
 
 import { DeleteCarDialogComponent } from './dialogs/delete-car-dialog/delete-car-dialog.component';
 import { TheDispecerComponent } from './dispecer/the-dispecer/the-dispecer.component';
 import { TransportationWrapperComponent } from './transportation/transportation-wrapper/transportation-wrapper.component';
 import { NewTransportComponent } from './transportation/new-transport/new-transport.component';
-import {AppModule} from "../app.module";
-import {DragDropModule} from "@angular/cdk/drag-drop";
+import {AppModule} from '../app.module';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { RouteToCarComponent } from './dialogs/route-to-car/route-to-car.component';
-import {MatTableModule} from "@angular/material/table";
+import {MatTableModule} from '@angular/material/table';
 import { FindCarByIdComponent } from './cars/find-car-by-id/find-car-by-id.component';
 import { FindRouteStatusComponent } from './transportation/find-route-status/find-route-status.component';
 import { EditInfoComponent } from './dialogs/edit-info/edit-info.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import { DeleteRouteComponent } from './dialogs/delete-route/delete-route.component';
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { DeleteDispecerComponent } from './dialogs/delete-dispecer/delete-dispecer.component';
 import { PrivesWrapperComponent } from './privesy/prives-wrapper/prives-wrapper.component';
 import { AddPrivesDialogComponent } from './dialogs/add-prives-dialog/add-prives-dialog.component';
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {MatStepperModule} from "@angular/material/stepper";
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatStepperModule} from '@angular/material/stepper';
 import { NewPrivesComponent } from './privesy/new-prives/new-prives.component';
 import { AddPrivesToCarComponent } from './dialogs/add-prives-to-car/add-prives-to-car.component';
 import { OffNavesDialogComponent } from './dialogs/off-naves-dialog/off-naves-dialog.component';
@@ -35,13 +35,13 @@ import { DetailComponent } from './transportation/offer/detail/detail.component'
 import { OfferToRouteComponent } from './transportation/offer/offer-to-route/offer-to-route.component';
 import { DragDropOfferComponent } from './transportation/offer/drag-drop-offer/drag-drop-offer.component';
 import { FilterComponent } from './map/filter/filter.component';
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { DetailImgComponent } from './transportation/detail-img/detail-img.component';
 import { OfferPriceComponent } from './dialogs/offer-price/offer-price.component';
 import { DipecerPravaComponent } from './dialogs/dipecer-prava/dipecer-prava.component';
 // import { NewFormComponent } from './transportation/new-transport/new-form/new-form.component';
-import {MatRadioModule} from "@angular/material/radio";
-import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DetailFormComponent } from './transportation/new-transport/detail-form/detail-form.component';
 import { RouteToItinerarComponent } from './transportation/new-transport/route-to-itinerar/route-to-itinerar.component';
 import { OneAddressInfoComponent } from './transportation/transportation-wrapper/one-address-info/one-address-info.component';
@@ -54,6 +54,12 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { PosliPonukuComponent } from './transportation/offer/detail/posli-ponuku/posli-ponuku.component';
 import { UlozeniePonukyComponent } from './transportation/ulozenie-ponuky/ulozenie-ponuky.component';
 import { DeleteFromItiComponent } from './dialogs/delete-from-iti/delete-from-iti.component';
+import { ItinerarDaDComponent } from './cars/car-detail/itinerar-da-d/itinerar-da-d.component';
+import { CarNakladComponent } from './cars/car-detail/car-naklad/car-naklad.component';
+import { VodiciWrapperComponent } from './vodici/vodici-wrapper/vodici-wrapper.component';
+import { TheVodicComponent } from './vodici/the-vodic/the-vodic.component';
+import { NewVodicComponent } from './vodici/new-vodic/new-vodic.component';
+import { NewVodicDialogComponent } from './dialogs/new-vodic-dialog/new-vodic-dialog.component';
 
 
 @NgModule({
@@ -67,7 +73,12 @@ import { DeleteFromItiComponent } from './dialogs/delete-from-iti/delete-from-it
       OffNavesDialogComponent, DragAndDropListComponent,
       WrapperComponent, DetailComponent, OfferToRouteComponent,
       DragDropOfferComponent, FilterComponent, DetailImgComponent,
-      OfferPriceComponent, DipecerPravaComponent,DetailFormComponent, RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent, ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent, PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent
+      OfferPriceComponent, DipecerPravaComponent, DetailFormComponent,
+      RouteToItinerarComponent, OneAddressInfoComponent, ChoosCarToMoveComponent,
+      ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent,
+      PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent,
+      ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
+      TheVodicComponent, NewVodicComponent, NewVodicDialogComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -83,6 +94,8 @@ import { DeleteFromItiComponent } from './dialogs/delete-from-iti/delete-from-it
         ChoosCarToMoveComponent,
         CarItiDetailComponent,
         SizeOfBoxComponent,
+        ItinerarDaDComponent,
+        CarNakladComponent,
 
     ],
   imports: [

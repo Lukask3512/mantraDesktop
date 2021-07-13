@@ -1,0 +1,77 @@
+.wrapper{
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.example_c {
+  color: black !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #ff8a5f;
+  padding: 10px;
+  border: 2px solid #494949 !important;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}
+
+.example_c:hover {
+  color: white !important;
+  background: #ff4f4f;
+  border-color: #f52c2c !important;
+  transition: all 0.8s ease 0.2s;
+}
+.wrap{
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 15px;
+}
+.allWrap{
+  display: flex;
+}
+p{
+  color: black;
+}
+
+
+.barDispecer {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size:22px;
+  background-color: white;
+
+}
+.deleteDispecer{
+  width: 40px;
+  cursor: pointer;
+}
+
+.buttonR {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+
+}
+
+.buttonR:hover{
+  background-color: #f44336;
+  transition: 0.2s, 0.2s;
+}
+
+
+

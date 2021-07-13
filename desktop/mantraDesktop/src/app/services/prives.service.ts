@@ -21,9 +21,16 @@ export class PrivesService {
     this.privesCollection = this.afs.collection<any>('prives');
 
     this.getPrives().subscribe(res => {
-      this._prives.next(res);
-      this.allPrives = res;
-    })
+      const dispecer: Dispecer = this.dataService.getDispecer();
+      // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
+      let vyfiltrovanerRouty = res;
+      if (dispecer.createdBy !== 'master'){
+        vyfiltrovanerRouty = res.filter(onePrives =>
+          dispecer.myPrives.includes(onePrives.id));
+      }
+      this._prives.next(vyfiltrovanerRouty);
+      this.allPrives = vyfiltrovanerRouty;
+    });
 
   }
 

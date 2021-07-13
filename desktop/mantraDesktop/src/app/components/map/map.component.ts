@@ -227,12 +227,14 @@ export class MapComponent implements AfterViewInit {
   }
 // ak kliknem na auto
   onClickFindInfo(id){
-    this.carToShow = this.carsWithItinerar.find(car => car.id == id);
+    this.carToShow = this.carsWithItinerar.find(car => car.id === id);
     this.offersToShow = null;
     this.routesToShow = undefined;
+    console.log(this.carToShow);
     setTimeout(() => {
       // @ts-ignore
       this.dragComponent.setAddresses(this.carToShow.itiAdresy);
+      console.log("som tu 11")
     }, 100);
 
   }
@@ -245,14 +247,9 @@ export class MapComponent implements AfterViewInit {
     }
     const adresy = this.adressesFromDatabase.filter(oneAdresa => adresyVRoute.addresses.includes(oneAdresa.id));
     this.routesToShow = adresyVRoute.addresses.map((i) => adresy.find((j) => j.id === i));
-    console.log(adresy);
-    console.log(adresyVRoute);
-    console.log(this.routesToShow);
-    // this.routesToShow = this.carsWithItinerar.filter(route => route.id == id);
+
     this.carToShow = this.carsFromDatabase.find(car => car.id === this.routesToShow[0].carId);
-    // this.carToShow = this.carsFromDatabase.find(car => car.id == this.routesToShow[0].carId);
     this.offersToShow = null;
-    console.log(this.carToShow[0]);
     setTimeout(() => {
       this.dragComponent.setAddresses(this.routesToShow);
     }, 100);
@@ -261,11 +258,9 @@ export class MapComponent implements AfterViewInit {
   // ak kliknem na ponuku
   async onClickFindInfoOffer(id, feature){
     this.offersToShow = this.offersFromDatabase.find(route => route.id === id);
-    // this.countFreeSpaceService.countFreeSpace(this.offersToShow[0].detailArray,this.offersToShow[0].detailArray, )
     this.distanceOfOffer = Math.round(((getLength(feature.getGeometry()) / 100) / 1000) * 100);
     this.carToShow = null;
     this.routesToShow = null;
-    console.log(this.offersToShow);
     await this.sleep(200);
     this.chooseCar.setFarby(this.offersToShow);
     this.carIti.setPonuka(this.offersToShow);
@@ -372,11 +367,6 @@ export class MapComponent implements AfterViewInit {
       if (car !== undefined){
         for (let i = 0; i < car.length; i++){
 
-          // update vozidla ak mam nakliknute nejake
-          if ( this.carToShow !== undefined && car[i].id === this.carToShow.id){
-            this.onClickFindInfo(car[i].id);
-            console.log('som nasiel same');
-          }
 
           if (car[i].lattitude !== undefined){
 
@@ -414,6 +404,15 @@ export class MapComponent implements AfterViewInit {
             }
           }
           // tot mam auto a mohol by som relativne itinerar odoslat na vykreslenie aj s farbou
+          // update vozidla ak mam nakliknute nejake
+          if ( this.carToShow !== undefined && car[i].id === this.carToShow.id){
+            setTimeout(() =>
+              {
+                this.onClickFindInfo(car[i].id);
+                console.log('som nasiel same');
+              },
+              500);
+          }
 
         }
       }
@@ -518,7 +517,6 @@ export class MapComponent implements AfterViewInit {
         this.places = [];
         this.adressesFromDatabase = allAddresses.concat(allOffers);
 
-        // var mamTamAuto = this.carsWithItinerar.findIndex(onecar => onecar.id == car.id); //auto s iti
         const carsWithIti = [];
         this.carsFromDatabase.forEach(oneCar => {
           if (oneCar.itinerar) {
@@ -660,14 +658,6 @@ export class MapComponent implements AfterViewInit {
     cars.forEach((car, index) => {
 
 
-
-    // if (this.routesToShow != undefined)
-    //   console.log(this.routesToShow[0].id);
-    //   console.log(route.id)
-    // if (this.routesToShow != undefined && route.id == this.routesToShow[0].id){
-    //
-    //   this.onClickFindInfoAdress(route.id);
-    // }
 
       new Promise((resolve, reject) => {
         if (car.itinerar && car.itinerar.length > 0) {
@@ -921,7 +911,6 @@ export class MapComponent implements AfterViewInit {
 
   // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
   offersUpdate(emitFromFilter){
-    console.log(this.carsWithItinerar);
     if (emitFromFilter == null && this.map !== undefined){
       this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
       this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
@@ -990,29 +979,23 @@ export class MapComponent implements AfterViewInit {
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
         const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
         const pocetTonVPonuke = this.countFreeSpaceService.pocetTonVKazdomMeste(ponukaPreMesta);
-        console.log(pocetTonVPonuke);
+
         // tu konci priradovanie detialov a max vah
 
 
         const jednaPonuka = {...prepravasDetailom, minVzdialenost: 10000000000, maxVzdialenost: 0,
           flag: 0, zelenePrepravy: [], zltePrepravy: [], zeleneAuta: [], zlteAuta: []}; // 0 cervena, 1 zlta, 2 greeeen
-        if (oneRouteOffer.takenBy === '' || (oneRouteOffer.takenBy === this.dataService.getMyIdOrMaster() &&
-        oneRouteOffer.offerInRoute === '')){
-        // && this.dataService.getMyIdOrMaster() != oneRouteOffer.createdBy //toto tam pridat potom..
+        if ((oneRouteOffer.takenBy === '' && oneRouteOffer.createdBy !== this.dataService.getMyIdOrMaster()) || (oneRouteOffer.takenBy === this.dataService.getMyIdOrMaster() &&
+        oneRouteOffer.offerInRoute === '' && oneRouteOffer.createdBy !== this.dataService.getMyIdOrMaster())){
           let zltePrepravy = [];
           let zelenePrepravy = [];
-          // this.drawOffer.vypocitajFreeCiSaVopcha(this.carsWithItinerar, jednaPonuka, maxPrekrocenieRozmerov)
-        // this.adressesFromDatabase.forEach((route, index) => { //prechazdam vsetkymi mojimi adresami
+
 
           this.carsWithItinerar.forEach(car => { // prechadzam autami
             const itinerarAutaPocetPalietVMeste = this.countFreeSpaceService.vypocitajPocetPalietVKazomMeste(car);
-            console.log(itinerarAutaPocetPalietVMeste);
             const pocetTonVIti = this.countFreeSpaceService.pocetTonVKazdomMeste(itinerarAutaPocetPalietVMeste);
-            console.log(pocetTonVIti);
-
             const volnaVahaPreAutovIti = this.countFreeSpaceService.volnaVahaPreAutoVMeste(car, pocetTonVIti, 1);
             const volnaVahaPreAutovItiSPrekrocenim = this.countFreeSpaceService.volnaVahaPreAutoVMeste(car, pocetTonVIti, maxPrekrocenieVahy);
-            console.log(volnaVahaPreAutovIti);
             const vopchaSa = this.countFreeSpaceService.countFreeSpace(car, jednaPonuka, maxPrekrocenieRozmerov);
 
 
@@ -1034,9 +1017,6 @@ export class MapComponent implements AfterViewInit {
 
             let maxVzdialenostOdCelehoItinerara;
             car.itiAdresy.forEach((route, indexLon) => { // prechadzam itinerarom auta
-          // route.coordinatesOfTownsLon.forEach((lon, indexLon) => { //prechadzam miestami v preprave
-              console.log(route);
-
 
                // vaha
               if (volnaVahaPreAutovIti[indexLon] >= jednaPonuka.maxVaha){
@@ -1070,6 +1050,8 @@ export class MapComponent implements AfterViewInit {
                 if (typeOfDistance === 'maxAll'){ // ked hladam maximalnu vzdialenost vsetkych adriest
                 // tu si poskladam vlastnu cestu z itinerara
                 const poleKadePojdem = [];
+                // tu by som si mal na zaciatok pushnut poziciu auta
+                poleKadePojdem.push([car.longtitude, car.lattitude]);
                 car.itiAdresy.forEach(jednaAdresa => {
                   poleKadePojdem.push([jednaAdresa.coordinatesOfTownsLon, jednaAdresa.coordinatesOfTownsLat]);
                 });
@@ -1138,6 +1120,65 @@ export class MapComponent implements AfterViewInit {
                             });
 
             });
+            // pre auta ktore maju prazdy itinerar
+            if (car.itiAdresy.length === 0){
+              const poleKadePojdem = [];
+              // vaha
+              if (volnaVahaPreAutovIti[0] >= jednaPonuka.maxVaha){
+                sediVaha = true;
+              }else { // @ts-ignore
+                if (volnaVahaPreAutovItiSPrekrocenim[0] >= jednaPonuka.maxVaha){
+                  sediVahaYellow = true;
+                }
+              }
+              if (typeOfDistance === 'maxAll') { // ked hladam maximalnu vzdialenost vsetkych adriest
+                // tu by som si mal na zaciatok pushnut poziciu auta
+                poleKadePojdem.push([car.longtitude, car.lattitude]);
+                poleKadePojdem.push([car.longtitude, car.lattitude]);
+
+                const myItiString = new LineString(poleKadePojdem);
+
+                maxVzdialenostOdCelehoItinerara = 0;
+                prepravasDetailom.adresyVPonuke.forEach((jednaAdPonuka, indexAd) => {
+                  const vzdialenostOdTrasy = this.countClosesPoint(myItiString,
+                    [jednaAdPonuka.coordinatesOfTownsLon,
+                      jednaAdPonuka.coordinatesOfTownsLat]);
+
+                  if (vzdialenostOdTrasy > maxVzdialenostOdCelehoItinerara) {
+                    maxVzdialenostOdCelehoItinerara = vzdialenostOdTrasy;
+                  }
+                });
+              }else{ // ak hladam len max vzdialenost 1. adresy
+                const from = [car.longtitude , car.lattitude];
+                const to = [prepravasDetailom.adresyVPonuke[0].coordinatesOfTownsLon ,
+                  prepravasDetailom.adresyVPonuke[0].coordinatesOfTownsLat];
+                maxVzdialenostOdCelehoItinerara = this.countDistancePoints(from, to);
+              }
+              console.log(vopchaSa);
+              console.log(maxVzdialenostOdCelehoItinerara);
+              console.log(sediVaha);
+              console.log(sediVahaYellow);
+              const prekrocil = vopchaSa.prekrocenieOPercenta[0];
+
+              if (sediVaha && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
+                maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
+                zelenePrepravy.push({...car, vopchaSa});
+                jednaPonuka.flag = 3;
+              }else if (sediVaha && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
+                maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil){
+                zltePrepravy.push({...car, vopchaSa});
+                jednaPonuka.flag = 2
+              }
+              else if ((sediVahaYellow && !sediVaha) && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
+                maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
+                zltePrepravy.push({...car, vopchaSa});
+                jednaPonuka.flag = 2;
+              }
+              // else if ((sediVahaYellow && !sediVaha) && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
+              //   maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
+              //   zltePrepravy.push({...car, vopchaSa});
+              // }
+            }
 
             zltePrepravy = zltePrepravy.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
             zelenePrepravy = zelenePrepravy.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
@@ -1471,12 +1512,6 @@ export class MapComponent implements AfterViewInit {
       }else{
         this.offersRouteGreen.push(routeFeature);
       }
-
-
-      // if (this.routesToShow !== undefined && route.id === this.routesToShow[0].id){
-      //
-      //   // this.onClickFindInfoOffer(route.id);
-      // }
 
       if (route.adresyVPonuke.length > 0) {
         for (let i = 0; i < route.adresyVPonuke.length; i++) {

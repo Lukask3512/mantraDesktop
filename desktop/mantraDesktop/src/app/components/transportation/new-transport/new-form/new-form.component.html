@@ -47,7 +47,15 @@
       <mat-label>Časové okno do</mat-label>
       <input matInput type="time" formControlName="timeTo">
     </mat-form-field>
+
   </div>
+
+  <mat-form-field [formGroup]="dateRange" appearance="standard" >
+    <mat-label>Obsluzný čas</mat-label>
+    <input min="0" type="number" matInput placeholder="Počet hodín...." formControlName="obsluznyCas">
+    <span matSuffix> hod. </span>
+    <mat-hint>Počet hodín</mat-hint>
+  </mat-form-field>
 
 
 

@@ -1,10 +1,10 @@
 import {Component, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import Address from "../../../../models/Address";
-import DeatilAboutAdresses from "../../../../models/DeatilAboutAdresses";
-import {AdressesComponent} from "../../../google/adresses/adresses.component";
-import {DetailFormComponent} from "../detail-form/detail-form.component";
-import {DataService} from "../../../../data/data.service";
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import Address from '../../../../models/Address';
+import DeatilAboutAdresses from '../../../../models/DeatilAboutAdresses';
+import {AdressesComponent} from '../../../google/adresses/adresses.component';
+import {DetailFormComponent} from '../detail-form/detail-form.component';
+import {DataService} from '../../../../data/data.service';
 
 
 @Component({
@@ -16,18 +16,18 @@ export class NewFormComponent implements OnInit {
   address: Address = new Address();
   labelPosition: 'nakladka' | 'vykladka';
 
-  casPrichodu : 'rozhoduje' | 'nerozhoduje' | '';
-  datumPrichodu : 'rozhoduje' | 'nerozhoduje'| '';
+  casPrichodu: 'rozhoduje' | 'nerozhoduje' | '';
+  datumPrichodu: 'rozhoduje' | 'nerozhoduje'| '';
 
   transportForm = this.fb.group({
     sizeD: ['', Validators.required],
-    sizeV: [ '',Validators.required],
+    sizeV: ['', Validators.required],
     sizeS: ['', Validators.required],
     weight: ['', Validators.required],
-    poziciaNakladania: ["nerozhoduje"], //0 nerozhoduje, 1 rozhoduje
-    vyskaHrany: ["nerozhoduje", Validators.required],
+    poziciaNakladania: ['nerozhoduje'], // 0 nerozhoduje, 1 rozhoduje
+    vyskaHrany: ['nerozhoduje', Validators.required],
     vyskaHranySize: [''],
-    stohovatelnost: ["nie", Validators.required],
+    stohovatelnost: ['nie', Validators.required],
     stohoSize: [0],
 
     zoZadu: false,
@@ -35,8 +35,8 @@ export class NewFormComponent implements OnInit {
     zVrchu: false,
 
     fromBackSide: [false],
-    fromSide:[false],
-    fromUpSide:[false],
+    fromSide: [false],
+    fromUpSide: [false],
 
   });
 
@@ -47,11 +47,12 @@ export class NewFormComponent implements OnInit {
     endDate: new FormControl(Validators.required),
     timeFrom: new FormControl(Validators.required),
     timeTo: new FormControl(Validators.required),
+    obsluznyCas: new FormControl(1, Validators.required),
   });
 
-  numberOfItems:number = 1;
-  actualItemInForm: number = 0;
-  infoAboutRoute: string = "";
+  numberOfItems = 1;
+  actualItemInForm = 0;
+  infoAboutRoute = '';
 
   latFromGoogle;
   lonFromGoogle;
@@ -76,7 +77,7 @@ export class NewFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.transportForm.disable()
+    this.transportForm.disable();
     this.minDate = new Date();
   }
 
@@ -85,17 +86,18 @@ export class NewFormComponent implements OnInit {
     const y = this.transportForm.get('sizeV').value;
     const z = this.transportForm.get('sizeD').value;
     // @ts-ignore
-    document.getElementById('mojaABedna').setAttribute('scale', {x: x, y: y, z: z});
+    document.getElementById('mojaABedna').setAttribute('scale', {x, y, z});
   }
 
-  //ci mozem pridat dalsiu adresu
+  // ci mozem pridat dalsiu adresu
   checkIfCanAddNextAdress(update: boolean){
     if (this.addressIndexUpdate){
-      if (!update)
+      if (!update) {
       return true;
+      }
     }
     if (this.datumPrichodu !== 'rozhoduje' && this.datumPrichodu !== 'nerozhoduje'){
-      return true
+      return true;
     }
     if (this.casPrichodu !== 'rozhoduje' && this.casPrichodu !== 'nerozhoduje'){
       return true;
@@ -118,7 +120,7 @@ export class NewFormComponent implements OnInit {
 
     }else if (this.labelPosition == 'vykladka'){
       if (this.detailsArray != undefined  && this.transportForm.get('sizeS').value > 0 &&
-        (this.detailsArray.length == this.numberOfItems || this.actualItemInForm +1 == this.numberOfItems)){
+        (this.detailsArray.length == this.numberOfItems || this.actualItemInForm + 1 == this.numberOfItems)){
         return false;
       }
       else if (this.detailsArray == undefined && this.transportForm.get('sizeS').value > 0 && this.numberOfItems == 1){
@@ -134,17 +136,17 @@ export class NewFormComponent implements OnInit {
 
   }
 
-  //odosielam index a adresu updatnutu
+  // odosielam index a adresu updatnutu
   updateAddress(){
-    console.log(this.addressIndexUpdate -1)
-    this.adressOutUpdate.emit({...{adresa: this.address}, ...{index: this.addressIndexUpdate-1}})
+    console.log(this.addressIndexUpdate - 1);
+    this.adressOutUpdate.emit({...{adresa: this.address}, ...{index: this.addressIndexUpdate - 1}});
     this.addressIndexUpdate = undefined;
     this.resetFormToDefault(false);
   }
 
   formUpdate(){
-    if (this.labelPosition == "vykladka"){
-      this.transportForm.disable()
+    if (this.labelPosition == 'vykladka'){
+      this.transportForm.disable();
     }else{
       this.transportForm.enable();
     }
@@ -165,7 +167,7 @@ export class NewFormComponent implements OnInit {
     // this.child.notifyMe(this.routesLat, this.routesLon, null);
   }
   getLon(lon){
-    this.lonFromGoogle= lon;
+    this.lonFromGoogle = lon;
     // this.routesLon.push(lon);
     // this.child.notifyMe(this.routesLat, this.routesLon, null);
   }
@@ -174,7 +176,7 @@ export class NewFormComponent implements OnInit {
 
 
 
-  //ci mozem pridat dalsiu adresu
+  // ci mozem pridat dalsiu adresu
   // checkIfCanAddNextAdress(){
   //   if (this.datumPrichodu !== 'rozhoduje' && this.datumPrichodu !== 'nerozhoduje'){
   //     return true
@@ -225,7 +227,7 @@ export class NewFormComponent implements OnInit {
   add(){
     if (this.casPrichodu == 'nerozhoduje'){
       this.address.casPrijazdu = '0' ;
-      this.address.casLastPrijazdu = '0'
+      this.address.casLastPrijazdu = '0';
     }else{
       this.address.casPrijazdu = this.dateRange.get('timeFrom').value;
       this.address.casLastPrijazdu = this.dateRange.get('timeTo').value;
@@ -239,8 +241,8 @@ export class NewFormComponent implements OnInit {
       this.address.datumLastPrijazdy = this.dateRange.get('endDate').value.toString();
     }
 
-    if (this.labelPosition == "nakladka"){
-      this.pushItemsToArray(0, this.actualItemInForm)
+    if (this.labelPosition == 'nakladka'){
+      this.pushItemsToArray(0, this.actualItemInForm);
     }else{
       if (!this.detailIndex[this.actualTownIndex]){
         this.townIndex.push(this.actualTownIndex);
@@ -254,17 +256,18 @@ export class NewFormComponent implements OnInit {
 
 
 
+    this.address.obsluznyCas = this.dateRange.get('obsluznyCas').value.toString();
 
     this.address.nameOfTown = this.routeFromGoogle;
     this.address.coordinatesOfTownsLon = this.lonFromGoogle;
     this.address.coordinatesOfTownsLat = this.latFromGoogle;
     this.address.type = this.labelPosition;
     this.address.aboutRoute = this.infoAboutRoute;
-    this.infoAboutRoute = "";
+    this.infoAboutRoute = '';
     this.address.status = -1;
 
     this.adressOut.emit(this.address);
-    if (this.labelPosition == "nakladka"){
+    if (this.labelPosition == 'nakladka'){
       this.detailOut.emit(this.detailsArray);
       this.detailPositionOut.emit(null);
     }else{
@@ -272,7 +275,7 @@ export class NewFormComponent implements OnInit {
       this.detailOut.emit({townsArray: this.townIndex, detailArray: this.detailIndex});
     }
 
-    console.log(this.address)
+    console.log(this.address);
     this.address = new Address();
     this.detailsArray = [];
     this.townIndex = [];
@@ -289,7 +292,7 @@ export class NewFormComponent implements OnInit {
 
 
     this.routeFromGoogle = null;
-    this.latFromGoogle= null;
+    this.latFromGoogle = null;
     this.lonFromGoogle = null;
 
   }
@@ -303,19 +306,21 @@ export class NewFormComponent implements OnInit {
     if (this.address.datumPrijazdu != '0'){
       this.datumPrichodu = 'rozhoduje';
 
-      this.dateRange.controls['startDate'].setValue(new Date(this.address.datumPrijazdu));
-      this.dateRange.controls['endDate'].setValue(new Date(this.address.datumLastPrijazdy));
+      this.dateRange.controls.startDate.setValue(new Date(this.address.datumPrijazdu));
+      this.dateRange.controls.endDate.setValue(new Date(this.address.datumLastPrijazdy));
     }else{
       this.datumPrichodu = 'nerozhoduje';
     }
 
     if (this.address.casPrijazdu != '0'){
       this.casPrichodu = 'rozhoduje';
-      this.dateRange.controls['timeFrom'].setValue(this.address.casPrijazdu);
-      this.dateRange.controls['timeTo'].setValue(this.address.casLastPrijazdu);
+      this.dateRange.controls.timeFrom.setValue(this.address.casPrijazdu);
+      this.dateRange.controls.timeTo.setValue(this.address.casLastPrijazdu);
     }else{
       this.casPrichodu = 'nerozhoduje';
     }
+
+    this.dateRange.controls.obsluznyCas.setValue(this.address.obsluznyCas);
 
 
 
@@ -325,7 +330,7 @@ export class NewFormComponent implements OnInit {
   }
 
   setActualDetailInTown(){
-    this.dataService.setActualDetailsInAddress({town: this.townIndex, detail: this.detailIndex})
+    this.dataService.setActualDetailsInAddress({town: this.townIndex, detail: this.detailIndex});
   }
 
   pushItemsToArray(indexOfAddresses, indexOfPackage){
@@ -335,7 +340,7 @@ export class NewFormComponent implements OnInit {
       this.detailsArray[indexOfPackage] = this.getDetail();
     }
     console.log(this.detailsArray);
-    console.log(indexOfPackage)
+    console.log(indexOfPackage);
     // if (this.address.sizeV == undefined){
     //   this.address.sizeV = this.getDetail().sizeV;
     //   this.address.sizeD = this.getDetail().sizeD;
@@ -378,13 +383,13 @@ export class NewFormComponent implements OnInit {
   }
 
   getDetail(): DeatilAboutAdresses{
-    var stohovatelnost = this.transportForm.get('stohovatelnost').value;
+    let stohovatelnost = this.transportForm.get('stohovatelnost').value;
     if (stohovatelnost == 'nie'){
       stohovatelnost = 0;
     }else{
       stohovatelnost = this.transportForm.get('stohoSize').value;
     }
-    var vyskaNakHrany;
+    let vyskaNakHrany;
     if (this.transportForm.get('vyskaHrany').value == 'rozhoduje'){
       vyskaNakHrany = this.transportForm.get('vyskaHranySize').value;
     }else{
@@ -392,40 +397,40 @@ export class NewFormComponent implements OnInit {
     }
 
 
-    var back = "0";
-    var side = "0";
-    var upside = "0";
+    let back = '0';
+    let side = '0';
+    let upside = '0';
     if (this.transportForm.get('fromBackSide').value){
-      back = "1";
+      back = '1';
     }
     if (this.transportForm.get('fromSide').value){
-      side = "1";
+      side = '1';
     }
     if (this.transportForm.get('fromUpSide').value){
-      upside = "1";
+      upside = '1';
     }
 
-    var polohaNakladania =  back + side + upside;
+    let polohaNakladania =  back + side + upside;
 
     return{
-      polohaNakladania: polohaNakladania,
+      polohaNakladania,
       sizeD: this.transportForm.get('sizeD').value,
       sizeS: this.transportForm.get('sizeS').value,
       sizeV: this.transportForm.get('sizeV').value,
       // specRezim: this.transportForm.get(''),
-      stohovatelnost: stohovatelnost,
+      stohovatelnost,
       vyskaNaklHrany: vyskaNakHrany,
       weight: this.transportForm.get('weight').value
 
-    }
+    };
 
   }
 
   nextItem(){
-    if (this.labelPosition == "nakladka"){
+    if (this.labelPosition == 'nakladka'){
 
         if (this.detailsArray == undefined){
-          this.pushItemsToArray(0, this.actualItemInForm)
+          this.pushItemsToArray(0, this.actualItemInForm);
           this.resetFormToDefault(false);
 
         }
@@ -446,11 +451,11 @@ export class NewFormComponent implements OnInit {
         else{
           this.pushItemsToArray(0, this.actualItemInForm);
           this.resetFormToDefault(false);
-          this.assignToDetail(0,this.actualItemInForm+1, null);
+          this.assignToDetail(0, this.actualItemInForm + 1, null);
         }
 
-    }else if (this.labelPosition == "vykladka"){
-      if (this.townIndex.length == this.actualItemInForm+1){
+    }else if (this.labelPosition == 'vykladka'){
+      if (this.townIndex.length == this.actualItemInForm + 1){
         this.townIndex.push(this.actualTownIndex);
         this.detailIndex.push(this.actualDetailIndex);
         this.resetFormToDefault(false);
@@ -466,23 +471,23 @@ export class NewFormComponent implements OnInit {
       else{
         this.townIndex[this.actualItemInForm] = this.actualTownIndex;
         this.detailIndex[this.actualItemInForm] = this.actualDetailIndex;
-        //tu by som mal dat daco ine asik
-        console.log(this.townIndex[this.actualItemInForm+1])
-        console.log(this.detailIndex[this.actualItemInForm+1])
-        var detail = this.getDetailByIds(this.townIndex[this.actualItemInForm+1], this.detailIndex[this.actualItemInForm+1]);
+        // tu by som mal dat daco ine asik
+        console.log(this.townIndex[this.actualItemInForm + 1]);
+        console.log(this.detailIndex[this.actualItemInForm + 1]);
+        let detail = this.getDetailByIds(this.townIndex[this.actualItemInForm + 1], this.detailIndex[this.actualItemInForm + 1]);
         this.assignToDetail(0, this.actualItemInForm + 1, detail);
       }
     }
 
-    this.actualTownIndex = this.townIndex[this.actualItemInForm+1];
-    this.actualDetailIndex = this.detailIndex[this.actualItemInForm+1];
+    this.actualTownIndex = this.townIndex[this.actualItemInForm + 1];
+    this.actualDetailIndex = this.detailIndex[this.actualItemInForm + 1];
     this.actualItemInForm ++;
     this.setActualDetailInTown();
 
   }
 
   previousItem(){
-    if (this.labelPosition == "nakladka") {
+    if (this.labelPosition == 'nakladka') {
 
       if (this.actualItemInForm == this.detailsArray.length) {
         this.pushItemsToArray(0, this.actualItemInForm);
@@ -492,37 +497,37 @@ export class NewFormComponent implements OnInit {
       }
       this.assignToDetail(0, this.actualItemInForm - 1, null);
 
-    }else if (this.labelPosition == "vykladka"){
-      if (this.townIndex.length == this.actualItemInForm +1){
+    }else if (this.labelPosition == 'vykladka'){
+      if (this.townIndex.length == this.actualItemInForm + 1){
         // this.townIndex.push(this.actualTownIndex);
         // this.detailIndex.push(this.actualDetailIndex);
         this.townIndex[this.actualItemInForm] = this.actualTownIndex; // musim si updatnut ked na nic nekliknem a chodim hore dole
         this.detailIndex[this.actualItemInForm] = this.actualDetailIndex;
       }else if (this.townIndex[this.actualItemInForm] == undefined){
-        this.townIndex.push(this.actualTownIndex)
-        this.detailIndex.push(this.actualDetailIndex)
+        this.townIndex.push(this.actualTownIndex);
+        this.detailIndex.push(this.actualDetailIndex);
       }
       else{
         this.townIndex[this.actualItemInForm] = this.actualTownIndex;
         this.detailIndex[this.actualItemInForm] = this.actualDetailIndex;
       }
-      var detail = this.getDetailByIds(this.townIndex[this.actualItemInForm-1], this.detailIndex[this.actualItemInForm-1]);
+      let detail = this.getDetailByIds(this.townIndex[this.actualItemInForm - 1], this.detailIndex[this.actualItemInForm - 1]);
       this.assignToDetail(0, this.actualItemInForm - 1, detail);
 
     }
-    this.actualTownIndex = this.townIndex[this.actualItemInForm-1];
-    this.actualDetailIndex = this.detailIndex[this.actualItemInForm-1];
+    this.actualTownIndex = this.townIndex[this.actualItemInForm - 1];
+    this.actualDetailIndex = this.detailIndex[this.actualItemInForm - 1];
     this.actualItemInForm--;
     this.setActualDetailInTown();
 
   }
 
   getDetailByIds(townId, detailId){
-    console.log(this.dataService.getDetails()[townId][detailId])
+    console.log(this.dataService.getDetails()[townId][detailId]);
     return this.dataService.getDetails()[townId][detailId];
   }
 
-  //ked sa nahodov zmensi pole, ale by som ho pohol opopovat
+  // ked sa nahodov zmensi pole, ale by som ho pohol opopovat
   sizeUpdate(){
     // if (this.address.sizeV != undefined){
     //   if (this.numberOfItems <= this.address.sizeV.length +1){
@@ -545,8 +550,9 @@ export class NewFormComponent implements OnInit {
     if (this.transportForm.get('poziciaNakladania').value == 'rozhoduje') {
       this.transportForm.get('fromBackSide').clearValidators();
     }else{
-      if (!this.transportForm.get('fromBackSide').value || !this.transportForm.get('fromSide').value || !this.transportForm.get('fromUpSide').value)
+      if (!this.transportForm.get('fromBackSide').value || !this.transportForm.get('fromSide').value || !this.transportForm.get('fromUpSide').value) {
         this.transportForm.get('fromBackSide').setValidators([Validators.requiredTrue]);
+      }
     }
     this.transportForm.get('fromBackSide').updateValueAndValidity();
   }
@@ -583,16 +589,16 @@ export class NewFormComponent implements OnInit {
     this.transportForm.get('stohoSize').updateValueAndValidity();
   }
 
-  //ci mozem ist na dalsi detail
+  // ci mozem ist na dalsi detail
   checkIfCanSKipToNext(){
     if (this.labelPosition == 'nakladka') {
-      if (this.transportForm.valid && this.actualItemInForm+1  < this.numberOfItems){
+      if (this.transportForm.valid && this.actualItemInForm + 1  < this.numberOfItems){
         return false;
       }else{
         return true;
       }
     }else if (this.labelPosition == 'vykladka' && this.transportForm.get('sizeS').value > 0 && this.numberOfItems > 1 &&
-      this.actualItemInForm +1 < this.numberOfItems){
+      this.actualItemInForm + 1 < this.numberOfItems){
       return false;
     }
     else{
@@ -600,7 +606,7 @@ export class NewFormComponent implements OnInit {
     }
   }
 
-  //ci mozem backnut na detail
+  // ci mozem backnut na detail
   checkIfCanSKipToPrevious(){
     if (this.labelPosition == 'nakladka') {
       if (this.actualItemInForm + 1 > 1 && this.transportForm.valid) {
@@ -609,7 +615,7 @@ export class NewFormComponent implements OnInit {
         return true;
       }
     }else if (this.labelPosition == 'vykladka' && this.transportForm.get('sizeS').value > 0 && this.numberOfItems > 1 &&
-      this.actualItemInForm +1 > 1){
+      this.actualItemInForm + 1 > 1){
       return false;
     }
     else{
@@ -619,13 +625,13 @@ export class NewFormComponent implements OnInit {
 
   resetFormToDefault(allForms){
     this.transportForm.reset();
-    this.transportForm.controls['poziciaNakladania'].setValue('nerozhoduje');
-    this.transportForm.controls['vyskaHrany'].setValue('nerozhoduje');
-    this.transportForm.controls['stohovatelnost'].setValue('nie');
-    this.transportForm.controls['poziciaNakladania'].setValue('nerozhoduje');
-    this.transportForm.controls['fromBackSide'].setValue(undefined);
-    this.transportForm.controls['fromSide'].setValue(undefined);
-    this.transportForm.controls['fromUpSide'].setValue(undefined);
+    this.transportForm.controls.poziciaNakladania.setValue('nerozhoduje');
+    this.transportForm.controls.vyskaHrany.setValue('nerozhoduje');
+    this.transportForm.controls.stohovatelnost.setValue('nie');
+    this.transportForm.controls.poziciaNakladania.setValue('nerozhoduje');
+    this.transportForm.controls.fromBackSide.setValue(undefined);
+    this.transportForm.controls.fromSide.setValue(undefined);
+    this.transportForm.controls.fromUpSide.setValue(undefined);
     if (allForms){
       this.casPrichodu = '';
       this.datumPrichodu = '';
@@ -634,13 +640,13 @@ export class NewFormComponent implements OnInit {
 
   assignToDetail(indexOfAddresses, indexOfPackage, myCustomDetail){
     // console.log(this.address);
-    var detail: DeatilAboutAdresses;
+    let detail: DeatilAboutAdresses;
     if (myCustomDetail){
-      detail = myCustomDetail
+      detail = myCustomDetail;
     }else{
       detail = this.detailsArray[indexOfPackage];
     }
-    if (this.address == undefined){
+    if (this.address === undefined){
       return;
     }
     // if (this.arrayOfDetailsAbRoute[indexOfAddresses] == undefined) {
@@ -648,43 +654,43 @@ export class NewFormComponent implements OnInit {
     // }else{
     //   detail = this.arrayOfDetailsAbRoute[indexOfAddresses];
     // }
-    this.transportForm.controls['sizeD'].setValue(detail.sizeD);
-    this.transportForm.controls['sizeV'].setValue(detail.sizeV);
-    this.transportForm.controls['sizeS'].setValue(detail.sizeS);
-    this.transportForm.controls['weight'].setValue(detail.weight);
+    this.transportForm.controls.sizeD.setValue(detail.sizeD);
+    this.transportForm.controls.sizeV.setValue(detail.sizeV);
+    this.transportForm.controls.sizeS.setValue(detail.sizeS);
+    this.transportForm.controls.weight.setValue(detail.weight);
     if (detail.vyskaNaklHrany != undefined && detail.vyskaNaklHrany >= 0){
-      this.transportForm.controls['vyskaHranySize'].setValue(detail.vyskaNaklHrany);
-      this.transportForm.controls['vyskaHrany'].setValue("rozhoduje");
+      this.transportForm.controls.vyskaHranySize.setValue(detail.vyskaNaklHrany);
+      this.transportForm.controls.vyskaHrany.setValue('rozhoduje');
     }else{
-      this.transportForm.controls['vyskaHrany'].setValue("nerozhoduje");
+      this.transportForm.controls.vyskaHrany.setValue('nerozhoduje');
     }
 
 
     if (detail.stohovatelnost != undefined && detail.stohovatelnost > 0){
-      this.transportForm.controls['stohoSize'].setValue(detail.stohovatelnost);
-      this.transportForm.controls['stohovatelnost'].setValue("ano");
+      this.transportForm.controls.stohoSize.setValue(detail.stohovatelnost);
+      this.transportForm.controls.stohovatelnost.setValue('ano');
     }else{
-      this.transportForm.controls['stohovatelnost'].setValue("nie");
+      this.transportForm.controls.stohovatelnost.setValue('nie');
     }
 
-    if (detail.polohaNakladania!= undefined){
+    if (detail.polohaNakladania != undefined){
 
       if (detail.polohaNakladania.charAt(0) == '1'){
-        this.transportForm.controls['fromBackSide'].setValue(true);
+        this.transportForm.controls.fromBackSide.setValue(true);
       }
       if (detail.polohaNakladania.charAt(1) == '1'){
-        this.transportForm.controls['fromSide'].setValue(true);
+        this.transportForm.controls.fromSide.setValue(true);
       }
       if (detail.polohaNakladania.charAt(2) == '1'){
-        this.transportForm.controls['fromUpSide'].setValue(true);
+        this.transportForm.controls.fromUpSide.setValue(true);
       }
 
-      if (detail.polohaNakladania.charAt(0) == "1" ||
-        detail.polohaNakladania.charAt(1) == "1" ||
-        detail.polohaNakladania.charAt(2) == "1") {
-        this.transportForm.controls['poziciaNakladania'].setValue("rozhoduje");
+      if (detail.polohaNakladania.charAt(0) == '1' ||
+        detail.polohaNakladania.charAt(1) == '1' ||
+        detail.polohaNakladania.charAt(2) == '1') {
+        this.transportForm.controls.poziciaNakladania.setValue('rozhoduje');
       }else{
-        this.transportForm.controls['poziciaNakladania'].setValue("nerozhoduje");
+        this.transportForm.controls.poziciaNakladania.setValue('nerozhoduje');
       }
     }
 
@@ -692,18 +698,19 @@ export class NewFormComponent implements OnInit {
   }
 
   setAddress(adress: Address, index){
-    console.log(index)
+    console.log(index);
     this.address = adress;
-    this.assignToDetail(0,0, null);
+    // this.assignToDetail(0,0, null);
     this.updateDetailOnTown();
-    this.addressIndexUpdate = index +1 ;
+    this.addressIndexUpdate = index + 1 ;
   }
 
   setDetail(detail){
-    this.assignToDetail(0,0, detail.detail);
+    console.log(detail);
+    this.assignToDetail(0, 0, detail.detail);
     this.actualTownIndex = detail.indexMesta;
     this.actualDetailIndex = detail.indexBedne;
-    //tu budem musiet niekde nastavit detailNakladky, odkail prislka a ten detail ulozim do vykladky
+    // tu budem musiet niekde nastavit detailNakladky, odkail prislka a ten detail ulozim do vykladky
   }
 
 }

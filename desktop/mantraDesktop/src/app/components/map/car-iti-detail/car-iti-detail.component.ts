@@ -241,7 +241,7 @@ export class CarItiDetailComponent implements OnInit {
 
   najdiIndexNakladky(){
     let maxIndexNakladky = -1;
-    if (this.offer.adresyVPonuke[0].type === 'vykladka'){
+    if (this.offer.adresyVPonuke[0] && this.offer.adresyVPonuke[0].type === 'vykladka'){
       // kontrolujem baliky vykladky v ponuke[0]
       for (const [indexOffer, detailOffer] of this.offer.detailVPonuke[0].entries()) {
         // kontrolujem itinerar auta

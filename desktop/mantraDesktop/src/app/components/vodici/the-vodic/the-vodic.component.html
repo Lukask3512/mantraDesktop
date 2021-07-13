@@ -1,0 +1,27 @@
+
+<div class="dispecerWrapper">
+
+  <form class="wrap" >
+
+    <h5>Meno </h5>
+    <p class="barDispecer"> {{this.vodic.name}}</p>
+
+    <h5>Priezvisko </h5>
+    <p class="barDispecer"> {{this.vodic.surname}}</p>
+
+    <h5>Číslo </h5>
+    <p class="barDispecer">{{this.vodic.phone}}</p>
+
+    <h5>E-mail</h5>
+    <p class="barDispecer">{{this.vodic.email}}</p>
+
+    <div *ngIf="this.dataService.getDispecer().createdBy == 'master'" class="button_cont" align="center">
+      <button (click)="deleteVodic()" class="buttonR ">
+        Odstrániť
+      </button>
+    </div>
+    <!--  <p>{{this.dispecer.status}}</p>-->
+  </form>
+</div>
+
+

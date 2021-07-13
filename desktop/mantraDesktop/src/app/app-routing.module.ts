@@ -13,6 +13,7 @@ import {TransportationWrapperComponent} from "./components/transportation/transp
 import {NewTransportComponent} from "./components/transportation/new-transport/new-transport.component";
 import {WrapperComponent} from "./components/transportation/offer/wrapper/wrapper.component";
 import {DetailComponent} from "./components/transportation/offer/detail/detail.component";
+import {VodiciWrapperComponent} from './components/vodici/vodici-wrapper/vodici-wrapper.component';
 
 
 
@@ -29,6 +30,13 @@ const routes: Routes = [
     children: [{
       path: 'map',
       component: MapComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
+    children: [{
+      path: 'vodici',
+      component: VodiciWrapperComponent
     }]
   },
   { path: 'view', component: ViewComponent,

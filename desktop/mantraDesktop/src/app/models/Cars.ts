@@ -7,7 +7,7 @@ export default class Cars {
   longtitude?: string;
   createdBy: string;
   routes? : string[];
-
+  aktualnyNaklad?: string [];
   pocetNaprav: number;
 
   //rozmery vozidla

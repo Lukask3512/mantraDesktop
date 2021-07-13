@@ -188,6 +188,7 @@ export class AddCarDialogComponent implements OnInit {
     return;
   }
 
+  // TODO ked vytvori auto nie master, tak nech sa mu idcko ulozi do databazy aby ho mohol ovladat rovno
   saveCar(){
     console.log(this.assignToCar());
     this.carService.getCarByEcv(this.assignToCar().ecv).pipe(take(1)).subscribe(car => {
@@ -201,7 +202,9 @@ export class AddCarDialogComponent implements OnInit {
             return;
           }
           else{
-            this.carService.createCar(this.assignToCar());
+            var car: Cars = this.assignToCar();
+            car.itinerar = [];
+            this.carService.createCar(car);
             this.dialogRef.close();
             return;
 
