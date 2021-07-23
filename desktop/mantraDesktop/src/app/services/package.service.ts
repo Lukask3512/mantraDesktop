@@ -69,6 +69,13 @@ export class PackageService {
 
   }
 
+  getAllPackages(){
+    return this.myPackages;
+  }
+
+  getAllOfferPackages(){
+    return this.myPackagesOffer;
+  }
 
   getOnePackage(id){
     let myPackage = this.myPackages.find(onePackage => onePackage.id === id);

@@ -60,6 +60,11 @@ import { VodiciWrapperComponent } from './vodici/vodici-wrapper/vodici-wrapper.c
 import { TheVodicComponent } from './vodici/the-vodic/the-vodic.component';
 import { NewVodicComponent } from './vodici/new-vodic/new-vodic.component';
 import { NewVodicDialogComponent } from './dialogs/new-vodic-dialog/new-vodic-dialog.component';
+import { LogDialogComponent } from './dialogs/log-dialog/log-dialog.component';
+import { CompaniesWrapperComponent } from './companies/companies-wrapper/companies-wrapper.component';
+import { AddCompanyComponent } from './dialogs/add-company/add-company.component';
+import { OneCompanyComponent } from './companies/one-company/one-company.component';
+import { GetInfoAboutCompanyComponent } from './companies/get-info-about-company/get-info-about-company.component';
 
 
 @NgModule({
@@ -78,7 +83,8 @@ import { NewVodicDialogComponent } from './dialogs/new-vodic-dialog/new-vodic-di
       ShowItinerarComponent, ShowDetailComponent, CarItiDetailComponent, SizeOfBoxComponent,
       PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent,
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
-      TheVodicComponent, NewVodicComponent, NewVodicDialogComponent
+      TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
+      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent
     ],
     exports: [
         OpenlayerComponent,

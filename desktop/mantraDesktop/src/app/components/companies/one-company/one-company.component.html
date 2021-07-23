@@ -1,0 +1,11 @@
+<section>
+  <h2>{{company.name}}</h2>
+  <h3>{{company.street}}</h3>
+  <h3>{{company.town}}</h3>
+  <h3>{{company.country}}</h3>
+  <h3>{{company.ico}}</h3>
+  <h3>{{company.dicIc}}</h3>
+  <h3 *ngIf="company.poistenie">{{company.poistenie}}</h3>
+  <h3 *ngIf="!company.poistenie">Bez poistenia</h3>
+  <h2>Licencia: {{company.licenceUntil}}</h2>
+</section>

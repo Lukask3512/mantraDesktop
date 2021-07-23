@@ -3,6 +3,7 @@ import DeatilAboutAdresses from "../models/DeatilAboutAdresses";
 import Cars from "../models/Cars";
 import {CarService} from "../services/car.service";
 import Route from "../models/Route";
+import {PackageService} from '../services/package.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CountFreeSpaceService {
   sizesV = [];
   weight = [];
   stohovatelnost = [];
-  constructor(private carService: CarService) { }
+  constructor(private carService: CarService, private packageService: PackageService) { }
 
   // vratim index miest kde sa dana preprava vopcha
   countFreeSpace(oneCar, offer, prekrocenie){
@@ -127,6 +128,42 @@ export class CountFreeSpaceService {
   // pocitam si v ktorom meste sa toho kolko nachadza
   vypocitajPocetPalietVKazomMeste(auto){
     var poleKsPalietPreKazduAdresu = [];
+    var allpackages;
+    var allpackagesOffer;
+    var allTogether = [];
+
+    // dorobeny aktualny naklad, treba majk check
+    if (auto.aktualnyNaklad){
+      var oneAdress = {
+        sizeS: [],
+        sizeD: [],
+        sizeV: [],
+        weight: [],
+        stohovatelnost: [],
+        id: []
+      };
+
+      allpackages =  this.packageService.getAllPackages();
+      allpackages = allpackages.filter(onePackage =>
+        auto.aktualnyNaklad.includes(onePackage.id));
+
+      allpackagesOffer =  this.packageService.getAllOfferPackages();
+      allpackagesOffer = allpackagesOffer.filter(onePackage =>
+        auto.aktualnyNaklad.includes(onePackage.id));
+      allTogether = allpackages.concat(allpackagesOffer);
+      allTogether.forEach(oneZAuta => {
+        oneAdress.sizeS.push(oneZAuta.sizeS);
+        oneAdress.sizeD.push(oneZAuta.sizeD);
+        oneAdress.sizeV.push(oneZAuta.sizeV);
+        oneAdress.weight.push(oneZAuta.weight);
+        oneAdress.stohovatelnost.push(oneZAuta.stohovatelnost);
+        oneAdress.id.push(oneZAuta.id);
+      });
+      poleKsPalietPreKazduAdresu.push(oneAdress);
+
+    }
+
+
     auto.detailIti.forEach((oneDetail, index) => {
       var oneAdress = {
         sizeS: [],
@@ -184,6 +221,10 @@ export class CountFreeSpaceService {
         id: [0]
       };
       poleKsPalietPreKazduAdresu.push(oneAdress);
+    }
+    // aktualny naklad... a to nie je mesto preto to rusim
+    if (allTogether.length > 0){
+      poleKsPalietPreKazduAdresu.splice(0, 1);
     }
     return poleKsPalietPreKazduAdresu;
   }

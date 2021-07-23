@@ -5,14 +5,26 @@
 <!--    <a-triangle color="#CCC" vertex-c="1 -1 0"></a-triangle>-->
   </a-box>
 
+
+
   <a-text value="Velkost navesu ~ 13,6m x 2,48m x 2,85m" lirkis-text-component position="6 5 -5" rotation="0 0 0" color="#000000"
           align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" scale="3 3 1"></a-text>
 
   <a-obj-model src="./assets/a-frame/truck/naves.obj"
                mtl="./assets/a-frame/truck/naves.mtl"
                material="opacity: 0.5; transparent: true"
-               scale="1 1 1" position="0 0 0" rotation="0 0 0">
+               scale="1 1 1" position="0 0 0" rotwaation="0 0 0">
   </a-obj-model>
+
+
+  <a-obj-model id="mojaSipka" src="./assets/a-frame/sipka/eazo60htt5ka.obj"
+               mtl="./assets/a-frame/sipka/eazo60htt5ka.mtl"
+               material="opacity: 0.5; transparent: true"
+               scale="0 0 0" position="15 2 -1.2" rotation="0 0 0">
+  </a-obj-model>
+
+  <a-text id="vahaText" value="" position="17 1 -1.2" rotation="0 0 0" color="#000000"
+          align="center" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" scale="3 3 1"></a-text>
 
   <a-plane geometry="height: 100; width: 100"
            roughness="0.8"
@@ -22,7 +34,7 @@
 
   <a-sky src="./assets/skybox.png" rotation="0 90 0"></a-sky>
 
-  <a-camera position="7 1 10" rotation="0 0 0">
+  <a-camera position="7 1 12" rotation="30 0 0">
 
   </a-camera>
 </a-scene>

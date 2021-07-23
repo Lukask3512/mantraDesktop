@@ -53,7 +53,6 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer){
-    console.log(offer);
     this.offer = JSON.parse(JSON.stringify(offer));
     this.realOffer = JSON.parse(JSON.stringify(offer));
     if (this.posliPonukuComponent) {
@@ -62,6 +61,24 @@ export class CarItiDetailComponent implements OnInit {
     if (this.ulozeniePonukyComponent){
       this.ulozeniePonukyComponent.setPredpokladane(this.offer.id);
     }
+  }
+
+  checkRukaAdrTeplota(offer){
+    let adr = false;
+    let ruka = false;
+    let teplota = [];
+    offer.adresyVPonuke.forEach(oneAdresa => {
+      if (oneAdresa.adr){
+        adr = true;
+      }
+      if (oneAdresa.ruka){
+        ruka = true;
+      }
+      if (oneAdresa.teplota){
+        teplota.push(oneAdresa.teplota);
+      }
+    });
+    return {teplota, ruka, adr};
   }
   // na presunutie prvkov v poli
   arraymove(arr, fromIndex, toIndex) {
@@ -421,6 +438,37 @@ export class CarItiDetailComponent implements OnInit {
     });
     this.offerService.updateRoute(offer);
     this.uspecnePriradenie.emit(this.car);
+  }
+
+  chooseColor(type){
+    if (this.car){
+      if (type === 'adr'){
+        if (this.car.adr){
+          return 'green';
+        }else{
+          return 'red';
+        }
+      }
+
+      if (type === 'ruka'){
+        if (this.car.ruka){
+          return 'green';
+        }else{
+          return 'red';
+        }
+      }
+    }
+
+  }
+
+  getMinMaxTeplotaFromOffer(teplota){
+    if (this.car){
+      if (teplota >= this.car.minTeplota && teplota <= this.car.maxTeplota){
+        return 'green';
+      }else{
+        return 'red';
+      }
+    }
   }
 
 }

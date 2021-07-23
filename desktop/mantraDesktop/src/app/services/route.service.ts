@@ -13,6 +13,7 @@ import Address from "../models/Address";
 })
 export class RouteService {
   private myRoutes: Route[];
+  private finishedMyRoutes: Route[];
   private routesCollection: AngularFirestoreCollection<Dispecer>;
   private routes: Observable<Dispecer[]>;
 
@@ -35,10 +36,25 @@ export class RouteService {
       this.myRoutes = vyfiltrovanerRouty;
     });
 
+    this.getAllFinishedRoutes().subscribe(res => {
+      const dispecer: Dispecer = this.dataService.getDispecer();
+      // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
+      let vyfiltrovanerRouty = res;
+      if (dispecer.createdBy !== 'master'){
+        vyfiltrovanerRouty = res.filter(oneAddress =>
+          dispecer.myCars.includes(oneAddress.carId) || oneAddress.carId === null);
+      }
+      this._finishedRoutes.next(vyfiltrovanerRouty);
+      this.finishedMyRoutes = vyfiltrovanerRouty;
+    });
+
   }
 
   private _routes = new BehaviorSubject<any>([]);
   readonly routes$ = this._routes.asObservable();
+
+  private _finishedRoutes = new BehaviorSubject<any>([]);
+  readonly finishedRoutes$ = this._finishedRoutes.asObservable();
 
   getRoutes(carId){
     return this.afs.collection<Dispecer>('route', ref => {
@@ -127,7 +143,7 @@ export class RouteService {
     }else{
       id = loggedDispecer.createdBy;
     }
-    return this.afs.collection<Dispecer>('route', ref => {
+    return this.afs.collection<Route>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', id)
         .where('finished', '==', true)

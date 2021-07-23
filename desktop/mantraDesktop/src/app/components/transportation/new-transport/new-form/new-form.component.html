@@ -59,7 +59,31 @@
 
 
 
+  <div [formGroup]="specForm">
+      <mat-slide-toggle formControlName="teplota"
+                        class="gridItem gridItemStart">
+        Teplotný režim
+      </mat-slide-toggle>
 
+      <div *ngIf="this.specForm.get('teplota').value">
+        <mat-form-field  appearance="standard" class="gridItem">
+          <mat-label>Potrebná teplota</mat-label>
+          <input formControlName="potrebnaTeplota" type="number" step="1" matInput placeholder="Teplota...">
+          <span matSuffix> C </span>
+          <mat-hint>V stupnoch Celsia</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <mat-slide-toggle formControlName="ruka"
+                        class="gridItem gridItemStart">
+        Hydraulická ruka
+      </mat-slide-toggle>
+
+      <mat-slide-toggle formControlName="adr"
+                        class="gridItem gridItemStart">
+        ADR(prevoz rizikového tovaru)
+      </mat-slide-toggle>
+  </div>
 
 
   <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="infoAboutRoute">
@@ -101,7 +125,7 @@
 
         <h4>Váha</h4>
 
-        <mat-form-field appearance="standard" class="sizeInput">
+        <mat-form-field (change)="upravSipku()" appearance="standard" class="sizeInput">
           <mat-label>Váha</mat-label>
           <input type="number" formControlName="weight" step="0.1" matInput placeholder="Váha....">
           <span matSuffix> t </span>
@@ -149,10 +173,6 @@
           <mat-hint>V kilogramoch</mat-hint>
         </mat-form-field>
 
-        <!--    <mat-checkbox>Chlad</mat-checkbox>-->
-
-        <!--      -->
-        <!--      -->
         <button [disabled]="this.checkIfCanSKipToPrevious()" (click)="previousItem()">Späť</button>
         <button [disabled]="this.checkIfCanSKipToNext()" (click)="nextItem()">Ďalej</button>
 

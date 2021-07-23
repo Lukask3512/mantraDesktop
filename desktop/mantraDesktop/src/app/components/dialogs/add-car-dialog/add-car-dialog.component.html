@@ -214,12 +214,43 @@
 <!--      <span matSuffix> cm</span>-->
 <!--    </mat-form-field>-->
 <mat-step>
-  <ng-template matStepLabel>Náves</ng-template>
+  <ng-template matStepLabel>Náves, špec. režimy</ng-template>
 
   <mat-slide-toggle formControlName="pripojitNaves"
       class="gridItem gridItemStart">
       Možnosť pripojiť náves
     </mat-slide-toggle>
+
+  <mat-slide-toggle formControlName="teplota"
+                    class="gridItem gridItemStart">
+    Teplotný režim
+  </mat-slide-toggle>
+
+  <div *ngIf="this.carForm.get('teplota').value">
+      <mat-form-field  appearance="standard" class="gridItem">
+        <mat-label>Minimálna teplota</mat-label>
+        <input formControlName="minTeplota" type="number" step="0.1" matInput placeholder="Min teplota...">
+        <span matSuffix> C </span>
+        <mat-hint>V stupnoch Celsia</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="standard" class="gridItem">
+        <mat-label>Maximálna teplota</mat-label>
+        <input formControlName="maxTeplota" type="number" step="0.1" matInput placeholder="Max teplota....">
+        <span matSuffix> C </span>
+        <mat-hint>V stupnoch Celsia</mat-hint>
+      </mat-form-field>
+  </div>
+
+  <mat-slide-toggle formControlName="ruka"
+                    class="gridItem gridItemStart">
+    Hydraulická ruka
+  </mat-slide-toggle>
+
+  <mat-slide-toggle formControlName="adr"
+                    class="gridItem gridItemStart">
+    ADR(prevoz rizikového tovaru)
+  </mat-slide-toggle>
+
 </mat-step>
     </mat-horizontal-stepper>
 

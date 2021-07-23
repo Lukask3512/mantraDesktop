@@ -27,6 +27,7 @@ import {AddressService} from "../../../services/address.service";
 import {NewFormComponent} from "./new-form/new-form.component";
 import {ShowDetailComponent} from "./show-detail/show-detail.component";
 import {PackageService} from "../../../services/package.service";
+import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
 
 
 
@@ -237,7 +238,7 @@ else{
 
   receiveAddress(address: Address){
     this.addresses.push(address);
-    this.child.notifyMe(this.addresses,undefined, undefined);
+    this.child.notifyMe(this.addresses, undefined, undefined);
   }
 
   receiveDetail(detail){
@@ -564,5 +565,22 @@ else{
     // }
 
     return true;
+  }
+
+  openLog(){
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      addresses: this.addresses,
+      route: this.route,
+    };
+    dialogConfig.width = '70%';
+
+
+    const dialogRef = this.dialog.open(LogDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
   }
 }

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "mantra-f994d": {
+      "hosting": {
+        "mantraDesktop": [
+          "mantra-f994d"
+        ]
+      }
+    }
+  }
+}

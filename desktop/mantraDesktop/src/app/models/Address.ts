@@ -19,13 +19,9 @@ export default class Address {
 
   // detail
   packagesId: string[] = [];
-  // sizeV: number[];
-  // sizeS: number[];
-  // sizeD: number[];
-  // weight: number[];
-  // stohovatelnost: number[]; //ak ano kolko unesie
-  // vyskaNaklHrany: number[];
-  // polohaNakladania: string[];
-  // specRezim?: number[];
+
+  ruka: boolean;
+  adr: boolean;
+  teplota: number;
 
 }

@@ -25,17 +25,6 @@
 
       <ng-container  *ngFor="let town of route.addresses; index as i">
 
-<!--        <li *ngIf="route.type[i] != 'vykladka'">-->
-
-<!--              {{town}}-->
-<!--          <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--          <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--          <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--          <span *ngIf="route.status[i] === 3" class="spanG">{{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--          <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-
-<!--        </li>-->
-
 
     </ng-container>
 
@@ -45,20 +34,6 @@
 <!--      <h2>Vykládky</h2>-->
     <ng-container *ngFor="let town of route.addresses; index as i">
       <app-one-address-info [addressaId]="town"></app-one-address-info>
-
-<!--      <li *ngIf="route.type[i] != 'nakladka'">-->
-
-<!--          {{town}}-->
-
-<!--        <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--        <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--        <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--        <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-<!--        <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
-
-
-<!--      </li>-->
-
     </ng-container>
     </div>
     <div class="status">
@@ -89,15 +64,15 @@
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 <!--      <h2>Nakládky</h2>-->
       <ng-container *ngFor="let town of route.nameOfTowns; index as i">
-        <li *ngIf="route.type[i] != 'vykladka'">
+<!--        <li *ngIf="route.type[i] != 'vykladka'">-->
 
-            {{town}}
-            <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-            <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-            <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-            <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-            <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-        </li>
+<!--            {{town}}-->
+<!--            <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
+<!--            <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
+<!--            <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
+<!--            <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
+<!--            <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>-->
+<!--        </li>-->
 
 
       </ng-container>
@@ -105,23 +80,13 @@
 
     <div class="vykladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 <!--      <h2>Vykládky</h2>-->
-      <ng-container *ngFor="let town of route.nameOfTowns; index as i">
-        <li *ngIf="route.type[i] != 'nakladka'">
-
-            {{town}}
-          <span *ngIf="route.status[i] === 0" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 1" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 2" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 3" class="spanG"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-          <span *ngIf="route.status[i] === 4" class="spanG blink_me"> {{this.routeStatusService.getStatus(route.status[i]) }}</span>
-
-
-        </li>
+      <ng-container *ngFor="let town of route.addresses; index as i">
+        <app-one-address-info [addressaId]="town"></app-one-address-info>
       </ng-container>
     </div>
     <div class="repetRoute">
 <!--      <h2>Ukončené</h2>-->
-      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>
+<!--      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>-->
 
       <button (click)="openAddDialog(route, true, route.id)" class="buttonB">Zopakovať</button>
       <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>

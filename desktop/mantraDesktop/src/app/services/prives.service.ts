@@ -28,6 +28,7 @@ export class PrivesService {
         vyfiltrovanerRouty = res.filter(onePrives =>
           dispecer.myPrives.includes(onePrives.id));
       }
+      console.log(":som v privese")
       this._prives.next(vyfiltrovanerRouty);
       this.allPrives = vyfiltrovanerRouty;
     });
@@ -40,7 +41,7 @@ export class PrivesService {
   getPrives(){
     var createdBy;
     var loggedUser = this.dataService.getDispecer();
-    if (loggedUser.createdBy != 'master'){
+    if (loggedUser.createdBy !== 'master'){
       createdBy = loggedUser.createdBy;
     }else {
       createdBy = loggedUser.id;

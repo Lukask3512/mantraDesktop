@@ -1,0 +1,12 @@
+<div class="allWrapper">
+  <section class="allCompanies">
+    <div class="oneCompany" *ngFor="let oneCompany of this.companies">
+      <app-one-company [company]="oneCompany"></app-one-company>
+      <button (click)="updateCompany(oneCompany)">Upravit</button>
+    </div>
+  </section>
+</div>
+
+
+
+<button (click)="addCompany()">Pridat</button>

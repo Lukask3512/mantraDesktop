@@ -1044,6 +1044,9 @@ export class MapComponent implements AfterViewInit {
                     car.itiAdresy[indexLon].coordinatesOfTownsLat]]);
               }
 
+              let adr = true;
+              let ruka = true;
+              let teplotnaSpec = true;
               // tu si zistim maximalne vzdialenosti od itinerara pre vsetky adresy v ponuke...
               if (indexLon === 0){
                 maxVzdialenostOdCelehoItinerara = 0;
@@ -1064,7 +1067,6 @@ export class MapComponent implements AfterViewInit {
                   if (vzdialenostOdTrasy > maxVzdialenostOdCelehoItinerara){
                         maxVzdialenostOdCelehoItinerara = vzdialenostOdTrasy;
                       }
-
                     });
                 }
                 else{ // ak hladam len max vzdialenost 1. adresy
@@ -1078,12 +1080,30 @@ export class MapComponent implements AfterViewInit {
               // tu si ulozim najvacsiu vzdialenost od mesta v itinerari
               const maximalnaVzialenostOdMesta = 0;
               prepravasDetailom.adresyVPonuke.forEach((offerLat, offerLatIndex) => { // prechadzam miestami v ponuke
+                // tu si kontrolujem abs ruku a teplotu
+                if (offerLat.ruka && !car.ruka){
+                  ruka = false;
+                }
+                if (offerLat.adr && !car.adr){
+                  adr = false;
+                }
+                if (offerLat.teplota && (car.minTeplota >= offerLat.teplota ||
+                  car.maxTeplota <= offerLat.teplota)){
+                  teplotnaSpec = false;
+                }
+                if (!car.minTeplota && offerLat.teplota){
+                  teplotnaSpec = false;
+                }
 
 
                                 // tu davam flagy - ak je vzdialenost mensia vacsia - taku davam flagu
                                 // ked som na konci skontrulujem ci sedi vzdialenost
-                if (offerLatIndex === oneRouteOffer.addresses.length - 1) {
+                if (offerLatIndex === oneRouteOffer.addresses.length - 1 && ruka && adr && teplotnaSpec) {
                                 let flags = 0;
+
+                                if (car.minTeplota <= teplotnaSpec && car.maxTeplota >= teplotnaSpec){
+
+                                }
 
                                 const indexVPoli = vopchaSa.poleMiestKdeSaVopcha.indexOf(indexLon); // ci do mesta vopcha
                                 const prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; // ak false vopcha, ak true tak sa vopcha

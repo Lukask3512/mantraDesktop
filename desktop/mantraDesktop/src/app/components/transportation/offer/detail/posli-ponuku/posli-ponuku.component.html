@@ -2,6 +2,9 @@
   <h4 *ngIf="this.offer">
     Vaša ponuka {{this.offer}}
   </h4>
+  <h4 *ngIf="this.route.price">
+    Cena: {{this.route.price}}
+  </h4>
   <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
   <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
 

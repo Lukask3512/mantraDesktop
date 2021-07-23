@@ -61,7 +61,27 @@ export class DispecerService {
           });
         })
       );
+  }
 
+   getMasterDispecerByCompany(companyId){
+      return this.afs.collection<Dispecer>('dispecers', ref => {
+        let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        query = query.where('companyId', '==', companyId)
+          .where('createdBy', '==', 'master');
+        return query;
+      }).snapshotChanges().pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc['id'];
+            return {id, ...data};
+          });
+        })
+      );
+  }
+
+  getDispecerById(id) {
+    return this.dispecerCollection.doc(id).valueChanges();
   }
 
   createDispecer(dispecer: Dispecer){

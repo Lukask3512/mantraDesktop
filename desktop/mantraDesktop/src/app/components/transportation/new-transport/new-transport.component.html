@@ -30,6 +30,7 @@
 </div>
 
   <div class="addresses">
+
     <app-drag-and-drop-list #dropList
                             (clickedOnRoute)="updateDetailOnTown($event)"
                             [address]="this.addresses"
@@ -58,7 +59,7 @@
   </div>
 
 
-
+<button (click)="openLog()">Log prepravy</button>
 </div>
-<app-route-log *ngIf="route != undefined" [routeId]="parentSubject"></app-route-log>
+<!--<app-route-log *ngIf="route != undefined" [addresses]="this.addresses"></app-route-log>-->
 

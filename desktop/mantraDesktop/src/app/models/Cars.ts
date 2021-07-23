@@ -19,10 +19,17 @@ export default class Cars {
   nosnost: number;
   naves: boolean; // moznost pripojit naves
   navesis: string[];
-  nakladaciPriestorZoZadu: number[]; //vyska sirka
+  nakladaciPriestorZoZadu: number[]; // vyska sirka
   nakladaciPriestorZLava: number[];
   nakladaciPriestorZPrava: number[];
   nakladaciPriestorZVrchu: number[];
+
+  teplota: boolean;
+  ruka: boolean;
+  adr: boolean;
+
+  minTeplota: number;
+  maxTeplota: number;
 
 
   nakladaciaHrana: number[];

@@ -7,6 +7,7 @@ import {map, take} from "rxjs/operators";
 import Route from "../models/Route";
 import Address from "../models/Address";
 import {OfferRouteService} from "./offer-route.service";
+import {RouteService} from './route.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class AddressService {
   allRoutes = this.allAddressSource.asObservable();
 
 
-  constructor(private afs: AngularFirestore, private dataService: DataService, private offerService: OfferRouteService) {
+  constructor(private afs: AngularFirestore, private dataService: DataService, private offerService: OfferRouteService,
+              private routeService: RouteService) {
     this.addressCollection = this.afs.collection<any>('address');
 
     this.getRoutes().subscribe(res => {
@@ -33,6 +35,7 @@ export class AddressService {
           dispecer.myCars.includes(oneAddress.carId) || oneAddress.carId === null);
       }
       this.addressesGet = vyfiltrovanerRouty;
+      this.checkFinishedAddresAndUpdateRoute();
       this._address.next(vyfiltrovanerRouty);
     });
     this.getOfferAddresses();
@@ -58,6 +61,26 @@ export class AddressService {
 
     })
   }
+  // ked budu vsetky adresy finishnute, upravim routu na finished
+  checkFinishedAddresAndUpdateRoute(){
+    this.routeService.getRoutesNoSub().forEach(oneRoute => {
+      let adresyZRouty: Address[] = this.addressesGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
+      let finishIt = true;
+      adresyZRouty.forEach(jednaAdresa => {
+        if (jednaAdresa.status !== 3){
+          finishIt = false;
+        }
+      });
+      // ak je finishIt stale true, route upravim na finished
+      if (finishIt){
+        var routeSFinish = oneRoute;
+        routeSFinish.finished = true;
+        routeSFinish.finishedAt = new Date().toString();
+        this.routeService.updateRoute(routeSFinish);
+        console.log('Updatol som routu cislo: ',  routeSFinish);
+      }
+    });
+  }
 
   promiseForDownAdd(idAddress){
     return new Promise(resolve => {
@@ -80,7 +103,6 @@ export class AddressService {
 
         this.addressesOfferGet.push(adresa);
         this._offerAddresses.next(this.addressesOfferGet);
-        console.log(this.addressesOfferGet)
         resolve(adresa)
       })
     })

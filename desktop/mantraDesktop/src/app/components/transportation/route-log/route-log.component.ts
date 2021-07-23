@@ -1,9 +1,10 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {RouteLogService} from "../../../services/route-log.service";
-import {MatTableDataSource} from "@angular/material/table";
 import {RouteStatusService} from "../../../data/route-status.service";
-import {Subject} from "rxjs";
+
 import {jsPDF} from "jspdf";
+import Address from '../../../models/Address';
+import RouteLog from '../../../models/RouteLog';
 
 @Component({
   selector: 'app-route-log',
@@ -17,26 +18,36 @@ export class RouteLogComponent implements OnInit {
   dataSource;
   displayedColumns: string[] = ['town', 'status', 'time'];
 
-  @Input() routeId: Subject<any>;
-  routeLog;
+  @Input() addresses: Address[];
+  routeLog: RouteLog[] = [];
   ngOnInit(): void {
-
-    this.routeId.subscribe(routeId => {
-      this.routeLogService.getLogFromRoute(routeId).subscribe(data =>{
-        this.routeLog = data[0];
-      });
-    })
-
+    this.getLog();
   }
 
-  toDate(timestamp){
-    var date = new Date(parseInt(timestamp));
+  getLog(){
+    this.routeLog = [];
+    this.addresses.forEach(oneAddress => {
+      this.routeLogService.getLogFromRoute(oneAddress.id).subscribe(myLog => {
+        if (myLog[0]){
+          this.routeLog.push(myLog[0] as RouteLog);
+        }
+        if (this.routeLog) {
+          this.routeLog.sort((a, b) => {
+            return new Date(b.timestamp[0]).valueOf() - new Date(a.timestamp[0]).valueOf();
+          });
+        }
+      });
+    });
+  }
+
+  toDate(datum){
+    var date = new Date(datum);
     return date.toDateString() + " " + date.getHours()+":" + date.getMinutes();
   }
 
-  ngOnDestroy() {
-    this.routeId.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.routeId.unsubscribe();
+  // }
 
   deleteSpecialChar(word){
     const chars = [...word]
@@ -65,6 +76,10 @@ export class RouteLogComponent implements OnInit {
         chars[i] = 'n';
       if(word[i] == "Ň")
         chars[i] = 'N';
+      if(word[i] == "á")
+        chars[i] = 'a';
+      if(word[i] == 'é')
+        chars[i] = 'e';
     }
     let skusam = chars.join("")
     return skusam;

@@ -109,8 +109,8 @@ export class NewVodicDialogComponent implements OnInit {
           this.dispecerForm.reset();
           this.dialogRef.close();
         }
-        this.dispecerForm.reset();
-        this.dialogRef.close();
+        // this.dispecerForm.reset();
+        // this.dialogRef.close();
       });
     }
   }

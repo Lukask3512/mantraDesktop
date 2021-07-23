@@ -1,0 +1,37 @@
+<!-- button class="button2" (click)="downloadAsPDF()">⇊download⇊</button -->
+<!--<p>Pdf generátor nepodporuje mäkčene</p>-->
+<div id="allWrapper">
+  <header *ngIf="this.route.price" class="headerWrapper">
+    <h2>Zadavatel: {{this.route.createdBy}}</h2>
+    <h2>Prepravca: {{this.route.takenBy}}</h2>
+  </header>
+  <h3>Cena: {{this.route.price}}</h3>
+  <h1>Log</h1>
+  <table id="routeLog" #routeLog1 *ngIf="this.routeLog != undefined">
+    <tr>
+      <!--    <th>Dessert (100g)</th>-->
+      <th>Mesto</th>
+      <th>Typ</th>
+      <th>Status</th>
+      <th>Cas</th>
+      <th>Z. sirka</th>
+      <th>Z. dlzka</th>
+
+    </tr>
+    <tbody *ngFor="let jedenAllLog of this.routeLog; let i = index;">
+
+    <tr *ngFor="let jedenLog of jedenAllLog.place; let j = index;">
+      <td>{{deleteSpecialChar(jedenAllLog.place[j])}}</td>
+      <td *ngIf="jedenAllLog.type && jedenAllLog.type[j] != undefined">{{deleteSpecialChar(jedenAllLog.type[j])}}</td>
+      <td>{{deleteSpecialChar(this.routeStatusService.getStatus(jedenAllLog.state[j]))}}</td>
+      <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
+      <td>{{jedenAllLog.lattitude[j]}}</td>
+      <td>{{jedenAllLog.longtitude[j]}}</td>
+    </tr>
+    </tbody>
+
+    <!--  <p>Ukoncené {{this.toDate(this.routeLog.timestamp[this.routeLog.timestamp.length - 1])}}</p>-->
+  </table>
+</div>
+<button class="buttonDownload" (click)="downloadAsPDF()">Download</button>
+

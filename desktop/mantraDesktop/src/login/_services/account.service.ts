@@ -27,7 +27,7 @@ export class AccountService {
 
 
   signup(email: string, password: string) {
-    this.firebaseAuth
+   return this.firebaseAuth
       .createUserWithEmailAndPassword(email, password)
       .then(value => {
         console.log('Success!', value);

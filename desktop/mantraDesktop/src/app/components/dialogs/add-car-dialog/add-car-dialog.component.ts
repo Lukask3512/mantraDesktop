@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CarService} from "../../../services/car.service";
-import Cars from "../../../models/Cars";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {NewCarComponent} from "../../cars/new-car/new-car.component";
-import {DataService} from "../../../data/data.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CarService} from '../../../services/car.service';
+import Cars from '../../../models/Cars';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {NewCarComponent} from '../../cars/new-car/new-car.component';
+import {DataService} from '../../../data/data.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {take} from "rxjs/operators";
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-car-dialog',
@@ -49,6 +49,13 @@ export class AddCarDialogComponent implements OnInit {
     pripojitNaves: false,
     pohyblivaNakHrana: false,
 
+    teplota: false,
+    ruka: false,
+    adr: false,
+
+    minTeplota: 0,
+    maxTeplota: 0,
+
 
   });
 
@@ -58,58 +65,64 @@ export class AddCarDialogComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any, private dataServce: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    console.log(this.data)
     if (this.data){
-        this.carForm.controls['ecv'].setValue(this.data.ecv);
-      this.carForm.controls['phone'].setValue(this.data.phoneNumber);
-      this.carForm.controls['autoVyska'].setValue(this.data.carSize[0]);
-      this.carForm.controls['autoDlzka'].setValue(this.data.carSize[2]);
-      this.carForm.controls['autoSirka'].setValue(this.data.carSize[1]);
-      this.carForm.controls['priestorVyska'].setValue(this.data.sizePriestoru[0]);
-      this.carForm.controls['priestorDlzka'].setValue(this.data.sizePriestoru[2]);
-      this.carForm.controls['priestorSirka'].setValue(this.data.sizePriestoru[1]);
-      this.carForm.controls['vahaVozidlo'].setValue(this.data.vaha);
-      this.carForm.controls['nosnost'].setValue(this.data.nosnost);
-      this.carForm.controls['vyskaHrany'].setValue(this.data.nakladaciaHrana[0]);
+        this.carForm.controls.ecv.setValue(this.data.ecv);
+        this.carForm.controls.phone.setValue(this.data.phoneNumber);
+        this.carForm.controls.autoVyska.setValue(this.data.carSize[0]);
+        this.carForm.controls.autoDlzka.setValue(this.data.carSize[2]);
+        this.carForm.controls.autoSirka.setValue(this.data.carSize[1]);
+        this.carForm.controls.priestorVyska.setValue(this.data.sizePriestoru[0]);
+        this.carForm.controls.priestorDlzka.setValue(this.data.sizePriestoru[2]);
+        this.carForm.controls.priestorSirka.setValue(this.data.sizePriestoru[1]);
+        this.carForm.controls.vahaVozidlo.setValue(this.data.vaha);
+        this.carForm.controls.nosnost.setValue(this.data.nosnost);
+        this.carForm.controls.vyskaHrany.setValue(this.data.nakladaciaHrana[0]);
 
-      if (this.data.nakladaciaHrana.length > 1){
-        this.carForm.controls['minHrana'].setValue(this.data.nakladaciaHrana[0]);
-        this.carForm.controls['maxHrana'].setValue(this.data.nakladaciaHrana[1]);
-        this.carForm.controls['pohyblivaNakHrana'].setValue(true);
+        if (this.data.nakladaciaHrana.length > 1){
+        this.carForm.controls.minHrana.setValue(this.data.nakladaciaHrana[0]);
+        this.carForm.controls.maxHrana.setValue(this.data.nakladaciaHrana[1]);
+        this.carForm.controls.pohyblivaNakHrana.setValue(true);
       }
 
-      this.carForm.controls['pocetNaprav'].setValue(this.data.pocetNaprav);
+        this.carForm.controls.pocetNaprav.setValue(this.data.pocetNaprav);
 
 
-      this.carForm.controls['zoZaduVyska'].setValue(this.data.nakladaciPriestorZoZadu[0]);
-      this.carForm.controls['zoZaduSirka'].setValue(this.data.nakladaciPriestorZoZadu[1]);
-      this.carForm.controls['zPravaVyska'].setValue(this.data.nakladaciPriestorZPrava[0]);
-      this.carForm.controls['zPravaSirka'].setValue(this.data.nakladaciPriestorZPrava[1]);
-      this.carForm.controls['zLavaVyska'].setValue(this.data.nakladaciPriestorZLava[0]);
-      this.carForm.controls['zLavaSirka'].setValue(this.data.nakladaciPriestorZLava[1]);
-      this.carForm.controls['zHoraVyska'].setValue(this.data.nakladaciPriestorZVrchu[0]);
-      this.carForm.controls['zHoraSirka'].setValue(this.data.nakladaciPriestorZVrchu[1]);
+        this.carForm.controls.zoZaduVyska.setValue(this.data.nakladaciPriestorZoZadu[0]);
+        this.carForm.controls.zoZaduSirka.setValue(this.data.nakladaciPriestorZoZadu[1]);
+        this.carForm.controls.zPravaVyska.setValue(this.data.nakladaciPriestorZPrava[0]);
+        this.carForm.controls.zPravaSirka.setValue(this.data.nakladaciPriestorZPrava[1]);
+        this.carForm.controls.zLavaVyska.setValue(this.data.nakladaciPriestorZLava[0]);
+        this.carForm.controls.zLavaSirka.setValue(this.data.nakladaciPriestorZLava[1]);
+        this.carForm.controls.zHoraVyska.setValue(this.data.nakladaciPriestorZVrchu[0]);
+        this.carForm.controls.zHoraSirka.setValue(this.data.nakladaciPriestorZVrchu[1]);
 
 
-      if (this.data.nakladaciPriestorZLava[0] != ""){
-        this.carForm.controls['fromLeft'].setValue(true);
+        this.carForm.controls.minTeplota.setValue(this.data.minTeplota);
+        this.carForm.controls.maxTeplota.setValue(this.data.maxTeplota);
+        if (this.data.minTeplota){
+          this.carForm.controls.teplota.setValue(true);
+        }
+        this.carForm.controls.adr.setValue(this.data.adr);
+        this.carForm.controls.ruka.setValue(this.data.ruka);
+
+        if (this.data.nakladaciPriestorZLava[0] !== ''){
+        this.carForm.controls.fromLeft.setValue(true);
       }
-      if (this.data.nakladaciPriestorZPrava[0] != ""){
-        this.carForm.controls['fromRight'].setValue(true);
+        if (this.data.nakladaciPriestorZPrava[0] !== ''){
+        this.carForm.controls.fromRight.setValue(true);
       }
-      if (this.data.nakladaciPriestorZoZadu[0] != ""){
-        this.carForm.controls['fromBack'].setValue(true);
+        if (this.data.nakladaciPriestorZoZadu[0] !== ''){
+        this.carForm.controls.fromBack.setValue(true);
       }
-      if (this.data.nakladaciPriestorZVrchu[0] != ""){
-        this.carForm.controls['fromUp'].setValue(true);
+        if (this.data.nakladaciPriestorZVrchu[0] !== ''){
+        this.carForm.controls.fromUp.setValue(true);
       }
 
     }
   }
 
   updateFormNakHrana(){
-    console.log(this.carForm.get('pohyblivaNakHrana').value)
-    if (this.carForm.get('pohyblivaNakHrana').value == true){
+    if (this.carForm.get('pohyblivaNakHrana').value === true){
       this.carForm.get('maxHrana').setValidators(Validators.required);
       this.carForm.get('minHrana').setValidators(Validators.required);
       this.carForm.get('vyskaHrany').clearValidators();
@@ -125,8 +138,7 @@ export class AddCarDialogComponent implements OnInit {
   }
 
   updateFormFromBack(){
-    console.log(this.carForm.get('fromBack').value)
-    if (this.carForm.get('fromBack').value == true){
+    if (this.carForm.get('fromBack').value === true){
       this.carForm.get('zoZaduVyska').setValidators(Validators.required);
       this.carForm.get('zoZaduSirka').setValidators(Validators.required);
 
@@ -139,8 +151,20 @@ export class AddCarDialogComponent implements OnInit {
   }
 
   updateFormFromUp(){
-    console.log(this.carForm.get('fromUp').value)
-    if (this.carForm.get('fromUp').value == true){
+    if (this.carForm.get('fromUp').value === true){
+      this.carForm.get('zHoraVyska').setValidators(Validators.required);
+      this.carForm.get('zHoraSirka').setValidators(Validators.required);
+
+    }else{
+      this.carForm.get('zHoraVyska').clearValidators();
+      this.carForm.get('zHoraSirka').clearValidators();
+    }
+    this.carForm.get('zHoraVyska').updateValueAndValidity();
+    this.carForm.get('zHoraSirka').updateValueAndValidity();
+  }
+
+  updateFormStupneCelsia(){
+    if (this.carForm.get('fromUp').value === true){
       this.carForm.get('zHoraVyska').setValidators(Validators.required);
       this.carForm.get('zHoraSirka').setValidators(Validators.required);
 
@@ -153,8 +177,7 @@ export class AddCarDialogComponent implements OnInit {
   }
 
   updateFormFromLeft(){
-    console.log(this.carForm.get('fromLeft').value)
-    if (this.carForm.get('fromLeft').value == true){
+    if (this.carForm.get('fromLeft').value === true){
       this.carForm.get('zLavaVyska').setValidators(Validators.required);
       this.carForm.get('zLavaSirka').setValidators(Validators.required);
 
@@ -167,8 +190,7 @@ export class AddCarDialogComponent implements OnInit {
   }
 
   updateFormFromRight(){
-    console.log(this.carForm.get('fromRight').value)
-    if (this.carForm.get('fromRight').value == true){
+    if (this.carForm.get('fromRight').value === true){
       this.carForm.get('zPravaVyska').setValidators(Validators.required);
       this.carForm.get('zPravaSirka').setValidators(Validators.required);
 
@@ -182,7 +204,6 @@ export class AddCarDialogComponent implements OnInit {
 
   updateCar(){
     console.log(this.assignToCar());
-    console.log(this.data.id)
     this.carService.updateCar(this.assignToCar(), this.data.id);
     this.dialogRef.close();
     return;
@@ -192,8 +213,8 @@ export class AddCarDialogComponent implements OnInit {
   saveCar(){
     console.log(this.assignToCar());
     this.carService.getCarByEcv(this.assignToCar().ecv).pipe(take(1)).subscribe(car => {
-      console.log(car)
-      if (car.length == 0){
+      console.log(car);
+      if (car.length === 0){
         this.carService.getCarByNumber(this.assignToCar().phoneNumber).pipe(take(1)).subscribe(carByNumber => {
           if (carByNumber.length > 0) {
             this.snackBar.open('Vložené tel. číslo sa už nachádza v databáze', 'Ok', {
@@ -202,14 +223,14 @@ export class AddCarDialogComponent implements OnInit {
             return;
           }
           else{
-            var car: Cars = this.assignToCar();
+            let car: Cars = this.assignToCar();
             car.itinerar = [];
             this.carService.createCar(car);
             this.dialogRef.close();
             return;
 
           }
-        })
+        });
 
 
       }else{
@@ -219,16 +240,13 @@ export class AddCarDialogComponent implements OnInit {
         return;
       }
 
-    })
+    });
     //
   }
 
-  setCar(){
-
-  }
 
   assignToCar(): Cars {
-    var createdBy;
+    let createdBy;
 
     if (this.dataServce.getDispecer().createdBy !== 'master'){
       createdBy = this.dataServce.getDispecer().createdBy;
@@ -236,56 +254,66 @@ export class AddCarDialogComponent implements OnInit {
     else {
       createdBy = this.dataServce.getDispecer().id;
     }
-    var rozmeryVozidla = [
+    let rozmeryVozidla = [
       this.carForm.get('autoVyska').value ,
       this.carForm.get('autoSirka').value,
       this.carForm.get('autoDlzka').value];
 
-    var rozmeryPriestoru= [
+    let rozmeryPriestoru = [
       this.carForm.get('priestorVyska').value ,
       this.carForm.get('priestorSirka').value,
       this.carForm.get('priestorDlzka').value];
 
-    var rozmeryNaklZLava= [
+    let rozmeryNaklZLava = [
       this.carForm.get('zLavaVyska').value ,
       this.carForm.get('zLavaSirka').value];
 
-    var rozmeryNaklZPrava= [
+    let rozmeryNaklZPrava = [
       this.carForm.get('zPravaVyska').value ,
       this.carForm.get('zPravaSirka').value];
 
-    var rozmeryNaklZVrchu= [
+    let rozmeryNaklZVrchu = [
       this.carForm.get('zHoraVyska').value ,
       this.carForm.get('zHoraSirka').value];
 
-    var rozmeryNaklZoZadu= [
+    let rozmeryNaklZoZadu = [
       this.carForm.get('zoZaduVyska').value ,
       this.carForm.get('zoZaduSirka').value];
 
-    var nakladaciaHrana;
+    let nakladaciaHrana;
     if (!this.carForm.get('pohyblivaNakHrana').value){
-      console.log(this.carForm.get('vyskaHrany').value)
+      console.log(this.carForm.get('vyskaHrany').value);
       // nakladaciaHrana.push(this.carForm.get('vyskaHrany').value)
-      nakladaciaHrana = [this.carForm.get('vyskaHrany').value]
+      nakladaciaHrana = [this.carForm.get('vyskaHrany').value];
 
     }else{
-      nakladaciaHrana = [this.carForm.get('minHrana').value , this.carForm.get('maxHrana').value ]
+      nakladaciaHrana = [this.carForm.get('minHrana').value , this.carForm.get('maxHrana').value ];
       // nakladaciaHrana.push()
       // nakladaciaHrana.push()
     }
 
-    console.log(nakladaciaHrana);
-    var privesy;
+    let privesy;
     if (this.data && this.data.navesis){
       privesy = this.data.navesis;
     }else{
       privesy = [];
     }
 
+    let minTeplota;
+    let maxTeplota;
+    if (this.carForm.get('teplota').value){
+      minTeplota =  this.carForm.get('minTeplota').value;
+      maxTeplota =  this.carForm.get('maxTeplota').value;
+    }else{
+      minTeplota = null;
+      maxTeplota = null;
+    }
+
+
     return {
       ecv: this.carForm.get('ecv').value,
       phoneNumber: this.carForm.get('phone').value,
-      createdBy: createdBy,
+      createdBy,
       carSize: rozmeryVozidla,
       status: -2,
       sizePriestoru: rozmeryPriestoru,
@@ -300,7 +328,14 @@ export class AddCarDialogComponent implements OnInit {
       naves: this.carForm.get('pripojitNaves').value,
       navesis: privesy,
       nosnost: this.carForm.get('nosnost').value,
-      nakladaciaHrana: nakladaciaHrana,
+      nakladaciaHrana,
+
+      teplota: this.carForm.get('teplota').value,
+      minTeplota,
+      maxTeplota,
+
+      ruka: this.carForm.get('ruka').value,
+      adr: this.carForm.get('adr').value,
     };
   }
 
@@ -308,9 +343,9 @@ export class AddCarDialogComponent implements OnInit {
     if (this.carForm.get('autoVyska').value < this.carForm.get('priestorVyska').value ||
       this.carForm.get('autoSirka').value < this.carForm.get('priestorSirka').value ||
       this.carForm.get('autoDlzka').value <  this.carForm.get('priestorDlzka').value){
-      return true
+      return true;
     }else{
-      return false
+      return false;
     }
   }
 

@@ -37,7 +37,6 @@ export class NewFormComponent implements OnInit {
     fromBackSide: [false],
     fromSide: [false],
     fromUpSide: [false],
-
   });
 
   detailsArray: DeatilAboutAdresses[] = [];
@@ -48,6 +47,13 @@ export class NewFormComponent implements OnInit {
     timeFrom: new FormControl(Validators.required),
     timeTo: new FormControl(Validators.required),
     obsluznyCas: new FormControl(1, Validators.required),
+  });
+
+  specForm = this.fb.group({
+    potrebnaTeplota: null,
+    teplota: false,
+    ruka: false,
+    adr: false,
   });
 
   numberOfItems = 1;
@@ -87,6 +93,15 @@ export class NewFormComponent implements OnInit {
     const z = this.transportForm.get('sizeD').value;
     // @ts-ignore
     document.getElementById('mojaABedna').setAttribute('scale', {x, y, z});
+  }
+
+  upravSipku(){
+    const x = this.transportForm.get('weight').value / 5;
+    const y = 1;
+    const z = 1;
+    // @ts-ignore
+    document.getElementById('mojaSipka').object3D.scale.set(y, x, z);
+    document.getElementById('vahaText').setAttribute('value', this.transportForm.get('weight').value + 't');
   }
 
   // ci mozem pridat dalsiu adresu
@@ -225,7 +240,7 @@ export class NewFormComponent implements OnInit {
   }
 
   add(){
-    if (this.casPrichodu == 'nerozhoduje'){
+    if (this.casPrichodu === 'nerozhoduje'){
       this.address.casPrijazdu = '0' ;
       this.address.casLastPrijazdu = '0';
     }else{
@@ -233,7 +248,7 @@ export class NewFormComponent implements OnInit {
       this.address.casLastPrijazdu = this.dateRange.get('timeTo').value;
     }
 
-    if (this.datumPrichodu == 'nerozhoduje'){
+    if (this.datumPrichodu === 'nerozhoduje'){
       this.address.datumPrijazdu = '0';
       this.address.datumLastPrijazdy = '0';
     }else{
@@ -241,7 +256,7 @@ export class NewFormComponent implements OnInit {
       this.address.datumLastPrijazdy = this.dateRange.get('endDate').value.toString();
     }
 
-    if (this.labelPosition == 'nakladka'){
+    if (this.labelPosition === 'nakladka'){
       this.pushItemsToArray(0, this.actualItemInForm);
     }else{
       if (!this.detailIndex[this.actualTownIndex]){
@@ -257,6 +272,15 @@ export class NewFormComponent implements OnInit {
 
 
     this.address.obsluznyCas = this.dateRange.get('obsluznyCas').value.toString();
+    if (this.specForm.get('teplota').value === true){
+      this.address.teplota = this.specForm.get('potrebnaTeplota').value;
+    }else{
+      this.address.teplota = null;
+    }
+
+    this.address.adr = this.specForm.get('adr').value;
+    this.address.ruka = this.specForm.get('ruka').value;
+
 
     this.address.nameOfTown = this.routeFromGoogle;
     this.address.coordinatesOfTownsLon = this.lonFromGoogle;
@@ -289,6 +313,7 @@ export class NewFormComponent implements OnInit {
     this.actualItemInForm = 0;
     this.resetFormToDefault(true);
     this.dateRange.reset();
+    this.specForm.reset();
 
 
     this.routeFromGoogle = null;
@@ -427,9 +452,9 @@ export class NewFormComponent implements OnInit {
   }
 
   nextItem(){
-    if (this.labelPosition == 'nakladka'){
+    if (this.labelPosition === 'nakladka'){
 
-        if (this.detailsArray == undefined){
+        if (this.detailsArray === undefined){
           this.pushItemsToArray(0, this.actualItemInForm);
           this.resetFormToDefault(false);
 
@@ -635,6 +660,7 @@ export class NewFormComponent implements OnInit {
     if (allForms){
       this.casPrichodu = '';
       this.datumPrichodu = '';
+      this.dateRange.controls.obsluznyCas.setValue(1);
     }
   }
 

@@ -1,6 +1,16 @@
 
 <div *ngIf="offer" class="example-container">
   <h2>Ponuka</h2>
+  <h2>Vyzaduje:
+    <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">ADR</h3>
+    <h3 [class]="chooseColor('ruka')" *ngIf="checkRukaAdrTeplota(realOffer).ruka">Ruka</h3>
+    <h3  *ngIf="checkRukaAdrTeplota(realOffer).teplota.length > 0">
+      Teplota:
+      <p [class]="getMinMaxTeplotaFromOffer(teplota)" *ngFor="let teplota of checkRukaAdrTeplota(realOffer).teplota">
+        {{teplota}}
+      </p>
+    </h3>
+  </h2>
   <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>
   <app-ulozenie-ponuky [idPonuky]="this.offer.id" (itiOutput)="sendCarToPredpoklad($event)"></app-ulozenie-ponuky>
   <div

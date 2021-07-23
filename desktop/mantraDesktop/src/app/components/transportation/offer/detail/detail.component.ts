@@ -12,6 +12,8 @@ import {AddressService} from "../../../../services/address.service";
 import Address from "../../../../models/Address";
 import {PackageService} from "../../../../services/package.service";
 import {PosliPonukuComponent} from './posli-ponuku/posli-ponuku.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {LogDialogComponent} from '../../../dialogs/log-dialog/log-dialog.component';
 
 @Component({
   selector: 'app-detail',
@@ -22,7 +24,7 @@ export class DetailComponent implements AfterViewInit {
 
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
-              private packageService: PackageService) { }
+              private packageService: PackageService, private dialog: MatDialog) { }
   route: Route;
   fakeRoute: Route;
   price: number;
@@ -263,6 +265,23 @@ export class DetailComponent implements AfterViewInit {
       vahaVMeste += vaha;
     });
     return vahaVMeste;
+  }
+
+  openLog(){
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      addresses: this.address,
+      route: this.route,
+    };
+    dialogConfig.width = '70%';
+
+
+    const dialogRef = this.dialog.open(LogDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
   }
 
 

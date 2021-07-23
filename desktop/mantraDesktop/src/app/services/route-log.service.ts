@@ -8,8 +8,7 @@ export class RouteLogService {
 
   constructor(private afs: AngularFirestore) { }
 
-  getLogFromRoute(routeId) {
-    return this.afs.collection('routeLog', ref => ref.where("routeId", '==', routeId)).valueChanges();
-
+  getLogFromRoute(addressId) {
+    return this.afs.collection('routeLog', ref => ref.where('addressId', '==', addressId)).valueChanges();
   }
 }

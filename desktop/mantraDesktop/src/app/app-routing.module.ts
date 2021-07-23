@@ -14,6 +14,7 @@ import {NewTransportComponent} from "./components/transportation/new-transport/n
 import {WrapperComponent} from "./components/transportation/offer/wrapper/wrapper.component";
 import {DetailComponent} from "./components/transportation/offer/detail/detail.component";
 import {VodiciWrapperComponent} from './components/vodici/vodici-wrapper/vodici-wrapper.component';
+import {CompaniesWrapperComponent} from './components/companies/companies-wrapper/companies-wrapper.component';
 
 
 
@@ -79,6 +80,13 @@ const routes: Routes = [
     children: [{
       path: 'offerDetail',
       component: DetailComponent
+    }]
+  },
+  { path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
+    children: [{
+      path: 'companies',
+      component: CompaniesWrapperComponent
     }]
   },
 

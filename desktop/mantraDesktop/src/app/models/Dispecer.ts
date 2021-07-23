@@ -9,4 +9,5 @@ export default class Dispecer {
   createdBy?: string;
   myCars?: string[];
   myPrives?: string[];
+  companyId: string;
 }

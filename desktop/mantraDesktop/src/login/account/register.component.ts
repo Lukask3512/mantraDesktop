@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { first } from 'rxjs/operators';
+import {first, take} from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
 import {DispecerService} from "../../app/services/dispecer.service";
@@ -85,11 +85,12 @@ export class RegisterComponent implements OnInit {
     console.log(this.password);
     this.accountService.login(this.email, this.password).subscribe(user => {
       console.log(user.user.email);
-      this.dispecerService.getOneDispecer(user.user.email).subscribe(user => {
+      this.dispecerService.getOneDispecer(user.user.email).pipe(take(1)).subscribe(user => {
         // @ts-ignore
         this.user = user[0];
         this.dataService.setDispecer(this.user);
         if (user){
+          console.log("hovno")
           this.router.navigate(['/view/cars']);
         }
       })

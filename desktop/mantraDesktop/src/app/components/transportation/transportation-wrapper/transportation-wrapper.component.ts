@@ -71,12 +71,10 @@ export class TransportationWrapperComponent implements OnInit {
     });
 
 
-    this.routeService.getAllFinishedRoutes().subscribe(routes => {
+    this.routeService.finishedRoutes$.subscribe(routes => {
       this.allFinishedRoutes = routes;
-    })
+    });
   }
-
-
 
 
   timestamptToDate(timestamp){
