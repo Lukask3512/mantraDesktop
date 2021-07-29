@@ -26,7 +26,7 @@
     cdkDropListConnectedTo="all"
     class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <div *ngIf="this.car.itinerar">
+    <div *ngIf="this.car.itinerar.length > 0">
 
         <div
           class="example-box"

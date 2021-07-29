@@ -138,7 +138,7 @@ export class NewTransportComponent implements AfterViewInit {
                 this.detail.forEach((oneDetail, townId) => {
                   if (oneDetail.townsArray == undefined){
                     oneDetail.forEach((oneDetailId, packageId) => {
-                      if (oneDetailId.id == oneId){
+                      if (oneDetailId && oneDetailId.id == oneId){
                           detailAr.detailArray.push(packageId);
                           detailAr.townsArray.push(townId);
                           detailAr.packageId.push(oneDetailId.id);
@@ -288,7 +288,8 @@ else{
         carId: this.carId,
         addresses: this.addresses,
         newRoute: true,
-        packages: this.detail
+        packages: this.detail,
+        route: this.route
       };
     }
 
@@ -297,13 +298,15 @@ else{
         carId: this.carId,
         addresses: this.addresses,
         newRoute: true,
-        packages: this.detail
+        packages: this.detail,
+        route: this.route
       };
     }else{
       dialogConfig.data = {
         addresses: this.addresses,
         newRoute: false,
-        packages: this.detail
+        packages: this.detail,
+        route: this.route
       };
     }
 
@@ -511,6 +514,36 @@ else{
 
 
     //vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
+  }
+
+  createMyRoute(){
+    this.addPonuka().then(() => {
+      var route: Route;
+      route = JSON.parse(JSON.stringify(this.route));
+      route.createdAt = (new Date()).toString();
+      route.carId = null;
+      route.finished = false;
+      route.forEveryone = false;
+      route.createdBy = this.dataService.getMyIdOrMaster();
+      route.offerFrom = [];
+      route.priceFrom = [];
+      this.routeService.createRoute(route).then(resolve => {
+        console.log(resolve)
+        this.getNewRoute(resolve);
+      });
+    });
+  }
+
+  getNewRoute(idRouty){
+    setTimeout(() => {
+      this.route = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.id === idRouty);
+      this.addressService.address$.subscribe(alAdd => {
+
+        var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
+        adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
+        this.addresses = adresy;
+      });
+    }, 100);
   }
 
   createRoute(price){

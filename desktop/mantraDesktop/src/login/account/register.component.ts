@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first, take} from 'rxjs/operators';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {take} from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
 import {DispecerService} from "../../app/services/dispecer.service";
 import {DataService} from "../../app/data/data.service";
 import Dispecer from "../../app/models/Dispecer";
-import {DetailAboutRouteService} from "../../app/services/detail-about-route.service";
-
+import {GetOneCompanyService} from '../../app/services/companies/get-one-company.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
 
-  user:{ photoUrl?: string; phone: number; createdBy?: string; name: string; id: string; email: string; status: boolean }[];
+  user: Dispecer;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,7 +35,9 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     public accountService: AccountService,
     private dispecerService: DispecerService,
-    private dataService: DataService
+    private dataService: DataService,
+    private companyService: GetOneCompanyService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -81,22 +83,31 @@ export class RegisterComponent implements OnInit {
   }
 
   login() {
-    console.log(this.email);
-    console.log(this.password);
     this.accountService.login(this.email, this.password).subscribe(user => {
-      console.log(user.user.email);
       this.dispecerService.getOneDispecer(user.user.email).pipe(take(1)).subscribe(user => {
         // @ts-ignore
         this.user = user[0];
-        this.dataService.setDispecer(this.user);
-        if (user){
-          console.log("hovno")
-          this.router.navigate(['/view/cars']);
+        if (this.user){
+          this.companyService.getCompany(this.user.companyId).pipe(take(1)).subscribe(myCompany => {
+            if (new Date(myCompany.licenceUntil) >= new Date()){
+              this.dataService.setDispecer(this.user);
+              if (user){
+                this.router.navigate(['/view/cars']);
+              }
+            }else{
+              this.openSnackBar('Licencia vyprsala.', 'Ok');
+              console.log('not valid license');
+            }
+          });
         }
-      })
+      });
 
     });
     this.email = this.password = '';
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 
   logout() {

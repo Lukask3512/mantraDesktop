@@ -38,14 +38,14 @@ export class DragAndDropListComponent implements OnInit {
     this.address = addresses;
   }
 
-  //kontrola ci mozem prehodit mesta - podla detailu
+  // kontrola ci mozem prehodit mesta - podla detailu
   najdiCiMozemPresunut(detail, previous, current){
     var mozemPresunut = true;
     if (detail.townsArray){ // ked sa snazim presunut vykladku
       for (const [index, detailElement] of detail.townsArray.entries()) {
         var mestoNakladky = detail.townsArray[index];
         //+1 lebo pred to som hodil novy item
-        if (mestoNakladky +1 > current){ // ak je mesto kde nakladam vyzsie ako aktualny index vykladky
+        if (mestoNakladky + 1 > current){ // ak je mesto kde nakladam vyzsie ako aktualny index vykladky
           mozemPresunut = false;
         }
       }

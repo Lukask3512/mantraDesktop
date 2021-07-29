@@ -16,8 +16,6 @@
 
 <!--  <button (click)="saveDetailsFirst()">SkusamDetailUlozit</button>-->
 
-<h1>Uložiť trasu bez priradenia?</h1>
-<button class="save_c" (click)="addRouteToCar(null)">Uložiť</button>
     </mat-step>
 
     <mat-step >
@@ -27,7 +25,8 @@
                              [newRoute]="addressesToDragDrop"
                              [car]="this.chosenCar"
                              [newDetails]="this.packages"
-                              (addressesId)="saveRoute($event)">
+                              (addressesId)="saveRoute()"
+            >
 
       </app-route-to-itinerar>
 

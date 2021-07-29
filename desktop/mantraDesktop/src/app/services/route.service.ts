@@ -79,10 +79,12 @@ export class RouteService {
   // }
 
   //toto i treba dorobit
-  createRoute(route: Route){
-    const id = this.afs.createId();
-    this.afs.collection('route').doc(id).set(route);
-    return id;
+  async createRoute(route: Route){
+    return new Promise(resolve => {
+      const id = this.afs.createId();
+      this.afs.collection('route').doc(id).set(route);
+      resolve (id);
+    });
     // return this.afs.collection('route').add(route);
   }
 

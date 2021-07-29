@@ -6,6 +6,7 @@ import {AddressService} from "../../../../services/address.service";
 import {DataService} from "../../../../data/data.service";
 import {CarService} from "../../../../services/car.service";
 import {PackageService} from "../../../../services/package.service";
+import {RouteService} from '../../../../services/route.service';
 
 @Component({
   selector: 'app-route-to-itinerar',
@@ -22,16 +23,18 @@ export class RouteToItinerarComponent implements OnInit {
   newRouteCopy: Address[];
   carItinerarAddresses: Address[] = [];
   constructor(private addressService: AddressService, private dataService: DataService,
-              private carService: CarService, private addressesService: AddressService, private packageService: PackageService) { }
+              private carService: CarService, private addressesService: AddressService, private packageService: PackageService,
+              private routeService: RouteService) { }
 
   ngOnInit(): void {
-    var adresy = this.addressService.getAddresses();
+    var adresy = this.addressService.getAddresses();// TODO toto treba majk check
+    adresy = adresy.concat(this.addressService.getAddressesFromOffer());
 
     if (this.car){
       if (this.car.itinerar){
         this.car.itinerar.forEach(addId => {
-          this.carItinerarAddresses.push(adresy.find(oneAddress => oneAddress.id == addId));
-        })
+          this.carItinerarAddresses.push(adresy.find(oneAddress => oneAddress.id === addId));
+        });
       }else{
         this.car = {...this.car, itinerar: []}
         this.carItinerarAddresses = [];
@@ -41,17 +44,112 @@ export class RouteToItinerarComponent implements OnInit {
     this.newRouteCopy = JSON.parse(JSON.stringify(this.newRoute));
   }
 
+  // kontrola ci mozem prehodit mesta - podla detailu
+  najdiCiMozemPresunut(detail, previous, current){
+    var mozemPresunut = true;
+    if (detail.townsArray){ // ked sa snazim presunut vykladku
+      for (const [index, detailElement] of detail.townsArray.entries()) {
+        var mestoNakladky = detail.townsArray[index];
+        // +1 lebo pred to som hodil novy item
+        if (mestoNakladky + 1 > current){ // ak je mesto kde nakladam vyzsie ako aktualny index vykladky
+          mozemPresunut = false;
+        }
+      }
+    }else{ // a tu ked nakladku
+      for (const [indexNakBalika, detailElement] of detail.entries()) {
+        for (const [indexMesta, oneDetail] of this.newDetails.entries()) {
+          if (oneDetail.townsArray){
+            for (const [index, oneBalik] of oneDetail.townsArray.entries()) {
+              if (oneDetail.townsArray[index] === previous && oneDetail.detailArray[index] === indexNakBalika){
+                if (indexMesta - 1 < current){
+                  mozemPresunut = false;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return mozemPresunut;
+  }
+
+  // ked presuvam z ponuky do itinerara
+  najdiCiMozemPresunutDoItinerara(detail, previous, current, itinerar){
+    let mozemPresunut = true;
+    for (const [indexPresuvacieho, detailPresuvany] of detail.entries()) {
+      if (!itinerar){
+        if (this.newRouteCopy[previous].type === 'vykladka') { // ked presuvam vykladku
+          for (const [index, detailElement] of this.carItinerarAddresses.entries()) {
+            for (const [indexBalika, oneBalik] of detailElement.packagesId.entries()) {
+              if (index !== previous && oneBalik === detailPresuvany && current <= index) {
+                mozemPresunut = false;
+              }
+            }
+          }
+        } else if (this.newRouteCopy[previous].type === 'nakladka') { // ked presuvam nakladku
+          for (const [index, detailElement] of this.carItinerarAddresses.entries()) {
+            for (const [indexBalika, oneBalik] of detailElement.packagesId.entries()) {
+              if (index !== previous && oneBalik === detailPresuvany && current >= index) {
+                mozemPresunut = false;
+              }
+            }
+          }
+        }
+      }else{
+        if (this.carItinerarAddresses[previous].type === 'vykladka') { // ked presuvam vykladku
+          for (const [index, detailElement] of this.carItinerarAddresses.entries()) {
+            for (const [indexBalika, oneBalik] of detailElement.packagesId.entries()) {
+              if (index !== previous && oneBalik === detailPresuvany && current <= index) {
+                mozemPresunut = false;
+              }
+            }
+          }
+        } else if (this.carItinerarAddresses[previous].type === 'nakladka') { // ked presuvam nakladku
+          for (const [index, detailElement] of this.carItinerarAddresses.entries()) {
+            for (const [indexBalika, oneBalik] of detailElement.packagesId.entries()) {
+              if (index !== previous && oneBalik === detailPresuvany && current >= index) {
+                mozemPresunut = false;
+              }
+            }
+          }
+        }
+      }
+
+
+    }
+    return mozemPresunut;
+  }
+
   all = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   even = [10];
 
   drop(event: CdkDragDrop<Address[]>) {
+    var presuvaciDetail;
+    if (this.carItinerarAddresses[event.previousIndex].packagesId){
+    }
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      var mozemPresunut
+      if (event.previousContainer.id === 'all'){
+        presuvaciDetail = this.newDetails[event.previousIndex];
+        // tu kontrolujem ked presuvam len medzi novymi adresami
+        mozemPresunut = this.najdiCiMozemPresunut(presuvaciDetail, event.previousIndex, event.currentIndex);
+      }else{
+        presuvaciDetail = this.carItinerarAddresses[event.previousIndex].packagesId;
+        mozemPresunut = this.najdiCiMozemPresunutDoItinerara(presuvaciDetail, event.previousIndex, event.currentIndex, true);
+      }
+      if (mozemPresunut){
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      }
     } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+      presuvaciDetail = this.newRouteCopy[event.previousIndex].packagesId;
+      mozemPresunut = this.najdiCiMozemPresunutDoItinerara(presuvaciDetail, event.previousIndex, event.currentIndex, false);
+      if (mozemPresunut){
+        transferArrayItem(event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex);
+      }
+
     }
   }
 
@@ -98,46 +196,17 @@ export class RouteToItinerarComponent implements OnInit {
 
   // TODO tu je problem , uklada sa novy package do povodnej adresy, idtown je 0 a nova adresa napr na 4 pozicii, takze novy package je v 0
   async addToItinerar(){
-
-    for (const [idTown, oneDetail] of this.newDetails.entries()) {
-      if (oneDetail.townsArray == undefined){
-        for (const [idPackage, onePackage] of oneDetail.entries()) {
-          var packageId = this.packageService.createPackageWithId(onePackage);
-          if (this.carItinerarAddresses[idTown].packagesId == undefined){
-            this.carItinerarAddresses[idTown].packagesId = [];
-          }
-          this.carItinerarAddresses[idTown].packagesId.push(packageId);
-          var adresaVykladky = this.najdiVykladkuTovaru(idTown, idPackage);
-          this.carItinerarAddresses[adresaVykladky.idTown].packagesId.push(packageId)
-
-        }
-      }
-    }
-
-    var addressesId: string[] = [];
-    var newAddresses: string[] = [];
-    console.log(this.carItinerarAddresses);
-    for (const [id, oneAddres] of this.carItinerarAddresses.entries()){
-      if (oneAddres.id){
-        addressesId.push(oneAddres.id);
-      }else{
-        var createdBy = this.dataService.getMyIdOrMaster();
-        oneAddres.createdBy = createdBy;
-        oneAddres.carId = this.car.id;
-
-
-        const idcko = await this.addressService.createAddressWithId({...oneAddres});
-        addressesId.push(idcko);
-        newAddresses.push(idcko);
-      }
-    }
+    let addressesId = [];
+    this.carItinerarAddresses.forEach(oneAddress => {
+      addressesId.push(oneAddress.id);
+      oneAddress.carId = this.car.id;
+      this.addressService.updateAddress(oneAddress);
+    });
     this.car.itinerar = addressesId;
+    console.log(this.carItinerarAddresses);
     this.carService.updateCar(this.car, this.car.id);
-    console.log(addressesId);
-    console.log(newAddresses);
-    this.addressesId.emit(newAddresses);
-    this.offerInCar.emit(this.car);
-    //vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
+    this.addressesId.emit();
+    // vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
   }
 
   moveAll(){
