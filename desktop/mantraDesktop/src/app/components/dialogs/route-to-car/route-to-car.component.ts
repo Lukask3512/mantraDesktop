@@ -90,7 +90,7 @@ export class RouteToCarComponent implements OnInit {
     // this.addRouteToCar(this.chosenCar);
     this.route.carId = this.chosenCar.id;
     this.routeService.updateRoute(this.route);
-    this.dialogRef.close();
+    this.dialogRef.close({event: true});
   }
 
    saveDetailToDatabase(car){

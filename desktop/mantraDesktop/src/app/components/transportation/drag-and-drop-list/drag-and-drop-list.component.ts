@@ -3,13 +3,14 @@ import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import Route from "../../../models/Route";
 import { EventEmitter } from '@angular/core';
 import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RouteStatusService} from "../../../data/route-status.service";
 import {DataService} from "../../../data/data.service";
 import Address from "../../../models/Address";
 import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AddressService} from '../../../services/address.service';
+import {ShowDetailDialogComponent} from '../../dialogs/show-detail-dialog/show-detail-dialog.component';
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -19,6 +20,7 @@ import {AddressService} from '../../../services/address.service';
 export class DragAndDropListComponent implements OnInit {
 
   @Input() draggable = false;
+  @Input() updatable = false;
 
   @Input() address: Address[];
   @Input() detailArray;
@@ -233,6 +235,14 @@ export class DragAndDropListComponent implements OnInit {
     return mozemPresunut;
   }
 
+  setDragable(dragable){
+    this.draggable = dragable;
+  }
+
+  // ci mozem upravovat info, vymazat trasu atd
+  setUpdatable(update){
+    this.updatable = update;
+  }
 
   drop(event: CdkDragDrop<Address[]>) {
     var presuvaciDetail = this.detailArray[event.previousIndex];
@@ -295,27 +305,23 @@ export class DragAndDropListComponent implements OnInit {
     });
   }
 
-  checkFinished(){
-    return true;
-    // var idCreated;
-    // if (this.dataService.getDispecer().createdBy == 'master'){
-    //   idCreated = this.dataService.getDispecer().id
-    // }else{
-    //   idCreated = this.dataService.getDispecer().createdBy
-    // }
-    // console.log()
-    // if (this.address.createdBy !=  idCreated){
-    //   return false;
-    // }
-    // if (this.route !== undefined && this.route.finished){
-    //   return false;
-    // }else if(this.route == undefined){
-    //   return true
-    // }else {
-    //   return true;
-    // }
-  }
+  openDialog(detail){
+    console.log(detail.id)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      detailId: detail.id,
+      carId: null,
+    };
+    dialogConfig.width = '70%';
+    dialogConfig.height = '70%';
 
+    const dialogRef = this.dialog.open(ShowDetailDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
+  }
   ngOnInit(): void {
   }
 

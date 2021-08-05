@@ -4,12 +4,12 @@
     <div (click)="sendTown(i)" *ngIf="this.detailArray && this.detailArray[i] != undefined" class="bednaWrapper">
 <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
-        <div class="bedna" *ngFor="let detail of this.detailArray[i].townsArray; let indexik = index">
+        <div (click)="openDialog(detail)" class="bedna" *ngFor="let detail of this.detailArray[i].townsArray; let indexik = index">
           <span class="numberOfBedna">{{indexik + 1}}</span>
         </div>
       </div>
       <div class="bednaWrapper" *ngIf="!this.detailArray[i].townsArray">
-        <div class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
+        <div (click)="openDialog(detail)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
           <span class="numberOfBedna">{{indexik + 1}}</span>
         </div>
       </div>
@@ -24,13 +24,15 @@
       </p>
       <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 
-      <span *ngIf="this.address[i].estimatedTimeArrival">ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
+      <span  *ngIf="this.address[i].estimatedTimeArrival && this.address[i].status !== 3">
+        ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}
+      </span>
 
-      <img  *ngIf="checkFinished() && draggable" (click)="deleteTownFromIti(this.address[i])" class="delete" src="assets/logo/delete.svg">
+      <img *ngIf="draggable" (click)="deleteTownFromIti(this.address[i])" class="delete" src="assets/logo/delete.svg">
     </div>
-    <div *ngIf="draggable" class="routeTown routeInfo">
+    <div *ngIf="updatable" class="routeTown routeInfo">
       <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
-      <img *ngIf="checkFinished()" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">
+      <img *ngIf="this.address[i].status !== 3" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">
     </div>
   </div>
 </div>

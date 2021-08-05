@@ -49,7 +49,7 @@
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
 <!--      <app-find-route-status [route]="route"></app-find-route-status>-->
 <!--      <li>{{getStatus(route)}}</li>-->
-      <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
+      <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
 
     </div>
   </div>

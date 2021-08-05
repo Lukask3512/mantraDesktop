@@ -1,0 +1,28 @@
+<section *ngIf="this.detail">
+  <h2 *ngIf="this.car">{{this.car.ecv}}</h2>
+  <p>Sirka: {{this.detail.sizeS}}</p>
+  <p>Vyska: {{this.detail.sizeV}}</p>
+  <p>Dlzka: {{this.detail.sizeD}}</p>
+  <p>Vaha: {{this.detail.weight}}</p>
+  <h3>Moznosti nalozenia:</h3>
+  <div *ngIf="this.detail.polohaNakladania.charAt(0) != '0' || this.detail.polohaNakladania.charAt(1) != '0'
+   || this.detail.polohaNakladania.charAt(2) != '0'; else elseBlock">
+    <p *ngIf="this.detail.polohaNakladania.charAt(0) != '0'">Zo zadu{{this.detail.polohaNakladania.charAt(0)}}</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(1) != '0'">Z boku{{this.detail.polohaNakladania.charAt(1)}}</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(2) != '0'">z vrchu{{this.detail.polohaNakladania.charAt(2)}}</p>
+  </div>
+  <div #elseBlock>
+    <p>Nerozhoduje</p>
+  </div>
+
+  <p>Stohovaltenost: {{this.detail.stohovatelnost}}</p>
+  <p>Vyska nakladadej hrany:
+    <span *ngIf="this.detail.vyskaNaklHrany == -1; else elseVyska">Nerozhoduje</span>
+    <span #elseVyska>{{this.detail.vyskaNaklHrany}}</span>
+  </p>
+</section>
+
+<div class="aframe">
+  <app-size-of-box></app-size-of-box>
+</div>
+<!--aframe-->

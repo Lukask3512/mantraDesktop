@@ -12,7 +12,7 @@ export class VodiciWrapperComponent implements OnInit {
 
   allVodici;
   constructor(private vodiciService: VodicService, public dataService: DataService) {
-    this.vodiciService.getVodici().subscribe(data => {
+    this.vodiciService.allVodici$.subscribe(data => {
       this.allVodici = data;
     });
   }

@@ -11,6 +11,7 @@ import {DataService} from "../../../data/data.service";
 import {Router} from "@angular/router";
 import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
 import {DeleteRouteComponent} from "../../dialogs/delete-route/delete-route.component";
+import {AddressService} from '../../../services/address.service';
 
 @Component({
   selector: 'app-transportation-wrapper',
@@ -25,7 +26,8 @@ export class TransportationWrapperComponent implements OnInit {
   spans=[];
 
   constructor(public routeStatusService: RouteStatusService,private routeService: RouteService,
-              private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router) {
+              private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
+              private addressService: AddressService) {
 
   }
 
@@ -140,6 +142,9 @@ export class TransportationWrapperComponent implements OnInit {
       if (value === undefined){
         return;
       }else {
+        route.addresses.forEach(oneAddressId => {
+          this.addressService.deleteAddress(oneAddressId);
+        });
         this.routeService.deleteRoute(route.id);
       }
     });

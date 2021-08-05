@@ -16,6 +16,9 @@
     <p class="barDispecer">{{this.vodic.email}}</p>
 
     <div *ngIf="this.dataService.getDispecer().createdBy == 'master'" class="button_cont" align="center">
+      <button (click)="updateVodic()" class="buttonR ">
+        Upravit
+      </button>
       <button (click)="deleteVodic()" class="buttonR ">
         Odstrániť
       </button>

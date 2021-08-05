@@ -52,6 +52,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { NewFormComponent } from './components/transportation/new-transport/new-form/new-form.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
     declarations: [
@@ -85,7 +86,7 @@ import { NewFormComponent } from './components/transportation/new-transport/new-
         MatFormFieldModule,
         MatInputModule,
         MatTableModule,
-      MatNativeDateModule,
+        MatNativeDateModule,
         MatListModule,
         MatSortModule,
         MatSnackBarModule,
@@ -108,7 +109,8 @@ import { NewFormComponent } from './components/transportation/new-transport/new-
         MatSlideToggleModule,
         MatStepperModule,
         MatCheckboxModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        MatIconModule
     ],
     exports: [
         MatFormFieldModule,

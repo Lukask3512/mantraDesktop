@@ -1,7 +1,7 @@
 export default class Cars {
   id?: string;
   ecv: string;
-  phoneNumber: number;
+  phoneNumber?: string;
   status: number;
   lattitude?: string;
   longtitude?: string;
@@ -10,9 +10,7 @@ export default class Cars {
   aktualnyNaklad?: string [];
   pocetNaprav: number;
 
-  //rozmery vozidla
   carSize?: number[]; //vyska , sirka, dlzka
-  //rozmery nakaladacieho priesoru
   sizePriestoru: number[];
 
   vaha: number;
@@ -31,10 +29,12 @@ export default class Cars {
   minTeplota: number;
   maxTeplota: number;
 
-
   nakladaciaHrana: number[];
 
   itinerar?: string[];
+
+  vodici: string[];
+  allVodici: boolean;
 
 
 }

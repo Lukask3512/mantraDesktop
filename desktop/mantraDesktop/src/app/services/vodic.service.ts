@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {DataService} from '../data/data.service';
 import {map} from 'rxjs/operators';
 import Vodic from '../models/Vodic';
@@ -14,8 +14,14 @@ export class VodicService {
   vodicCollectionRef: AngularFirestoreCollection<Vodic>;
   todo$: Observable<Vodic[]>;
 
+  private allVodicource = new BehaviorSubject<any>(null);
+  allVodici$ = this.allVodicource.asObservable();
+
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.vodicCollection = this.afs.collection<any>('vodici');
+    this.getVodici().subscribe(allVodici => {
+      this.allVodicource.next(allVodici);
+    });
   }
 
   // taketo query sa pouzivaju ked chces dostat aj idcko..ked s tym budes dalej manipulovat updatovat atd..
@@ -64,7 +70,9 @@ export class VodicService {
   }
 
   createVodic(vodic: Vodic) {
-    return this.vodicCollection.add(vodic);
+    const id = this.afs.createId();
+    this.vodicCollection.doc(id).set(vodic);
+    return id;
   }
 
   deleteVodic(vodicId) {

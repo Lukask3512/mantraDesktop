@@ -65,6 +65,7 @@ import { CompaniesWrapperComponent } from './companies/companies-wrapper/compani
 import { AddCompanyComponent } from './dialogs/add-company/add-company.component';
 import { OneCompanyComponent } from './companies/one-company/one-company.component';
 import { GetInfoAboutCompanyComponent } from './companies/get-info-about-company/get-info-about-company.component';
+import { ShowDetailDialogComponent } from './dialogs/show-detail-dialog/show-detail-dialog.component';
 
 
 @NgModule({
@@ -84,7 +85,7 @@ import { GetInfoAboutCompanyComponent } from './companies/get-info-about-company
       PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent,
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
-      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent
+      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent, ShowDetailDialogComponent
     ],
     exports: [
         OpenlayerComponent,

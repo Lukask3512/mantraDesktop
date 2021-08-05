@@ -7,17 +7,28 @@ import {NewCarComponent} from '../../cars/new-car/new-car.component';
 import {DataService} from '../../../data/data.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {take} from 'rxjs/operators';
+import Vodic from '../../../models/Vodic';
+import {VodicService} from '../../../services/vodic.service';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-add-car-dialog',
   templateUrl: './add-car-dialog.component.html',
-  styleUrls: ['./add-car-dialog.component.scss']
+  styleUrls: ['./add-car-dialog.component.scss'],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
+  }]
 })
 export class AddCarDialogComponent implements OnInit {
 
+  allVodici = false;
+  myVodici: string[] = [];
+  vodici: Vodic[] = [];
+  displayedColumns: string[] = ['meno', 'priezisko', 'prava'];
+
   carForm = this.fb.group({
     ecv: ['', Validators.required],
-    phone: ['', Validators.required],
+    phone: [''],
     autoVyska: ['', Validators.required],
     autoDlzka: ['', Validators.required],
     autoSirka: ['', Validators.required],
@@ -56,15 +67,21 @@ export class AddCarDialogComponent implements OnInit {
     minTeplota: 0,
     maxTeplota: 0,
 
+    allVodici: false,
+    vodici: [],
 
   });
 
   isLinear = false;
 
   constructor(private fb: FormBuilder, private carService: CarService, public dialogRef: MatDialogRef<NewCarComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, private dataServce: DataService, private snackBar: MatSnackBar) { }
+              @Inject(MAT_DIALOG_DATA) public data: any, private dataServce: DataService, private snackBar: MatSnackBar,
+              private vodiciService: VodicService) { }
 
   ngOnInit(): void {
+    this.vodiciService.allVodici$.subscribe(allVodici => {
+      this.vodici = allVodici;
+    });
     if (this.data){
         this.carForm.controls.ecv.setValue(this.data.ecv);
         this.carForm.controls.phone.setValue(this.data.phoneNumber);
@@ -95,6 +112,10 @@ export class AddCarDialogComponent implements OnInit {
         this.carForm.controls.zLavaSirka.setValue(this.data.nakladaciPriestorZLava[1]);
         this.carForm.controls.zHoraVyska.setValue(this.data.nakladaciPriestorZVrchu[0]);
         this.carForm.controls.zHoraSirka.setValue(this.data.nakladaciPriestorZVrchu[1]);
+
+        this.carForm.controls.allVodici.setValue(this.data.allVodici);
+        this.carForm.controls.vodici.setValue(this.data.vodici);
+        this.myVodici = this.data.vodici;
 
 
         this.carForm.controls.minTeplota.setValue(this.data.minTeplota);
@@ -163,6 +184,86 @@ export class AddCarDialogComponent implements OnInit {
     this.carForm.get('zHoraSirka').updateValueAndValidity();
   }
 
+
+  // ak nema cislo ani auto ani vodic tak nemozem priradit vodica k autu
+  checkForPhone(vodic: Vodic){
+    if (vodic.allCars && (this.assignToCar().phoneNumber || vodic.phone)){
+      return true;
+    }
+    if (!this.carForm.get('allVodici').value){
+      if (this.assignToCar().phoneNumber || vodic.phone !== ''){
+        return false;
+      }else{
+        this.myVodici = this.myVodici.filter(jedenVodic => jedenVodic !== vodic.id);
+        return true;
+      }
+    }else{
+      return true;
+    }
+  }
+
+  catchChange(id){
+    if (this.myVodici){
+      var jeTam = this.myVodici.find(carsId => carsId === id);
+      if (jeTam){
+        this.myVodici = this.myVodici.filter(cars => cars !== id);
+      }else{
+        this.myVodici.push(id);
+      }
+    }else{
+      // this.vodic = {...this.vodic, myCars: []};
+      this.myVodici = [];
+      this.myVodici.push(id);
+    }
+  }
+
+  // ak ma vodic pristup ku vsetkym vozidlam
+  textForVodici(vodic: Vodic){
+    if (vodic.allCars && (this.assignToCar().phoneNumber || vodic.phone)){
+      return true;
+    }
+  }
+
+  checkBox(vodic: Vodic){
+    // ked ma vodic pristup ku vsetkym vozidlam
+    if (vodic.allCars && (this.assignToCar().phoneNumber || vodic.phone)){
+      return true;
+    }
+
+    // ked zaskrtnem vsetky auta, aby sa zaskrtli vsetky
+    if (this.carForm.get('allVodici').value && (vodic.phone !== '' || this.assignToCar().phoneNumber !== '')){
+      return true;
+    }
+
+    if (vodic.myCars.includes(this.data.id)){
+      return true;
+    }
+
+      if (!this.carForm.get('allVodici').value){
+        var idcko = this.myVodici.find(oneCarId => oneCarId === vodic.id);
+        if (idcko){
+          return true;
+        }else{
+          return false;
+        }
+      }else{
+        return false;
+      }
+    // }else{
+    //   return false;
+    // }
+  }
+
+  // ak nema cislo ani auto ani vodic tak nemozem priradit vodica k autu
+  checkForPhoneNoAllCars(vodic: Vodic){
+    if (vodic.phone !== '' || this.assignToCar().phoneNumber !== ''){
+      return false;
+    }else{
+      this.myVodici = this.myVodici.filter(oneId => oneId !== vodic.id);
+      return true;
+    }
+  }
+
   updateFormStupneCelsia(){
     if (this.carForm.get('fromUp').value === true){
       this.carForm.get('zHoraVyska').setValidators(Validators.required);
@@ -204,7 +305,13 @@ export class AddCarDialogComponent implements OnInit {
 
   updateCar(){
     console.log(this.assignToCar());
-    this.carService.updateCar(this.assignToCar(), this.data.id);
+    let auto: Cars = this.assignToCar();
+    if (!this.assignToCar().allVodici && this.assignToCar().phoneNumber === ''){
+      auto.vodici = []; // ak nemam cislo tak auto priradim k vodicovi len
+      this.datPravaVodicom(this.data.id);
+    }
+    this.carService.updateCar(auto, this.data.id);
+
     this.dialogRef.close();
     return;
   }
@@ -215,23 +322,35 @@ export class AddCarDialogComponent implements OnInit {
     this.carService.getCarByEcv(this.assignToCar().ecv).pipe(take(1)).subscribe(car => {
       console.log(car);
       if (car.length === 0){
-        this.carService.getCarByNumber(this.assignToCar().phoneNumber).pipe(take(1)).subscribe(carByNumber => {
-          if (carByNumber.length > 0) {
-            this.snackBar.open('Vložené tel. číslo sa už nachádza v databáze', 'Ok', {
-              duration: 5000
-            });
-            return;
-          }
-          else{
-            let car: Cars = this.assignToCar();
-            car.itinerar = [];
-            this.carService.createCar(car);
-            this.dialogRef.close();
-            return;
+        // auto bez cisla
+        if (this.assignToCar().phoneNumber !== ''){
+          this.carService.getCarByNumber(this.assignToCar().phoneNumber).pipe(take(1)).subscribe(carByNumber => {
+            if (carByNumber.length > 0) {
+              this.snackBar.open('Vložené tel. číslo sa už nachádza v databáze', 'Ok', {
+                duration: 5000
+              });
+              return;
+            }
+            else{
+              let car: Cars = this.assignToCar();
+              car.itinerar = [];
+              this.carService.createCar(car);
+              this.dialogRef.close();
+              return;
 
+            }
+          });
+        }else{
+          let car: Cars = this.assignToCar();
+          car.itinerar = [];
+          car.vodici = [];
+          const carId = this.carService.createCar(car);
+          if (!car.allVodici){
+            this.datPravaVodicom(carId);
           }
-        });
-
+          this.dialogRef.close();
+          return;
+        }
 
       }else{
         this.snackBar.open('Vložené ECV sa už nachádza v databáze', 'Ok', {
@@ -244,6 +363,20 @@ export class AddCarDialogComponent implements OnInit {
     //
   }
 
+  datPravaVodicom(idAuta){
+    var auto: Cars = this.assignToCar();
+    auto.vodici = [];
+    this.vodiciService.allVodici$.pipe(take(1)).subscribe(allVodici => {
+      allVodici.forEach(oneVodic => {
+        oneVodic.myCars = oneVodic.myCars.filter(oneCar => oneCar !== idAuta); // tu najprv odstranim od vodicov auta
+        if (auto.vodici.includes(oneVodic.id)){
+          oneVodic.myCars.push(idAuta);                                         // a tu nasledne priradim auto
+        }
+        this.vodiciService.updateVodic(oneVodic);
+    });
+    });
+
+  }
 
   assignToCar(): Cars {
     let createdBy;
@@ -282,14 +415,10 @@ export class AddCarDialogComponent implements OnInit {
 
     let nakladaciaHrana;
     if (!this.carForm.get('pohyblivaNakHrana').value){
-      console.log(this.carForm.get('vyskaHrany').value);
-      // nakladaciaHrana.push(this.carForm.get('vyskaHrany').value)
       nakladaciaHrana = [this.carForm.get('vyskaHrany').value];
 
     }else{
       nakladaciaHrana = [this.carForm.get('minHrana').value , this.carForm.get('maxHrana').value ];
-      // nakladaciaHrana.push()
-      // nakladaciaHrana.push()
     }
 
     let privesy;
@@ -336,6 +465,9 @@ export class AddCarDialogComponent implements OnInit {
 
       ruka: this.carForm.get('ruka').value,
       adr: this.carForm.get('adr').value,
+      vodici: this.myVodici,
+      allVodici: this.carForm.get('allVodici').value,
+      // vodici:
     };
   }
 

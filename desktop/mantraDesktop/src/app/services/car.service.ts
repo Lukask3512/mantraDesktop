@@ -58,12 +58,14 @@ export class CarService {
     );
   }
 
-  getAllCars(){
+  getAllCars(): Cars[]{
     return this.allCars;
   }
 
   createCar(car: Cars){
-    return this.afs.collection('cars').add(car);
+    const id = this.afs.createId();
+    this.afs.collection('cars').doc(id).set(car);
+    return id;
   }
 
   deleteCar(carId){

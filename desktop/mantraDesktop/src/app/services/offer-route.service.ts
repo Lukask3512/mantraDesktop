@@ -55,7 +55,7 @@ export class OfferRouteService {
     );
   }
 
-  // vsetky moje
+  // vsetky mnou vytvorene
   getRoutesMine(){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
@@ -75,7 +75,7 @@ export class OfferRouteService {
     );
   }
 
-  // vsetky moje
+  // vsetky routy ktore som mal v autach
   getRoutesPriradeneMne(){
     return this.afs.collection<Dispecer>('route', ref => {
       let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;

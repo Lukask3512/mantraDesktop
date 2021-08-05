@@ -34,6 +34,7 @@
     "html2canvas": "^1.0.0-rc.7",
     "jquery": "^3.6.0",
     "jspdf": "^2.3.1",
+    "material-design-icons-iconfont": "^6.1.0",
     "ol": "^6.5.0",
     "rxjs": "~6.5.4",
     "save": "^2.4.0",

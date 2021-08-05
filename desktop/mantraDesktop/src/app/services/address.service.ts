@@ -49,21 +49,30 @@ export class AddressService {
   readonly address$ = this._address.asObservable();
 
   async getOfferAddresses(){
+    let justFirstTime = true;
     this.offerService.routes$.subscribe(async routes => {
-      var adresy = []
 
       for (const route of routes) {
+        var adresy = [];
+        let vsetkyDokoncene = true;
         for (const idAddress of route.addresses) {
           var adresa = await this.promiseForDownAdd(idAddress);
 
-        }}
+        }
+      }
+      if (justFirstTime) {
+      setTimeout(() => {
+        this.checkFinishedAddresAndUpdateRouteOffer();
+        justFirstTime = false;
+      }, 2000);
+      }
 
-
-    })
+    });
   }
   // ked budu vsetky adresy finishnute, upravim routu na finished
   checkFinishedAddresAndUpdateRoute(){
     this.routeService.getRoutesNoSub().forEach(oneRoute => {
+      if (!oneRoute.finished){
       let adresyZRouty: Address[] = this.addressesGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
       let finishIt = true;
       adresyZRouty.forEach(jednaAdresa => {
@@ -78,6 +87,30 @@ export class AddressService {
         routeSFinish.finishedAt = new Date().toString();
         this.routeService.updateRoute(routeSFinish);
         console.log('Updatol som routu cislo: ',  routeSFinish);
+      }
+      }
+    });
+  }
+
+  // ked budu vsetky adresy finishnute, upravim routu na finished
+  checkFinishedAddresAndUpdateRouteOffer(){
+    this.offerService.getRoutesNoSub().forEach(oneRoute => {
+      if (!oneRoute.finished){
+        let adresyZRouty: Address[] = this.addressesOfferGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
+        let finishIt = true;
+        adresyZRouty.forEach(jednaAdresa => {
+          if (jednaAdresa.status !== 3){
+            finishIt = false;
+          }
+        });
+        // ak je finishIt stale true, route upravim na finished
+        if (finishIt){
+          var routeSFinish = oneRoute;
+          routeSFinish.finished = true;
+          routeSFinish.finishedAt = new Date().toString();
+          this.routeService.updateRoute(routeSFinish);
+          console.log('Updatol som routu cislo: ',  routeSFinish);
+        }
       }
     });
   }
@@ -110,6 +143,10 @@ export class AddressService {
 
   getAddressesFromOffer(){
     return this.addressesOfferGet;
+  }
+
+  deleteAddress(addressId){
+    return this.addressCollection.doc(addressId).delete();
   }
 
   getRoutes(){

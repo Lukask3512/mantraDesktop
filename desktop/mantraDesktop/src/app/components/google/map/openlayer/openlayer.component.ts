@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, SimpleChanges} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Polyline from 'ol/format/Polyline';
@@ -27,7 +27,7 @@ import Address from "../../../../models/Address";
   templateUrl: './openlayer.component.html',
   styleUrls: ['./openlayer.component.scss']
 })
-export class OpenlayerComponent {
+export class OpenlayerComponent implements AfterViewInit{
   map;
   vectorLayer = new VectorLayer();
   // vectorLayer;
@@ -67,12 +67,8 @@ export class OpenlayerComponent {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() =>
-      {
-
-
-
-
+    // setTimeout(() =>
+    //   {
         this.view = new View({
           center: olProj.fromLonLat([0, 0]),
           zoom: 1
@@ -86,10 +82,8 @@ export class OpenlayerComponent {
           view: this.view
         });
         // this.map.render();
-        console.log("chcem refresh")
-
-      },
-      200);
+      // },
+      // 100);
   }
 
 
@@ -250,9 +244,13 @@ export class OpenlayerComponent {
       features: this.places,
     });
 
-    this.map.removeLayer(this.vectorLayer);
-    this.map.removeLayer(this.vectorLayer);
-    this.map.removeLayer(this.vectorLayer);
+    if (this.map){
+      this.map.removeLayer(this.vectorLayer);
+      this.map.removeLayer(this.vectorLayer);
+      this.map.removeLayer(this.vectorLayer);
+    }
+
+
     this.vectorLayer = new VectorLayer({
       source: vectorSource,
     });

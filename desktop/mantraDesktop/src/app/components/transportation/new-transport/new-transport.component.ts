@@ -28,6 +28,7 @@ import {NewFormComponent} from "./new-form/new-form.component";
 import {ShowDetailComponent} from "./show-detail/show-detail.component";
 import {PackageService} from "../../../services/package.service";
 import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
+import {Router} from '@angular/router';
 
 
 
@@ -36,7 +37,7 @@ import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component'
   templateUrl: './new-transport.component.html',
   styleUrls: ['./new-transport.component.scss']
 })
-export class NewTransportComponent implements AfterViewInit {
+export class NewTransportComponent implements AfterViewInit, OnInit {
   addresses: Address[] = [];
   detail = []
 
@@ -93,7 +94,15 @@ export class NewTransportComponent implements AfterViewInit {
   constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog,
               private dataService: DataService, private routeService: RouteService,
               private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService,
-              private addressService: AddressService, private packageService: PackageService) { }
+              private addressService: AddressService, private packageService: PackageService,
+              private router: Router) { }
+
+
+
+
+
+              ngOnInit() {
+              }
 
   ngAfterViewInit(): void {
     var loggedDispecer = this.dataService.getDispecer();
@@ -125,7 +134,7 @@ export class NewTransportComponent implements AfterViewInit {
           var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
           adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
           this.addresses = adresy;
-
+          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.route.carId);
           this.addresses.forEach(oneAddress => {
             var myPackages = [];
             var detailAr = {detailArray: [], townsArray: [], packageId: []}
@@ -157,6 +166,10 @@ export class NewTransportComponent implements AfterViewInit {
 
           });
 
+          if (this.route && this.route.id){
+            this.childDropList.setDragable(false);
+            this.childDropList.setUpdatable(true);
+          }
           this.childDropList.setDetails(this.detail)
           this.childDropList.setAddresses(this.addresses);
         })
@@ -315,16 +328,8 @@ else{
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;
-      }else if (value.event == true) {
-        var loggedDispecer = this.dataService.getDispecer();
-        var dispecerId;
-        if (loggedDispecer.createdBy == 'master'){
-          dispecerId = loggedDispecer.id
-        }else {
-          dispecerId = loggedDispecer.createdBy;
-        }
-
-        this.change = false;
+      }else if (value.event === true) {
+        this.getNewRoute(this.route.id);
       }
     });
   }
@@ -453,6 +458,7 @@ else{
         return;
       }else {
         this.createRoute(value);
+        this.router.navigate(['/view/offerRoute']);
         // this.saveAddresses().then(() => {
         //   this.sendToAllDispecers(value)
         // })
@@ -534,9 +540,15 @@ else{
     });
   }
 
+  getCar(id){
+
+  }
+
   getNewRoute(idRouty){
     setTimeout(() => {
       this.route = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.id === idRouty);
+      console.log(this.route);
+      this.carId = this.route.carId;
       this.addressService.address$.subscribe(alAdd => {
 
         var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));

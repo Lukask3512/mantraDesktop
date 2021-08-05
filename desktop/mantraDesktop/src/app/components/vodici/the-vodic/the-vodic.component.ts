@@ -8,6 +8,7 @@ import {DeleteDispecerComponent} from '../../dialogs/delete-dispecer/delete-disp
 import {DipecerPravaComponent} from '../../dialogs/dipecer-prava/dipecer-prava.component';
 import Vodic from '../../../models/Vodic';
 import {VodicService} from '../../../services/vodic.service';
+import {NewVodicDialogComponent} from '../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
 
 @Component({
   selector: 'app-the-vodic',
@@ -34,6 +35,23 @@ export class TheVodicComponent implements OnInit {
         return;
       }else {
         this.vodicService.deleteVodic(this.vodic.id);
+      }
+    });
+  }
+
+  updateVodic(){
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    dialogConfig.data = {
+      vodic: this.vodic
+    };
+    const dialogRef = this.dialog.open(NewVodicDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
       }
     });
   }
