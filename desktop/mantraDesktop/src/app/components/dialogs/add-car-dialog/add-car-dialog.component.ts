@@ -306,7 +306,7 @@ export class AddCarDialogComponent implements OnInit {
   updateCar(){
     console.log(this.assignToCar());
     let auto: Cars = this.assignToCar();
-    if (!this.assignToCar().allVodici && this.assignToCar().phoneNumber === ''){
+    if (this.assignToCar().phoneNumber === '' || this.assignToCar().allVodici){
       auto.vodici = []; // ak nemam cislo tak auto priradim k vodicovi len
       this.datPravaVodicom(this.data.id);
     }
@@ -345,9 +345,7 @@ export class AddCarDialogComponent implements OnInit {
           car.itinerar = [];
           car.vodici = [];
           const carId = this.carService.createCar(car);
-          if (!car.allVodici){
             this.datPravaVodicom(carId);
-          }
           this.dialogRef.close();
           return;
         }

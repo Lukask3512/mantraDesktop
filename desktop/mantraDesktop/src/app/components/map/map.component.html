@@ -24,6 +24,11 @@
             <td>{{this.routeStatusService.getStatus(carToShow.status)}}</td>
             <td>{{carToShow.phoneNumber}}</td>
           </tr>
+          <tr class="tablerow" >
+            <td>{{getVodic().name}}</td>
+            <td>{{getVodic().surname}}</td>
+            <td>{{getVodic().phone}}</td>
+          </tr>
         </table>
 
         <h2 *ngIf="routesToShow">Preprava</h2>

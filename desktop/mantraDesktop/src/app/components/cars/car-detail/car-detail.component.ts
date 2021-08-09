@@ -18,6 +18,7 @@ import Address from "../../../models/Address";
 import {DragAndDropListComponent} from "../../transportation/drag-and-drop-list/drag-and-drop-list.component";
 import {DeleteFromItiComponent} from '../../dialogs/delete-from-iti/delete-from-iti.component';
 import {ItinerarDaDComponent} from './itinerar-da-d/itinerar-da-d.component';
+import {GetNameOfDriverComponent} from '../../vodici/get-name-of-driver/get-name-of-driver.component';
 
 @Component({
   selector: 'app-car-detail',
@@ -45,6 +46,9 @@ export class CarDetailComponent implements AfterViewInit {
   @ViewChild('child')
   private child: OpenlayerComponent;
 
+  @ViewChild(GetNameOfDriverComponent)
+  private nameOfDriver: GetNameOfDriverComponent;
+
   @ViewChild('dragDrop')
   private dragComponent: ItinerarDaDComponent;
 
@@ -69,6 +73,7 @@ export class CarDetailComponent implements AfterViewInit {
       this.carService.cars$.subscribe(cars => {
         // @ts-ignore
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
+
       });
 
       var allAddresses: Address[];
@@ -91,7 +96,9 @@ export class CarDetailComponent implements AfterViewInit {
        this.dragComponent.setAddress(this.myAddresses, this.car);
        setTimeout(() =>
          {
-           // console.log(this.car)
+           if (this.nameOfDriver){
+             this.nameOfDriver.setCar(this.car);
+           }
            this.child.notifyMe(this.myAddresses, this.car, this.car);
          },
          800);

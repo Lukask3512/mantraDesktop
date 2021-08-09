@@ -72,7 +72,8 @@ import {MatIconModule} from '@angular/material/icon';
         ViewComponent,
         NewTransportComponent,
         RouteLogComponent,
-      NewFormComponent
+        NewFormComponent,
+
     ],
     imports: [
         BrowserAnimationsModule,

@@ -45,6 +45,8 @@ import {DrawOfferService} from './draw-offer.service';
 import {CarItiDetailComponent} from './car-iti-detail/car-iti-detail.component';
 import {ChoosCarToMoveComponent} from '../transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
 import Predpoklad from '../../models/Predpoklad';
+import {VodicService} from '../../services/vodic.service';
+import Vodic from '../../models/Vodic';
 
 
 
@@ -143,7 +145,8 @@ export class MapComponent implements AfterViewInit {
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
               private routeDetailService: DetailAboutRouteService, private countFreeSpaceService: CountFreeSpaceService,
-              private addressService: AddressService, private packageService: PackageService, private drawOffer: DrawOfferService) { }
+              private addressService: AddressService, private packageService: PackageService,
+              private drawOffer: DrawOfferService, private vodicService: VodicService) { }
 
               routeDetail(route){
               this.dataService.changeRealRoute(route);
@@ -1725,6 +1728,10 @@ export class MapComponent implements AfterViewInit {
       vahaVMeste += vaha;
     });
     return vahaVMeste;
+  }
+
+  getVodic(): Vodic{
+    return this.vodicService.justGetVodici.find(oneVodic => oneVodic.id === this.carToShow.driverInside);
   }
 
   // vypocitajVahuPreMesto(infoMesto: DeatilAboutAdresses){

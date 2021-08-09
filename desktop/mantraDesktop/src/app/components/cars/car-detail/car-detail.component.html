@@ -1,5 +1,6 @@
 <div *ngIf="this.car" class="header">
     <h1>Vozidlo: {{this.car.ecv}}</h1>
+    <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
   <app-car-naklad [car]="this.car"></app-car-naklad>
 
   <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">

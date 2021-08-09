@@ -17,10 +17,13 @@ export class VodicService {
   private allVodicource = new BehaviorSubject<any>(null);
   allVodici$ = this.allVodicource.asObservable();
 
+  justGetVodici: Vodic[];
+
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.vodicCollection = this.afs.collection<any>('vodici');
     this.getVodici().subscribe(allVodici => {
       this.allVodicource.next(allVodici);
+      this.justGetVodici = allVodici;
     });
   }
 
