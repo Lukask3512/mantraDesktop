@@ -7,14 +7,6 @@
   </div>
 </header>
 <div  class="wrapper">
-<!--  <ol *ngIf="this.route.takenBy !== getDispecerId()">-->
-<!--    <li class="debnaWrapper" *ngFor="let town of address; index as i">{{town.nameOfTown}}-->
-<!--      <span *ngIf="town.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
-<!--      <span *ngIf="town.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
-<!--&lt;!&ndash;      <app-detail-img class="imageInRow" [detailArray]="this.arrayOfDetailsAbRoute[i]"></app-detail-img>&ndash;&gt;-->
-<!--&lt;!&ndash;      <span >+{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>&ndash;&gt;-->
-<!--&lt;!&ndash;      <span >-{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>&ndash;&gt;-->
-<!--    </li>-->
     <app-drag-and-drop-list #dropList
                             [address]="this.address"
                             [draggable]="false">
@@ -30,18 +22,7 @@
   <h2  *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute != ''">
     Ponuka priradená vo vozidle: <button (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
   </h2>
-<!--    <ol *ngIf="this.route.takenBy == getDispecerId()">-->
-<!--      <li class="debnaWrapper" *ngFor="let town of route.nameOfTowns; index as i">{{town}}-->
-<!--        <span *ngIf="route.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
-<!--        <span *ngIf="route.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
-<!--        <app-detail-img class="imageInRow" [detailArray]="this.arrayOfDetailsAbRoute[i]"></app-detail-img>-->
-<!--        <span *ngIf="this.arrayOfDetailsAbRoute[i] != undefined && route.type[i] == 'nakladka'">+{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>-->
-<!--        <span *ngIf="this.arrayOfDetailsAbRoute[i] != undefined && route.type[i] == 'vykladka'">-{{this.vypocitajVahuPreMesto(this.arrayOfDetailsAbRoute[i])}}t</span>-->
-<!--      </li>-->
-<!--    </ol>-->
-<!--  </div>-->
 
-<!--  <app-posli-ponuku *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()"></app-posli-ponuku>-->
 
   <div *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()" class="input">
     <h4 *ngIf="this.offer">
@@ -67,6 +48,7 @@
 
   <div *ngIf="createdBy() && this.route.takenBy === ''" class="input">
     <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>
+    <button (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">Upravit ponuku</button>
     <h4>
       Ponuky
     </h4>
@@ -80,19 +62,14 @@
 
   <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">
     <h4>
-      Ponuku prijala firma: {{this.route.takenBy}} za {{this.route.price}}
+      Ponuku prijala firma:
+      <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company>
+      za {{this.route.price}}
     </h4>
     <button (click)="cancelOffer()">Zrusit ponuku</button>
   </div>
 
 
-
-
-
-<!--  <div>-->
-<!--    Log celej prepravy-->
-
-<!--  </div>-->
 </div>
   <div class="map">
     <app-openlayer #child></app-openlayer>
@@ -101,3 +78,4 @@
   <footer>
     <button (click)="openLog()">Log prepravy </button>
   </footer>
+</div>

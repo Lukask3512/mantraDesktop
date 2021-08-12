@@ -13,6 +13,7 @@ import {OfferRouteService} from '../../../services/offer-route.service';
 import Route from '../../../models/Route';
 import {AddressService} from '../../../services/address.service';
 import Address from '../../../models/Address';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-car-iti-detail',
@@ -40,7 +41,7 @@ export class CarItiDetailComponent implements OnInit {
 
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
-              private addressService: AddressService) { }
+              private addressService: AddressService,  private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -53,6 +54,7 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer){
+    console.log(offer)
     this.offer = JSON.parse(JSON.stringify(offer));
     this.realOffer = JSON.parse(JSON.stringify(offer));
     if (this.posliPonukuComponent) {
@@ -375,6 +377,13 @@ export class CarItiDetailComponent implements OnInit {
     this.sendCarToPredpokad.emit(predpoklad);
   }
 
+  openSnackBar(message: string, action: string) {
+    const snackBarRef = this._snackBar.open(message, action, {
+      duration: 5000
+    });
+
+  }
+
   // ked kliknem na auto dostanem ulozeny predpoklad a snazim sa ho spracovat ak auto medzi tym ukoncilo nejaku prepravu
   // a zobrazit v itinerari, ak sa mi to nepodari, vypisem o tom spravu a zobrazim osobitne itinerar a ponuku
   spracujPredpoklad(predpoklad: Predpoklad, carFromMap){
@@ -382,18 +391,25 @@ export class CarItiDetailComponent implements OnInit {
 
     let car = JSON.parse(JSON.stringify(carFromMap));
 
+    let neviemUlozit = false;
     // najprv kontrolujem ci sme do itinerara auta pridali nieco nove
     car.itinerar.forEach(oneId => {
       if (!predpoklad.itinerar.includes(oneId)){
-        console.log('V aute je nova adresa a neviem kde ju dat');
+        neviemUlozit = true;
+        this.openSnackBar('V aute sa zmenili adresy ponuku musite uloziy nanovo', 'Ok');
       }
     });
     // tu konrolujem ci auto medzicasom nahodou nieco nedokoncilo
     predpoklad.itinerar.forEach(oneId => {
       if (!car.itinerar.includes(oneId) && !this.offer.addresses.includes(oneId)){
-        console.log('Auto dokoncilo nejaku adresu, vymaz to z predpokladu a oznam pouzivatelovi');
+        neviemUlozit = true;
+        this.openSnackBar('V aute sa zmenili adresy ponuku musite uloziy nanovo', 'Ok');
       }
     });
+
+    if (neviemUlozit){
+      return;
+    }
 
     var order = {};
     // tu uz iba ulov sicko do this.car ....

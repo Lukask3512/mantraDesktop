@@ -1,13 +1,11 @@
-import {Component, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
-import Route from "../../../models/Route";
 import { EventEmitter } from '@angular/core';
 import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RouteStatusService} from "../../../data/route-status.service";
 import {DataService} from "../../../data/data.service";
 import Address from "../../../models/Address";
-import DeatilAboutAdresses from "../../../models/DeatilAboutAdresses";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AddressService} from '../../../services/address.service';
 import {ShowDetailDialogComponent} from '../../dialogs/show-detail-dialog/show-detail-dialog.component';
@@ -305,11 +303,12 @@ export class DragAndDropListComponent implements OnInit {
     });
   }
 
-  openDialog(detail){
-    console.log(detail.id)
+  openDialog(detailId){
+    console.log(detailId);
+    console.log(this.detailArray);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      detailId: detail.id,
+      detailId: detailId,
       carId: null,
     };
     dialogConfig.width = '70%';
@@ -323,6 +322,7 @@ export class DragAndDropListComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    console.log(this.address)
   }
 
 }

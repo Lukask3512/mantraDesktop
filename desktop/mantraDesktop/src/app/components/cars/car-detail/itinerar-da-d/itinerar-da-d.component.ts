@@ -18,6 +18,7 @@ export class ItinerarDaDComponent implements OnInit {
   address: Address[];
   detail = [];
   car: Cars;
+  itiChanged = false;
   constructor(private _snackBar: MatSnackBar,  public routeStatus: RouteStatusService,
               private packageService: PackageService, private carService: CarService) { }
 
@@ -37,6 +38,7 @@ export class ItinerarDaDComponent implements OnInit {
       moveItemInArray(this.detail, event.previousIndex, event.currentIndex);
       moveItemInArray(this.address, event.previousIndex, event.currentIndex);
       moveItemInArray(this.car.itinerar, event.previousIndex, event.currentIndex);
+      this.itiChanged = true;
     }else{
       this.openSnackBar('Túto zmenu nemôžete vykonať.', 'OK');
     }

@@ -1,4 +1,4 @@
-<div  cdkDropList class="example-list"
+<div *ngIf="this.address"  cdkDropList class="example-list"
       (cdkDropListDropped)="drop($event)" id="dragList1">
   <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
     <div (click)="sendTown(i)" *ngIf="this.detail && this.detail[i] != undefined" class="bednaWrapper">
@@ -35,5 +35,9 @@
   </div>
 </div>
 
-<button (click)="updateItinerar()">Zmenit itinerar</button>
+<div *ngIf="!this.address || this.address.length === 0">
+  <h2>Nepriradena ziadna adresa</h2>
+</div>
+
+<button [disabled]="!itiChanged" (click)="updateItinerar()">Zmenit itinerar</button>
 

@@ -14,6 +14,8 @@ import {PackageService} from "../../../../services/package.service";
 import {PosliPonukuComponent} from './posli-ponuku/posli-ponuku.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LogDialogComponent} from '../../../dialogs/log-dialog/log-dialog.component';
+import {UpdateOfferPriceComponent} from '../../../dialogs/update-offer-price/update-offer-price.component';
+import {OfferPriceComponent} from '../../../dialogs/offer-price/offer-price.component';
 
 @Component({
   selector: 'app-detail',
@@ -265,6 +267,22 @@ export class DetailComponent implements AfterViewInit {
       vahaVMeste += vaha;
     });
     return vahaVMeste;
+  }
+
+  upravCenuPonuky(){
+    let dialogConfig = new MatDialogConfig();
+
+
+    const dialogRef = this.dialog.open(OfferPriceComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else{
+        console.log(value);
+        this.route.price = value;
+        this.offerService.updateRoute(this.route);
+      }
+    });
   }
 
   openLog(){

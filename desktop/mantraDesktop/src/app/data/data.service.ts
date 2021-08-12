@@ -15,6 +15,10 @@ export class DataService {
   private carSource = new BehaviorSubject<string>('empty');
   currentCar = this.carSource.asObservable();
 
+  private vylozeneSource = new BehaviorSubject<boolean>(false);
+  vsetkoVylozene$ = this.vylozeneSource.asObservable();
+  vsetkoVylozeneGet;
+
   private routeSource = new BehaviorSubject<any>(null);
   currentRoute = this.routeSource.asObservable();
 
@@ -50,6 +54,11 @@ export class DataService {
 
   setActualDetailsInAddress(details){
     this.actualDetailSource.next(details)
+  }
+
+  setVylozene(vylozene){
+    this.vsetkoVylozeneGet = vylozene;
+    this.vylozeneSource.next(vylozene);
   }
 
 

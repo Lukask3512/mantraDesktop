@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
   logout(){
     this.dataService.setDispecer(null);
     this.accountService.logout();
+    location.reload();
   }
 
 }

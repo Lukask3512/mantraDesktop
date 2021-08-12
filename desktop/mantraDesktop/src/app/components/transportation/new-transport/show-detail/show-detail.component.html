@@ -3,22 +3,9 @@
     <div class="bednaWapper" *ngFor="let details of this.detailsArray; let index = index">
       <div *ngIf="isArray(details)">
         <div *ngFor="let oneDetail of details; let indexik = index">
-          <img *ngIf="!vylozene(index, indexik)" (click)="clickedOn(oneDetail, index, indexik)" class="bedna" src="./assets/logo/cube.png">
+          <img #nevylozene *ngIf="!vylozene(index, indexik)" (click)="clickedOn(oneDetail, index, indexik)" class="bedna nevylozene" src="./assets/logo/cube.png">
           <img *ngIf="vylozene(index, indexik)" class="bedna transparent" src="./assets/logo/cube.png">
         </div>
       </div>
-
-<!--      <div class="nakladkaWrapper" *ngIf="this.route.type[indexik] == 'nakladka'" >-->
-<!--        <div class="bednaWapperNakl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">-->
-<!--          <img *ngIf="ciMozemVylozitBednu(detail, indexik, indexBedne)" (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <div class="vykladkaWrapper" *ngIf="this.route.type[indexik] == 'vykladka'">-->
-<!--        <div class="bednaWapperVykl" *ngFor="let bedna of detail.sizeS ; let indexBedne = index">-->
-<!--          <img (click)="setForm(indexik, indexBedne)" class="bedna" src="./assets/logo/cube.png">-->
-<!--        </div>-->
-<!--      </div>-->
-
     </div>
   </div>

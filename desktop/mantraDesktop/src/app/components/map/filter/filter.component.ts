@@ -31,11 +31,17 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
-      setTimeout(() => {
-        this.offers = routes;
-        this.filterOffers();
-      }, 200);
-
+      if (!this.offers){
+        setTimeout(() => {
+          this.offers = routes;
+          this.filterOffers();
+        }, 1000);
+      }else{
+        setTimeout(() => {
+          this.offers = routes;
+          this.filterOffers();
+        }, 4000);
+      }
     });
   }
 
@@ -43,7 +49,7 @@ export class FilterComponent implements OnInit {
     if (!this.checked){
       this.offersToMap.emit(null);
     }else{
-      this.offersToMap.emit({offers :this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
+      this.offersToMap.emit({offers : this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
       weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance} );
     }
   }

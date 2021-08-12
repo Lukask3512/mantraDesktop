@@ -33,9 +33,19 @@
       <p *ngIf="!this.route.price">Cenu ponuknite</p>
 
             <div *ngIf="route.createdBy == this.getDispecerId()">
-              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>
+<!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
               <button (click)="vymazatPonuku(route)">Odstranit</button>
             </div>
+
+<!--      <ng-template *ngIf="route.createdBy == this.getDispecerId(); else elseContent">-->
+<!--        &lt;!&ndash;          <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>&ndash;&gt;-->
+<!--        <button (click)="vymazatPonuku(route)">Odstranit</button>-->
+<!--      </ng-template>-->
+
+<!--      <ng-template #elseContent>-->
+<!--        <p *ngIf="this.route.price">{{this.route.price}}€</p>-->
+<!--        <p *ngIf="!this.route.price">Cenu ponuknite</p>-->
+<!--      </ng-template>-->
 
 
 
@@ -44,7 +54,7 @@
 
   <h1 class="actFinHead">Ukoncene</h1>
 
-  <div *ngFor="let route of this.routes; let i = index" class="oneRoute">
+  <div *ngFor="let route of this.finishedRoutes; let i = index" class="oneRoute">
       <div *ngIf="route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
         <!--      <h2>Vykládky</h2>-->
         <ng-container *ngFor="let town of route.addresses; index as i">
@@ -57,13 +67,18 @@
 
         <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
 
-        <p *ngIf="this.route.price">{{this.route.price}}€</p>
-        <p *ngIf="!this.route.price">Cenu ponuknite</p>
+<!--        <p *ngIf="this.route.price">{{this.route.price}}€</p>-->
+<!--        <p *ngIf="!this.route.price">Cenu ponuknite</p>-->
 
-        <div *ngIf="route.createdBy == this.getDispecerId()">
-          <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>
-          <button (click)="vymazatPonuku(route)">Odstranit</button>
-        </div>
+<!--        <ng-template *ngIf="route.createdBy == this.getDispecerId(); else elseContent">-->
+<!--&lt;!&ndash;          <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>&ndash;&gt;-->
+<!--          <button (click)="vymazatPonuku(route)">Odstranit</button>-->
+<!--        </ng-template>-->
+
+<!--        <ng-template #elseContent>-->
+<!--          <p *ngIf="this.route.price">{{this.route.price}}€</p>-->
+<!--          <p *ngIf="!this.route.price">Cenu ponuknite</p>-->
+<!--        </ng-template>-->
 
 
 

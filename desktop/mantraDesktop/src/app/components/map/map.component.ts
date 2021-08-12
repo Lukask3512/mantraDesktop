@@ -172,11 +172,12 @@ export class MapComponent implements AfterViewInit {
     new Promise((resolve, reject) => {
         this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
+          console.log(this.carsFromDatabase);
           this.addCars(this.carsFromDatabase);
           resolve();
         });
       }).then(() => {
-        this.addAddresses();
+        // this.addAddresses();
         // this.addRoute();
 
       });
@@ -233,13 +234,10 @@ export class MapComponent implements AfterViewInit {
     this.carToShow = this.carsWithItinerar.find(car => car.id === id);
     this.offersToShow = null;
     this.routesToShow = undefined;
-    console.log(this.carToShow);
     setTimeout(() => {
       // @ts-ignore
       this.dragComponent.setAddresses(this.carToShow.itiAdresy);
-      console.log("som tu 11")
     }, 100);
-
   }
 
   // ak kliknem na adresu
@@ -419,6 +417,7 @@ export class MapComponent implements AfterViewInit {
 
         }
       }
+      this.addAddresses();
       this.map.removeLayer(this.vectorLayerCars);
 
       const vectorSource = new VectorSource({
@@ -437,9 +436,9 @@ export class MapComponent implements AfterViewInit {
 
 
       if (this.firstZoomCars === false){
-      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
-        duration: 800} );
-      this.firstZoomCars = true;
+        this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
+          duration: 800} );
+        this.firstZoomCars = true;
     }
 
     }
@@ -527,15 +526,26 @@ export class MapComponent implements AfterViewInit {
             const detailAuta: any[] = [];
             oneCar.itinerar.forEach(addId => {
               const detailVMeste = [];
-              this.addressService.getOneAddresById(addId).subscribe(oneAdd => {
+
+              var oneAdd = this.addressService.getOneAddresByIdGet(addId);
                 if (oneAdd) {
-                  itinerarAuta.push(oneAdd);
+                  if (itinerarAuta.find(oneIti => oneIti.id === oneAdd.id)){ // hladam duplikat
+                    const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === oneAdd.id);
+                    itinerarAuta[indexAdresy] = oneAdd;
+                  }else{
+                    itinerarAuta.push(oneAdd);
+                  }
                   oneAdd.packagesId.forEach(onePackId => {
                     detailVMeste.push(this.packageService.getOnePackage(onePackId));
                   });
                 } else {
                   this.addressService.getOneAddresFromOfferById(addId).subscribe(offerAdd => {
-                    itinerarAuta.push(offerAdd);
+                    if (itinerarAuta.find(oneIti => oneIti.id === offerAdd.id)){ // hladam duplikat
+                      const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === offerAdd.id);
+                      itinerarAuta[indexAdresy] = offerAdd;
+                    }else{
+                      itinerarAuta.push(offerAdd);
+                    }
                     if (oneAdd){
                       oneAdd.packagesId.forEach(onePackId => {
                       detailVMeste.push(this.packageService.getOnePackage(onePackId));
@@ -543,7 +553,7 @@ export class MapComponent implements AfterViewInit {
                     }
                   });
                 }
-              });
+
               detailAuta.push(detailVMeste);
             });
             carsWithIti.push({...oneCar, itiAdresy: itinerarAuta, detailIti: detailAuta});
@@ -942,9 +952,14 @@ export class MapComponent implements AfterViewInit {
 
           const packageVPoradiPreAdresu: DeatilAboutAdresses[] = [];
           adresa.packagesId.forEach(onePackageId => {
-            const balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
+            let balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
             if (balik){
               balik.id = onePackageId;
+            }else{
+              setTimeout( () => {
+                balik = this.packageService.getOnePackage(onePackageId);
+                balik.id = onePackageId;
+              }, 500 );
             }
             packageVPoradiPreAdresu.push(balik);
           });
@@ -980,8 +995,10 @@ export class MapComponent implements AfterViewInit {
 
 
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
-        const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
-        const pocetTonVPonuke = this.countFreeSpaceService.pocetTonVKazdomMeste(ponukaPreMesta);
+        if (prepravasDetailom.detailVPonuke[0]){
+          const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
+          const pocetTonVPonuke = this.countFreeSpaceService.pocetTonVKazdomMeste(ponukaPreMesta);
+        }
 
         // tu konci priradovanie detialov a max vah
 
@@ -1457,7 +1474,7 @@ export class MapComponent implements AfterViewInit {
           this.offersToShow = onePonuka;
           this.carIti.setPonuka(this.offersToShow);
         }
-      })
+      });
     }
 
     // this.offersToShow = null;

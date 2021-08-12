@@ -67,6 +67,7 @@ import { OneCompanyComponent } from './companies/one-company/one-company.compone
 import { GetInfoAboutCompanyComponent } from './companies/get-info-about-company/get-info-about-company.component';
 import { ShowDetailDialogComponent } from './dialogs/show-detail-dialog/show-detail-dialog.component';
 import { GetNameOfDriverComponent } from './vodici/get-name-of-driver/get-name-of-driver.component';
+import { UpdateOfferPriceComponent } from './dialogs/update-offer-price/update-offer-price.component';
 
 
 @NgModule({
@@ -86,7 +87,7 @@ import { GetNameOfDriverComponent } from './vodici/get-name-of-driver/get-name-o
       PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent,
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
-      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent, ShowDetailDialogComponent, GetNameOfDriverComponent
+      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent, ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent
     ],
     exports: [
         OpenlayerComponent,

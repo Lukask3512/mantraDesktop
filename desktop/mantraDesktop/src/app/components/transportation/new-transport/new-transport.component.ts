@@ -628,4 +628,14 @@ else{
       }
     });
   }
+
+  vylozeneVsetko(){
+    const vylozene = this.dataService.vsetkoVylozeneGet;
+      if (vylozene){
+        return false;
+      }else{
+        return true;
+      }
+
+  }
 }

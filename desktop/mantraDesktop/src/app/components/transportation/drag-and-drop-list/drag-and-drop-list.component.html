@@ -1,15 +1,15 @@
 <div  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
   <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
-    <div (click)="sendTown(i)" *ngIf="this.detailArray && this.detailArray[i] != undefined" class="bednaWrapper">
+    <div *ngIf="this.detailArray && this.detailArray[i] != undefined" class="bednaWrapper">
 <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
-        <div (click)="openDialog(detail)" class="bedna" *ngFor="let detail of this.detailArray[i].townsArray; let indexik = index">
+        <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
           <span class="numberOfBedna">{{indexik + 1}}</span>
         </div>
       </div>
       <div class="bednaWrapper" *ngIf="!this.detailArray[i].townsArray">
-        <div (click)="openDialog(detail)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
+        <div (click)="openDialog(this.detailArray[i][indexik].id)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
           <span class="numberOfBedna">{{indexik + 1}}</span>
         </div>
       </div>

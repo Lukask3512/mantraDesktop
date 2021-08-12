@@ -180,6 +180,14 @@ export class AddressService {
     );
   }
 
+  getOneAddresByIdGet(id){
+    let myPackage = this.addressesGet.find(oneAddress => oneAddress.id === id);
+    if (!myPackage){
+      myPackage = this.addressesOfferGet.find(onePackage => onePackage.id === id);
+    }
+    return myPackage;
+  }
+
   getOneAddresFromOfferById(id): Observable<Address>{
     return this.offerAddresses$.pipe(
       map(txs => txs.find(txn => txn.id === id))

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
-import Dispecer from "../models/Dispecer";
-import {BehaviorSubject, combineLatest, Observable} from "rxjs";
-import {DataService} from "../data/data.service";
-import {map, take} from "rxjs/operators";
-import Route from "../models/Route";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import Dispecer from '../models/Dispecer';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {DataService} from '../data/data.service';
+import {map, take} from 'rxjs/operators';
+import Route from '../models/Route';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +18,23 @@ export class OfferRouteService {
   private allRoutesSource = new BehaviorSubject<any>(null);
   allRoutes = this.allRoutesSource.asObservable();
 
-  routesForGet;
+  routesForGet: Route[];
 
-  constructor(private afs: AngularFirestore, private dataService: DataService) {
+  constructor(private afs: AngularFirestore, private dataService: DataService, private _snackBar: MatSnackBar,
+              private router: Router) {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.readAllQueries().subscribe(res => {
-      var allKindTogether = res[0].concat(res[1], res[2]);
+      let allKindTogether = res[0].concat(res[1], res[2]);
       this.routesForGet = allKindTogether;
+      this.routesForGet.forEach(oneRoute => {
+        if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId){
+          this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+        }
+        if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === ''){
+          this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
+        }
+      });
       this._routes.next(allKindTogether);
     });
 
@@ -36,19 +47,31 @@ export class OfferRouteService {
     return this.routesForGet;
   }
 
+  openSnackBar(message: string, action: string, route: Route) {
+    const snackBarRef = this._snackBar.open(message, action, {
+      duration: 8000
+    });
+    snackBarRef.afterDismissed().subscribe((info) => {
+      if (info.dismissedByAction === true){
+        this.dataService.changeRealRoute(route);
+        this.router.navigate(['/view/offerDetail']);
+      }
+    });
+  }
+
   // vsetky nepriradene
   getRoutes(){
     return this.afs.collection<Dispecer>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('forEveryone', '==', true)
-        .where('takenBy', '==', "")
+        .where('takenBy', '==', '');
       ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -58,17 +81,17 @@ export class OfferRouteService {
   // vsetky mnou vytvorene
   getRoutesMine(){
     return this.afs.collection<Dispecer>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('forEveryone', '==', false)
         .where('createdBy', '==', this.getDispecerId())
-        .where('takenBy', '!=', '')
+        .where('takenBy', '!=', '');
       ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -78,16 +101,16 @@ export class OfferRouteService {
   // vsetky routy ktore som mal v autach
   getRoutesPriradeneMne(){
     return this.afs.collection<Dispecer>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('forEveryone', '==', false)
-        .where('takenBy', '==', this.getDispecerId())
+        .where('takenBy', '==', this.getDispecerId());
       ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -99,11 +122,11 @@ export class OfferRouteService {
   }
 
   getDispecerId(){
-    var idCreated;
+    let idCreated;
     if (this.dataService.getDispecer().createdBy == 'master'){
-      return this.dataService.getDispecer().id
+      return this.dataService.getDispecer().id;
     }else{
-      return this.dataService.getDispecer().createdBy
+      return this.dataService.getDispecer().createdBy;
     }
   }
 
@@ -112,14 +135,14 @@ export class OfferRouteService {
   //
   // }
 
-  //toto i treba dorobit
+  // toto i treba dorobit
   createRoute(route: Route){
-    console.log(route)
+    console.log(route);
     return this.afs.collection('route').add(route);
   }
 
   updateRoute(newRoute) {
-    console.log(newRoute)
+    console.log(newRoute);
     if (newRoute.id === undefined){
       this.createRoute(newRoute);
       return;
@@ -129,25 +152,25 @@ export class OfferRouteService {
   }
 
   getAllRoutes(){
-    //id of logged dispecer
-    var id;
-    var loggedDispecer = this.dataService.getDispecer();
+    // id of logged dispecer
+    let id;
+    let loggedDispecer = this.dataService.getDispecer();
     if (loggedDispecer.createdBy == 'master'){
-      id = loggedDispecer.id
+      id = loggedDispecer.id;
     }else{
       id = loggedDispecer.createdBy;
     }
     return this.afs.collection<Dispecer>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', id)
-        .where('finished', '==', false)
+        .where('finished', '==', false);
       ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -155,16 +178,16 @@ export class OfferRouteService {
   }
 
   getAllFinishedRoutes(){
-    //id of logged dispecer
-    var id;
-    var loggedDispecer = this.dataService.getDispecer();
+    // id of logged dispecer
+    let id;
+    let loggedDispecer = this.dataService.getDispecer();
     if (loggedDispecer.createdBy == 'master'){
-      id = loggedDispecer.id
+      id = loggedDispecer.id;
     }else{
       id = loggedDispecer.createdBy;
     }
     return this.afs.collection<Dispecer>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', id)
         .where('finished', '==', true)
         .orderBy('finishedAt', 'desc').limit(10);
@@ -173,7 +196,7 @@ export class OfferRouteService {
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })

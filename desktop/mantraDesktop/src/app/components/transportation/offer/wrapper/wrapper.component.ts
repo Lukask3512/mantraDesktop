@@ -17,11 +17,12 @@ export class WrapperComponent implements OnInit {
               private dataService: DataService,  private dialog: MatDialog) { }
 
   routes: Route[];
+  finishedRoutes: Route[];
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
-      this.routes = routes;
-      console.log(this.routes);
-    })
+      this.routes = routes.filter(oneRoute => oneRoute.finished === false);
+      this.finishedRoutes = routes.filter(oneRoute => oneRoute.finished === true);
+    });
   }
 
   routeDetail(route){

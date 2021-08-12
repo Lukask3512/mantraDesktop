@@ -81,7 +81,7 @@ export class RouteToItinerarComponent implements OnInit {
         if (this.newRouteCopy[previous].type === 'vykladka') { // ked presuvam vykladku
           for (const [index, detailElement] of this.carItinerarAddresses.entries()) {
             for (const [indexBalika, oneBalik] of detailElement.packagesId.entries()) {
-              if (index !== previous && oneBalik === detailPresuvany && current <= index) {
+              if (oneBalik === detailPresuvany && current <= index) {   // index !== previous &&
                 mozemPresunut = false;
               }
             }
@@ -125,8 +125,8 @@ export class RouteToItinerarComponent implements OnInit {
 
   drop(event: CdkDragDrop<Address[]>) {
     var presuvaciDetail;
-    if (this.carItinerarAddresses[event.previousIndex].packagesId){
-    }
+    // if (this.carItinerarAddresses[event.previousIndex].packagesId){
+    // }
     if (event.previousContainer === event.container) {
       var mozemPresunut
       if (event.previousContainer.id === 'all'){

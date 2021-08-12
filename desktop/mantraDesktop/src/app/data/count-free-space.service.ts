@@ -67,26 +67,35 @@ export class CountFreeSpaceService {
 
       this.prejdiPaletyaUlozIch(oneCar);
 
-    // final kontrola ci sa mi veci z pola vopchaju do autiska
-    var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
-    this.sizesD.forEach(jednaDlzka => {
-      dlzka += jednaDlzka;
-    });
-    if (vopchaSaDoMesta != -1 && vopchaSaDoMesta != 2 && dlzka <= oneCar.sizePriestoru[2]){
-      vopchaSaDoMesta = 1;
-    }else if (dlzka <= (oneCar.sizePriestoru[2] * prekrocenie) && vopchaSaDoMesta != -1){
-      vopchaSaDoMesta = 2
+      let maxVyska;
+      let maxSirka;
+      if (this.sizesS.length > 0){
+        maxVyska = Math.max( ...this.sizesV);
+        maxSirka = Math.max( ...this.sizesS);
       }else{
-      vopchaSaDoMesta = -1;
-    }
+        maxVyska = 0;
+        maxSirka = 0;
+      }
 
+        // final kontrola ci sa mi veci z pola vopchaju do autiska
+        var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
+        this.sizesD.forEach(jednaDlzka => {
+          dlzka += jednaDlzka;
+        });
+        if (vopchaSaDoMesta !== -1 && vopchaSaDoMesta !== 2 && dlzka <= oneCar.sizePriestoru[2] && maxVyska <= oneCar.sizePriestoru[0] && maxSirka <= oneCar.sizePriestoru[1]){
+          vopchaSaDoMesta = 1;
+        }else if (dlzka <= (oneCar.sizePriestoru[2] * prekrocenie) && vopchaSaDoMesta !== -1 && maxVyska <= (oneCar.sizePriestoru[0] * prekrocenie) && maxSirka <= (oneCar.sizePriestoru[1] * prekrocenie)){
+          vopchaSaDoMesta = 2;
+          }else{
+          vopchaSaDoMesta = -1;
+        }
       });
 
 
-      if (vopchaSaDoMesta == 1){
+      if (vopchaSaDoMesta === 1){
         poleMiestKdeSaVopcha.push(indexMesicka);
         prekrocenieOPercenta.push(false);
-      }else if (vopchaSaDoMesta == 2){
+      }else if (vopchaSaDoMesta === 2){
         poleMiestKdeSaVopcha.push(indexMesicka);
         prekrocenieOPercenta.push(true);
       }
