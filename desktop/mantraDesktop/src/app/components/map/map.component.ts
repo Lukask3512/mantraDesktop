@@ -172,7 +172,6 @@ export class MapComponent implements AfterViewInit {
     new Promise((resolve, reject) => {
         this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
-          console.log(this.carsFromDatabase);
           this.addCars(this.carsFromDatabase);
           resolve();
         });
@@ -190,7 +189,6 @@ export class MapComponent implements AfterViewInit {
         return feature;
       });
       if (feature) {
-        console.log(feature.get('type'));
         const type = feature.get('type');
         if (type === 'car'){
           this.onClickFindInfo(feature.get('name'));
@@ -212,7 +210,7 @@ export class MapComponent implements AfterViewInit {
         }
         else if (type === 'offer'){
           this.zoomToRoute(feature);
-          console.log(feature.getGeometry());          // console.log(feature.getGeometry())
+
           // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
           // this.countDistance(feature.getGeometry(), [48.896324, 19.267890])
           this.onClickFindInfoOffer(feature.get('name'), feature);
@@ -288,50 +286,54 @@ export class MapComponent implements AfterViewInit {
 
 
     const ref = this.storage.ref('Routes/' + route.id + '.json');
-    const stahnute = ref.getDownloadURL().subscribe(data => {
+    try {
+      const stahnute = ref.getDownloadURL().subscribe(data => {
 
 
-      this.http.get(data, {responseType: 'text' as 'json'}).subscribe(text => {
-        outputData = text;
+        this.http.get(data, {responseType: 'text' as 'json'}).subscribe(text => {
+          outputData = text;
 
-        // zmena na json
-        outputData = JSON.parse(outputData);
-        // zmena na pole
-        outputData = outputData.map(Object.values);
+          // zmena na json
+          outputData = JSON.parse(outputData);
+          // zmena na pole
+          outputData = outputData.map(Object.values);
 
-        // zo sygicu mi pridu hodnoty * 100000 - mapy podporuju len normalny format preto to delim 100000
-        const finishArray = outputData.map(prvePole =>
-          prvePole.map(prvok => prvok / 100000));
-        this.points = finishArray;
-        // console.log(this.points)
-        const routeString = new LineString(this.points)
-          .transform('EPSG:4326', 'EPSG:3857');
+          // zo sygicu mi pridu hodnoty * 100000 - mapy podporuju len normalny format preto to delim 100000
+          const finishArray = outputData.map(prvePole =>
+            prvePole.map(prvok => prvok / 100000));
+          this.points = finishArray;
+          // console.log(this.points)
+          const routeString = new LineString(this.points)
+            .transform('EPSG:4326', 'EPSG:3857');
 
-        const routeFeature = new Feature({
-          type: 'route',
-          geometry: routeString,
-          name: route.id
+          const routeFeature = new Feature({
+            type: 'route',
+            geometry: routeString,
+            name: route.id
+          });
+          const routeStyle = new Style({
+            stroke: new Stroke({
+              width: 6,
+              color: this.getColorByIndex(colorIndex)
+            })
+          });
+          routeFeature.setStyle(routeStyle);
+
+          // console.log(routeFeature);
+          // console.log(route)
+          this.routes.push(routeFeature);
+          this.pridajCestyNaMapu();
+
+
+        }, (error) => {
+          console.log('trasa nenajdena1');
         });
-        const routeStyle = new Style({
-          stroke: new Stroke({
-            width: 6,
-            color: this.getColorByIndex(colorIndex)
-          })
-        });
-        routeFeature.setStyle(routeStyle);
-
-      // console.log(routeFeature);
-      // console.log(route)
-        this.routes.push(routeFeature);
-        this.pridajCestyNaMapu();
-
-
-      }, (error) => {
-        console.log('trasa nenajdena1');
+      }, error => {
+        console.log('trasa nenajdena2');
       });
-    }, error => {
-      console.log('trasa nenajdena2');
-    });
+    }catch (err){
+      console.log('catchol som');
+    }
 
   // });
   //   if (routes == 0){
@@ -406,7 +408,7 @@ export class MapComponent implements AfterViewInit {
           }
           // tot mam auto a mohol by som relativne itinerar odoslat na vykreslenie aj s farbou
           // update vozidla ak mam nakliknute nejake
-          if ( this.carToShow !== undefined && car[i].id === this.carToShow.id){
+          if (this.carToShow !== undefined && car[i].id === this.carToShow.id){
             setTimeout(() =>
               {
                 this.onClickFindInfo(car[i].id);
@@ -539,19 +541,21 @@ export class MapComponent implements AfterViewInit {
                     detailVMeste.push(this.packageService.getOnePackage(onePackId));
                   });
                 } else {
-                  this.addressService.getOneAddresFromOfferById(addId).subscribe(offerAdd => {
+                  let offerAdd = this.addressService.getOneAddresByIdOfferGet(addId);
+                  if (offerAdd){
                     if (itinerarAuta.find(oneIti => oneIti.id === offerAdd.id)){ // hladam duplikat
                       const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === offerAdd.id);
                       itinerarAuta[indexAdresy] = offerAdd;
                     }else{
                       itinerarAuta.push(offerAdd);
                     }
+                  }
+
                     if (oneAdd){
                       oneAdd.packagesId.forEach(onePackId => {
                       detailVMeste.push(this.packageService.getOnePackage(onePackId));
                       });
                     }
-                  });
                 }
 
               detailAuta.push(detailVMeste);
@@ -951,21 +955,25 @@ export class MapComponent implements AfterViewInit {
           adresyVPonuke.push(adresa);
 
           const packageVPoradiPreAdresu: DeatilAboutAdresses[] = [];
-          adresa.packagesId.forEach(onePackageId => {
-            let balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
-            if (balik){
-              balik.id = onePackageId;
-            }else{
-              setTimeout( () => {
-                balik = this.packageService.getOnePackage(onePackageId);
+          if (adresa){
+            adresa.packagesId.forEach(onePackageId => {
+              let balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
+              if (balik){
                 balik.id = onePackageId;
-              }, 500 );
-            }
-            packageVPoradiPreAdresu.push(balik);
-          });
+              }else{
+                setTimeout( () => {
+                  balik = this.packageService.getOnePackage(onePackageId);
+                  if (balik){
+                    balik.id = onePackageId;
+                  }
+                }, 700 );
+              }
+              packageVPoradiPreAdresu.push(balik);
+            });
+          }
+
           detailVPonuke.push(packageVPoradiPreAdresu);
         });
-        console.log(detailVPonuke);
         // tot si priradujem detail a maxVahu ponuky
         const detailArray = [];
         let prepravasDetailom;
@@ -1311,7 +1319,6 @@ export class MapComponent implements AfterViewInit {
   // }
 
   offersShow(which){
-    console.log(which);
     if (which.vyhovuje){
       this.red = true;
       this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
@@ -1671,12 +1678,21 @@ export class MapComponent implements AfterViewInit {
     this.vectorLayerOffersRoutesRed.setZIndex(1);
 
     if (this.green){
+      if (this.vectorLayerOffersRoutesGreen){
+        this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
+      }
       this.map.addLayer(this.vectorLayerOffersRoutesGreen);
     }
     if (this.yellow){
+      if (this.vectorLayerOffersRoutesYellow){
+        this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
+      }
       this.map.addLayer(this.vectorLayerOffersRoutesYellow);
     }
     if (this.red){
+      if (this.vectorLayerOffersRoutesRed){
+        this.map.removeLayer(this.vectorLayerOffersRoutesRed);
+      }
       this.map.addLayer(this.vectorLayerOffersRoutesRed);
     }
 
@@ -1712,6 +1728,15 @@ export class MapComponent implements AfterViewInit {
     // });
 
     this.vectorLayerAdress.setZIndex(2);
+    if (this.vectorLayerOffersGreen){
+      this.map.removeLayer(this.vectorLayerOffersGreen);
+    }
+    if (this.vectorLayerOffersYellow){
+      this.map.removeLayer(this.vectorLayerOffersYellow);
+    }
+    if (this.vectorLayerOffersRed){
+      this.map.removeLayer(this.vectorLayerOffersRed);
+    }
     this.map.addLayer(this.vectorLayerOffersGreen);
     this.map.addLayer(this.vectorLayerOffersYellow);
     this.map.addLayer(this.vectorLayerOffersRed);

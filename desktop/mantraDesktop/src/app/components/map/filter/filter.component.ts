@@ -23,6 +23,8 @@ export class FilterComponent implements OnInit {
   povPre = true;
   prekrocenie = false;
 
+  fewSecDisable = true;
+
   constructor(private offerService: OfferRouteService) { }
   offers: Route[];
   @Output() offersToMap = new EventEmitter<any>();
@@ -30,6 +32,10 @@ export class FilterComponent implements OnInit {
 
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.fewSecDisable = false;
+    }, 3000);
+
     this.offerService.routes$.subscribe(routes => {
       if (!this.offers){
         setTimeout(() => {

@@ -3,56 +3,12 @@
     Presun ponuku do prepravy ->
   </h2>
 </section>
-
-<!--<div class="dragAndDrop">-->
-<!--  <div class="drag1">-->
-<!--  <div *ngIf="offer" cdkDropList class="example-list"-->
-<!--       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList1" cdkDropListConnectedTo="dragList2">-->
-<!--    <div class="example-box" *ngFor="let routeTown of this.fakeOffer.nameOfTowns let i = index" cdkDrag>-->
-<!--      <div class="routeTown">-->
-<!--        <p>{{routeTown}}-->
-<!--          <span *ngIf="this.fakeOffer.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
-<!--          <span *ngIf="this.fakeOffer.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
-<!--        </p>-->
-<!--        <span>{{this.routeStatus.getStatus(this.fakeOffer.status[i])}}</span>-->
-<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">&ndash;&gt;-->
-<!--      </div>-->
-<!--      <div class="routeTown routeInfo">-->
-<!--        <p *ngIf="this.fakeOffer.aboutRoute != null || this.fakeOffer.aboutRoute != undefined">{{this.fakeOffer.aboutRoute[i]}}</p>-->
-<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">&ndash;&gt;-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  </div>-->
-<!--  <div class="drag2">-->
-<!--  <div *ngIf="routeToDragList" cdkDropList class="example-list"-->
-<!--       (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="disabled" id="dragList2" cdkDropListConnectedTo="dragList1">-->
-<!--    <div class="example-box" *ngFor="let routeTown of this.routeToDragList.nameOfTowns let i = index" cdkDrag>-->
-<!--      <div class="routeTown">-->
-<!--        <p>{{routeTown}}-->
-<!--          <span *ngIf="this.routeToDragList.type[i] == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>-->
-<!--          <span *ngIf="this.routeToDragList.type[i] == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>-->
-<!--        </p>-->
-<!--        <span>{{this.routeStatus.getStatus(this.routeToDragList.status[i])}}</span>-->
-<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="deleteTown(routeTown)" class="delete" src="assets/logo/delete.svg">&ndash;&gt;-->
-<!--      </div>-->
-<!--      <div class="routeTown routeInfo">-->
-<!--        <p *ngIf="this.routeToDragList.aboutRoute != null || this.routeToDragList.aboutRoute != undefined">{{this.routeToDragList.aboutRoute[i]}}</p>-->
-<!--        &lt;!&ndash;      <img *ngIf="checkFinished()" (click)="editInfo(this.route.aboutRoute[i], i)" class="delete" src="assets/logo/edit.svg">&ndash;&gt;-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--    <button #buttonChange *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''" (click)="chooseAnotherRoute()">Zmenit</button>-->
-<!--    <button #buttonSave [disabled]="this.fakeOffer.nameOfTowns.length > 0" *ngIf="this.fakeOffer.offerInRoute == ''" (click)="updateRoute()">Ulozit trasu</button>-->
-<!--</div>-->
-<!--</div>-->
-
 <div *ngIf="routes" class="wrapper">
 
 
 <div *ngIf="!routeToDragList">
   <app-choos-car-to-move (carOutput)="getChoosenCar($event)"></app-choos-car-to-move>
-  <app-route-to-itinerar (offerInCar)="offerIrRoute($event)" [newRoute]="offerAddresses"></app-route-to-itinerar>
+  <app-route-to-itinerar (carId)="updateOffer($event)" (offerInCar)="offerIrRoute($event)" [newRoute]="offerAddresses"></app-route-to-itinerar>
 </div>
 
 <!--  <app-drag-drop-offer *ngIf="routeToDragList" [route]="routeToDragList"></app-drag-drop-offer>-->

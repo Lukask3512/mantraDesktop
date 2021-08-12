@@ -137,12 +137,10 @@ export class OfferRouteService {
 
   // toto i treba dorobit
   createRoute(route: Route){
-    console.log(route);
     return this.afs.collection('route').add(route);
   }
 
   updateRoute(newRoute) {
-    console.log(newRoute);
     if (newRoute.id === undefined){
       this.createRoute(newRoute);
       return;

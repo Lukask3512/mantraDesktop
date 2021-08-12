@@ -45,80 +45,82 @@ export class DetailComponent implements AfterViewInit {
   // private posliPonuku: PosliPonukuComponent;
 
   ngAfterViewInit(): void {
+    setTimeout(() => { // pre exoressionchanged error...
+      this.dataService.currentRoute.subscribe(route => {
+        this.route = route;
+        this.fakeRoute = JSON.parse(JSON.stringify(this.route));
+        this.offerService.routes$.subscribe(routes => {
+          this.route = routes.find(oneRoute => oneRoute.id == route.id);
+          // this.getDetails();
+          if (this.route === undefined) {
+            this.route = this.fakeRoute;
+          }
 
-    this.dataService.currentRoute.subscribe(route => {
-      this.route = route;
-      this.fakeRoute = JSON.parse(JSON.stringify(this.route));
-      this.offerService.routes$.subscribe(routes => {
-        this.route = routes.find(oneRoute => oneRoute.id == route.id);
-        // this.getDetails();
-        if (this.route === undefined){
-          this.route = this.fakeRoute;
-        }
 
-
-
-        this.addressesService.offerAddresses$.subscribe(alAdd => {
-          var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
-          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
-          this.address = adresy;
-          this.address.forEach(oneAddress => {
-            var myPackages = [];
-            var detailAr = {detailArray: [], townsArray: [], packageId: []}
-            oneAddress.packagesId.forEach( oneId => {
-              if (oneAddress.type == 'nakladka'){
-                var balik = this.packageService.getOnePackage(oneId);
-                myPackages.push(balik)
-              }else{
-                //tu by som mal vlozit len indexy do vykladky
-                this.detail.forEach((oneDetail, townId) => {
-                  if (oneDetail.townsArray == undefined){
-                    oneDetail.forEach((oneDetailId, packageId) => {
-                      if (oneDetailId.id == oneId){
-                        detailAr.detailArray.push(packageId);
-                        detailAr.townsArray.push(townId);
-                        detailAr.packageId.push(oneDetailId.id);
+          this.addressesService.offerAddresses$.subscribe(alAdd => {
+            var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
+            adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
+            this.address = adresy;
+            this.address.forEach(oneAddress => {
+              var myPackages = [];
+              var detailAr = {detailArray: [], townsArray: [], packageId: []};
+              if (oneAddress){
+                oneAddress.packagesId.forEach(oneId => {
+                  if (oneAddress.type == 'nakladka') {
+                    var balik = this.packageService.getOnePackage(oneId);
+                    myPackages.push(balik)
+                  } else {
+                    //tu by som mal vlozit len indexy do vykladky
+                    this.detail.forEach((oneDetail, townId) => {
+                      if (oneDetail.townsArray == undefined) {
+                        oneDetail.forEach((oneDetailId, packageId) => {
+                          if (oneDetailId && oneDetailId.id === oneId) {
+                            detailAr.detailArray.push(packageId);
+                            detailAr.townsArray.push(townId);
+                            detailAr.packageId.push(oneDetailId.id);
+                          }
+                        })
                       }
                     })
+
                   }
                 })
+              }
 
+              if (myPackages.length != 0) {
+                this.detail.push(myPackages);
+              } else {
+                this.detail.push(detailAr);
+              }
+
+            });
+            console.log(this.detail)
+            if (this.detail)
+              this.childDropList.setDetails(this.detail);
+
+          })
+
+
+          if (this.route.offerFrom != undefined) {
+            this.route.offerFrom.forEach((offer, index) => {
+              if (offer == this.getDispecerId()) {
+                this.offer = this.route.priceFrom[index];
               }
             })
-            if (myPackages.length != 0){
-              this.detail.push(myPackages);
-            }else{
-              this.detail.push(detailAr);
-            }
-
-          });
-          console.log(this.detail)
-          if (this.detail)
-          this.childDropList.setDetails(this.detail);
-
-        })
-
-
-        if (this.route.offerFrom != undefined){
-          this.route.offerFrom.forEach((offer, index) => {
-            if (offer == this.getDispecerId()){
-              this.offer = this.route.priceFrom[index];
-            }
-          })
-        }
-      });
-      setTimeout(() =>
-        {
-          // this.posliPonuku.setRoute(this.route);
-          this.child.notifyMe(this.address, null, null);
-
-          if (this.childDropList){
-            // this.getDetails();
           }
-          // this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon, null, undefined)
-        },
-        800);
-    })
+        });
+        setTimeout(() => {
+            // this.posliPonuku.setRoute(this.route);
+            this.child.notifyMe(this.address, null, null);
+
+            if (this.childDropList) {
+              // this.getDetails();
+            }
+            // this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon, null, undefined)
+          },
+          800);
+      });
+    });
     }
 
     createdBy(){

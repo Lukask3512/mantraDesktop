@@ -11,6 +11,7 @@ import Cars from "../../../../models/Cars";
 import {ShowItinerarComponent} from "./show-itinerar/show-itinerar.component";
 import {RouteToItinerarComponent} from "../../new-transport/route-to-itinerar/route-to-itinerar.component";
 import Address from "../../../../models/Address";
+import {AddressService} from '../../../../services/address.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ import Address from "../../../../models/Address";
 export class OfferToRouteComponent implements OnInit {
 
   constructor(private offerService: OfferRouteService, private routeService: RouteService, public routeStatus: RouteStatusService,
-              private dataService: DataService,  private dialog: MatDialog) { }
+              private dataService: DataService,  private dialog: MatDialog, private addressesService: AddressService) { }
   routes: Route[];
   fakeRoutes: Route[];
 
@@ -119,37 +120,12 @@ export class OfferToRouteComponent implements OnInit {
     this.buttonSave.nativeElement.style.display = 'none'
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    // if (event.previousContainer === event.container) {
-    //   moveItemInArray(this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.type, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.status, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
-    //
-    //   moveItemInArray(this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
-    //   moveItemInArray(this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
-    // } else {
-    //   transferArrayItem(this.fakeOffer.nameOfTowns, this.routeToDragList.nameOfTowns, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.coordinatesOfTownsLat, this.routeToDragList.coordinatesOfTownsLat, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.coordinatesOfTownsLon, this.routeToDragList.coordinatesOfTownsLon, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.type, this.routeToDragList.type, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.status, this.routeToDragList.status, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.aboutRoute, this.routeToDragList.aboutRoute, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.detailsAboutAdresses, this.routeToDragList.detailsAboutAdresses, event.previousIndex, event.currentIndex);
-    //
-    //   transferArrayItem(this.fakeOffer.casPrijazdu, this.routeToDragList.casPrijazdu, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.casLastPrijazdu, this.routeToDragList.casLastPrijazdu, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.datumPrijazdu, this.routeToDragList.datumPrijazdu, event.previousIndex, event.currentIndex);
-    //   transferArrayItem(this.fakeOffer.datumLastPrijazdy, this.routeToDragList.datumLastPrijazdy, event.previousIndex, event.currentIndex);
-    //
-    // }
-    this.routeToMap.emit(this.routeToDragList);
-
+  updateOffer(carId: string){
+    var offer: Route = this.offer;
+    offer.offerInRoute = carId;
+    offer.carId = carId;
+    let adresy: Address[] = this.addressesService.getAddressesFromOffer().filter(oneAdresa => offer.addresses.includes(oneAdresa.id));
+    this.offerService.updateRoute(offer);
   }
 
 }

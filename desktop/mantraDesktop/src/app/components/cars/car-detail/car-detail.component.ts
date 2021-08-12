@@ -60,6 +60,7 @@ export class CarDetailComponent implements AfterViewInit {
 
   @ViewChild('mySendButton') mySendButton: ElementRef;
   ngAfterViewInit(): void {
+    setTimeout(() => {
     this.change = false;
     this.routesTowns = [];
     this.routesLon = [];
@@ -113,7 +114,7 @@ export class CarDetailComponent implements AfterViewInit {
     }else {
       this.createdById = loggedDispecer.createdBy;
     }
-
+    });
   }
   notifyChildren(routeId) {
     this.parentSubject.next(routeId);

@@ -97,7 +97,10 @@ export class AddressService {
     this.offerService.getRoutesNoSub().forEach(oneRoute => {
       if (!oneRoute.finished){
         let adresyZRouty: Address[] = this.addressesOfferGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
-        let finishIt = true;
+        let finishIt;
+        if (adresyZRouty.length === oneRoute.addresses.length){
+          finishIt = true;
+        }
         adresyZRouty.forEach(jednaAdresa => {
           if (jednaAdresa.status !== 3){
             finishIt = false;
@@ -181,6 +184,15 @@ export class AddressService {
   }
 
   getOneAddresByIdGet(id){
+    let myPackage = this.addressesGet.find(oneAddress => oneAddress.id === id);
+    if (!myPackage){
+      myPackage = this.addressesOfferGet.find(onePackage => onePackage.id === id);
+    }
+    return myPackage;
+  }
+
+
+  getOneAddresByIdOfferGet(id){
     let myPackage = this.addressesGet.find(oneAddress => oneAddress.id === id);
     if (!myPackage){
       myPackage = this.addressesOfferGet.find(onePackage => onePackage.id === id);

@@ -4,6 +4,8 @@ import Cars from "../models/Cars";
 import {CarService} from "../services/car.service";
 import Route from "../models/Route";
 import {PackageService} from '../services/package.service';
+import {PrivesService} from '../services/prives.service';
+import Prives from '../models/Prives';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +16,19 @@ export class CountFreeSpaceService {
   sizesV = [];
   weight = [];
   stohovatelnost = [];
-  constructor(private carService: CarService, private packageService: PackageService) { }
+  prives: Prives;
+  constructor(private carService: CarService, private packageService: PackageService, private privesService: PrivesService) { }
 
   // vratim index miest kde sa dana preprava vopcha
-  countFreeSpace(oneCar, offer, prekrocenie){
+  countFreeSpace(oneCar: Cars, offer, prekrocenie){
    var nalozenievMestach = this.vypocitajPocetPalietVKazomMeste(oneCar);
+   if (oneCar.naves){
+     this.prives = this.privesService.allPrives.find(onePrives => oneCar.navesis.includes(onePrives.id));
+   }else{
+     this.prives = new Prives();
+     this.prives.sizePriestoru = [0, 0, 0];
+   }
+
     var poleMiestKdeSaVopcha = [];
     var prekrocenieOPercenta = [];
 
@@ -66,6 +76,9 @@ export class CountFreeSpaceService {
 
 
       this.prejdiPaletyaUlozIch(oneCar);
+      if (oneCar.naves){
+        this.prejdiPaletyaUlozIchVNavese(this.prives);
+      }
 
       let maxVyska;
       let maxSirka;
@@ -77,18 +90,38 @@ export class CountFreeSpaceService {
         maxSirka = 0;
       }
 
+      if (oneCar.naves){
+        this.prives = this.privesService.allPrives.find(onePrives => oneCar.navesis.includes(onePrives.id));
+      }else{
+        this.prives = new Prives();
+        this.prives.sizePriestoru = [0, 0, 0];
+      }
+      if (!this.prives){
+        this.prives = new Prives();
+        this.prives.sizePriestoru = [0, 0, 0];
+      }
+
         // final kontrola ci sa mi veci z pola vopchaju do autiska
         var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
         this.sizesD.forEach(jednaDlzka => {
           dlzka += jednaDlzka;
         });
-        if (vopchaSaDoMesta !== -1 && vopchaSaDoMesta !== 2 && dlzka <= oneCar.sizePriestoru[2] && maxVyska <= oneCar.sizePriestoru[0] && maxSirka <= oneCar.sizePriestoru[1]){
+        if (vopchaSaDoMesta !== -1 && vopchaSaDoMesta !== 2 && dlzka <= (oneCar.sizePriestoru[2] + this.prives.sizePriestoru[2]) && maxVyska <= (oneCar.sizePriestoru[0] || this.prives.sizePriestoru[0]) && maxSirka <= (oneCar.sizePriestoru[1] || this.prives.sizePriestoru[1])){
           vopchaSaDoMesta = 1;
-        }else if (dlzka <= (oneCar.sizePriestoru[2] * prekrocenie) && vopchaSaDoMesta !== -1 && maxVyska <= (oneCar.sizePriestoru[0] * prekrocenie) && maxSirka <= (oneCar.sizePriestoru[1] * prekrocenie)){
+        }else if (dlzka <= ((oneCar.sizePriestoru[2] + this.prives.sizePriestoru[2]) * prekrocenie) && vopchaSaDoMesta !== -1 && maxVyska <= (oneCar.sizePriestoru[0] * prekrocenie || this.prives.sizePriestoru[0] * prekrocenie) && maxSirka <= (oneCar.sizePriestoru[1] * prekrocenie || this.prives.sizePriestoru[1] * prekrocenie)){
           vopchaSaDoMesta = 2;
           }else{
           vopchaSaDoMesta = -1;
         }
+
+      // if (vopchaSaDoMesta !== -1 && vopchaSaDoMesta !== 2 && dlzka <= oneCar.sizePriestoru[2] && maxVyska <= oneCar.sizePriestoru[0] && maxSirka <= oneCar.sizePriestoru[1]){
+      //   vopchaSaDoMesta = 1;
+      // }else if (dlzka <= (oneCar.sizePriestoru[2] * prekrocenie) && vopchaSaDoMesta !== -1 && maxVyska <= (oneCar.sizePriestoru[0] * prekrocenie) && maxSirka <= (oneCar.sizePriestoru[1] * prekrocenie)){
+      //   vopchaSaDoMesta = 2;
+      // }else{
+      //   vopchaSaDoMesta = -1;
+      // }
+
       });
 
 
@@ -99,37 +132,6 @@ export class CountFreeSpaceService {
         poleMiestKdeSaVopcha.push(indexMesicka);
         prekrocenieOPercenta.push(true);
       }
-    //   }else{ // ked nemam offer ale len 1 ponuka
-    //       this.prejdiPaletyaUlozIch(car);
-    //   //final kontrola ci sa mi veci z pola vopchaju do autiska
-    //   var dlzka = 0; // dlzka preto lebo zvysok kontrolujem na vysku/sirku..
-    //   var maxVyska = 0;
-    //   var maxSirka = 0;
-    //   this.sizesD.forEach((jednaDlzka, index) => {
-    //     dlzka += jednaDlzka;
-    //     if (this.sizesV[index] > maxVyska){
-    //       maxVyska = this.sizesV[index];
-    //     }
-    //     if (this.sizesV[index] > maxSirka){
-    //       maxSirka = this.sizesS[index];
-    //     }
-    //   });
-    //   if (dlzka <= car.sizePriestoru[2] && maxVyska <= car.sizePriestoru[0] && maxSirka <= car.sizePriestoru[1]){
-    //     poleMiestKdeSaVopcha.push(indexMesicka);
-    //     prekrocenieOPercenta.push(false);
-    //   }else if (dlzka <= (car.sizePriestoru[2] * prekrocenie) && maxVyska <= car.sizePriestoru[0] && maxSirka <= car.sizePriestoru[1]){
-    //     poleMiestKdeSaVopcha.push(indexMesicka);
-    //     prekrocenieOPercenta.push(true);
-    //   }
-    //   else if (dlzka <= car.sizePriestoru[2] && maxVyska <= (car.sizePriestoru[0] * prekrocenie) && maxSirka <= car.sizePriestoru[1]){
-    //     poleMiestKdeSaVopcha.push(indexMesicka);
-    //     prekrocenieOPercenta.push(true);
-    //   }
-    //   else if (dlzka <= car.sizePriestoru[2] && maxVyska <= car.sizePriestoru[0] && maxSirka <= (car.sizePriestoru[1] * prekrocenie)){
-    //     poleMiestKdeSaVopcha.push(indexMesicka);
-    //     prekrocenieOPercenta.push(true);
-    //   }
-    // }
     });
    return {poleMiestKdeSaVopcha, prekrocenieOPercenta};
   }
@@ -184,7 +186,7 @@ export class CountFreeSpaceService {
       }
 
 
-      if (auto.itiAdresy[index].type == undefined){
+      if (!auto.itiAdresy[index] || auto.itiAdresy[index].type == undefined || !oneDetail[0]){
         return;
       }
       if (auto.itiAdresy[index].type == 'nakladka'){ //pri nakladke prikladam palety
@@ -193,12 +195,14 @@ export class CountFreeSpaceService {
           oneAdress = lastVeci;
         }
         oneDetail.forEach(jedenPackage => {
-          oneAdress.sizeS.push(jedenPackage.sizeS);
-          oneAdress.sizeD.push(jedenPackage.sizeD);
-          oneAdress.sizeV.push(jedenPackage.sizeV);
-          oneAdress.weight.push(jedenPackage.weight);
-          oneAdress.stohovatelnost.push(jedenPackage.stohovatelnost);
-          oneAdress.id.push(jedenPackage.id);
+          if (jedenPackage){
+            oneAdress.sizeS.push(jedenPackage.sizeS);
+            oneAdress.sizeD.push(jedenPackage.sizeD);
+            oneAdress.sizeV.push(jedenPackage.sizeV);
+            oneAdress.weight.push(jedenPackage.weight);
+            oneAdress.stohovatelnost.push(jedenPackage.stohovatelnost);
+            oneAdress.id.push(jedenPackage.id);
+          }
         });
         poleKsPalietPreKazduAdresu.push(oneAdress);
       }else{ //tu sa snazim odsranit veci kedze je vykladka
@@ -239,7 +243,7 @@ export class CountFreeSpaceService {
   }
 
   vypocitajPocetPalietVPonuke(offer){
-    if (!offer.detailVPonuke){
+    if (!offer.detailVPonuke || !offer.detailVPonuke[0] || !offer.detailVPonuke[0].sizesS){
       return [undefined];
     }
     var poleKsPalietPreKazduAdresu = [];
@@ -419,14 +423,130 @@ export class CountFreeSpaceService {
     }
   }
 
+  prejdiPaletyaUlozIchVNavese(naves: Prives){
+    for (var i = 0; i < this.sizesS.length; i++) {
+      //ak neni stohovatelne, skusim najst paletu na ktoru to moyem polozit
+      if (this.stohovatelnost[i] == 0) {
+        var indexPaletyNaKtoruToUlozim =  -1;
+        var indexPaletyNaSirku =  -1;
+        var maxVahaKtoruUlozim;
+        let maxSirka = 0;
+        for (var j = 0; j < this.sizesS.length; j++) { // skontrolujem od zaciatku vsetky stohovatelne palety
+          if (i != j) {
+            if (this.stohovatelnost[j] >= this.weight[i] && (this.sizesS[i] <= naves.sizePriestoru[1] || this.sizesD[i] <= naves.sizePriestoru[1]) &&
+              (this.sizesV[i] + this.sizesV[j] <= naves.sizePriestoru[0])) { // ak najdem paletu na ktoru to mozem polozit,
+              if (maxVahaKtoruUlozim == undefined) { //1. stohovatelna paleta
+                indexPaletyNaKtoruToUlozim = j;
+                maxVahaKtoruUlozim = this.stohovatelnost[j];
+              } else if (maxVahaKtoruUlozim > this.stohovatelnost[j]) { // ak ma dalsia paleta nizsiu stohovatelnost, ulzim ju tam
+                indexPaletyNaKtoruToUlozim = j;
+                maxVahaKtoruUlozim = this.stohovatelnost[j]
+              }
+            } else if (this.sizesS[i] + this.sizesS[j] <= naves.sizePriestoru[1]) {
+              if (this.sizesS[i] + this.sizesS[j] > maxSirka){
+                maxSirka = this.sizesS[i] + this.sizesS[j];
+                indexPaletyNaSirku = j;
+              }
+            }
+          }
+        }
+        //ked skonci for a nasiel som paletu na ktoru to mozem polozit
+        if (indexPaletyNaKtoruToUlozim != -1){
+          if (this.sizesS[indexPaletyNaKtoruToUlozim] > this.sizesS[i]) { // ak je paleta na ktoru to ulozim sirsia...
+            this.sizesS[i] = this.sizesS[indexPaletyNaKtoruToUlozim];
+          }
+          if (this.sizesD[indexPaletyNaKtoruToUlozim] > this.sizesD[i]) { // ak je paleta na ktoru to ulozim dlhsia...
+            this.sizesD[i] = this.sizesD[indexPaletyNaKtoruToUlozim];
+          }
+          this.stohovatelnost[i] = 0;
+          this.weight[i] += this.weight[j];
+          this.sizesV[i] += this.sizesV[indexPaletyNaKtoruToUlozim]; //vyska paleta 1 + 2
+          this.odstraneniePalety(indexPaletyNaKtoruToUlozim);
+        }else if (indexPaletyNaSirku != -1){ // ked som nasiel paletu ktoru mozem ulozit vedla
+          this.sizesS[i] +=this.sizesS[indexPaletyNaSirku];
+          if (this.sizesD[i] < this.sizesD[indexPaletyNaSirku]){
+            this.sizesD[i] = this.sizesD[indexPaletyNaSirku];
+            //tu dakte by som si mal ulozit volny priestor co mi ostal
+            this.odstraneniePalety(indexPaletyNaSirku);
+          }
+        }
+      }else{ // ked na tovar mozem nieco polozit
+        var indexPaletyNaKtoruToUlozim =  -1;
+        var indexPaletyNaSirku =  -1;
+        var maxVahaKtoruUlozim;
+        var maxVahaStohoPalety;
+        var indexStohoPalety = -1;
+        for (var j = 0; j < this.sizesS.length; j++){ // skontrolujem od zaciatku vsetky nestoho palety
+          if (this.stohovatelnost[j] == 0 && (this.sizesS[i] <= naves.sizePriestoru[1] || this.sizesD[i] <= naves.sizePriestoru[1]) &&
+            ((this.sizesV[i] + this.sizesV[j]) <= naves.sizePriestoru[0]) && this.weight[i] <= this.stohovatelnost[j]){ // ak najdem paletu na ktoru to mozem polozit,
+            if (maxVahaKtoruUlozim == undefined){ //1. stohovatelna paleta
+              indexPaletyNaKtoruToUlozim = j;
+              maxVahaKtoruUlozim = this.stohovatelnost[j];
+            }else if (maxVahaKtoruUlozim < this.stohovatelnost[j]){ // ak ma dalsia paleta vacsiu vahu, ulzim ju tam
+              indexPaletyNaKtoruToUlozim = j;
+              maxVahaKtoruUlozim = this.stohovatelnost[j]
+            }
+          }else if ((this.sizesS[i] + this.sizesS[j]) <= naves.sizePriestoru[1]){ // mozem ulozit vedla
+            indexPaletyNaSirku = j;
+          }else if (this.weight[i] < this.stohovatelnost[j]){ //mozem polozit stoho na stoho
+            if (maxVahaStohoPalety == undefined){
+              maxVahaStohoPalety = this.weight[j];
+              indexStohoPalety = j;
+            }
+            else if (maxVahaStohoPalety < this.weight[j]){
+              maxVahaStohoPalety = this.weight[j];
+              indexStohoPalety = j;
+            }
+          }
+        }
+        //ked skonci for a nasiel som paletu na ktoru to mozem polozit
+        if (indexPaletyNaKtoruToUlozim != -1){
+          if (this.sizesS[indexPaletyNaKtoruToUlozim] > this.sizesS[i]) { // ak je paleta na ktoru to ulozim sirsia...
+            this.sizesS[i] = this.sizesS[indexPaletyNaKtoruToUlozim];
+          }
+          if (this.sizesD[indexPaletyNaKtoruToUlozim] > this.sizesD[i]) { // ak je paleta na ktoru to ulozim dlhsia...
+            this.sizesD[i] = this.sizesD[indexPaletyNaKtoruToUlozim];
+          }
+          this.stohovatelnost[i] = 0;
+          this.weight[i] += this.weight[j];
+          this.sizesV[i] += this.sizesV[indexPaletyNaKtoruToUlozim]; //vyska paleta 1 + 2
+          this.odstraneniePalety(indexPaletyNaKtoruToUlozim);
+        }else if (indexPaletyNaSirku != -1){ // ked som nasiel paletu ktoru mozem ulozit vedla
+          this.sizesS[i] +=this.sizesS[indexPaletyNaSirku];
+          if (this.sizesD[i] < this.sizesD[indexPaletyNaSirku]){
+            this.sizesD[i] = this.sizesD[indexPaletyNaSirku];
+            this.odstraneniePalety(indexPaletyNaKtoruToUlozim);
+            //tu dakte by som si mal ulozit volny priestor co mi ostal
+          }
+        }else if (indexStohoPalety != -1){ // ked mozem polozit stoho paletu na stoho paletu
+          this.sizesV[i] += this.sizesV[indexStohoPalety];
+          if (this.sizesS[i] < this.sizesS[indexStohoPalety]){
+            this.sizesS[i] = this.sizesS[indexStohoPalety];
+          }
+          if (this.sizesD[i] < this.sizesD[indexStohoPalety]){
+            this.sizesD[i] = this.sizesD[indexStohoPalety];
+          }
+          this.weight[i] += this.weight[indexStohoPalety];
+          this.stohovatelnost[i] -= this.weight[indexStohoPalety];
+          if (this.stohovatelnost[indexStohoPalety] < this.stohovatelnost[i]){
+            this.stohovatelnost[i] = this.stohovatelnost[indexStohoPalety];
+          }
+          this.odstraneniePalety(indexStohoPalety);
+        }
+      }
+    }
+  }
+
   pocetTonVKazdomMeste(poleMiest){
     let vahaVMestach = [];
     poleMiest.forEach(oneMesto => {
       let vahaVJednomMeste = 0;
+      if (oneMesto){
       oneMesto.weight.forEach(oneVaha => {
         vahaVJednomMeste += oneVaha;
       });
       vahaVMestach.push(vahaVJednomMeste);
+      }
     });
     return vahaVMestach;
   }

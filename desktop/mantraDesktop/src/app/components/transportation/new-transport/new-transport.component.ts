@@ -105,6 +105,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
               }
 
   ngAfterViewInit(): void {
+    setTimeout(() => { // pre exoressionchanged error...
     var loggedDispecer = this.dataService.getDispecer();
     var dispecerId;
     if (loggedDispecer.createdBy == 'master'){
@@ -195,6 +196,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
 
       }
     })
+    });
   }
 
   receiveAddressUpdate(adreesIndex){

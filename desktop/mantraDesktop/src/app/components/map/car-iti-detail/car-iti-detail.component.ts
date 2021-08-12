@@ -54,7 +54,6 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer){
-    console.log(offer)
     this.offer = JSON.parse(JSON.stringify(offer));
     this.realOffer = JSON.parse(JSON.stringify(offer));
     if (this.posliPonukuComponent) {

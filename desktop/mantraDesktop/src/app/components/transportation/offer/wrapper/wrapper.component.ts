@@ -21,7 +21,9 @@ export class WrapperComponent implements OnInit {
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
       this.routes = routes.filter(oneRoute => oneRoute.finished === false);
+      console.log(this.routes)
       this.finishedRoutes = routes.filter(oneRoute => oneRoute.finished === true);
+      console.log(this.finishedRoutes)
     });
   }
 

@@ -15,7 +15,7 @@ export class PrivesService {
   private prives: Observable<Dispecer[]>;
   privesCollectionRef: AngularFirestoreCollection<Dispecer>;
 
-  allPrives;
+  allPrives = [];
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.privesCollection = this.afs.collection<any>('prives');

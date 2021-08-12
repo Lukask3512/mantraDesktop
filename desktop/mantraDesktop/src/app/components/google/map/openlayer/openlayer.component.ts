@@ -205,8 +205,9 @@ export class OpenlayerComponent implements AfterViewInit{
 
 
 
-    if ( addresses != undefined) {
+    if (addresses) {
       for (let i = 0; i < addresses.length; i++) {
+        if (addresses[i].coordinatesOfTownsLon){
         var iconFeature = new Feature({
           geometry: new Point(fromLonLat([addresses[i].coordinatesOfTownsLon, addresses[i].coordinatesOfTownsLat])),
           name: 'place'
@@ -231,6 +232,7 @@ export class OpenlayerComponent implements AfterViewInit{
         });
         iconFeature.setStyle(iconStyle);
         this.places.push(iconFeature)
+      }
       }
 
 

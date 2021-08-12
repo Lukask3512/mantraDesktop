@@ -18,7 +18,7 @@ export class RouteToItinerarComponent implements OnInit {
   @Input() car: Cars;
   @Input() newRoute: Address[];
   @Input() newDetails;
-  @Output() addressesId = new EventEmitter<string[]>();
+  @Output() carId = new EventEmitter<string>();
   @Output() offerInCar = new EventEmitter<Cars>();
   newRouteCopy: Address[];
   carItinerarAddresses: Address[] = [];
@@ -160,14 +160,16 @@ export class RouteToItinerarComponent implements OnInit {
   }
 
   setAddresses(){
-      this.addressesService.address$.subscribe(allAddresses => {
+    var allAddresses = this.addressService.getAddresses();// TODO toto treba majk check
+    allAddresses = allAddresses.concat(this.addressService.getAddressesFromOffer());
+
         var adresy = allAddresses.filter(jednaAdresa => this.car.itinerar.includes(jednaAdresa.id));
         adresy = this.car.itinerar.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
         // this.newRouteCopy = JSON.parse(JSON.stringify(adresy));
         // this.newRoute = JSON.parse(JSON.stringify(adresy));
 
-        this.carItinerarAddresses = adresy
-      })
+        this.carItinerarAddresses = adresy;
+
 
   }
 
@@ -205,7 +207,8 @@ export class RouteToItinerarComponent implements OnInit {
     this.car.itinerar = addressesId;
     console.log(this.carItinerarAddresses);
     this.carService.updateCar(this.car, this.car.id);
-    this.addressesId.emit();
+
+    this.carId.emit(this.car.id);
     // vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
   }
 
