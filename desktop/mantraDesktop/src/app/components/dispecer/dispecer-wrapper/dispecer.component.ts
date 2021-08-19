@@ -11,12 +11,13 @@ export class DispecerComponent implements OnInit {
 
   allDispeces;
   constructor(private dispecerService: DispecerService, public dataService: DataService) {
-    this.dispecerService.getDispecers().subscribe(data => {
-      this.allDispeces = data;
-    });
+
   }
 
   ngOnInit(): void {
+    this.dispecerService.getDispecers().subscribe(data => {
+      this.allDispeces = data;
+    });
   }
 
 }

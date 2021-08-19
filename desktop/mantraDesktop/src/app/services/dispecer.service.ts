@@ -85,7 +85,7 @@ export class DispecerService {
   }
 
   createDispecer(dispecer: Dispecer){
-    return this.afs.collection('dispecers').add(dispecer);
+    return this.dispecerCollection.add(dispecer);
   }
 
   deleteDispecer(dispecerID){

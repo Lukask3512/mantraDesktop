@@ -14,6 +14,9 @@ import Route from '../../../models/Route';
 import {AddressService} from '../../../services/address.service';
 import Address from '../../../models/Address';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.component';
+import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 
 @Component({
   selector: 'app-car-iti-detail',
@@ -41,7 +44,7 @@ export class CarItiDetailComponent implements OnInit {
 
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
-              private addressService: AddressService,  private _snackBar: MatSnackBar) { }
+              private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,) { }
 
   ngOnInit(): void {
   }
@@ -97,6 +100,8 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<any[]>) {
+    console.log(this.offer);
+    console.log(this.car);
     if (event.previousContainer === event.container) {
       let mozemPresunut;
       if (event.previousContainer.id === 'all'){
@@ -484,6 +489,21 @@ export class CarItiDetailComponent implements OnInit {
         return 'red';
       }
     }
+  }
+
+  openAllDetailDialog(){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.data = {
+        addresses: this.realOffer.adresyVPonuke,
+        detail: this.realOffer.detailVPonuke
+      };
+    const dialogRef = this.dialog.open(AllDetailAboutRouteDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
   }
 
 }

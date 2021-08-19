@@ -205,7 +205,8 @@ export class CountFreeSpaceService {
           }
         });
         poleKsPalietPreKazduAdresu.push(oneAdress);
-      }else{ //tu sa snazim odsranit veci kedze je vykladka
+      }else{ // tu sa snazim odsranit veci kedze je vykladka
+        if (poleKsPalietPreKazduAdresu.length > 0){
         var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length -1]));
         oneDetail.forEach((oneSize, indexSize) => {
           for (var i =0; i < lastVeci.sizeS.length; i++){
@@ -221,6 +222,7 @@ export class CountFreeSpaceService {
           }
         });
         poleKsPalietPreKazduAdresu.push(lastVeci);
+        }
       }
 
     });

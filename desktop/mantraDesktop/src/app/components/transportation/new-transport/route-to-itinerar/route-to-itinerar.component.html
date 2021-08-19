@@ -10,8 +10,9 @@
     [cdkDropListEnterPredicate]="noReturnPredicate">
     <div
       class="example-box"
-      *ngFor="let oneAddress of newRouteCopy"
+      *ngFor="let oneAddress of newRouteCopy ; index as i"
       [cdkDragData]="oneAddress"
+      [cdkDragDisabled]="checkIndex(i)"
       cdkDrag>{{oneAddress.nameOfTown}}</div>
   </div>
   <button (click)="moveAll()">Presun vsetko</button>

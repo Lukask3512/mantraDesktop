@@ -47,6 +47,8 @@ import {ChoosCarToMoveComponent} from '../transportation/offer/offer-to-route/ch
 import Predpoklad from '../../models/Predpoklad';
 import {VodicService} from '../../services/vodic.service';
 import Vodic from '../../models/Vodic';
+import {take} from 'rxjs/operators';
+import {RouteCoordinatesService} from '../../services/route/route-coordinates.service';
 
 
 
@@ -76,6 +78,8 @@ export class MapComponent implements AfterViewInit {
   colors = ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#27AE60', '#E67E22', '#F1C40F', '#E67E22',
   '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949'];
 
+
+  vectorSourcePreTrasy;
 
   // features pre mapu
   places = [];
@@ -132,6 +136,8 @@ export class MapComponent implements AfterViewInit {
 
   freeCars: Cars[] = [];
 
+  lastClickedOnaddressId;
+
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
@@ -146,7 +152,8 @@ export class MapComponent implements AfterViewInit {
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
               private routeDetailService: DetailAboutRouteService, private countFreeSpaceService: CountFreeSpaceService,
               private addressService: AddressService, private packageService: PackageService,
-              private drawOffer: DrawOfferService, private vodicService: VodicService) { }
+              private drawOffer: DrawOfferService, private vodicService: VodicService,
+              private routeCoordinates: RouteCoordinatesService) { }
 
               routeDetail(route){
               this.dataService.changeRealRoute(route);
@@ -173,6 +180,11 @@ export class MapComponent implements AfterViewInit {
         this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
           this.addCars(this.carsFromDatabase);
+
+          setTimeout(() => {
+            this.addRouteNewSystem();
+          }, 1000);
+
           resolve();
         });
       }).then(() => {
@@ -199,6 +211,7 @@ export class MapComponent implements AfterViewInit {
 
           this.zoomToAddressOrCar(feature);
           this.onClickFindInfoAdress(feature.get('name'));
+          this.lastClickedOnaddressId = feature.get('name');
         }
         else if (type === 'route'){
           this.zoomToRoute(feature);
@@ -276,6 +289,71 @@ export class MapComponent implements AfterViewInit {
     // .countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
   }
 
+  addRouteNewSystem(){
+    this.carService.cars$.subscribe(allCars => {
+        allCars.forEach(oneCar => {
+          let outputData;
+          this.routeCoordinates.getRoute(oneCar.id).subscribe((nasolSom) => {
+            if (nasolSom){
+              const ref = this.storage.ref('Routes/' + oneCar.id + '.json');
+              setTimeout(() => {
+
+
+                const stahnute = ref.getDownloadURL().pipe(take(1)).subscribe(data => {
+                  if (data){
+                    this.http.get(data, {responseType: 'text' as 'json'}).pipe(take(1)).subscribe(text => {
+                      outputData = text;
+                      // zmena na json
+                      outputData = JSON.parse(outputData);
+                      // zmena na pole
+                      outputData = outputData.map(Object.values);
+
+                      // zo sygicu mi pridu hodnoty * 100000 - mapy podporuju len normalny format preto to delim 100000
+                      const finishArray = outputData.map(prvePole =>
+                        prvePole.map(prvok => prvok / 100000));
+                      this.points = finishArray;
+                      // console.log(this.points)
+                      const routeString = new LineString(this.points)
+                        .transform('EPSG:4326', 'EPSG:3857');
+
+                      const routeFeature = new Feature({
+                        type: 'route',
+                        geometry: routeString,
+                        name: oneCar.id,
+                        id: oneCar.id
+                      });
+                      const poziciaAuta = this.carsFromDatabase.findIndex(carFromd => carFromd.id === oneCar.id);
+                      const routeStyle = new Style({
+                        stroke: new Stroke({
+                          width: 6,
+                          color: this.getColorByIndex(poziciaAuta)
+                        })
+                      });
+                      routeFeature.setId(oneCar.id);
+                      routeFeature.setStyle(routeStyle);
+
+                      // console.log(routeFeature);
+                      // console.log(route)
+                      this.routes.push(routeFeature);
+                      this.pridajCestyNaMapu(routeFeature, oneCar.id);
+
+
+                    }, (error) => {
+                      console.log('trasa nenajdena1');
+                    });
+                  }
+
+                }, (error) => {
+                  console.log('trasa nenajdena2');
+                  stahnute.unsubscribe();
+                });
+              }, 1000);
+            } //
+          });
+        });
+    });
+  }
+
   addRoute(carId, colorIndex) {
     const route = {id: carId};
     this.routes = [];
@@ -289,8 +367,9 @@ export class MapComponent implements AfterViewInit {
     try {
       const stahnute = ref.getDownloadURL().subscribe(data => {
 
+    if (data){
 
-        this.http.get(data, {responseType: 'text' as 'json'}).subscribe(text => {
+        this.http.get(data, {responseType: 'text' as 'json'}).pipe(take(1)).subscribe(text => {
           outputData = text;
 
           // zmena na json
@@ -322,14 +401,17 @@ export class MapComponent implements AfterViewInit {
           // console.log(routeFeature);
           // console.log(route)
           this.routes.push(routeFeature);
-          this.pridajCestyNaMapu();
+          this.pridajCestyNaMapu(routeFeature, route.id);
 
 
         }, (error) => {
           console.log('trasa nenajdena1');
         });
-      }, error => {
+}
+
+      }, (error) => {
         console.log('trasa nenajdena2');
+        stahnute.unsubscribe();
       });
     }catch (err){
       console.log('catchol som');
@@ -341,16 +423,26 @@ export class MapComponent implements AfterViewInit {
   //   }
   }
 
-  pridajCestyNaMapu(){
-    const vectorSource = new VectorSource({
-      features: this.routes
-    });
-    this.map.removeLayer(this.vectorLayerCoordinates);
-    this.vectorLayerCoordinates = new VectorLayer({
-      source: vectorSource,
-    });
-    this.vectorLayerCoordinates.setZIndex(1);
-    this.map.addLayer(this.vectorLayerCoordinates);
+  pridajCestyNaMapu(feature, carId){
+    if (!this.vectorSourcePreTrasy){
+      this.vectorSourcePreTrasy = new VectorSource({
+        // features: this.routes
+      });
+
+      this.vectorLayerCoordinates = new VectorLayer({
+        source: this.vectorSourcePreTrasy,
+      });
+      this.vectorLayerCoordinates.setZIndex(1);
+      this.map.addLayer(this.vectorLayerCoordinates);
+
+    }else{
+      let feature = this.vectorSourcePreTrasy.getFeatureById(carId);
+      if (feature){
+        this.vectorSourcePreTrasy.removeFeature(feature);
+      }
+    }
+    this.vectorSourcePreTrasy.addFeature(feature);
+    // this.map.removeLayer(this.vectorLayerCoordinates);
   }
 
   checkFeatureUnderMouse(){
@@ -406,11 +498,14 @@ export class MapComponent implements AfterViewInit {
               this.carWarningStatus = this.carWarningStatus.filter(findCar => findCar.id != car[i].id);
             }
           }
+
+
           // tot mam auto a mohol by som relativne itinerar odoslat na vykreslenie aj s farbou
           // update vozidla ak mam nakliknute nejake
-          if (this.carToShow !== undefined && car[i].id === this.carToShow.id){
+          if (this.carToShow && car[i] && car[i].id === this.carToShow.id && !this.routesToShow){
             setTimeout(() =>
               {
+
                 this.onClickFindInfo(car[i].id);
                 console.log('som nasiel same');
               },
@@ -528,36 +623,20 @@ export class MapComponent implements AfterViewInit {
             const detailAuta: any[] = [];
             oneCar.itinerar.forEach(addId => {
               const detailVMeste = [];
-
-              var oneAdd = this.addressService.getOneAddresByIdGet(addId);
-                if (oneAdd) {
-                  if (itinerarAuta.find(oneIti => oneIti.id === oneAdd.id)){ // hladam duplikat
-                    const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === oneAdd.id);
-                    itinerarAuta[indexAdresy] = oneAdd;
-                  }else{
-                    itinerarAuta.push(oneAdd);
-                  }
-                  oneAdd.packagesId.forEach(onePackId => {
-                    detailVMeste.push(this.packageService.getOnePackage(onePackId));
-                  });
+              const vsetkyAdresy = this.addressService.getAddresses().concat(this.addressService.getAddressesFromOffer());
+              const oneAdd = vsetkyAdresy.find(oneAdd => oneAdd.id === addId);
+              if (oneAdd) {
+                if (itinerarAuta.find(oneIti => oneIti.id === oneAdd.id)) { // hladam duplikat
+                  const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === oneAdd.id);
+                  itinerarAuta[indexAdresy] = oneAdd;
                 } else {
-                  let offerAdd = this.addressService.getOneAddresByIdOfferGet(addId);
-                  if (offerAdd){
-                    if (itinerarAuta.find(oneIti => oneIti.id === offerAdd.id)){ // hladam duplikat
-                      const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === offerAdd.id);
-                      itinerarAuta[indexAdresy] = offerAdd;
-                    }else{
-                      itinerarAuta.push(offerAdd);
-                    }
-                  }
-
-                    if (oneAdd){
-                      oneAdd.packagesId.forEach(onePackId => {
-                      detailVMeste.push(this.packageService.getOnePackage(onePackId));
-                      });
-                    }
+                  itinerarAuta.push(oneAdd);
                 }
-
+                const allPackages = this.packageService.getAllPackages().concat(this.packageService.getAllOfferPackages());
+                oneAdd.packagesId.forEach(onePackId => {
+                  detailVMeste.push(allPackages.find(onePackage => onePackage.id === onePackId));
+                });
+              }
               detailAuta.push(detailVMeste);
             });
             carsWithIti.push({...oneCar, itiAdresy: itinerarAuta, detailIti: detailAuta});
@@ -565,15 +644,18 @@ export class MapComponent implements AfterViewInit {
 
         });
         this.carsWithItinerar = carsWithIti;
-        // mojeAdresy = allAddresses.filter(oneAddress => oneAddress.status != 3);
+
+        if (this.carToShow && this.carsWithItinerar && !this.routesToShow){
+          this.onClickFindInfo(this.carToShow.id);
+        }
+        else if (this.carToShow && this.carsWithItinerar && this.routesToShow){
+          this.onClickFindInfoAdress(this.lastClickedOnaddressId);
+        }
+
         mojeAdresy = allAddresses.concat(allOffers);
 
 
         mojeAdresy.forEach((oneAddress, index) => {
-          // this.carsFromDatabase.forEach(oneCar => {
-          //   var car = oneCar.itinerar.find(addId => addId == oneAddress.id);
-          // })
-
           const car = this.carsFromDatabase.find(oneCar => {
             if (oneCar.itinerar) {
               if (oneCar.itinerar.includes(oneAddress.id)) {
@@ -587,7 +669,7 @@ export class MapComponent implements AfterViewInit {
             const cisloAuta = this.carsFromDatabase.findIndex(oneCar => oneCar.id == car.id);
             const cisloItinerara = car.itinerar.findIndex(oneAdd => oneAdd == oneAddress.id);
 
-            this.addRoute(this.carsFromDatabase[cisloAuta].id, cisloAuta);
+            // this.addRoute(this.carsFromDatabase[cisloAuta].id, cisloAuta);
 
             const iconFeature = new Feature({
               geometry: new Point(fromLonLat([oneAddress.coordinatesOfTownsLon, oneAddress.coordinatesOfTownsLat])),

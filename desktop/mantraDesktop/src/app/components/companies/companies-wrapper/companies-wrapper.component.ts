@@ -21,18 +21,7 @@ export class CompaniesWrapperComponent implements OnInit {
     });
   }
 
-  updateCompany(company){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = company;
-    const dialogRef = this.dialog.open(AddCompanyComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(value => {
-      if (value === undefined){
-        return;
-      }else {
 
-      }
-    });
-  }
 
   addCompany(){
     const dialogConfig = new MatDialogConfig();

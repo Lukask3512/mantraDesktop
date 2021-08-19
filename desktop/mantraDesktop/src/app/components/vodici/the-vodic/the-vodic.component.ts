@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import Dispecer from '../../../models/Dispecer';
 import {DispecerService} from '../../../services/dispecer.service';
 import {FormBuilder} from '@angular/forms';
@@ -9,41 +9,51 @@ import {DipecerPravaComponent} from '../../dialogs/dipecer-prava/dipecer-prava.c
 import Vodic from '../../../models/Vodic';
 import {VodicService} from '../../../services/vodic.service';
 import {NewVodicDialogComponent} from '../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-the-vodic',
   templateUrl: './the-vodic.component.html',
   styleUrls: ['./the-vodic.component.scss']
 })
-export class TheVodicComponent implements OnInit {
-  @Input() vodic: Vodic;
+export class TheVodicComponent implements OnInit, OnChanges {
+  @Input() vodici: Vodic[];
   vodicForm: any;
+
+  dataSource;
+  displayedColumns: string[] = ['meno', 'priezvisko', 'cislo', 'email', 'update', 'delete'];
 
   constructor(private vodicService: VodicService, private field: FormBuilder, public dataService: DataService,
               private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-
+  ngOnChanges(changes: SimpleChanges){
+    if (changes.vodici.currentValue) {
+      this.dataSource = new MatTableDataSource(changes.vodici.currentValue);
+    }
   }
 
-  deleteVodic(){
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource(this.vodici);
+  }
+
+  deleteVodic(vodic){
     const dialogRef = this.dialog.open(DeleteDispecerComponent, {
-      data: {dispecer: this.vodic}
+      data: {dispecer: vodic}
     });
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;
       }else {
-        this.vodicService.deleteVodic(this.vodic.id);
+        this.vodicService.deleteVodic(vodic.id);
       }
     });
   }
 
-  updateVodic(){
+  updateVodic(vodic){
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '23em';
     dialogConfig.data = {
-      vodic: this.vodic
+      vodic: vodic
     };
     const dialogRef = this.dialog.open(NewVodicDialogComponent, dialogConfig);
 

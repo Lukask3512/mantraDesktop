@@ -31,14 +31,19 @@ export class PackageService {
     this.packagesCollection = this.afs.collection<any>('packages');
 
     this.addressService.address$.subscribe(allAddresses => {
-      this.myPackages = []
+      // this.myPackages = []
       allAddresses.forEach(jednaAdresa => {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
               var detail: DeatilAboutAdresses = balik;
               detail.id = onePackageId;
-              this.myPackages.push(detail);
+              if (this.myPackages.find(onePack => onePack.id === detail.id)){
+                const idPackagu = this.myPackages.findIndex(onePack => onePack.id === detail.id);
+                this.myPackages[idPackagu] = detail;
+              }else{
+                this.myPackages.push(detail);
+              }
               this._packages.next(this.myPackages.concat(this.myPackagesOffer));
             })
           }
@@ -47,14 +52,19 @@ export class PackageService {
     });
 
     this.addressService.offerAddresses$.subscribe(allAddresses => {
-      this.myPackagesOffer = []
+      // this.myPackagesOffer = []
       allAddresses.forEach(jednaAdresa => {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
               var detail: DeatilAboutAdresses = balik;
               detail.id = onePackageId;
-              this.myPackagesOffer.push(detail);
+              if (this.myPackagesOffer.find(onePack => onePack.id === detail.id)){
+                const idPackagu = this.myPackagesOffer.findIndex(onePack => onePack.id === detail.id);
+                this.myPackagesOffer[idPackagu] = detail;
+              }else{
+                this.myPackagesOffer.push(detail);
+              }
               this._packages.next(this.myPackages.concat(this.myPackagesOffer));
             })
           }

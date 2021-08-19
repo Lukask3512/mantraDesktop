@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/login/_models/user';
+import Route from '../../app/models/Route';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -15,7 +17,8 @@ export class AccountService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private firebaseAuth: AngularFireAuth
+    private firebaseAuth: AngularFireAuth,
+    private _snackBar: MatSnackBar
   ) {
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
@@ -42,18 +45,31 @@ export class AccountService {
     this.firebaseAuth
       .signInWithEmailAndPassword(email, password)
       .then(value => {
-        console.log('Nice, it worked!');
-        console.log(value);
+        // console.log('Nice, it worked!');
+        // console.log(value);
         user.next(value);
       })
       .catch(err => {
-        console.log('Something went wrong:',err.message);
-        user.next(false)
+        // console.log('Something went wrong:',err.message);
+        this.openSnackBar('Nespravne heslo', 'Ok');
+        user.next(false);
       });
-    return user
+    return user;
+  }
+
+  passwordReset(email) {
+    this.firebaseAuth.sendPasswordResetEmail(email)
+      .then( resp => console.log('sent!') )
+      .catch( error => console.log('failed to send', error) );
   }
 
   logout() {
     this.firebaseAuth.signOut();
+  }
+
+  openSnackBar(message: string, action: string) {
+    const snackBarRef = this._snackBar.open(message, action, {
+      duration: 5000
+    });
   }
 }

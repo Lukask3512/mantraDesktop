@@ -26,6 +26,9 @@ export class ShowDetailDialogComponent implements OnInit {
       this.car = allCars.find(oneCar => oneCar.id === this.data.carId);
     });
     this.detail = this.packageService.myPackages.find(onePackage => onePackage.id === this.data.detailId);
+    if (!this.detail){
+      this.detail = this.packageService.myPackagesOffer.find(onePackage => onePackage.id === this.data.detailId);
+    }
     this.zobrazBednuVAframe();
   }
 

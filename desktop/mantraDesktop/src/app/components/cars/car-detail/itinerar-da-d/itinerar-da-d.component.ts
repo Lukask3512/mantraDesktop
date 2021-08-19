@@ -7,6 +7,11 @@ import {PackageService} from '../../../../services/package.service';
 import Cars from '../../../../models/Cars';
 import {CarService} from '../../../../services/car.service';
 import {ok} from 'assert';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {AddCarDialogComponent} from '../../../dialogs/add-car-dialog/add-car-dialog.component';
+import {DeleteFromItiComponent} from '../../../dialogs/delete-from-iti/delete-from-iti.component';
+import {EditInfoComponent} from '../../../dialogs/edit-info/edit-info.component';
+import {AddressService} from '../../../../services/address.service';
 
 @Component({
   selector: 'app-itinerar-da-d',
@@ -20,7 +25,8 @@ export class ItinerarDaDComponent implements OnInit {
   car: Cars;
   itiChanged = false;
   constructor(private _snackBar: MatSnackBar,  public routeStatus: RouteStatusService,
-              private packageService: PackageService, private carService: CarService) { }
+              private packageService: PackageService, private carService: CarService,
+              private dialog: MatDialog, private addressService: AddressService) { }
 
   ngOnInit(): void {
   }
@@ -111,7 +117,7 @@ export class ItinerarDaDComponent implements OnInit {
           this.detail.forEach((oneDetail, townId) => {
             if (oneDetail.townsArray === undefined){
               oneDetail.forEach((oneDetailId, packageId) => {
-                if (oneDetailId.id === oneId){
+                if (oneDetailId && oneDetailId.id === oneId){
                   detailAr.detailArray.push(packageId);
                   detailAr.townsArray.push(townId);
                   detailAr.packageId.push(oneDetailId.id);
@@ -129,6 +135,53 @@ export class ItinerarDaDComponent implements OnInit {
       }
 
     });
+  }
+
+  deleteTownFromIti(address: Address){
+    this.address = this.address.filter(adresa => adresa.id !== address.id);
+    this.car.itinerar = this.car.itinerar.filter(adresaId => adresaId !== address.id);
+    this.carService.updateCar(this.car, this.car.id);
+    console.log(address);
+  }
+
+  openAddDialogToDelete(adresa: Address) {
+    console.log(adresa)
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    dialogConfig.data = {
+      adresa
+    };
+    const dialogRef = this.dialog.open(DeleteFromItiComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        this.deleteTownFromIti(adresa);
+      }
+    });
+  }
+
+  openAddDialogToEditInfo(adresa: Address) {
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    const routeInfo =  adresa.aboutRoute;
+    dialogConfig.data = {
+      routeInfo
+    };
+    const dialogRef = this.dialog.open(EditInfoComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        this.editInfoAddress(adresa, value.routeInfo);
+      }
+    });
+  }
+
+  editInfoAddress(adresa: Address, info){
+    const adresaSInfom = this.address.find(oneAdd => oneAdd.id === adresa.id);
+    adresaSInfom.aboutRoute = info;
+    this.addressService.updateAddress(adresaSInfom);
   }
 
   openSnackBar(message: string, action: string) {

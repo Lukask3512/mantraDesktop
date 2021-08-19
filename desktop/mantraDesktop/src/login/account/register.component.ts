@@ -96,14 +96,19 @@ export class RegisterComponent implements OnInit {
               }
             }else{
               this.openSnackBar('Licencia vyprsala.', 'Ok');
-              console.log('not valid license');
             }
           });
+        }else{
+          this.openSnackBar('Pouzivatel nenajdeny', 'Ok');
         }
       });
 
     });
     this.email = this.password = '';
+  }
+
+  resetPass(){
+    this.accountService.passwordReset(this.email);
   }
 
   openSnackBar(message: string, action: string) {

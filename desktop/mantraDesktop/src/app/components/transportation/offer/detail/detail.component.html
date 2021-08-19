@@ -6,6 +6,7 @@
     <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
   </div>
 </header>
+<button (click)="openAllDetailDialog()">Detail</button>
 <div  class="wrapper">
     <app-drag-and-drop-list #dropList
                             [address]="this.address"

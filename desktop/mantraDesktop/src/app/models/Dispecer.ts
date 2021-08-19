@@ -8,6 +8,8 @@ export default class Dispecer {
   email: string;
   createdBy?: string;
   myCars?: string[];
+  allCars: boolean;
   myPrives?: string[];
+  allPrives: boolean;
   companyId: string;
 }

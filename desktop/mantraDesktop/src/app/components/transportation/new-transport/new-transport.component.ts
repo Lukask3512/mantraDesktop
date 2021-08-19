@@ -29,6 +29,7 @@ import {ShowDetailComponent} from "./show-detail/show-detail.component";
 import {PackageService} from "../../../services/package.service";
 import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
 import {Router} from '@angular/router';
+import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 
 
 
@@ -135,7 +136,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
           var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
           adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
           this.addresses = adresy;
-          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.route.carId);
+          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
           this.addresses.forEach(oneAddress => {
             var myPackages = [];
             var detailAr = {detailArray: [], townsArray: [], packageId: []}
@@ -181,7 +182,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
             {
 
               this.notifyChildren(this.route.id);
-              this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.route);
+              this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
             },
             800);
         }else{
@@ -234,11 +235,11 @@ else{
     setTimeout(() =>
       {
         if (this.carId != undefined || this.carId !=  null){
-          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.route);
+          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
 
         }
         else{
-          this.child.notifyMe(this.addresses,undefined, this.route);
+          this.child.notifyMe(this.addresses,undefined , this.car);
 
         }
       },
@@ -632,6 +633,9 @@ else{
   }
 
   vylozeneVsetko(){
+    if (this.addresses.length <= 0 || this.addresses == null){
+      return true;
+    }
     const vylozene = this.dataService.vsetkoVylozeneGet;
       if (vylozene){
         return false;
@@ -639,5 +643,19 @@ else{
         return true;
       }
 
+  }
+
+  openAllDetailDialog(){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.data = {
+      addresses: this.addresses,
+    };
+    const dialogRef = this.dialog.open(AllDetailAboutRouteDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
   }
 }

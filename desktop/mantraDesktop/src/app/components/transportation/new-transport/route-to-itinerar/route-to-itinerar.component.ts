@@ -195,6 +195,9 @@ export class RouteToItinerarComponent implements OnInit {
     }
   }
 
+  checkIndex(indexOfElement){
+    return indexOfElement !== 0;
+  }
 
   // TODO tu je problem , uklada sa novy package do povodnej adresy, idtown je 0 a nova adresa napr na 4 pozicii, takze novy package je v 0
   async addToItinerar(){

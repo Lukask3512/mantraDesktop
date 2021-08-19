@@ -1,7 +1,7 @@
 
 <div *ngIf="offer" class="example-container">
-  <h2>Ponuka</h2>
-  <h2>Vyzaduje:
+  <h2>Ponuka <button (click)="openAllDetailDialog()">Podrobne info</button></h2>
+  <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">Vyzaduje:
     <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">ADR</h3>
     <h3 [class]="chooseColor('ruka')" *ngIf="checkRukaAdrTeplota(realOffer).ruka">Ruka</h3>
     <h3  *ngIf="checkRukaAdrTeplota(realOffer).teplota.length > 0">

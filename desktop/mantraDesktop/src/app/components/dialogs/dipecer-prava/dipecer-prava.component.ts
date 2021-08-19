@@ -122,7 +122,10 @@ export class DipecerPravaComponent implements OnInit {
 
   updateDispecer(){
     if (this.data){
+      this.dispecer.allCars = this.allCars;
+      this.dispecer.allPrives = this.allPrives;
       this.dispecerService.updateDispecer(this.dispecer);
+      this.dialogRef.close();
     }
     else {
       var valuesForm: Dispecer = this.assignToDirector();
@@ -132,6 +135,8 @@ export class DipecerPravaComponent implements OnInit {
       this.dispecer.email = valuesForm.email;
       this.dispecer.createdBy = valuesForm.createdBy;
       this.dispecer.companyId = this.dataService.getDispecer().companyId;
+      this.dispecer.allCars = this.allCars;
+      this.dispecer.allPrives = this.allPrives;
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
         if (user.length > 0){
           // tento pouzivatel uz je v databaze
@@ -139,12 +144,30 @@ export class DipecerPravaComponent implements OnInit {
           return;
         }
         else {
-          this.accountService.signup(this.dispecerForm.get('email').value, '123456');
+          this.accountService.signup(this.dispecerForm.get('email').value, '123456').then( () => {
+            this.dispecerService.createDispecer(this.assignToDirector()).then((pro) => {
+              console.log(pro)
+
+            }).catch((err) => {
+              console.log(err)
+            }).finally(() => {
+              this.dialogRef.close();
+            });
+          }).catch((err) => { // uzivatel je registrovany, ale v ziadnej spolocnosti nie je
+            console.log('Error' + err)
+            this.dispecerService.createDispecer(this.assignToDirector()).then((pro) => {
+              console.log(pro)
+            }).catch((err) => {
+              console.log(err)
+            }).finally(() => {
+              this.dialogRef.close();
+            });
+          });
 
           // setTimeout(() =>  {
-            this.dispecerService.createDispecer(this.assignToDirector());
 
-            this.dispecerForm.reset();
+
+            // this.dispecerForm.reset();
             this.dialogRef.close();
           // }, 400);
 
@@ -159,6 +182,12 @@ export class DipecerPravaComponent implements OnInit {
     this.dispecerForm.controls['lastName'].setValue(this.data.dispecer.surname);
     this.dispecerForm.controls['phoneNumber'].setValue(this.data.dispecer.phone);
     this.dispecerForm.controls['email'].setValue(this.data.dispecer.email);
+    if (this.data.dispecer.allCars){
+      this.allCars = true;
+    }
+    if (this.data.dispecer.allPrives){
+      this.allPrives = true;
+    }
   }
 
   assignToDirector(): Dispecer{
@@ -179,6 +208,8 @@ export class DipecerPravaComponent implements OnInit {
       status: false,
       createdBy: createdBy,
       companyId: this.dataService.getDispecer().companyId,
+      allCars: this.allCars,
+      allPrives: this.allPrives,
     };
   }
 }

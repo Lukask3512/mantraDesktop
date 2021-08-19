@@ -1,0 +1,43 @@
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel *ngFor="let address of this.addresses; let i = index">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{address.nameOfTown}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{address.type}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    Baliky:
+    <div *ngIf="this.detail && this.detail[i] != undefined" class="bednaWrapper">
+      <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
+      <div class="bednaWrapper" *ngIf="this.detail[i].townsArray">
+        <div (click)="openPackageDialogTowns(i, indexik)" class="bedna" *ngFor="let detail of this.detail[i].townsArray; let indexik = index">
+          <span class="numberOfBedna">{{indexik + 1}}</span>
+        </div>
+      </div>
+      <div class="bednaWrapper" *ngIf="!this.detail[i].townsArray">
+        <div (click)="openPackageDialog(i, indexik)" class="bedna" *ngFor="let detail of this.detail[i]; let indexik = index">
+          <span class="numberOfBedna">{{indexik + 1}}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <p *ngIf="address.ruka">Potrebna ruka</p>
+    <p *ngIf="address.adr">Potrebny rezim pre specialny naklad</p>
+    <p>Obluzny cas: {{address.obsluznyCas}}hod</p>
+    <p *ngIf="address.datumPrijazdu != '0'; else elseDatumOd">Datum mozneho prijazdu od{{address.datumPrijazdu}}</p>
+    <ng-template #elseDatumOd><p>Datum mozneho prijazdy od: nerozhoduje</p></ng-template>
+    <p *ngIf="address.datumLastPrijazdy != '0'; else elseDatumDo">Datum mozneho prijazdu do{{address.datumLastPrijazdy}}</p>
+    <ng-template #elseDatumDo><p>Datum mozneho prijazdy od: nerozhoduje</p></ng-template>
+    <p  *ngIf="address.casPrijazdu != '0'; else elseCasOd">Cas prijazdy od {{address.casPrijazdu}}</p>
+    <ng-template #elseCasOd><p>Cas mozneho prijazdu od: nerozhoduje</p></ng-template>
+    <p  *ngIf="address.casLastPrijazdu != '0'; else elseCasDo">Cas prijazdy od {{address.casLastPrijazdu}}</p>
+    <ng-template #elseCasDo><p>Cas mozneho prijazdu do: nerozhoduje</p></ng-template>
+    <p>{{address.teplota}}</p>
+    <p></p>
+  </mat-expansion-panel>
+</mat-accordion>
+
+

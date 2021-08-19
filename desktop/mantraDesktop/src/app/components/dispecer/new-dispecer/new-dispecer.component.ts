@@ -45,25 +45,6 @@ export class NewDispecerComponent implements OnInit {
   //
   // }
 
-  // assignToDirector(): Dispecer{
-  //   var createdBy;
-  //   if (this.dataService.getDispecer().createdBy != 'master'){
-  //     // console.log("master" + this.dataService.getDispecer())
-  //     createdBy = this.dataService.getDispecer().createdBy;
-  //   }else{
-  //     // console.log("idecko" + this.dataService.getDispecer())
-  //
-  //     createdBy = this.dataService.getDispecer().id;
-  //   }
-  //   return {
-  //     name: this.dispecerForm.get('firstName').value,
-  //     surname: this.dispecerForm.get('lastName').value,
-  //     phone: this.dispecerForm.get('phoneNumber').value,
-  //     email: this.dispecerForm.get('email').value,
-  //     status: false,
-  //     createdBy: createdBy.toString()
-  //   };
-  // }
 
   openDialog(){
     const dialogConfig = new MatDialogConfig();

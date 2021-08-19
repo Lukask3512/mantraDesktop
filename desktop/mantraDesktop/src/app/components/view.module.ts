@@ -68,6 +68,9 @@ import { GetInfoAboutCompanyComponent } from './companies/get-info-about-company
 import { ShowDetailDialogComponent } from './dialogs/show-detail-dialog/show-detail-dialog.component';
 import { GetNameOfDriverComponent } from './vodici/get-name-of-driver/get-name-of-driver.component';
 import { UpdateOfferPriceComponent } from './dialogs/update-offer-price/update-offer-price.component';
+import {MatSortModule} from '@angular/material/sort';
+import { AllDetailAboutRouteDialogComponent } from './dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 @NgModule({
@@ -87,7 +90,8 @@ import { UpdateOfferPriceComponent } from './dialogs/update-offer-price/update-o
       PosliPonukuComponent, UlozeniePonukyComponent, DeleteFromItiComponent,
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
-      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent, ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent
+      AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -106,25 +110,27 @@ import { UpdateOfferPriceComponent } from './dialogs/update-offer-price/update-o
         ItinerarDaDComponent,
         CarNakladComponent,
         GetNameOfDriverComponent,
-
+      AllDetailAboutRouteDialogComponent
     ],
-  imports: [
-    CommonModule,
-    ViewRoutingModule,
-    MatTableModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MatStepperModule,
-    DragDropModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatDatepickerModule,
-
-  ],
+    imports: [
+        CommonModule,
+        ViewRoutingModule,
+        MatTableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatStepperModule,
+        DragDropModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatDatepickerModule,
+        MatSortModule,
+        MatExpansionModule,
+      CommonModule
+    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ViewModule { }

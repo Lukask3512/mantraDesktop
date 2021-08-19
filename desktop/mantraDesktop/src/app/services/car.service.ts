@@ -22,7 +22,7 @@ export class CarService {
       const dispecer: Dispecer = this.dataService.getDispecer();
       // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
       let vyfiltrovanerRouty = res;
-      if (dispecer.createdBy !== 'master'){
+      if (dispecer.createdBy !== 'master' && !dispecer.allCars){
         vyfiltrovanerRouty = res.filter(oneCar =>
           dispecer.myCars.includes(oneCar.id));
       }

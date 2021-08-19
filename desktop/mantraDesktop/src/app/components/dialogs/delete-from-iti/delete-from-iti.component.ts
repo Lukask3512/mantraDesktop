@@ -13,6 +13,7 @@ export class DeleteFromItiComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {adresa: Address}, public dialogRef: MatDialogRef<DeleteFromItiComponent>) { }
 
   ngOnInit(): void {
+    console.log(this.data)
   }
 
   close(){

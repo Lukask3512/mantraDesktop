@@ -24,11 +24,10 @@ export class PrivesService {
       const dispecer: Dispecer = this.dataService.getDispecer();
       // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
       let vyfiltrovanerRouty = res;
-      if (dispecer.createdBy !== 'master'){
+      if (dispecer.createdBy !== 'master' && !dispecer.allPrives){
         vyfiltrovanerRouty = res.filter(onePrives =>
           dispecer.myPrives.includes(onePrives.id));
       }
-      console.log(":som v privese")
       this._prives.next(vyfiltrovanerRouty);
       this.allPrives = vyfiltrovanerRouty;
     });

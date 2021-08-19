@@ -4,21 +4,22 @@
   <p>Vyska: {{this.detail.sizeV}}</p>
   <p>Dlzka: {{this.detail.sizeD}}</p>
   <p>Vaha: {{this.detail.weight}}</p>
+  <p>Stohovaltenost: {{this.detail.stohovatelnost}}</p>
+
   <h3>Moznosti nalozenia:</h3>
   <div *ngIf="this.detail.polohaNakladania.charAt(0) != '0' || this.detail.polohaNakladania.charAt(1) != '0'
    || this.detail.polohaNakladania.charAt(2) != '0'; else elseBlock">
-    <p *ngIf="this.detail.polohaNakladania.charAt(0) != '0'">Zo zadu{{this.detail.polohaNakladania.charAt(0)}}</p>
-    <p *ngIf="this.detail.polohaNakladania.charAt(1) != '0'">Z boku{{this.detail.polohaNakladania.charAt(1)}}</p>
-    <p *ngIf="this.detail.polohaNakladania.charAt(2) != '0'">z vrchu{{this.detail.polohaNakladania.charAt(2)}}</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(0) != '0'">Zo zadu</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(1) != '0'">Z boku</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(2) != '0'">z vrchu</p>
   </div>
-  <div #elseBlock>
+  <ng-template #elseBlock>
     <p>Nerozhoduje</p>
-  </div>
+  </ng-template>
 
-  <p>Stohovaltenost: {{this.detail.stohovatelnost}}</p>
   <p>Vyska nakladadej hrany:
     <span *ngIf="this.detail.vyskaNaklHrany == -1; else elseVyska">Nerozhoduje</span>
-    <span #elseVyska>{{this.detail.vyskaNaklHrany}}</span>
+    <ng-template #elseVyska>{{this.detail.vyskaNaklHrany}}</ng-template>
   </p>
 </section>
 

@@ -100,7 +100,7 @@
     </mat-horizontal-stepper>
 
   </form>
-  <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="example_c" [disabled]="!companyForm.valid">Pridať</button>
-  <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="example_c" [disabled]="!companyForm.valid">Upraviť</button>
+  <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">Pridať</button>
+  <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">Upraviť</button>
 
 </div>

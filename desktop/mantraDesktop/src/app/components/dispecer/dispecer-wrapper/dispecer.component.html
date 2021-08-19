@@ -1,9 +1,9 @@
 <div class="allWrap" >
 
 <div class="dispecerWrapper">
-  <div *ngFor="let dispecer of allDispeces">
-    <app-the-dispecer [dispecer]="dispecer"></app-the-dispecer>
-  </div>
+<!--  <div *ngFor="let dispecer of allDispeces">-->
+    <app-the-dispecer [dispecer]="allDispeces" ></app-the-dispecer>
+<!--  </div>-->
 
   <app-new-dispecer *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-dispecer>
   <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">

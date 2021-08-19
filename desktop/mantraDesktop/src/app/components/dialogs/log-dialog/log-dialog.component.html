@@ -11,7 +11,6 @@
     <tr>
       <!--    <th>Dessert (100g)</th>-->
       <th>Mesto</th>
-      <th>Typ</th>
       <th>Status</th>
       <th>Cas</th>
       <th>Z. sirka</th>
@@ -22,7 +21,6 @@
 
     <tr *ngFor="let jedenLog of jedenAllLog.place; let j = index;">
       <td>{{deleteSpecialChar(jedenAllLog.place[j])}}</td>
-      <td *ngIf="jedenAllLog.type && jedenAllLog.type[j] != undefined">{{deleteSpecialChar(jedenAllLog.type[j])}}</td>
       <td>{{deleteSpecialChar(this.routeStatusService.getStatus(jedenAllLog.state[j]))}}</td>
       <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
       <td>{{jedenAllLog.lattitude[j]}}</td>

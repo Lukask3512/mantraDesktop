@@ -1,3 +1,4 @@
+<h3 *ngIf="!this.address || this.address.length === 0">Itinerar je prazdny</h3>
 <div  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
   <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>

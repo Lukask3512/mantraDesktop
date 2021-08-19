@@ -16,6 +16,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {LogDialogComponent} from '../../../dialogs/log-dialog/log-dialog.component';
 import {UpdateOfferPriceComponent} from '../../../dialogs/update-offer-price/update-offer-price.component';
 import {OfferPriceComponent} from '../../../dialogs/offer-price/offer-price.component';
+import {AllDetailAboutRouteDialogComponent} from '../../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 
 @Component({
   selector: 'app-detail',
@@ -297,6 +298,20 @@ export class DetailComponent implements AfterViewInit {
 
 
     const dialogRef = this.dialog.open(LogDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
+  }
+
+  openAllDetailDialog(){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.data = {
+      addresses: this.address,
+    };
+    const dialogRef = this.dialog.open(AllDetailAboutRouteDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;

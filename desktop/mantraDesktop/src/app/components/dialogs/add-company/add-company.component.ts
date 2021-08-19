@@ -60,6 +60,7 @@ export class AddCompanyComponent implements OnInit {
         this.companyForm.controls.poistkaToggle.setValue(true);
       }
       this.dispecerForm.disable();
+      // this.dispecerForm.set = true;
       this.getDispecer();
     }
   }
@@ -86,7 +87,6 @@ export class AddCompanyComponent implements OnInit {
         }
         else {
           const podariloSa = await this.accountService.signup(this.dispecerForm.get('email').value, '123456');
-          console.log(podariloSa);
 
           const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
 
@@ -97,6 +97,13 @@ export class AddCompanyComponent implements OnInit {
         }
       });
     }
+  }
+
+  checkFormsValid(){
+    if (this.data){ // ked upravujem tak nekontrolujem ci je dispecer validny, lebo sa neda upravcovat
+      return !this.companyForm.valid;
+    }
+    return !(this.dispecerForm.valid && this.companyForm.valid);
   }
 
   updatePoistenieForm(){
@@ -110,6 +117,7 @@ export class AddCompanyComponent implements OnInit {
 
   updateCompany(){
     this.companyService.updateCompany(this.assignToCompany(), this.company.id);
+    this.dialogRef.close();
   }
   // this.carForm.get('nosnost').value,
   assignToCompany(): Company {
@@ -140,7 +148,9 @@ export class AddCompanyComponent implements OnInit {
       email: this.dispecerForm.get('email').value,
       status: false,
       createdBy: 'master',
-      companyId: idOfCompany
+      companyId: idOfCompany,
+      allPrives: true,
+      allCars: true
     };
   }
 

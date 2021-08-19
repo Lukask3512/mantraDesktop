@@ -26,11 +26,11 @@
 
       <span *ngIf="this.address[i].estimatedTimeArrival">ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
 
-<!--      <img  *ngIf="checkFinished() && draggable" (click)="deleteTownFromIti(this.address[i])" class="delete" src="assets/logo/delete.svg">-->
+      <img (click)="openAddDialogToDelete(this.address[i])" class="delete" src="assets/logo/delete.svg">
     </div>
     <div class="routeTown routeInfo">
       <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
-<!--      <img *ngIf="checkFinished()" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">-->
+      <img (click)="openAddDialogToEditInfo(this.address[i])" class="delete" src="assets/logo/edit.svg">
     </div>
   </div>
 </div>
