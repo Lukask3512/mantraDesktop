@@ -884,37 +884,6 @@ export class MapComponent implements AfterViewInit {
       });
 
   });
-    // var vectorSource = new VectorSource({
-    //   features: this.places
-    // });
-    //
-    // this.map.removeLayer(this.vectorLayerAdress)
-    // this.vectorLayerAdress = new VectorLayer({
-    //   source: vectorSource,
-    // });
-    // this.vectorLayerAdress.setZIndex(2);
-    // this.map.addLayer(this.vectorLayerAdress);
-    // if (vectorSource.getFeatures()[0] != undefined) {
-    //
-    //
-    //   var feature = vectorSource.getFeatures()[0];
-    //   var polygon = feature.getGeometry();
-    //
-    //   setTimeout( () => {
-    //     var vectorNaZobrazenieAllFeatures = new VectorSource({
-    //       features: this.places.concat(this.cars).concat(this.routes)
-    //     });
-    //
-    //     if (this.firstZoomAddress == false){
-    //       this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-    //         duration: 800} )
-    //       this.firstZoomAddress = true;
-    //     }
-    //   }, 1500 );
-    //
-    //
-    // }
-
   }
 
   estimatedTimeToLocal(dateUtc){
@@ -927,16 +896,7 @@ export class MapComponent implements AfterViewInit {
 
   openAddDialog(route: Route, newRoute: boolean, routeId: string) {
     const dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    //   routesTowns: route.nameOfTowns,
-    //   routesLat: route.coordinatesOfTownsLat,
-    //   routesLon: route.coordinatesOfTownsLon,
-    //   routesType: route.type,
-    //   routeId: routeId,
-    //   routeStatus: route.status,
-    //   aboutRoute: route.aboutRoute,
-    //   newRoute: newRoute
-    // };
+
     const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       console.log(value);
@@ -1059,11 +1019,6 @@ export class MapComponent implements AfterViewInit {
         // tot si priradujem detail a maxVahu ponuky
         const detailArray = [];
         let prepravasDetailom;
-        // oneRouteOffer.detailsAboutAdresses.forEach(detail => { // prechadzam detailami
-        //   this.routeDetailService.offerDetails$.subscribe(allDetails => {
-        //     detailArray.push(allDetails.find(oneMyDetail => oneMyDetail.id == detail));
-        //   });
-        // });
         let maxVaha = 0;
         let sumVaha = 0;
 
@@ -1110,12 +1065,8 @@ export class MapComponent implements AfterViewInit {
 
 
             if (this.vectorLayerCoordinates !== undefined) {
-          // var routeLine = this.vectorLayerCoordinates.getSource().getFeatures().find(oneFeature => oneFeature.get('name') == route.id);
 
-          // console.log(this.vectorLayerCoordinates.getFeatures())
-
-          // console.log(this.vectorLayerOffersRoutes.getDataFeatures())
-          const sediVzdialenost = false;
+              const sediVzdialenost = false;
               }
             let sediVaha = false;
             let sediVahaYellow = false;
@@ -1284,10 +1235,7 @@ export class MapComponent implements AfterViewInit {
                   prepravasDetailom.adresyVPonuke[0].coordinatesOfTownsLat];
                 maxVzdialenostOdCelehoItinerara = this.countDistancePoints(from, to);
               }
-              console.log(vopchaSa);
-              console.log(maxVzdialenostOdCelehoItinerara);
-              console.log(sediVaha);
-              console.log(sediVahaYellow);
+
               const prekrocil = vopchaSa.prekrocenieOPercenta[0];
 
               if (sediVaha && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
@@ -1304,10 +1252,6 @@ export class MapComponent implements AfterViewInit {
                 zltePrepravy.push({...car, vopchaSa});
                 jednaPonuka.flag = 2;
               }
-              // else if ((sediVahaYellow && !sediVaha) && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
-              //   maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
-              //   zltePrepravy.push({...car, vopchaSa});
-              // }
             }
 
             zltePrepravy = zltePrepravy.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
@@ -1562,6 +1506,8 @@ export class MapComponent implements AfterViewInit {
         if (onePonuka.id === this.offersToShow.id){
           this.offersToShow = onePonuka;
           this.carIti.setPonuka(this.offersToShow);
+          this.chooseCar.setFarby(this.offersToShow);
+          this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
         }
       });
     }
@@ -1575,10 +1521,6 @@ export class MapComponent implements AfterViewInit {
       // draw lines
       const routeString = new LineString(coordinatesToArray)
         .transform('EPSG:4326', 'EPSG:3857');
-
-      // var indexInArray = this.offersFromDatabase.findIndex(onerRute => onerRute == route)
-      // this.offersFromDatabase[indexInArray].
-      // console.log(routeString.getLength())
 
       const routeFeature = new Feature({
         type: 'offer',
@@ -1778,36 +1720,6 @@ export class MapComponent implements AfterViewInit {
       this.map.addLayer(this.vectorLayerOffersRoutesRed);
     }
 
-
-
-    // var vectorSourceGreen = new VectorSource({
-    //   features: this.offersGreen
-    // });
-    //
-    // var vectorSourceYellow = new VectorSource({
-    //   features: this.offersYellow
-    // });
-    //
-    // var vectorSourceRed = new VectorSource({
-    //   features: this.offersRed
-    // });
-
-    //
-    // this.map.removeLayer(this.vectorLayerOffersRed);
-    // this.map.removeLayer(this.vectorLayerOffersYellow);
-    // this.map.removeLayer(this.vectorLayerOffersGreen);
-
-    // this.vectorLayerOffersGreen = new VectorLayer({
-    //   source: vectorSourceGreen,
-    // });
-    //
-    // this.vectorLayerOffersYellow = new VectorLayer({
-    //   source: vectorSourceYellow,
-    // });
-    //
-    // this.vectorLayerOffersRed = new VectorLayer({
-    //   source: vectorSourceRed,
-    // });
 
     this.vectorLayerAdress.setZIndex(2);
     if (this.vectorLayerOffersGreen){
