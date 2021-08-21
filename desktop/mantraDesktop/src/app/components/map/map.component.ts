@@ -175,23 +175,15 @@ export class MapComponent implements AfterViewInit {
       view: this.view
     });
 
-    // this.carsFromDatabase = this.dataService.getAllCars()
-    new Promise((resolve, reject) => {
-        this.carService.cars$.subscribe(newCars => {
+    this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
           this.addCars(this.carsFromDatabase);
 
           setTimeout(() => {
             this.addRouteNewSystem();
           }, 1000);
-
-          resolve();
         });
-      }).then(() => {
-        // this.addAddresses();
-        // this.addRoute();
 
-      });
 
 
 
@@ -436,7 +428,7 @@ export class MapComponent implements AfterViewInit {
       this.map.addLayer(this.vectorLayerCoordinates);
 
     }else{
-      let feature = this.vectorSourcePreTrasy.getFeatureById(carId);
+      const feature = this.vectorSourcePreTrasy.getFeatureById(carId);
       if (feature){
         this.vectorSourcePreTrasy.removeFeature(feature);
       }
@@ -1245,7 +1237,7 @@ export class MapComponent implements AfterViewInit {
               }else if (sediVaha && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
                 maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil){
                 zltePrepravy.push({...car, vopchaSa});
-                jednaPonuka.flag = 2
+                jednaPonuka.flag = 2;
               }
               else if ((sediVahaYellow && !sediVaha) && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
                 maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
@@ -1276,74 +1268,6 @@ export class MapComponent implements AfterViewInit {
 
   }
 
-  // kontrolaFreeAutOdPonuk(ponuka, maxPrekrocenieVahy, maxPrekrocenieRozmerov, minVzdialenost, maxVzdialenost){
-  //   var jednaPonuka = ponuka
-  //
-  //   this.freeCars.forEach(oneCar => {
-  //     var vopchaSa = this.countFreeSpaceService.countFreeSpace(jednaPonuka.detailArray, null,
-  //     oneCar.id, jednaPonuka, maxPrekrocenieRozmerov, null);
-  //     var adresaMinVzialenost = 100000000;
-  //     var adresaMaxVzdialenost = 0;
-  //     var sediVaha = false;
-  //     var sediVahaYellow = false;
-  //
-  //       if (oneCar.nosnost >= jednaPonuka.maxVaha){
-  //         sediVaha = true;
-  //       }else {
-  //         if ((oneCar.nosnost * maxPrekrocenieVahy) >= jednaPonuka.maxVaha){
-  //           sediVahaYellow = true;
-  //         }
-  //       }
-  //     jednaPonuka.coordinatesOfTownsLat.forEach((oneAdresa, indexTown) => {
-  //         var vzdielenost = this.countDistancePoints([oneCar.longtitude, oneCar.lattitude],
-  //           [jednaPonuka.coordinatesOfTownsLon[indexTown], jednaPonuka.coordinatesOfTownsLat[indexTown]]);
-  //         if (vzdielenost < adresaMinVzialenost) {
-  //           adresaMinVzialenost = vzdielenost;
-  //         }
-  //         if (vzdielenost > adresaMaxVzdialenost) {
-  //           adresaMaxVzdialenost = vzdielenost;
-  //         }
-  //       });
-  //       var flags = 0;
-  //
-  //       var pocetMiestKdeSaVopcha = vopchaSa.poleMiestKdeSaVopcha // ci do mesta vopcha
-  //       var prekrocil = false; //ak false vopcha, ak true tak sa vopcha
-  //       //o uzivatelom definove % - yellow
-  //
-  //     vopchaSa.prekrocenieOPercenta.forEach(onePrekrocenie => {
-  //       if (onePrekrocenie == true){
-  //         prekrocil = true;
-  //       }
-  //     })
-  //
-  //
-  //
-  //       if (sediVaha && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-  //         flags = 3;
-  //         jednaPonuka.zeleneAuta.push(oneCar);
-  //       }else if (sediVaha &&  pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-  //         flags = 2;
-  //         jednaPonuka.zlteAuta.push(oneCar);
-  //       }
-  //       else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && prekrocil){
-  //         flags = 2;
-  //         jednaPonuka.zlteAuta.push(oneCar);
-  //       }
-  //       else if ((sediVahaYellow && !sediVaha) && pocetMiestKdeSaVopcha.length == jednaPonuka.coordinatesOfTownsLat.length &&
-  //         adresaMinVzialenost < minVzdialenost && adresaMaxVzdialenost < maxVzdialenost && !prekrocil){
-  //         flags = 2;
-  //         jednaPonuka.zlteAuta.push(oneCar);
-  //       }
-  //       if (flags > jednaPonuka.flag){
-  //         jednaPonuka.flag = flags;
-  //       }
-  //   })
-  //   return jednaPonuka
-  // }
-
   offersShow(which){
     if (which.vyhovuje){
       this.red = true;
@@ -1372,110 +1296,6 @@ export class MapComponent implements AfterViewInit {
       this.map.removeLayer(this.vectorLayerOffersRoutesRed);
     }
   }
-
-//   countRandomArray(array1, array2){
-//
-//   }
-//
-//   skuskaVzdialenostiOdCiary(){
-//     const routeString = new LineString([[14, 49], [25, 49], [28, 40]])
-//       .transform('EPSG:4326', 'EPSG:3857');
-//     const routeFeature = new Feature({
-//       type: 'offer',
-//       geometry: routeString,
-//       name: 'skuskaLiny'
-//     });
-//
-//     let routeStyle;
-//     routeStyle = new Style({
-//       stroke: new Stroke({
-//         width: 6,
-//         color: [207, 0, 15, 0.45]
-//       })
-//     });
-//     const styles = [];
-//
-//     routeFeature.getGeometry().forEachSegment((start, end) => {
-//       const dx = end[0] - start[0];
-//       const dy = end[1] - start[1];
-//       const rotation = Math.atan2(dy, dx);
-//       // arrows
-//       styles.push(
-//         new Style({
-//           geometry: new Point(end),
-//           image: new Icon({
-//             src: 'assets/logo/arrow.png',
-//             anchor: [0.75, 0.5],
-//             scale: 0.05,
-//             rotateWithView: true,
-//             rotation: -rotation,
-//           }),
-//         })
-//       );
-//     });
-//     styles.push(routeStyle);
-//     routeFeature.setStyle(styles);
-//     this.offersRouteRed.push(routeFeature);
-//     const vectorSourceRoutesRed = new VectorSource({
-//       features: this.offersRouteRed
-//     });
-//     this.vectorLayerOffersRoutesRed = new VectorLayer({
-//       source: vectorSourceRoutesRed,
-//     });
-//     this.map.addLayer(this.vectorLayerOffersRoutesRed);
-//
-//     // bod
-//     const iconFeature = new Feature({
-//       geometry: new Point(fromLonLat([19, 51])),
-//       name: 'adresa.id',
-//       type: 'town'
-//     });
-//
-//     const iconStyle = new Style({
-//         image: new CircleStyle({
-//           radius: 8,
-//           stroke: new Stroke({
-//             color: '#fff'
-//           }),
-//           fill: new Fill({
-//             color: this.getColorByIndex(6)
-//           }),
-//         }),
-//         text: new Text({
-//           text: (1).toString(),
-//           fill: new Fill({
-//             color: '#fff',
-//           }),
-//         })
-//       });
-//
-//     iconFeature.setStyle(iconStyle);
-//
-//     const vectorSource = new VectorSource({
-//     features: [iconFeature]
-//   });
-//
-//   // this.map.removeLayer(this.vectorLayerAdress)
-//     const skusobny = new VectorLayer({
-//     source: vectorSource,
-//   });
-//   // this.vectorLayerAdress.setZIndex(2);
-//     this.map.addLayer(skusobny);
-//
-//
-//
-//   // var coordinateOfNajblizsiBod = routeString.getClosestPoint([18.740801,49.219452])
-//     // toto je cislo od 0 - zaciatok po 1 koniec liny...s tymto bnudem hladat najkratsiu vzdialenost k mojmo bodu
-//     // var coordinateOfNajblizsiBod = routeString.getCoordinateAt(0.5)
-//     // console.log(coordinateOfNajblizsiBod)
-//     // var lonlat = transform(coordinateOfNajblizsiBod, 'EPSG:3857', 'EPSG:4326');
-//     // // var lon = lonlat[0];
-//     // // var lat = lonlat[1];
-//     // console.log(lonlat)
-//     // console.log(this.countDistancePoints(lonlat, [18.740801,49.219452]));
-//     const minVzdialenost = this.countClosesPoint(routeString, [19, 51]);
-//     console.log(minVzdialenost);
-// }
 
     countClosesPoint(routeString, lonLatMy){
       let closesPoint;
@@ -1780,7 +1600,7 @@ export class MapComponent implements AfterViewInit {
 
   // ked kliknem na ponuku a potom na auto, tak odoslem auto s itinerarnom do componentu carIti
   choosenCar(car){
-    let carWithIti = this.carsWithItinerar.find(oneCar => oneCar.id == car.id);
+    const carWithIti = this.carsWithItinerar.find(oneCar => oneCar.id == car.id);
     this.carIti.setCar(carWithIti);
   }
 

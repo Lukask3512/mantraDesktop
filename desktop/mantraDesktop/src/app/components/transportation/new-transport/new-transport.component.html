@@ -26,7 +26,7 @@
 </div>
 
   <div class="addresses">
-  <button (click)="openAllDetailDialog()">Detail</button>
+  <button *ngIf="this.route && this.route.id" (click)="openAllDetailDialog()">Detail</button>
     <app-drag-and-drop-list #dropList
                             (clickedOnRoute)="updateDetailOnTown($event)"
                             [address]="this.addresses"
@@ -37,12 +37,13 @@
                             >
 
     </app-drag-and-drop-list>
-    <div class="changeButtons" *ngIf="checkFinished()" >
+    <div class="changeButtons" *ngIf="checkFinished()" (click)="vylozeneBaliky()" >
 <!--      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.updateDetails()">Odoslať vodičovi</button>-->
       <button class="buttonTransport"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="createMyRoute()">Vytvorit prepravu</button>
       <button class="buttonTransport"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="openOfferDialog()">Poúktnuť spoločnostiam</button>
       <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openAddDialog()">Vybrať vozidlo</button>
       <!--      <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>-->
+      <p *ngIf="!vylozeneBaliky() && this.addresses.length > 0">Musite vylozit vsetky baliky</p>
     </div>
 
       <div *ngIf="this.route && !this.route.id" class="aframe">

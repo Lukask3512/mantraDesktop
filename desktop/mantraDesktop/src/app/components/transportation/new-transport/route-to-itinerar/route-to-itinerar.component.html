@@ -39,4 +39,4 @@
   </div>
 </div>
 
-<button (click)="addToItinerar()">Pridat</button>
+<button [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">Pridat</button>

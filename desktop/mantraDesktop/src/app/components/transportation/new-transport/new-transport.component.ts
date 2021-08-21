@@ -30,6 +30,7 @@ import {PackageService} from "../../../services/package.service";
 import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
 import {Router} from '@angular/router';
 import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 
@@ -96,7 +97,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
               private dataService: DataService, private routeService: RouteService,
               private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService,
               private addressService: AddressService, private packageService: PackageService,
-              private router: Router) { }
+              private router: Router, private _snackBar: MatSnackBar) { }
 
 
 
@@ -632,6 +633,12 @@ else{
     });
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000
+    });
+  }
+
   vylozeneVsetko(){
     if (this.addresses.length <= 0 || this.addresses == null){
       return true;
@@ -642,7 +649,15 @@ else{
       }else{
         return true;
       }
+  }
 
+  vylozeneBaliky(){
+    const vylozene = this.dataService.vsetkoVylozeneGet;
+    if (vylozene){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   openAllDetailDialog(){
