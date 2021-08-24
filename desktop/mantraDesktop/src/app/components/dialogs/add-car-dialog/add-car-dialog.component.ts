@@ -235,7 +235,7 @@ export class AddCarDialogComponent implements OnInit {
       return true;
     }
 
-    if (vodic.myCars.includes(this.data.id)){
+    if (this.data && vodic.myCars.includes(this.data.id)){
       return true;
     }
 

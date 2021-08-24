@@ -20,7 +20,7 @@ export class PrivesWrapperComponent implements OnInit {
   dataSource;
   displayedColumns: string[] = ['ecv', 'update', 'delete'];
   constructor(private privesService: PrivesService, private dataSerice: DataService, private dialog: MatDialog,
-              public routeStatusService: RouteStatusService) { }
+              public routeStatusService: RouteStatusService, private dataService: DataService) { }
   cars;
   sortedData: Cars[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -50,17 +50,27 @@ export class PrivesWrapperComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  getDispecer(){
+    const dispecer = this.dataService.getDispecer();
+    if (dispecer.createdBy === 'master' || dispecer.allCars){
+      return false;
+    }else{
+      return true;
+    }
+  }
 
   deleteCar(car){
-    const dialogRef = this.dialog.open(DeleteCarDialogComponent, {
-      data: {car: car, route: false }
-    });
-    dialogRef.afterClosed().subscribe(value => {
-      if (value === undefined){
-        return;
-      }else {
+    if (!this.getDispecer()) {
+      const dialogRef = this.dialog.open(DeleteCarDialogComponent, {
+        data: {car: car, route: false}
+      });
+      dialogRef.afterClosed().subscribe(value => {
+        if (value === undefined) {
+          return;
+        } else {
 
-      }
-    });
+        }
+      });
+    }
   }
 }

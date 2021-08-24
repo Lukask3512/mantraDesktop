@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {CarService} from "../../../services/car.service";
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
@@ -16,19 +16,22 @@ import {OffNavesDialogComponent} from "../../dialogs/off-naves-dialog/off-naves-
 import {DetailAboutRouteService} from "../../../services/detail-about-route.service";
 import {AddressService} from "../../../services/address.service";
 import {PackageService} from "../../../services/package.service";
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-cars-wrapper',
   templateUrl: './cars-wrapper.component.html',
   styleUrls: ['./cars-wrapper.component.scss']
 })
-export class CarsWrapperComponent implements OnInit {
+export class CarsWrapperComponent implements OnInit, AfterViewInit {
   dataSource;
   displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'detail', 'naves', 'update', 'delete'];
   constructor(private carService: CarService, private dataSerice: DataService, private dialog: MatDialog,
               public routeStatusService: RouteStatusService, public privesService: PrivesService,
               private detailService: DetailAboutRouteService, private addressService: AddressService,
-              private packageService: PackageService) { }
+              private packageService: PackageService, private cookieService: CookieService,
+              private dataService: DataService) { }
   cars;
   sortedData: Cars[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -41,7 +44,7 @@ export class CarsWrapperComponent implements OnInit {
     //   this.dataSource.paginator = this.paginator;
     // });
 
-
+    this.deleteAllCookies()
 
     this.carService.cars$.subscribe(cars => {
       this.cars = cars;
@@ -58,6 +61,27 @@ export class CarsWrapperComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+   deleteAllCookies() {
+    this.cookieService.deleteAll();
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+      var eqPos = cookie.indexOf("=");
+      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+  }
+
+  getDispecer(){
+    const dispecer = this.dataService.getDispecer();
+    if (dispecer.createdBy === 'master' || dispecer.allCars){
+      return false;
+    }else{
+      return true;
+    }
   }
 
   updateCar(car){
@@ -110,37 +134,18 @@ export class CarsWrapperComponent implements OnInit {
   }
 
   deleteCar(car){
+    if (!this.getDispecer()) {
       const dialogRef = this.dialog.open(DeleteCarDialogComponent, {
-        data: {car: car, route: false }
+        data: {car: car, route: false}
       });
       dialogRef.afterClosed().subscribe(value => {
-        if (value === undefined){
+        if (value === undefined) {
           return;
-        }else {
+        } else {
 
         }
       });
+    }
   }
-  // sortData(sort: Sort) {
-  //   const data = this.cars.slice();
-  //   if (!sort.active || sort.direction === '') {
-  //     this.sortedData = data;
-  //     return;
-  //   }
-  //
-  //   console.log(sort)
-  //   this.sortedData = data.sort((a, b) => {
-  //     const isAsc = sort.direction === 'asc';
-  //     switch (sort.active) {
-  //       case 'ecv': return compare(a.ecv, b.ecv, isAsc);
-  //       case 'phoneNumber': return compare(a.phoneNumber, b.phoneNumber, isAsc);
-  //       case 'status': return compare(a.status, b.status, isAsc);
-  //       default: return 0;
-  //     }
-  //   });
-  // }
-
 }
-// function compare(a: number | string, b: number | string, isAsc: boolean) {
-//   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-// }
+

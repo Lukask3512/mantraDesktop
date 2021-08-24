@@ -17,6 +17,15 @@ export class VodiciWrapperComponent implements OnInit {
     });
   }
 
+  getDispecer(){
+    const dispecer = this.dataService.getDispecer();
+    if (dispecer.createdBy === 'master' || dispecer.allCars){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   ngOnInit(): void {
   }
 

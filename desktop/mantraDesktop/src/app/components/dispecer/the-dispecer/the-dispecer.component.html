@@ -26,7 +26,7 @@
 
     <ng-container class="tbl-header" matColumnDef="update">
       <th mat-header-cell *matHeaderCellDef> Upraviť </th>
-      <td mat-cell *matCellDef="let element"> <button class="button" (click)="updatePrava(element)"  >Upraviť</button>  </td>
+      <td mat-cell *matCellDef="let element"> <button [disabled]="getDispecer()" class="button" (click)="updatePrava(element)"  >Upraviť</button>  </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="delete">

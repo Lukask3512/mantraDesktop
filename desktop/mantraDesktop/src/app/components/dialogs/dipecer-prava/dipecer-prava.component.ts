@@ -11,6 +11,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {AccountService} from "../../../../login/_services/account.service";
 import {take} from "rxjs/operators";
 import {NewCarComponent} from "../../cars/new-car/new-car.component";
+import {EmailService} from '../../../services/email/email.service';
 
 @Component({
   selector: 'app-dipecer-prava',
@@ -22,7 +23,8 @@ export class DipecerPravaComponent implements OnInit {
   constructor(private carService: CarService, private privesService: PrivesService,
               private dataService: DataService, @Inject(MAT_DIALOG_DATA) public data: any,
               private dispecerService: DispecerService,  private fb: FormBuilder,
-              private accountService: AccountService, public dialogRef: MatDialogRef<DipecerPravaComponent>) { }
+              private accountService: AccountService, public dialogRef: MatDialogRef<DipecerPravaComponent>,
+              private emailService: EmailService) { }
   cars: Cars[];
   prives: Prives[];
   displayedColumns: string[] = ['ecv', 'prava'];
@@ -120,6 +122,37 @@ export class DipecerPravaComponent implements OnInit {
     }
   }
 
+  sendMail(password){
+    let email  = this.dispecerForm.get('email').value;
+    let header  = 'Vitajte v aplikacii Mantra';
+    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo: ' + password;
+
+    let reqObj = {
+      email: email,
+      header: header,
+      text: text
+    };
+    this.emailService.sendMessage(reqObj).subscribe(data => {
+      console.log(data);
+    });
+  }
+
+  sendMailToRegisteredUser(){
+    let email  = this.dispecerForm.get('email').value;
+    let header  = 'Vitajte v aplikacii Mantra';
+    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo nebolo zmenene. Pokial si heslo nepamatate' +
+      'mozete ho zmenit na stranke http://prototyp.mantra-online.eu. ' ;
+
+    let reqObj = {
+      email: email,
+      header: header,
+      text: text
+    };
+    this.emailService.sendMessage(reqObj).subscribe(data => {
+      console.log(data);
+    });
+  }
+
   updateDispecer(){
     if (this.data){
       this.dispecer.allCars = this.allCars;
@@ -137,6 +170,8 @@ export class DipecerPravaComponent implements OnInit {
       this.dispecer.companyId = this.dataService.getDispecer().companyId;
       this.dispecer.allCars = this.allCars;
       this.dispecer.allPrives = this.allPrives;
+      this.dispecer.myPrives = [];
+      this.dispecer.myCars = [];
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
         if (user.length > 0){
           // tento pouzivatel uz je v databaze
@@ -144,19 +179,23 @@ export class DipecerPravaComponent implements OnInit {
           return;
         }
         else {
-          this.accountService.signup(this.dispecerForm.get('email').value, '123456').then( () => {
-            this.dispecerService.createDispecer(this.assignToDirector()).then((pro) => {
-              console.log(pro)
-
+          const password = Math.random().toString(36).slice(-8);
+          this.accountService.signup(this.dispecerForm.get('email').value, password).then( (registrovany) => {
+            this.dispecerService.createDispecer(valuesForm).then((pro) => {
+              if (registrovany){
+                this.sendMailToRegisteredUser();
+              }else{
+                this.sendMail(password);
+              }
             }).catch((err) => {
-              console.log(err)
+              console.log(err);
             }).finally(() => {
               this.dialogRef.close();
             });
           }).catch((err) => { // uzivatel je registrovany, ale v ziadnej spolocnosti nie je
             console.log('Error' + err)
-            this.dispecerService.createDispecer(this.assignToDirector()).then((pro) => {
-              console.log(pro)
+            this.dispecerService.createDispecer(valuesForm).then((pro) => {
+              this.sendMailToRegisteredUser();
             }).catch((err) => {
               console.log(err)
             }).finally(() => {

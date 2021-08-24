@@ -30,14 +30,18 @@ export class AccountService {
 
 
   signup(email: string, password: string) {
-   return this.firebaseAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Success!', value);
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
+   return new Promise((resolve => {
+     this.firebaseAuth
+       .createUserWithEmailAndPassword(email, password)
+       .then(value => {
+         console.log('Success!', value);
+         resolve(false);
+       })
+       .catch(err => {
+         resolve(true);
+         console.log('Something went wrong:', err.message);
+       });
+   }));
   }
 
   login(email: string, password: string): Subject<any> {

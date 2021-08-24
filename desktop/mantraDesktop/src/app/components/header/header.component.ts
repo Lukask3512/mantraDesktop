@@ -36,9 +36,12 @@ export class HeaderComponent implements OnInit {
     return 'Dashboard';
   }
   logout(){
+    this.router.navigate(['/']);
     this.dataService.setDispecer(null);
     this.accountService.logout();
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 400);
   }
 
 }

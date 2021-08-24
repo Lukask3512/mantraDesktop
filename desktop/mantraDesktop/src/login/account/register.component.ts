@@ -9,6 +9,7 @@ import {DataService} from "../../app/data/data.service";
 import Dispecer from "../../app/models/Dispecer";
 import {GetOneCompanyService} from '../../app/services/companies/get-one-company.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {EmailService} from '../../app/services/email/email.service';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class RegisterComponent implements OnInit {
     private dispecerService: DispecerService,
     private dataService: DataService,
     private companyService: GetOneCompanyService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private emailService: EmailService
   ) { }
 
   ngOnInit() {
@@ -82,6 +84,22 @@ export class RegisterComponent implements OnInit {
     this.email = this.password = '';
   }
 
+  sendMail(){
+    var password = Math.random().toString(36).slice(-8);
+
+    let email  = 'maf3@azet.sk';
+    let header  = 'Vitajte v aplikacii Mantra';
+    let text  = 'Vase prihlasovacie meno: maf3@azet.sk, vase heslo: ' + password;
+
+    let reqObj = {
+      email: email,
+      header: header,
+      text: text
+    }
+    this.emailService.sendMessage(reqObj).subscribe(data => {
+      console.log(data);
+    })
+  }
   login() {
     this.accountService.login(this.email, this.password).subscribe(user => {
       this.dispecerService.getOneDispecer(user.user.email).pipe(take(1)).subscribe(user => {

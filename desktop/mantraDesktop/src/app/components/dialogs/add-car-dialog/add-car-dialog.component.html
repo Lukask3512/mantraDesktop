@@ -4,7 +4,7 @@
   <form class="gridContainer" [formGroup]="carForm">
 
     <mat-horizontal-stepper #stepper>
-      <mat-step [stepControl]="carForm" errorMessage="Chybajuce udaje!">
+      <mat-step>
         <ng-template matStepLabel>EČV, tel. číslo</ng-template>
         <mat-form-field appearance="standard" class="gridItem">
           <mat-label>EČV</mat-label>
@@ -36,7 +36,7 @@
       </mat-step>
 
 
-<mat-step errorMessage="Chybajuce udaje!" [stepControl]="carForm">
+<mat-step errorMessage="Chybajuce udaje!" >
   <ng-template matStepLabel>Veľkosť vozidla</ng-template>
 
   <h3>Veľkosť vozidla</h3>
@@ -78,7 +78,7 @@
   </mat-form-field>
   <h4 *ngIf="checkBiggetSize()">Upozornenie! Veľkost priestoru je väčšia ako veľkosť vozidla!!</h4>
 </mat-step>
-      <mat-step errorMessage="Chybajuce udaje!" [stepControl]="carForm">
+      <mat-step errorMessage="Chybajuce udaje!" >
         <ng-template matStepLabel>Nakladacia hrana</ng-template>
         <mat-slide-toggle (change)="this.updateFormNakHrana()" formControlName="pohyblivaNakHrana"  class="gridItem gridItemStart">
           Pohyblivá nakladacia hrana
@@ -114,7 +114,7 @@
 <!--    <label>Tel. číslo</label>-->
 <!--    <input  type="text" matInput formControlName="phone" >-->
 
-      <mat-step errorMessage="Chybajuce udaje!" [stepControl]="carForm">
+      <mat-step errorMessage="Chybajuce udaje!">
         <ng-template matStepLabel>Váha a nosnosť</ng-template>
 
         <mat-form-field appearance="standard" class="gridItem">
@@ -135,7 +135,7 @@
     </div>
       </mat-step>
 
-      <mat-step errorMessage="Chybajuce udaje!" [stepControl]="carForm">
+      <mat-step errorMessage="Chybajuce udaje!">
         <ng-template matStepLabel>Možnosti naloženia</ng-template>
 
 

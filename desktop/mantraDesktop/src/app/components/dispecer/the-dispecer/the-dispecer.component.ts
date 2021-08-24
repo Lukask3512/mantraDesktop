@@ -33,17 +33,28 @@ export class TheDispecerComponent implements OnInit, OnChanges {
     }
   }
 
+  getDispecer(){
+    const dispecer = this.dataService.getDispecer();
+    if (dispecer.createdBy === 'master' || dispecer.allCars){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   deleteDispecer(dispecer){
-    const dialogRef = this.dialog.open(DeleteDispecerComponent, {
-      data: {dispecer: this.dispecer}
-    });
-    dialogRef.afterClosed().subscribe(value => {
-      if (value === undefined){
-        return;
-      }else {
-        this.dispecerService.deleteDispecer(dispecer.id);
-      }
-    });
+    if (!this.getDispecer()) {
+      const dialogRef = this.dialog.open(DeleteDispecerComponent, {
+        data: {dispecer: this.dispecer}
+      });
+      dialogRef.afterClosed().subscribe(value => {
+        if (value === undefined) {
+          return;
+        } else {
+          this.dispecerService.deleteDispecer(dispecer.id);
+        }
+      });
+    }
   }
 
   updatePrava(dispecer){

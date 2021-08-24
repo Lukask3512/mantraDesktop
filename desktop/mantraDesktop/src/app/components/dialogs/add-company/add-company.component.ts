@@ -9,6 +9,7 @@ import {DispecerService} from '../../../services/dispecer.service';
 import Dispecer from '../../../models/Dispecer';
 import {take} from 'rxjs/operators';
 import {AccountService} from '../../../../login/_services/account.service';
+import {EmailService} from '../../../services/email/email.service';
 
 @Component({
   selector: 'app-add-company',
@@ -42,7 +43,7 @@ export class AddCompanyComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AddCompanyComponent>,
               private fb: FormBuilder, private companyService: CompanyService, private dispecerService: DispecerService,
-              private accountService: AccountService) { }
+              private accountService: AccountService, private emailService: EmailService) { }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -75,6 +76,40 @@ export class AddCompanyComponent implements OnInit {
    });
   }
 
+  sendMailToRegisteredUser(){
+    let email  = this.dispecerForm.get('email').value;
+    let header  = 'Vitajte v aplikacii Mantra';
+    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo nebolo zmenene. Pokial si heslo nepamatate' +
+      'mozete ho zmenit na stranke http://prototyp.mantra-online.eu. ' ;
+
+    let reqObj = {
+      email: email,
+      header: header,
+      text: text
+    };
+    this.emailService.sendMessage(reqObj).subscribe(data => {
+      console.log(data);
+    });
+  }
+
+  sendMail(password){
+
+    let email  = this.dispecerForm.get('email').value;
+    let header  = 'Vitajte v aplikacii Mantra';
+    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo: ' + password +
+      ' http://prototyp.mantra-online.eu';
+
+    let reqObj = {
+      email: email,
+      header: header,
+      text: text
+    }
+    console.log(reqObj)
+    this.emailService.sendMessage(reqObj).subscribe(data => {
+      console.log(data);
+    })
+  }
+
   async saveCompany(){
     if (this.data){
 
@@ -86,7 +121,15 @@ export class AddCompanyComponent implements OnInit {
           return;
         }
         else {
-          const podariloSa = await this.accountService.signup(this.dispecerForm.get('email').value, '123456');
+          var password = Math.random().toString(36).slice(-8);
+
+          await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
+            if (registrovany){
+              this.sendMailToRegisteredUser();
+            }else{
+              this.sendMail(password);
+            }
+          }));
 
           const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
 

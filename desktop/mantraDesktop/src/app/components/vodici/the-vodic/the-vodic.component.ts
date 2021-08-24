@@ -37,6 +37,7 @@ export class TheVodicComponent implements OnInit, OnChanges {
   }
 
   deleteVodic(vodic){
+    if (!this.getDispecer()){
     const dialogRef = this.dialog.open(DeleteDispecerComponent, {
       data: {dispecer: vodic}
     });
@@ -47,6 +48,17 @@ export class TheVodicComponent implements OnInit, OnChanges {
         this.vodicService.deleteVodic(vodic.id);
       }
     });
+    }
+
+  }
+
+  getDispecer(){
+    const dispecer = this.dataService.getDispecer();
+    if (dispecer.createdBy === 'master' || dispecer.allCars){
+      return false;
+    }else{
+      return true;
+    }
   }
 
   updateVodic(vodic){

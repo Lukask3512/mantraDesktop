@@ -5,7 +5,7 @@
       <app-the-vodic [vodici]="allVodici"></app-the-vodic>
 
 
-    <app-new-vodic *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-vodic>
+    <app-new-vodic *ngIf="!this.getDispecer()"></app-new-vodic>
     <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
       Pridať nového dispečéra môže len master konto.</h2>
   </div>
