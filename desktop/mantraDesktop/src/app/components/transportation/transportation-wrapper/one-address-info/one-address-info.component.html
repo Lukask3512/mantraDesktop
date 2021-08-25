@@ -1,5 +1,7 @@
 <div *ngIf="address">
-  <p>{{this.address.nameOfTown}}
+  <span *ngIf="this.address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+  <span *ngIf="this.address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+  <p class="nameOfTown">{{this.address.nameOfTown}}
     <span *ngIf="this.address.status === 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
     <span *ngIf="this.address.status > 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
   </p>

@@ -10,7 +10,7 @@ import Dispecer from "../../app/models/Dispecer";
 import {GetOneCompanyService} from '../../app/services/companies/get-one-company.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {EmailService} from '../../app/services/email/email.service';
-
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-register',
@@ -39,11 +39,11 @@ export class RegisterComponent implements OnInit {
     private dataService: DataService,
     private companyService: GetOneCompanyService,
     private _snackBar: MatSnackBar,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
-
 
 
     this.firstFormGroup = this.formBuilder.group({
@@ -101,7 +101,11 @@ export class RegisterComponent implements OnInit {
     })
   }
   login() {
+    this.spinner.show();
+
     this.accountService.login(this.email, this.password).subscribe(user => {
+      if (user){
+
       this.dispecerService.getOneDispecer(user.user.email).pipe(take(1)).subscribe(user => {
         // @ts-ignore
         this.user = user[0];
@@ -111,22 +115,30 @@ export class RegisterComponent implements OnInit {
               this.dataService.setDispecer(this.user);
               if (user){
                 this.router.navigate(['/view/cars']);
+                this.spinner.hide();
               }
             }else{
+              this.spinner.hide();
               this.openSnackBar('Licencia vyprsala.', 'Ok');
             }
           });
         }else{
+          this.spinner.hide();
           this.openSnackBar('Pouzivatel nenajdeny', 'Ok');
         }
       });
+      }else{
+        this.spinner.hide();
+      }
 
     });
     this.email = this.password = '';
   }
 
+
   resetPass(){
     this.accountService.passwordReset(this.email);
+    this.openSnackBar('Na emailovu adresu bol zaslany email', 'Ok');
   }
 
   openSnackBar(message: string, action: string) {

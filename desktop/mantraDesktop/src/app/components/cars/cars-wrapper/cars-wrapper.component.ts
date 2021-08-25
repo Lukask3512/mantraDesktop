@@ -26,7 +26,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class CarsWrapperComponent implements OnInit, AfterViewInit {
   dataSource;
-  displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'detail', 'naves', 'update', 'delete'];
+  displayedColumns: string[] = ['ecv', 'phoneNumber', 'status', 'naves', 'detail', 'update', 'delete'];
   constructor(private carService: CarService, private dataSerice: DataService, private dialog: MatDialog,
               public routeStatusService: RouteStatusService, public privesService: PrivesService,
               private detailService: DetailAboutRouteService, private addressService: AddressService,

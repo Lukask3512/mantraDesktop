@@ -54,7 +54,8 @@
       Ponuky
     </h4>
     <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">
-      <h5>{{offer}}</h5>
+      <app-get-info-about-company [masterId]="offer"></app-get-info-about-company>
+<!--      <h5>{{}}</h5>-->
       <h4 *ngIf="this.route.price == 0">{{this.route.priceFrom[i]}}</h4>
       <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
     </div>
