@@ -1,0 +1,102 @@
+<h2>Chcete zopakovat prepravu?</h2>
+<p>Upravte datumy prijazdov</p>
+<!--<div *ngIf="this.addresses && this.addresses.length > 0">-->
+<!--  <div *ngFor="let address of this.addresses; let i = index">-->
+<!--      <p>{{address.nameOfTown}}</p>-->
+
+<!--    <h4>Možný dátum príjazdu</h4>-->
+<!--    <mat-radio-group  #radioGroup="matRadioGroup">-->
+<!--      <mat-radio-button [checked]="true" class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>-->
+<!--      <mat-radio-button [checked]="false" class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>-->
+<!--    </mat-radio-group>-->
+
+<!--    <mat-form-field appearance="fill" *ngIf="radioGroup.value === 'rozhoduje'">-->
+<!--      <mat-label>Enter a date range</mat-label>-->
+<!--      <mat-date-range-input (change)="changeStartDate(address, i, this)" [formGroup]="dateRange" [rangePicker]="picker" [min]="minDate">-->
+<!--        <input  formControlName="startDate" matStartDate placeholder="Start date">-->
+<!--        <input (change)="changeEndDate(address, i, this)"  formControlName="endDate" matEndDate placeholder="End date">-->
+<!--      </mat-date-range-input>-->
+<!--      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--      <mat-date-range-picker #picker></mat-date-range-picker>-->
+<!--    </mat-form-field>-->
+
+<!--    <h4>Možný čas príjazdu</h4>-->
+
+<!--    <mat-radio-group  #radioGroupTime="matRadioGroup">-->
+<!--      <mat-radio-button [checked]="true" class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>-->
+<!--      <mat-radio-button [checked]="false" class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>-->
+<!--    </mat-radio-group>-->
+
+<!--    <div [formGroup]="dateRange" *ngIf="radioGroupTime.value === 'rozhoduje'">-->
+<!--      <mat-form-field  class="sizeInput">-->
+<!--        <mat-label>Časové okno od</mat-label>-->
+<!--        <input formControlName="timeFrom" matInput type="time">-->
+<!--      </mat-form-field>-->
+
+<!--      <mat-form-field class="sizeInput">-->
+<!--        <mat-label>Časové okno do</mat-label>-->
+<!--        <input matInput type="time" formControlName="timeTo">-->
+<!--      </mat-form-field>-->
+
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<mat-accordion *ngIf="this.addresses" class="example-headers-align">
+  <mat-expansion-panel [expanded]="isFirst" (opened)="catchOpen(this, i)" *ngFor="let address of this.addresses; let i = index; first as isFirst">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{address.nameOfTown}}
+      </mat-panel-title>
+      <mat-panel-description>
+<!--        {{address.type}}-->
+        <p *ngIf="address.datumPrijazdu !== '0'">{{toNormalDate(address.datumPrijazdu)}} - </p>
+        <p *ngIf="address.datumLastPrijazdy !== '0'">{{toNormalDate(address.datumPrijazdu)}}</p>
+
+        <p *ngIf="address.casPrijazdu !== '0'">{{address.casPrijazdu}} - </p>
+        <p *ngIf="address.casLastPrijazdu !== '0'">{{address.casLastPrijazdu}}</p>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form class="gridContainer" [formGroup]="dateRange">
+      <h4>Možný dátum príjazdu</h4>
+      <mat-radio-group  formControlName="dateGroup">
+        <mat-radio-button class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+        <mat-radio-button class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field appearance="fill" *ngIf="this.dateRange.get('dateGroup').value === 'rozhoduje'">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input  [formGroup]="dateRange" [rangePicker]="picker" [min]="minDate">
+          <input  formControlName="startDate" matStartDate placeholder="Start date">
+          <input  formControlName="endDate" matEndDate placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <h4>Možný čas príjazdu</h4>
+
+      <mat-radio-group formControlName="timeGroup">
+        <mat-radio-button [checked]="true" class="example-margin" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+        <mat-radio-button [checked]="false" class="example-margin" value="rozhoduje">Rozhoduje</mat-radio-button>
+      </mat-radio-group>
+
+      <div [formGroup]="dateRange" *ngIf="this.dateRange.get('timeGroup').value === 'rozhoduje'">
+        <mat-form-field  class="sizeInput">
+          <mat-label>Časové okno od</mat-label>
+          <input formControlName="timeFrom" matInput type="time">
+        </mat-form-field>
+
+        <mat-form-field class="sizeInput">
+          <mat-label>Časové okno do</mat-label>
+          <input matInput type="time" formControlName="timeTo">
+        </mat-form-field>
+
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<button (click)="createNewRoute()">Vytvorit</button>
+

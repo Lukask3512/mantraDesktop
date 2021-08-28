@@ -53,7 +53,7 @@ export class DataService {
   }
 
   setActualDetailsInAddress(details){
-    this.actualDetailSource.next(details)
+    this.actualDetailSource.next(details);
   }
 
   setVylozene(vylozene){

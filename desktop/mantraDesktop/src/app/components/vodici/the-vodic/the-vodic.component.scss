@@ -1,3 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
 .wrapper{
   border: 2px solid black;
   border-radius: 5px;
@@ -71,6 +73,15 @@ p{
 .buttonR:hover{
   background-color: #f44336;
   transition: 0.2s, 0.2s;
+}
+
+.vodiciWrapper{
+  @include table();
+  width: 100%;
+}
+
+.tabulka{
+  width: 100%;
 }
 
 

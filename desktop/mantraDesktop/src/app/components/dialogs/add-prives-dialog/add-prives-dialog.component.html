@@ -2,7 +2,7 @@
   <h1 class="header">Pridať prifes do faka</h1>
   <form class="gridContainer" [formGroup]="privesForm">
 
-    <mat-horizontal-stepper linear>
+    <mat-horizontal-stepper linear #stepper>
       <mat-step>
         <ng-template matStepLabel>EČV, tel. číslo</ng-template>
         <mat-form-field appearance="standard" class="gridItem">

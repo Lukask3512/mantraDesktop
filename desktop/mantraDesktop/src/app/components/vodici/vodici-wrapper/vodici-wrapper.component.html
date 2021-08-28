@@ -1,12 +1,6 @@
 <div class="allWrap" >
 
   <div class="dispecerWrapper">
-
-      <app-the-vodic [vodici]="allVodici"></app-the-vodic>
-
-
-    <app-new-vodic *ngIf="!this.getDispecer()"></app-new-vodic>
-    <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
-      Pridať nového dispečéra môže len master konto.</h2>
+      <app-the-vodic class="vodiciTabulka" [vodici]="allVodici"></app-the-vodic>
   </div>
 </div>

@@ -25,6 +25,10 @@ export class AllDetailAboutRouteDialogComponent implements OnInit {
     this.stiahniDetail();
   }
 
+  catchOpen(value, index){
+    console.log(value);
+    console.log(index);
+  }
 
   stiahniDetail(){
     this.detail = [];

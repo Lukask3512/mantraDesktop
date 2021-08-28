@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
 import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
 import {DeleteRouteComponent} from "../../dialogs/delete-route/delete-route.component";
 import {AddressService} from '../../../services/address.service';
+import {RepeatRouteDialogComponent} from '../../dialogs/repeat-route-dialog/repeat-route-dialog.component';
 
 @Component({
   selector: 'app-transportation-wrapper',
@@ -109,19 +110,12 @@ export class TransportationWrapperComponent implements OnInit {
 
   }
 
-  openAddDialog(route: Route, newRoute: boolean, routeId: string) {
+  openAddDialog(route: Route) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      // routesTowns: route.nameOfTowns,
-      // routesLat: route.coordinatesOfTownsLat,
-      // routesLon: route.coordinatesOfTownsLon,
-      // routesType: route.type,
-      // routeId: routeId,
-      // routeStatus: route.status,
-      // aboutRoute: route.aboutRoute,
-      // newRoute: newRoute
+      route
     };
-    const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
+    const dialogRef = this.dialog.open(RepeatRouteDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       console.log(value)
       if (value === undefined){

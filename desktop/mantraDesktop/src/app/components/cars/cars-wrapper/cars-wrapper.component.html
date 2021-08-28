@@ -1,6 +1,7 @@
 
   <div class="widthColumn" >
   <div class="carsWrapper">
+    <h2>Vozidla</h2>
     <table mat-table [dataSource]="dataSource" matSort class="tabulka">
       <!-- Name Column -->
       <ng-container class="blackHeader" matColumnDef="ecv">
@@ -56,6 +57,7 @@
     <app-new-car *ngIf="!this.getDispecer()"></app-new-car>
   </div>
     <div class="privesWrapper">
+      <h2>Privesy</h2>
       <app-prives-wrapper></app-prives-wrapper>
     </div>
 

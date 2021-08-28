@@ -7,7 +7,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { MapComponent } from './components/map/map.component';
 import { DispecerComponent } from './components/dispecer/dispecer-wrapper/dispecer.component';
-import { NewDispecerComponent } from './components/dispecer/new-dispecer/new-dispecer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
@@ -52,29 +51,28 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { NewFormComponent } from './components/transportation/new-transport/new-form/new-form.component';
 import {MatIconModule} from '@angular/material/icon';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        SideBarComponent,
-        MapComponent,
-        DispecerComponent,
-        NewDispecerComponent,
-        NewCarComponent,
-        RegisterComponent,
-        CarsWrapperComponent,
-        AddCarDialogComponent,
-        CarDetailComponent,
-        AdressesComponent,
-        AppComponent,
-        ViewComponent,
-        NewTransportComponent,
-        RouteLogComponent,
-        NewFormComponent,
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    SideBarComponent,
+    MapComponent,
+    DispecerComponent,
+    NewCarComponent,
+    RegisterComponent,
+    CarsWrapperComponent,
+    AddCarDialogComponent,
+    CarDetailComponent,
+    AdressesComponent,
+    AppComponent,
+    ViewComponent,
+    NewTransportComponent,
+    RouteLogComponent,
+    NewFormComponent,
 
-    ],
+  ],
     imports: [
         BrowserAnimationsModule,
         BrowserModule,

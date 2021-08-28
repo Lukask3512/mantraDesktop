@@ -68,6 +68,8 @@ import { UpdateOfferPriceComponent } from './dialogs/update-offer-price/update-o
 import {MatSortModule} from '@angular/material/sort';
 import { AllDetailAboutRouteDialogComponent } from './dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {NewDispecerComponent} from './dispecer/new-dispecer/new-dispecer.component';
+import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat-route-dialog.component';
 
 
 @NgModule({
@@ -88,7 +90,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent
     ],
     exports: [
         OpenlayerComponent,

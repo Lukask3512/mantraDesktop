@@ -660,6 +660,35 @@ else{
     }
   }
 
+  deleteAddress(address: Address){
+    console.log(this.detail);
+    console.log(this.addresses);
+    let deleteIndexis = [];
+    const indexOfTown = this.addresses.findIndex(oneAddress => oneAddress.nameOfTown === address.nameOfTown && oneAddress.type === address.type);
+    if (address.type === 'nakladka'){ // ak to je nakladka tak musim vymazat aj s nou suvisiace vykladky
+      for (let i = indexOfTown; i < this.detail.length; i++) {
+        if (this.detail[i].townsArray){
+          for (let balikIndex = 0; balikIndex < this.detail[i].townsArray.length; balikIndex++) {
+            if (this.detail[i].townsArray[balikIndex] === indexOfTown){
+              deleteIndexis.push(i);
+            }
+          }
+        }
+
+      }
+    }
+    deleteIndexis.slice().reverse().forEach(oneIndex => {
+      this.addresses.splice(oneIndex, 1);
+      this.detail.splice(oneIndex, 1);
+    });
+
+    this.addresses.splice(indexOfTown, 1);
+    this.detail.splice(indexOfTown, 1);
+    this.childDropList.setDetails(this.detail);
+    this.childDropList.setAddresses(this.addresses);
+    this.detailChild.setDetails(this.detail);
+  }
+
   openAllDetailDialog(){
     const dialogConfig = new MatDialogConfig();
 

@@ -1,10 +1,8 @@
-<a-scene embedded>
-
+<a-scene vr-mode-ui="enabled: false" embedded>
 
   <a-box id="mojaABedna" material="opacity: 0.5; transparent: true" color="red" rotation="0 90 0" position="6.85 1.4 -1.2" scale="0 0 0">
 <!--    <a-triangle color="#CCC" vertex-c="1 -1 0"></a-triangle>-->
   </a-box>
-
 
 
   <a-text value="Velkost navesu ~ 13,6m x 2,48m x 2,85m" lirkis-text-component position="6 5 -5" rotation="0 0 0" color="#000000"
@@ -34,7 +32,9 @@
 
   <a-sky src="./assets/skybox.png" rotation="0 90 0"></a-sky>
 
-  <a-camera position="7 1 12" rotation="30 0 0">
+  <a-entity movement-controls="fly: true">
+<!--  <a-camera position="7 1 12" rotation="30 0 0" >  </a-camera>-->
+    <a-entity position="7 1 12" rotation="30 0 0" camera look-controls wasd-controls="fly:true"></a-entity>
 
-  </a-camera>
+  </a-entity>
 </a-scene>

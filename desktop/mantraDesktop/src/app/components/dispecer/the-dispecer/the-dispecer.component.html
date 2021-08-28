@@ -1,4 +1,5 @@
-<div class="carsWrapper">
+<div class="dispecerWrapper">
+  <h2>Dispeceri</h2>
   <table mat-table [dataSource]="dataSource" matSort class="tabulka">
     <!-- Name Column -->
     <ng-container class="blackHeader" matColumnDef="meno">
@@ -37,6 +38,9 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <app-new-dispecer *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-dispecer>
+  <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
+    Pridať nového dispečéra môže len master konto.</h2>
 </div>
 
 

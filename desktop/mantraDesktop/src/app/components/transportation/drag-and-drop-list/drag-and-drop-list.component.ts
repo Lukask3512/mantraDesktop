@@ -30,6 +30,7 @@ export class DragAndDropListComponent implements OnInit {
   @Output() clickedOnRoute = new EventEmitter<number>();
 
   @Output() deleteFromIti = new EventEmitter<Address>();
+  @Output() deleteFromItiTownIndex = new EventEmitter<any>();
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
               private _snackBar: MatSnackBar, private addressService: AddressService) { }
 

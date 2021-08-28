@@ -21,11 +21,13 @@
 
 }
 .privesWrapper{
-  margin: 10px;
+  @include table();
+  width: 40%;
 }
 
 .carsWrapper{
-  margin: 10px;
+  @include table();
+  width: 55%;
 }
 
 .carWrapper{

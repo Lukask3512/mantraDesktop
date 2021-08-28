@@ -1,5 +1,5 @@
 <mat-accordion class="example-headers-align" multi>
-  <mat-expansion-panel *ngFor="let address of this.addresses; let i = index">
+  <mat-expansion-panel (opened)="catchOpen(this, i)" *ngFor="let address of this.addresses; let i = index">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{address.nameOfTown}}

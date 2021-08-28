@@ -29,12 +29,12 @@
 
     </div>
 
-  <div *ngIf="allActiveRoutes.length" class="vykladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
+  <div *ngIf="allActiveRoutes.length" class="vykladka">
     <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
 
     <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
     <div *ngIf="route.carId == null">
-      <button class="buttonG" (click)="openAddDialog(route, false, route.id)">Priradiť autu</button>
+      <button class="buttonG" >Priradiť autu</button>
     </div>
     </div>
   </div>
@@ -53,8 +53,9 @@
       </ng-container>
     </div>
 
-    <div class="vykladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
+    <div class="vykladka">
 <!--      <h2>Vykládky</h2>-->
+      <button (click)="openAddDialog(route)" class="buttonB">Zopakovať</button>
       <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
 
     </div>
@@ -62,7 +63,6 @@
 <!--&lt;!&ndash;      <h2>Ukončené</h2>&ndash;&gt;-->
 <!--&lt;!&ndash;      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>&ndash;&gt;-->
 
-<!--&lt;!&ndash;      <button (click)="openAddDialog(route, true, route.id)" class="buttonB">Zopakovať</button>&ndash;&gt;-->
 
 <!--    </div>-->
   </div>

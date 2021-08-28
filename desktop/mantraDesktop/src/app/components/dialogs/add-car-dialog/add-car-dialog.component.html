@@ -3,7 +3,7 @@
   <h1 *ngIf="this.data" class="header">Upraviť vozidlo</h1>
   <form class="gridContainer" [formGroup]="carForm">
 
-    <mat-horizontal-stepper #stepper>
+    <mat-horizontal-stepper linear #stepper>
       <mat-step>
         <ng-template matStepLabel>EČV, tel. číslo</ng-template>
         <mat-form-field appearance="standard" class="gridItem">

@@ -1,12 +1,6 @@
 <div class="allWrap" >
 
 <div class="dispecerWrapper">
-<!--  <div *ngFor="let dispecer of allDispeces">-->
-    <app-the-dispecer [dispecer]="allDispeces" ></app-the-dispecer>
-<!--  </div>-->
-
-  <app-new-dispecer *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-dispecer>
-  <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
-    Pridať nového dispečéra môže len master konto.</h2>
-  </div>
+    <app-the-dispecer class="tableComponent" [dispecer]="allDispeces" ></app-the-dispecer>
+</div>
 </div>

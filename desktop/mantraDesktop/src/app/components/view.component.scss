@@ -1,7 +1,8 @@
+@import '~normalize.css';
 .wrapper{
   position: center;
   padding: 5px;
-  //margin-top: auto;
+  margin-left: 150px;
   width: 90%;
 }
 .sideBar{
@@ -10,11 +11,10 @@
   //position: fixed;
   background: #212529;
   width: 150px;
-
 }
 
 .footer{
-  font-family: Candara;
+  //font-family: Candara;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -26,7 +26,8 @@
 
 .sideNavWrapper{
   width: 150px;
-  height: auto;
+  height: 100%;
+  position: fixed;
   background: #212529;
 }
 
@@ -38,22 +39,12 @@
 
 }
 
-//.sidenav {
-//  height: 100%;
-//  width: 160px;
-//  position: fixed;
-//  z-index: 1;
-//  top: 0;
-//  left: 0;
-//  background-color: #111;
-//  overflow-x: hidden;
-//  padding-top: 20px;
-//}
+
 .sideBarAndContentWrapper{
   display: flex;
-  align-items: stretch;
-  height: max-content;
-  min-height: 100%;
+  //align-items: stretch;
+  //height: max-content;
+  //min-height: 100%;
 }
 
 .sidenav a {
@@ -68,14 +59,4 @@
   color: #f1f1f1;
 }
 
-.main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 28px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
 
