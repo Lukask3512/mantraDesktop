@@ -3,7 +3,8 @@
   position: center;
   padding: 5px;
   margin-left: 150px;
-  width: 90%;
+  width: 100%;
+  overflow: hidden;
 }
 .sideBar{
   //float: left;
@@ -24,10 +25,19 @@
   margin-right: 20px;
 }
 
+@media (max-width: 700px) {
+  .sideNavWrapper{
+    display: none;
+  }
+  .wrapper{
+    margin-left: 0;
+  }
+}
+
 .sideNavWrapper{
   width: 150px;
   height: 100%;
-  position: fixed;
+  position: absolute;
   background: #212529;
 }
 
@@ -42,9 +52,9 @@
 
 .sideBarAndContentWrapper{
   display: flex;
-  //align-items: stretch;
-  //height: max-content;
-  //min-height: 100%;
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
 }
 
 .sidenav a {

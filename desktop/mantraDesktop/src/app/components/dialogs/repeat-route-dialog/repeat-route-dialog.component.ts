@@ -160,7 +160,7 @@ export class RepeatRouteDialogComponent implements OnInit {
 
       console.log(route);
       this.routeService.createRoute(route).then(resolve => {
-        console.log(resolve)
+        this.dialogRef.close();
       });
     });
   }

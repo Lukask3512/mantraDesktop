@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
 import {DataService} from "../../data/data.service";
@@ -9,6 +9,8 @@ import {AccountService} from "../../../login/_services/account.service";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  @ViewChild('navbar') navBar: ElementRef;
+  @ViewChild('navMenu') navMenu: ElementRef;
 
   public focus;
   public listTitles: any[];
@@ -20,8 +22,20 @@ export class HeaderComponent implements OnInit {
     this.location = location;
   }
 
+
+
   ngOnInit() {
   }
+
+  getCompany(){
+    return this.dataService.getDispecer().email === 'mantra@mantra.sk';
+  }
+
+  openHamMenu(){
+      this.navMenu.nativeElement.classList.toggle('active');
+      this.navBar.nativeElement.classList.toggle('active');
+  }
+
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());
     if(titlee.charAt(0) === '#'){

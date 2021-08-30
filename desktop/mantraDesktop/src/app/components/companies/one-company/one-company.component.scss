@@ -1,0 +1,22 @@
+@import "./src/sccs/shared/mixins";
+
+.companyWrapper{
+  @include table();
+  width: 100%;
+}
+
+.tabulka{
+  width: 100%;
+}
+
+.button{
+  @include tableButton();
+}
+
+.buttonG {
+  @include tableAddButton();
+}
+.buttonG:hover{
+  background-color: #4CAF50;
+}
+

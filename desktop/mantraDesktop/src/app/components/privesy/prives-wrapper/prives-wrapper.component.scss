@@ -8,5 +8,5 @@ th.mat-sort-header-sorted {
   color: black;
 }
 .button{
-  @include smallButton(gray);
+  @include tableButton();
 }

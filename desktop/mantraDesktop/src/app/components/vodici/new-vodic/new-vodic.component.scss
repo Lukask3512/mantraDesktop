@@ -1,0 +1,8 @@
+@import "./src/sccs/shared/mixins";
+
+.buttonG {
+  @include tableAddButton();
+}
+.buttonG:hover{
+  background-color: #4CAF50;
+}

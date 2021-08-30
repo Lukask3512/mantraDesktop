@@ -34,7 +34,7 @@
 
     <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
     <div *ngIf="route.carId == null">
-      <button class="buttonG" >Priradiť autu</button>
+      <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >Priradiť autu</button>
     </div>
     </div>
   </div>

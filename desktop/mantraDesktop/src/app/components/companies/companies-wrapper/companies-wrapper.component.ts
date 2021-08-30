@@ -23,17 +23,6 @@ export class CompaniesWrapperComponent implements OnInit {
 
 
 
-  addCompany(){
-    const dialogConfig = new MatDialogConfig();
-    // dialogConfig.width = '23em';
-    const dialogRef = this.dialog.open(AddCompanyComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(value => {
-      if (value === undefined){
-        return;
-      }else {
 
-      }
-    });
-  }
 
 }

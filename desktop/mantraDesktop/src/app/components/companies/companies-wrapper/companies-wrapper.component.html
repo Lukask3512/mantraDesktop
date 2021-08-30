@@ -1,7 +1,7 @@
 <div class="allWrapper">
   <section class="allCompanies">
 <!--    <div class="oneCompany" *ngFor="let oneCompany of this.companies">-->
-      <app-one-company [companies]="companies"></app-one-company>
+      <app-one-company class="oneCompanyWrapper" [companies]="companies"></app-one-company>
 <!--      <button (click)="updateCompany(oneCompany)">Upravit</button>-->
 <!--    </div>-->
   </section>
@@ -9,4 +9,3 @@
 
 
 
-<button (click)="addCompany()">Pridat</button>

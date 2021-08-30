@@ -6,6 +6,7 @@
     <mat-horizontal-stepper linear #stepper>
       <mat-step>
         <ng-template matStepLabel>EČV, tel. číslo</ng-template>
+        <div class="carsWrapper">
         <mat-form-field appearance="standard" class="gridItem">
           <mat-label>EČV</mat-label>
           <input formControlName="ecv" matInput placeholder="Ečv..." required>
@@ -29,8 +30,6 @@
           <input formControlName="pocetNaprav" type="number" min="0" matInput placeholder="Počet náprav..." required>
           <mat-hint>Počet náprav</mat-hint>
         </mat-form-field>
-
-        <div class="gridItem">
 
         </div>
       </mat-step>

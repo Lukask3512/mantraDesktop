@@ -1,4 +1,5 @@
-<div class="carsWrapper">
+<div class="companyWrapper">
+  <h2>Spolocnosti</h2>
   <table mat-table [dataSource]="dataSource" matSort class="tabulka">
     <!-- Name Column -->
     <ng-container class="blackHeader" matColumnDef="nazov">
@@ -58,6 +59,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <button (click)="addCompany()" class="buttonG">Pridat</button>
 </div>
 
 

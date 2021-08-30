@@ -4,6 +4,36 @@
   <div class="logout-btn">
 
     <button routerLink="" (click)="logout()" class="button_c" >Odhlásenie    </button>
+    <nav #navbar (click)="openHamMenu()" class="navbar">
+      <ul #navMenu class="nav-menu">
+        <li class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/dispecer" class="nav">Dispečeri</a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/vodici" class="nav">Vodiči</a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/cars" class="nav">Vozidlá</a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active"  routerLink="/view/transport" class="nav">Prepravy</a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/map" class="nav">Mapa</a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">Ponuky</a>
+        </li>
+        <li *ngIf="getCompany()" class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/companies" class="nav">Spolocnosti</a>
+        </li>
+      </ul>
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
 
   </div>
 
