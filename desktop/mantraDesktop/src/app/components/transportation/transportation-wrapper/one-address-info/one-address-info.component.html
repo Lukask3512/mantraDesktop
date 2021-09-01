@@ -5,5 +5,11 @@
     <span *ngIf="this.address.status === 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
     <span *ngIf="this.address.status > 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
   </p>
+
+  <div class="bednaWrapper">
+      <div class="bedna">
+        <span class="numberOfBedna">{{this.address.packagesId.length}}</span>
+      </div>
+  </div>
 </div>
 

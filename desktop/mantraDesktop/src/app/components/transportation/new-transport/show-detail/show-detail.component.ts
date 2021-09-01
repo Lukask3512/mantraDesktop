@@ -35,10 +35,6 @@ export class ShowDetailComponent implements OnInit {
     }
   }
 
-  actualNovyDetail(){
-
-  }
-
   vylozene(mesto, pozicia){
     var nasiel = false;
 
@@ -57,7 +53,6 @@ export class ShowDetailComponent implements OnInit {
           }
         });
       }
-
       if (!nasiel){
         this.detailsArray.forEach((oneDetail, index) => {
           if (oneDetail.townsArray !== undefined){

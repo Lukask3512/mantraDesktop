@@ -1,27 +1,15 @@
-<button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">Vytvoriť trasu</button>
 
 
 <div *ngIf="allActiveRoutes" class="wrapper">
-<!--  <div class="oneRouteHeader">-->
-<!--    <div class="nakladka noCursor">-->
-<!--      <h2>Nakládky ↓</h2>-->
-<!--    </div>-->
 
-<!--    <div class="vykladka noCursor">-->
-<!--      <h2>Vykládky ↓</h2>-->
-<!--    </div>-->
-<!--    <div class="status noCursor">-->
-<!--      <h2>Status ↓</h2>-->
-<!--    </div>-->
-<!--  </div>-->
+  <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">Vytvoriť trasu</button>
+
 
   <h1 class="actFinHead">Aktívne</h1>
 
 
   <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute" >
     <div *ngIf="allActiveRoutes.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
-
-<!--      <h2>Nakládky</h2>-->
 
       <ng-container *ngFor="let town of route.addresses; index as i">
         <app-one-address-info [addressaId]="town"></app-one-address-info>
@@ -31,11 +19,13 @@
 
   <div *ngIf="allActiveRoutes.length" class="vykladka">
     <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
-
-    <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
     <div *ngIf="route.carId == null">
       <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >Priradiť autu</button>
     </div>
+    <div>
+      <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
+    </div>
+
     </div>
   </div>
 

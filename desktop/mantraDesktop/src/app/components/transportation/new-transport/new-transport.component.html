@@ -10,7 +10,7 @@
 
 
 
-<app-new-form (adressOut)="receiveAddress($event)"
+<app-new-form class="newFormWrapper" (adressOut)="receiveAddress($event)"
               (detailOut)="receiveDetail($event)"
               (detailPositionOut)="receiveDetailPosition($event)"
               (adressOutUpdate)="receiveAddressUpdate($event)"></app-new-form>
@@ -57,7 +57,8 @@
   </div>
 
 
-<button (click)="openLog()">Log prepravy</button>
+<button *ngIf="this.route && this.route.id" (click)="openLog()">Log prepravy</button>
 </div>
 <!--<app-route-log *ngIf="route != undefined" [addresses]="this.addresses"></app-route-log>-->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 

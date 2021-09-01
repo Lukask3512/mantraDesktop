@@ -52,6 +52,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { NewFormComponent } from './components/transportation/new-transport/new-form/new-form.component';
 import {MatIconModule} from '@angular/material/icon';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
         MatCheckboxModule,
         MatDatepickerModule,
         MatIconModule,
-      NgxSpinnerModule
+        NgxSpinnerModule,
+        MatExpansionModule
     ],
     exports: [
         MatFormFieldModule,

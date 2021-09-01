@@ -5,6 +5,7 @@ import DeatilAboutAdresses from '../../../../models/DeatilAboutAdresses';
 import {AdressesComponent} from '../../../google/adresses/adresses.component';
 import {DetailFormComponent} from '../detail-form/detail-form.component';
 import {DataService} from '../../../../data/data.service';
+import {MatExpansionPanel} from '@angular/material/expansion';
 
 
 @Component({
@@ -68,6 +69,12 @@ export class NewFormComponent implements OnInit {
 
   @ViewChild('childGoogle')
   private childGoogle: AdressesComponent;
+
+  @ViewChild('mep')
+  private expansionAll: MatExpansionPanel;
+
+  @ViewChild('mepFirst')
+  private expansionFirst: MatExpansionPanel;
 
   minDate;
 
@@ -162,6 +169,7 @@ export class NewFormComponent implements OnInit {
   formUpdate(){
     if (this.labelPosition == 'vykladka'){
       this.transportForm.disable();
+      this.deletePackages();
     }else{
       this.transportForm.enable();
     }
@@ -187,56 +195,13 @@ export class NewFormComponent implements OnInit {
     // this.child.notifyMe(this.routesLat, this.routesLon, null);
   }
 
-
-
-
-
-  // ci mozem pridat dalsiu adresu
-  // checkIfCanAddNextAdress(){
-  //   if (this.datumPrichodu !== 'rozhoduje' && this.datumPrichodu !== 'nerozhoduje'){
-  //     return true
-  //   }
-  //   if (this.casPrichodu !== 'rozhoduje' && this.casPrichodu !== 'nerozhoduje'){
-  //     return true;
-  //   }
-  //   if (this.labelPosition == 'nakladka') {
-  //
-  //     if (this.address.sizeS != undefined) {
-  //       if (this.transportForm.valid && this.address.sizeS.length == this.numberOfItems && this.labelPosition) {
-  //         return false;
-  //       } else if (this.transportForm.valid && this.actualItemInForm + 1 == this.numberOfItems && this.labelPosition) { // ak som na poslednom
-  //         return false;
-  //       } else {
-  //         return true;
-  //       }
-  //     } else if (this.transportForm.valid && this.numberOfItems == 1 && this.labelPosition) {
-  //       return false;
-  //     }else{
-  //       return true;
-  //     }
-  //
-  //   }else if (this.labelPosition == 'vykladka'){
-  //     if (this.address.sizeS != undefined  && this.transportForm.get('sizeS').value > 0 &&
-  //       (this.address.sizeS.length == this.numberOfItems || this.actualItemInForm +1 == this.numberOfItems)){
-  //       return false;
-  //     }
-  //     else if (this.address.sizeS == undefined && this.transportForm.get('sizeS').value > 0 && this.numberOfItems == 1){
-  //       return false;
-  //     }else{
-  //       return true;
-  //     }
-  //   }
-  //
-  //   else{
-  //     return true;
-  //   }
-  //
-  // }
-
-
-
   checkFinished(){
     return true;
+  }
+  // expansion panel
+  closeAllAndOpenFirst(){
+    this.expansionAll.expanded = false;
+    this.expansionFirst.expanded = true;
   }
 
   add(){
@@ -319,7 +284,8 @@ export class NewFormComponent implements OnInit {
     this.routeFromGoogle = null;
     this.latFromGoogle = null;
     this.lonFromGoogle = null;
-
+    this.dataService.setActualDetailsInAddress(null);
+    this.closeAllAndOpenFirst();
   }
 
   updateDetailOnTown(){
@@ -358,53 +324,14 @@ export class NewFormComponent implements OnInit {
     this.dataService.setActualDetailsInAddress({town: this.townIndex, detail: this.detailIndex});
   }
 
-  pushItemsToArray(indexOfAddresses, indexOfPackage){
-    if (!this.detailsArray[indexOfPackage]){
+  pushItemsToArray(indexOfAddresses, indexOfPackage) {
+    if (!this.detailsArray[indexOfPackage]) {
       this.detailsArray.push(this.getDetail());
-    }else {
+    } else {
       this.detailsArray[indexOfPackage] = this.getDetail();
     }
     console.log(this.detailsArray);
     console.log(indexOfPackage);
-    // if (this.address.sizeV == undefined){
-    //   this.address.sizeV = this.getDetail().sizeV;
-    //   this.address.sizeD = this.getDetail().sizeD;
-    //   this.address.sizeS = this.getDetail().sizeS;
-    //   this.address.stohovatelnost = this.getDetail().stohovatelnost;
-    //   this.address.vyskaNaklHrany = this.getDetail().vyskaNaklHrany;
-    //   this.address.polohaNakladania = this.getDetail().polohaNakladania;
-    //   this.address.weight = this.getDetail().weight;
-    // }else{
-    //   if (this.address.stohovatelnost[indexOfPackage] == undefined){
-    //
-    //     this.address.stohovatelnost.push(this.getDetail().stohovatelnost[0]);
-    //     this.address.weight.push(this.getDetail().weight[0]);
-    //     this.address.polohaNakladania.push(this.getDetail().polohaNakladania[0]);
-    //     this.address.sizeD.push(this.getDetail().sizeD[0]);
-    //     this.address.sizeS.push(this.getDetail().sizeS[0]);
-    //     this.address.sizeV.push(this.getDetail().sizeV[0]);
-    //     this.address.vyskaNaklHrany.push(this.getDetail().vyskaNaklHrany[0]);
-    //   }else{
-    //     this.address.stohovatelnost[indexOfPackage] = this.getDetail().stohovatelnost[0];
-    //     this.address.weight[indexOfPackage] = this.getDetail().weight[0];
-    //
-    //     if (this.transportForm.get('poziciaNakladania').value == 'nerozhoduje') {
-    //       this.transportForm.controls['fromBackSide'].setValue(undefined);
-    //       this.transportForm.controls['fromSide'].setValue(undefined);
-    //       this.transportForm.controls['fromUpSide'].setValue(undefined);
-    //       this.address.polohaNakladania[indexOfPackage] = "000";
-    //     }else{
-    //       this.address.polohaNakladania[indexOfPackage] = this.getDetail().polohaNakladania[0];
-    //     }
-    //
-    //     this.address.sizeD[indexOfPackage] = this.getDetail().sizeD[0];
-    //     this.address.sizeS[indexOfPackage] = this.getDetail().sizeS[0];
-    //     this.address.sizeV[indexOfPackage] = this.getDetail().sizeV[0];
-    //     this.address.vyskaNaklHrany[indexOfPackage] = this.getDetail().vyskaNaklHrany[0];
-    //   }
-    //
-    // }
-
   }
 
   getDetail(): DeatilAboutAdresses{
@@ -554,19 +481,6 @@ export class NewFormComponent implements OnInit {
 
   // ked sa nahodov zmensi pole, ale by som ho pohol opopovat
   sizeUpdate(){
-    // if (this.address.sizeV != undefined){
-    //   if (this.numberOfItems <= this.address.sizeV.length +1){
-    //     this.actualItemInForm = this.numberOfItems -1;
-    //     this.address.sizeV = this.address.sizeV.slice(0, this.numberOfItems -1);
-    //     this.address.sizeS = this.address.sizeS.slice(0, this.numberOfItems -1)
-    //     this.address.sizeD = this.address.sizeD.slice(0, this.numberOfItems -1)
-    //     this.address.weight = this.address.weight.slice(0, this.numberOfItems -1)
-    //     this.address.vyskaNaklHrany = this.address.vyskaNaklHrany.slice(0, this.numberOfItems -1)
-    //     this.address.polohaNakladania = this.address.polohaNakladania.slice(0, this.numberOfItems -1)
-    //     this.address.stohovatelnost = this.address.stohovatelnost.slice(0, this.numberOfItems -1)
-    //
-    //   }
-    // }
 
   }
 
@@ -732,11 +646,19 @@ export class NewFormComponent implements OnInit {
   }
 
   setDetail(detail){
-    console.log(detail);
     this.assignToDetail(0, 0, detail.detail);
     this.actualTownIndex = detail.indexMesta;
     this.actualDetailIndex = detail.indexBedne;
     // tu budem musiet niekde nastavit detailNakladky, odkail prislka a ten detail ulozim do vykladky
   }
+
+  // ked zmazem nejaku nakladku, a v aktualnom meste vo vykladke mam nakliknuty nejaky balik z neho
+  deletePackages(){
+    this.detailsArray = [];
+    this.townIndex = [];
+    this.detailIndex = [];
+    this.resetFormToDefault(false);
+  }
+
 
 }

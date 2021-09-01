@@ -31,6 +31,7 @@ import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component'
 import {Router} from '@angular/router';
 import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 
 
@@ -97,7 +98,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
               private dataService: DataService, private routeService: RouteService,
               private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService,
               private addressService: AddressService, private packageService: PackageService,
-              private router: Router, private _snackBar: MatSnackBar) { }
+              private router: Router, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService) { }
 
 
 
@@ -197,7 +198,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
 
 
       }
-    })
+    });
     });
   }
 
@@ -229,22 +230,25 @@ else{
     console.log(this.detail)
   }
 
-
-  onDropListChange(changedRoute: Address[]){
-    this.addresses = changedRoute;
-    // console.log(this.route)
+  setMapPoints(){
     setTimeout(() =>
       {
-        if (this.carId != undefined || this.carId !=  null){
+        if (this.carId !== undefined || this.carId !==  null){
           this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
-
         }
         else{
-          this.child.notifyMe(this.addresses,undefined , this.car);
+          this.child.notifyMe(this.addresses, undefined , this.car);
 
         }
       },
       800);
+  }
+
+
+  onDropListChange(changedRoute: Address[]){
+    this.addresses = changedRoute;
+    // console.log(this.route)
+    this.setMapPoints();
 
     this.change = true;
   }
@@ -261,7 +265,7 @@ else{
   receiveDetail(detail){
     this.detail.push(detail);
     this.detailChild.setDetails(this.detail);
-    this.dataService.setDetailSource(this.detail)
+    this.dataService.setDetailSource(this.detail);
     this.childDropList.setDetails(this.detail);
   }
 
@@ -273,29 +277,6 @@ else{
   notifyChildren(routeId) {
     this.parentSubject.next(routeId);
   }
-
-
-
-  // updateArrayOfDetail(){
-  //   this.pushItemsToArray(0, this.actualItemInForm);
-  //   this.arrayOfDetailsAbRoute[this.clickedOnIndexDetail] = this.detailAboutRoute;
-  //   this.resetFormToDefault(true);
-  //   this.clickedOnIndexDetail = undefined;
-  //   this.numberOfItems = 1;
-  //   this.actualItemInForm = 0;
-  //   this.change = true;
-  // }
-
-
-
-
-
-
-
-
-
-
-
 
   openAddDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -527,6 +508,7 @@ else{
   }
 
   createMyRoute(){
+    this.spinner.show();
     this.addPonuka().then(() => {
       var route: Route;
       route = JSON.parse(JSON.stringify(this.route));
@@ -551,13 +533,13 @@ else{
   getNewRoute(idRouty){
     setTimeout(() => {
       this.route = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.id === idRouty);
-      console.log(this.route);
       this.carId = this.route.carId;
       this.addressService.address$.subscribe(alAdd => {
 
         var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
         adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
         this.addresses = adresy;
+        this.spinner.hide();
       });
     }, 100);
   }
@@ -687,6 +669,10 @@ else{
     this.childDropList.setDetails(this.detail);
     this.childDropList.setAddresses(this.addresses);
     this.detailChild.setDetails(this.detail);
+    this.setMapPoints();
+
+    this.dataService.setDetailSource(this.detail);
+    this.newFormChild.deletePackages();
   }
 
   openAllDetailDialog(){

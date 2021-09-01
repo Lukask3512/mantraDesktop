@@ -51,6 +51,7 @@
 
 @media only screen and (max-width: 768px) {
   .nav-menu {
+    z-index: 2;
     position: fixed;
     left: -110%;
     top: 5rem;
@@ -66,7 +67,8 @@
 
   .nav-menu.active {
     left: 0;
-    z-index: 2;
+    padding-left: 3px;
+    margin-top: -20px;
   }
 
   .nav-item {
@@ -74,6 +76,9 @@
     border-bottom: 2px solid gray;
     box-shadow: 5px 5px 5px grey;
     border-radius: 3px;
+  }
+  .nav{
+    display: inline-block;
   }
 
   .hamburger {

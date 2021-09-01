@@ -28,6 +28,10 @@ header{
   width: 600px;
 }
 
+.newFormWrapper{
+  margin-right: 6px;
+}
+
 .center{
   display: flex;
   justify-content: center;
@@ -39,7 +43,7 @@ min-width: 180px;
 
 .map{
   flex-grow: 2;
-  width: 30%;
+  width: 25%;
   height: auto;
   margin-left: 20px;
 }
