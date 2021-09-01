@@ -43,10 +43,10 @@ export class NewFormComponent implements OnInit {
   detailsArray: DeatilAboutAdresses[] = [];
 
   dateRange = new FormGroup({
-    startDate: new FormControl(Validators.required),
-    endDate: new FormControl(Validators.required),
-    timeFrom: new FormControl(Validators.required),
-    timeTo: new FormControl(Validators.required),
+    startDate: new FormControl([null, Validators.required]),
+    endDate: new FormControl([null, Validators.required]),
+    timeFrom: new FormControl([null, Validators.required]),
+    timeTo: new FormControl([null, Validators.required]),
     obsluznyCas: new FormControl(1, Validators.required),
   });
 
@@ -121,8 +121,38 @@ export class NewFormComponent implements OnInit {
     if (this.datumPrichodu !== 'rozhoduje' && this.datumPrichodu !== 'nerozhoduje'){
       return true;
     }
+    if (this.datumPrichodu === 'rozhoduje'){
+      if (Array.isArray(this.dateRange.get('startDate').value)){
+        if (!this.dateRange.get('startDate').value[0]){
+          return true;
+        }
+      }else if (Array.isArray(this.dateRange.get('endDate').value)){
+        if (!this.dateRange.get('endDate').value[0]){
+          return true;
+        }
+      }else{
+        if (!this.dateRange.get('startDate').value || !this.dateRange.get('endDate').value){
+          return true;
+        }
+      }
+    }
     if (this.casPrichodu !== 'rozhoduje' && this.casPrichodu !== 'nerozhoduje'){
       return true;
+    }
+    if (this.casPrichodu === 'rozhoduje'){
+      if (Array.isArray(this.dateRange.get('timeFrom').value)){
+        if (!this.dateRange.get('timeFrom').value[0]){
+          return true;
+        }
+      }else if (Array.isArray(this.dateRange.get('timeTo').value)){
+        if (!this.dateRange.get('timeTo').value[0]){
+          return true;
+        }
+      }else{
+        if (!this.dateRange.get('timeFrom').value || !this.dateRange.get('timeTo').value){
+          return true;
+        }
+      }
     }
     if (this.labelPosition == 'nakladka') {
 

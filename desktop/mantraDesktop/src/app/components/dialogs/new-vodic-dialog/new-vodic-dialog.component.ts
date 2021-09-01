@@ -104,8 +104,13 @@ export class NewVodicDialogComponent implements OnInit {
     }
   }
 
+  //TODO upravit pridavanie / mazanie aut s cislom k dispecerovi s tel. cislom a naopak
   checkBox(car: Cars){
     if (car.allVodici && (car.phoneNumber || this.assignToDirector().phone)){
+      return true;
+    }
+
+    if (this.vodic && car.vodici.includes(this.vodic.id)){
       return true;
     }
 

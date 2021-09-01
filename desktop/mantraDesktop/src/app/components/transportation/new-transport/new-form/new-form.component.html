@@ -21,17 +21,18 @@
     </ng-template>
   </mat-expansion-panel-header>
 
-  <mat-radio-group (change)="formUpdate()"  class="radioButtons" [(ngModel)]="labelPosition">
-    <mat-radio-button class="radios" value="nakladka">Nakládka</mat-radio-button>
-    <mat-radio-button class="radios" value="vykladka">Vykládka</mat-radio-button>
-  </mat-radio-group>
-
   <app-adresses #childGoogle *ngIf="checkFinished()"  (placeName)="getAdress($event)"
                 (placeLat)="getLat($event)"
                 (placeLon)="getLon($event)">
   </app-adresses>
 
-  <input class="form-control" placeholder="Pridaj poznámku..." type="text" [(ngModel)]="infoAboutRoute">
+  <mat-radio-group (change)="formUpdate()"  class="radioButtons" [(ngModel)]="labelPosition">
+    <mat-radio-button class="radios" value="nakladka">Nakládka</mat-radio-button>
+    <mat-radio-button class="radios" value="vykladka">Vykládka</mat-radio-button>
+  </mat-radio-group>
+
+
+  <input class="form-control" placeholder="Pridaj poznámku k adrese..." type="text" [(ngModel)]="infoAboutRoute">
 
 </mat-expansion-panel>
 
@@ -48,40 +49,46 @@
       <mat-panel-description>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    Datum:
-    <mat-radio-group [(ngModel)]="datumPrichodu">
-      <mat-radio-button class="radios" value="nerozhoduje">Nerozhoduje</mat-radio-button>
-      <mat-radio-button class="radios" value="rozhoduje">Rozhoduje</mat-radio-button>
-    </mat-radio-group>
+    <div class="dateAlone">
+      <h2>Datum</h2>
+      <mat-radio-group [(ngModel)]="datumPrichodu">
+        <mat-radio-button class="radios" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+        <mat-radio-button class="radios" value="rozhoduje">Rozhoduje</mat-radio-button>
+      </mat-radio-group>
 
-    <mat-form-field appearance="fill" *ngIf="datumPrichodu == 'rozhoduje'">
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" [min]="minDate">
-        <input formControlName="startDate" matStartDate placeholder="Start date">
-        <input formControlName="endDate" matEndDate placeholder="End date">
-      </mat-date-range-input>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-
-    Cas:
-    <mat-radio-group [(ngModel)]="casPrichodu">
-      <mat-radio-button class="radios" value="nerozhoduje">Nerozhoduje</mat-radio-button>
-      <mat-radio-button class="radios" value="rozhoduje">Rozhoduje</mat-radio-button>
-    </mat-radio-group>
-
-    <div [formGroup]="dateRange" *ngIf="casPrichodu == 'rozhoduje'">
-      <mat-form-field  class="sizeInput">
-        <mat-label>Časové okno od</mat-label>
-        <input formControlName="timeFrom" matInput type="time">
-      </mat-form-field>
-
-      <mat-form-field class="sizeInput">
-        <mat-label>Časové okno do</mat-label>
-        <input matInput type="time" formControlName="timeTo">
+      <mat-form-field appearance="fill" *ngIf="datumPrichodu == 'rozhoduje'">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" [min]="minDate">
+          <input formControlName="startDate" matStartDate placeholder="Start date">
+          <input formControlName="endDate" matEndDate placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
     </div>
-    <div class="oneGroup">
+
+    <div class="dateAlone">
+      <h2>Cas</h2>
+      <mat-radio-group [(ngModel)]="casPrichodu">
+        <mat-radio-button class="radios" value="nerozhoduje">Nerozhoduje</mat-radio-button>
+        <mat-radio-button class="radios" value="rozhoduje">Rozhoduje</mat-radio-button>
+      </mat-radio-group>
+
+      <div [formGroup]="dateRange" *ngIf="casPrichodu == 'rozhoduje'">
+        <mat-form-field  class="sizeInput">
+          <mat-label>Časové okno od</mat-label>
+          <input formControlName="timeFrom" matInput type="time">
+        </mat-form-field>
+
+        <mat-form-field class="sizeInput">
+          <mat-label>Časové okno do</mat-label>
+          <input matInput type="time" formControlName="timeTo">
+        </mat-form-field>
+      </div>
+    </div>
+
+
+    <div class="dateAlone">
       <mat-form-field [formGroup]="dateRange" appearance="standard" >
         <mat-label>Obsluzný čas</mat-label>
         <input min="0" type="number" matInput placeholder="Počet hodín...." formControlName="obsluznyCas">

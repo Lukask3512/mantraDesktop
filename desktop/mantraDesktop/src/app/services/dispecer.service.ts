@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Dispecer from "../models/Dispecer";
 
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {map} from "rxjs/operators";
 import {DataService} from "../data/data.service";
@@ -11,16 +11,32 @@ import {DataService} from "../data/data.service";
 })
 export class DispecerService {
   private dispecerCollection: AngularFirestoreCollection<Dispecer>;
-  private dispecers: Observable<Dispecer[]>;
+  private dispecers: Dispecer[];
+
   dispecerCollectionRef: AngularFirestoreCollection<Dispecer>;
   todo$: Observable<Dispecer[]>;
 
+  private allDispecersSource = new BehaviorSubject<Dispecer[]>(null);
+  allDispecers = this.allDispecersSource.asObservable();
+
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.dispecerCollection = this.afs.collection<any>('dispecers');
+
+  }
+
+  mozemStiahnutDispecerov(){
+    this.getDispecersFire().subscribe(allDispecers => {
+      this.allDispecersSource.next(allDispecers);
+      this.dispecers = allDispecers;
+    });
+  }
+
+  getDispecers(){
+    return this.allDispecers;
   }
 
   // taketo query sa pouzivaju ked chces dostat aj idcko..ked s tym budes dalej manipulovat updatovat atd..
-  getDispecers(){
+  getDispecersFire(): Observable<Dispecer[]>{
     var createdBy;
     if (this.dataService.getDispecer().createdBy !== 'master'){
         createdBy = this.dataService.getDispecer().createdBy;

@@ -15,6 +15,7 @@ export class DispecerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dispecerService.mozemStiahnutDispecerov();
     this.dispecerService.getDispecers().subscribe(data => {
       this.allDispeces = data;
     });

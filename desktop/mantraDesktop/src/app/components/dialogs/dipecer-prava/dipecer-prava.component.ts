@@ -216,6 +216,8 @@ export class DipecerPravaComponent implements OnInit {
     }
   }
 
+
+
   assignToForm(){
     this.dispecerForm.controls['firstName'].setValue(this.data.dispecer.name);
     this.dispecerForm.controls['lastName'].setValue(this.data.dispecer.surname);
