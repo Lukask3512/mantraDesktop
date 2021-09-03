@@ -10,6 +10,8 @@ import Dispecer from '../../../models/Dispecer';
 import {take} from 'rxjs/operators';
 import {AccountService} from '../../../../login/_services/account.service';
 import {EmailService} from '../../../services/email/email.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import Route from '../../../models/Route';
 
 @Component({
   selector: 'app-add-company',
@@ -43,7 +45,7 @@ export class AddCompanyComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AddCompanyComponent>,
               private fb: FormBuilder, private companyService: CompanyService, private dispecerService: DispecerService,
-              private accountService: AccountService, private emailService: EmailService) { }
+              private accountService: AccountService, private emailService: EmailService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -60,8 +62,9 @@ export class AddCompanyComponent implements OnInit {
         this.companyForm.controls.poistenie.setValue(this.data.poistenie);
         this.companyForm.controls.poistkaToggle.setValue(true);
       }
-      this.dispecerForm.disable();
+      // this.dispecerForm.disable();
       // this.dispecerForm.set = true;
+      this.dispecerForm.get('email').disable();
       this.getDispecer();
     }
   }
@@ -74,6 +77,12 @@ export class AddCompanyComponent implements OnInit {
      this.dispecerForm.controls.phoneNumber.setValue(myDispecers[0].phone);
      this.dispecerForm.controls.email.setValue(myDispecers[0].email);
    });
+  }
+
+  openSnackBar(message: string, action) {
+    const snackBarRef = this.snackBar.open(message, action, {
+      duration: 4000
+    });
   }
 
   sendMailToRegisteredUser(){
@@ -121,22 +130,33 @@ export class AddCompanyComponent implements OnInit {
           return;
         }
         else {
-          var password = Math.random().toString(36).slice(-8);
+          this.checkCompanyForIco().then(res => {
+            if (res){
+              this.checkCompaniesForDico().then(async resDico => {
+                if (resDico){
+                  var password = Math.random().toString(36).slice(-8);
 
-          await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
-            if (registrovany){
-              this.sendMailToRegisteredUser();
-            }else{
-              this.sendMail(password);
+                  await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
+                    if (registrovany){
+                      this.sendMailToRegisteredUser();
+                    }else{
+                      this.sendMail(password);
+                    }
+                  }));
+
+                  const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
+
+                  this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
+
+                  this.dispecerForm.reset();
+                  this.dialogRef.close();
+
+                }
+              });
             }
-          }));
+          });
 
-          const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
 
-          this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
-
-          this.dispecerForm.reset();
-          this.dialogRef.close();
         }
       });
     }
@@ -158,9 +178,58 @@ export class AddCompanyComponent implements OnInit {
     this.companyForm.get('poistenie').updateValueAndValidity();
   }
 
+  checkCompaniesForDico() {
+      return new Promise((resolve, reject) => {
+        if (!this.company || this.company.dicIc !== this.assignToCompany().dicIc){
+          this.companyService.getCompanyByDico(this.assignToCompany().dicIc).pipe(take(1)).subscribe(companiesDic => {
+          if (companiesDic.length > 0) {
+            this.openSnackBar('Spolocnost s takym dic sa už nachádza v databáze', 'Ok');
+            resolve(false);
+            return;
+          }else{
+            resolve(true);
+          }
+        });
+      }else{
+        resolve(true);
+      }
+    });
+
+  }
+
+  checkCompanyForIco(){
+    return new Promise((resolve, reject) => {
+      if (!this.company || this.company.ico !== this.assignToCompany().ico){
+        this.companyService.getCompanyByIco(this.assignToCompany().ico).pipe(take(1)).subscribe(companies => {
+          if (companies.length > 0) {
+            this.openSnackBar('Spolocnost s takym ico sa už nachádza v databáze', 'Ok');
+            resolve(false);
+            return;
+          }else{
+            resolve(true);
+          }
+        });
+      }else{
+        resolve(true);
+      }
+    });
+
+  }
+
   updateCompany(){
-    this.companyService.updateCompany(this.assignToCompany(), this.company.id);
-    this.dialogRef.close();
+    var dispecer = this.assignToDispecer(this.company.id);
+    dispecer.id = this.dispecer.id;
+    this.checkCompanyForIco().then(res => {
+      if (res){
+        this.checkCompaniesForDico().then(resDico => {
+          if (resDico){
+            this.dispecerService.updateDispecer(dispecer);
+            this.companyService.updateCompany(this.assignToCompany(), this.company.id);
+            this.dialogRef.close();
+          }
+        });
+      }
+    });
   }
   // this.carForm.get('nosnost').value,
   assignToCompany(): Company {
@@ -175,7 +244,7 @@ export class AddCompanyComponent implements OnInit {
       name: this.companyForm.get('name').value,
       ico: this.companyForm.get('ico').value,
       dicIc: this.companyForm.get('dicIc').value,
-      poistenie: poistenie,
+      poistenie,
       street: this.companyForm.get('street').value,
       town: this.companyForm.get('town').value,
       country: this.companyForm.get('country').value,

@@ -224,10 +224,105 @@ else{
     this.newFormChild.setDetail(detail);
   }
 
+  buttonForExampleData(){
+    var address: Address = {
+      nameOfTown: 'Ruzomberok',
+      coordinatesOfTownsLat: '21',
+      coordinatesOfTownsLon: '10',
+      aboutRoute: 'Kontakt',
+      type: 'nakladka',
+    };
+    var address2: Address = {
+      nameOfTown: 'NItra',
+      coordinatesOfTownsLat: '21',
+      coordinatesOfTownsLon: '10',
+      aboutRoute: 'Kontakt',
+      type: 'nakladka',
+    };
+    var address3: Address = {
+      nameOfTown: 'Blava',
+      coordinatesOfTownsLat: '21',
+      coordinatesOfTownsLon: '10',
+      aboutRoute: 'Kontakt',
+      type: 'nakladka',
+    };
+    var address4: Address = {
+      nameOfTown: 'Kosice',
+      coordinatesOfTownsLat: '21',
+      coordinatesOfTownsLon: '10',
+      aboutRoute: 'Kontakt',
+      type: 'vykladka',
+    };
+    var address5: Address = {
+      nameOfTown: 'Michalovce',
+      coordinatesOfTownsLat: '21',
+      coordinatesOfTownsLon: '10',
+      aboutRoute: 'Kontakt',
+      type: 'vykladka',
+    };
+    this.addresses = [];
+
+    this.addresses.push(address);
+    this.addresses.push(address2);
+    this.addresses.push(address3);
+    this.addresses.push(address4);
+    this.addresses.push(address5);
+
+    const detail =  {
+      sizeV: 2,
+      sizeS: 3,
+      sizeD: 2,
+      weight: 2,
+      stohovatelnost: 0, //ak ano kolko unesie
+      vyskaNaklHrany: 0,
+      polohaNakladania: '000',
+    };
+    const detail2 =  {
+      sizeV: 2,
+      sizeS: 3,
+      sizeD: 2,
+      weight: 2,
+      stohovatelnost: 0, //ak ano kolko unesie
+      vyskaNaklHrany: 0,
+      polohaNakladania: '000',
+    };
+    const detail3 =  {
+      sizeV: 2,
+      sizeS: 3,
+      sizeD: 2,
+      weight: 2,
+      stohovatelnost: 0, //ak ano kolko unesie
+      vyskaNaklHrany: 0,
+      polohaNakladania: '000',
+    };
+    const detail4 =  {
+      townsArray: [0, 1],
+      detailArray: [0, 0]
+    };
+    const detail5 =  {
+      townsArray: [0, 1],
+      detailArray: [0, 0]
+    };
+
+    this.detail = [];
+    this.detail.push([detail]);
+    this.detail.push([detail2, detail3]);
+    this.detail.push([detail2, detail3]);
+    this.detail.push({townsArray: [0, 1], detailArray: [0, 0]});
+    this.detail.push({townsArray: [2, 1, 2], detailArray: [0, 1, 1]});
+    console.log(this.detail);
+
+    this.childDropList.setAddresses(this.addresses);
+    this.childDropList.setDetails(this.detail);
+    this.detailChild.setDetails(this.detail);
+
+  }
+
 
   onDropListDetailChange(detail){
     this.detail = detail;
-    console.log(this.detail)
+    this.detailChild.setDetails(this.detail);
+    this.dataService.setDetailSource(this.detail);
   }
 
   setMapPoints(){

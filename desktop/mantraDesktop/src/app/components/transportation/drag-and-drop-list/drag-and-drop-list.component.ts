@@ -129,10 +129,10 @@ export class DragAndDropListComponent implements OnInit {
           var arrayCurrentIndex = [];
           for (let i = 0; i < detail.length; i++) { // najprv  idem len pre nakladku ktoru presuvam
               for (let j = current; j < this.detailArray.length; j++) {
-                if (this.detailArray[j].townsArray != undefined){ // ked najdem vykladku
+                if (this.detailArray[j].townsArray !== undefined){ // ked najdem vykladku
                     for (let l = 0; l < this.detailArray[j].townsArray.length; l++) { // predhazam vykladkou
                       // porovnavam ci sedia indexy vo vykladke s indexom nakladky
-                      if (this.detailArray[j].townsArray[l] == previous && l == i){ //j == previous znamena mesto a i == i znamena ktory index vykladky
+                      if (this.detailArray[j].townsArray[l] === previous && this.detailArray[j].detailArray[l] === i){ //j == previous znamena mesto a i == i znamena ktory index vykladky
                         //ak sedia tak by som mal vo vykladke upravit index mesta
                         // this.detailArray[j].townsArray[l] = current; // current je index kde skocila nakladka
                         //neulozil som si to hned lebo potom dalej mi to menilo indexy tiez pri dalsich nakladkach
@@ -147,28 +147,29 @@ export class DragAndDropListComponent implements OnInit {
           //+1 pretoze este to neni premenene a s aktualnou sompracoval hore
           //toto robim pre zvysne nakladky ak boli medzi current a previous
           for (let i = previous + 1; i <= current; i++) { // robim to len pre nakladky ak boli medzi preskocenymi
-            if (this.detailArray[i].townsArray == undefined){ // ak najdem nakladku
+            if (this.detailArray[i].townsArray === undefined) { // ak najdem nakladku
+              for (let indexBalikaNakladky = 0; indexBalikaNakladky < this.detailArray[i].length; indexBalikaNakladky++) {
               //tak skontrolujem od nej dalej vsetky jej  vykladky a upravim index na +1 alebo -1
               for (let j = i; j < this.detailArray.length; j++) { // idem odtial a dalej - dozadu netreba
-                if (this.detailArray[j].townsArray != undefined){ // ked najdem vykladku
+                if (this.detailArray[j].townsArray != undefined) { // ked najdem vykladku
                   // for (let k = 0; k < this.detailArray[j].length; k++) { // prechadzam vsetkymi detailami a porovnavam
-                    for (let l = 0; l < this.detailArray[j].townsArray.length; l++) { // predhazam vykladkou
-                      // porovnavam ci sedia indexy vo vykladke s indexom nakladky
-                      console.log(this.detailArray[j]);
-                      console.log(this.detailArray[j].townsArray);
-                      console.log(this.detailArray[j].townsArray[l]);
-                      if (i == this.detailArray[j].townsArray[l] && l == this.detailArray[j].detailArray[l]){
-                        //ak sedia tak by som mal vo vykladke upravit index mesta
-                        this.detailArray[j].townsArray[l] = this.detailArray[j].townsArray[l] - 1; // pretoze ho preskocil, to znamena ze nakladka padla o 1 mesto dole
-                      }
+                  for (let l = 0; l < this.detailArray[j].townsArray.length; l++) { // predhazam vykladkou
+                    // porovnavam ci sedia indexy vo vykladke s indexom nakladky
+                    if (i === this.detailArray[j].townsArray[l] && indexBalikaNakladky === this.detailArray[j].detailArray[l]) {
+                      //ak sedia tak by som mal vo vykladke upravit index mesta
+                      arrayAddress.push(j);
+                      arrayTowns.push(l);
+                      // pretoze ho preskocil, to znamena ze nakladka padla o 1 mesto hore
+                      arrayCurrentIndex.push(this.detailArray[j].townsArray[l] - 1);
                     }
+                  }
 
                   // }
 
                 }
 
               }
-
+            }
             }
           }
           //na konci ukladam zmenene indexy menenej nakladky
@@ -184,7 +185,7 @@ export class DragAndDropListComponent implements OnInit {
               if (this.detailArray[j].townsArray != undefined){ // ked najdem vykladku
                 for (let l = 0; l < this.detailArray[j].townsArray.length; l++) { // predhazam vykladkou
                   // porovnavam ci sedia indexy vo vykladke s indexom nakladky
-                  if (this.detailArray[j].townsArray[l] == previous && l == i){ //j == previous znamena mesto a i == i znamena ktory index vykladky
+                  if (this.detailArray[j].townsArray[l] == previous && this.detailArray[j].detailArray[l] == i){ //j == previous znamena mesto a i == i znamena ktory index vykladky
                     //ak sedia tak by som mal vo vykladke upravit index mesta
                     // this.detailArray[j].townsArray[l] = current; // current je index kde skocila nakladka
                     arrayAddress.push(j);
@@ -196,30 +197,35 @@ export class DragAndDropListComponent implements OnInit {
             }
           }
 
-          //toto robim pre zvysne nakladky ak boli medzi current a previous
-          for (let i = current; i < previous; i++) { // robim to len pre nakladky ak boli medzi preskocenymi
-            if (this.detailArray[i].townsArray == undefined){ // ak najdem nakladku
-              //tak skontrolujem od nej dalej vsetky jej  vykladky a upravim index na +1 alebo -1
+          // toto robim pre zvysne nakladky ak boli medzi current a previous
+           for (let i = current; i < previous; i++) { // robim to len pre nakladky ak boli medzi preskocenymi
+            if (this.detailArray[i].townsArray === undefined) { // ak najdem nakladku
+              for (let indexBalikaNakladky = 0; indexBalikaNakladky < this.detailArray[i].length; indexBalikaNakladky++) {
+
+              // tak skontrolujem od nej dalej vsetky jej  vykladky a upravim index na +1 alebo -1
               for (let j = i; j < this.detailArray.length; j++) { // idem odtial a dalej - dozadu netreba
-                if (this.detailArray[j].townsArray != undefined){ // ked najdem vykladku
+                if (this.detailArray[j].townsArray !== undefined) { // ked najdem vykladku
                   // for (let k = 0; k < this.detailArray[j].length; k++) { // prechadzam vsetkymi detailami a porovnavam
-                    for (let l = 0; l < this.detailArray[j].townsArray.length; l++) { // predhazam vykladkou
-                      // porovnavam ci sedia indexy vo vykladke s indexom nakladky
-                      console.log(this.detailArray[j]);
-                      console.log(this.detailArray[j].townsArray);
-                      console.log(this.detailArray[j].townsArray[l]);
-                      if (i == this.detailArray[j].townsArray[l] && l == this.detailArray[j].detailArray[l]){
-                        //ak sedia tak by som mal vo vykladke upravit index mesta
-                        this.detailArray[j].townsArray[l] = this.detailArray[j].townsArray[l] + 1; // pretoze ho preskocil, to znamena ze nakladka padla o 1 mesto dole
-                      }
+                  for (let l = 0; l < this.detailArray[j].townsArray.length; l++) { // predhazam vykladkou
+                    // porovnavam ci sedia indexy vo vykladke s indexom nakladky
+                    console.log(this.detailArray[j]);
+                    console.log(this.detailArray[j].townsArray);
+                    console.log(this.detailArray[j].townsArray[l]);
+                    if (i === this.detailArray[j].townsArray[l] && indexBalikaNakladky === this.detailArray[j].detailArray[l]) {
+                      // nemozem to menit rovno, lebo moze sa stat ze tymto prechadzam este raz a uz mam zmenene indexi, ja pako
+                      arrayAddress.push(j);
+                      arrayTowns.push(l);
+                      // pretoze ho preskocil, to znamena ze nakladka padla o 1 mesto hore
+                      arrayCurrentIndex.push(this.detailArray[j].townsArray[l] + 1);
                     }
+                  }
 
                   // }
 
                 }
 
               }
-
+            }
             }
           }
           //na konci ukladam zmenene indexy menenej nakladky

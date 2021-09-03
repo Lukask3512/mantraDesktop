@@ -71,14 +71,23 @@ export class CompanyService {
     return this.companiesCollection.doc(companyId).valueChanges();
   }
 
-  // getCarByNumber(carNumber){
-  //   return this.afs.collection('cars', ref => {
-  //     let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-  //
-  //     query = query.where('phoneNumber', '==', carNumber)
-  //     return query;
-  //   }).valueChanges();
-  // }
+  getCompanyByIco(ico){
+    return this.afs.collection('companies', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+      query = query.where('ico', '==', ico);
+      return query;
+    }).valueChanges();
+  }
+
+  getCompanyByDico(dicIc){
+    return this.afs.collection('companies', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+      query = query.where('dicIc', '==', dicIc);
+      return query;
+    }).valueChanges();
+  }
 
   updateCompany(updateCompany, id) {
     return this.companiesCollection.doc(id).update(updateCompany);

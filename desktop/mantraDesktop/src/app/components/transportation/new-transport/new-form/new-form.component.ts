@@ -508,10 +508,27 @@ export class NewFormComponent implements OnInit {
     console.log(this.dataService.getDetails()[townId][detailId]);
     return this.dataService.getDetails()[townId][detailId];
   }
-
+  //TODO este to buguje ked zvacsujem pole
   // ked sa nahodov zmensi pole, ale by som ho pohol opopovat
   sizeUpdate(){
+    // console.log(this.numberOfItems)
+    // console.log(this.detailsArray)
+    // console.log(this.actualItemInForm)
+    if (this.numberOfItems <= this.detailsArray.length){
+      this.actualItemInForm = this.numberOfItems - 1;
+      console.log('cutujem')
+      console.log(this.detailsArray);
+      if (this.detailsArray.length > this.numberOfItems - 1){
+        this.detailsArray = this.detailsArray.slice(0, this.actualItemInForm + 1);
+        this.assignToDetail(0, this.actualItemInForm, null);
 
+      }
+      console.log(this.detailsArray);
+    }
+
+    // if (this.detailAboutRoute. > this.numberOfItems){
+    //   this.detailAboutRoute[]
+    // }
   }
 
   updateFormPosition(){
@@ -619,11 +636,11 @@ export class NewFormComponent implements OnInit {
     if (this.address === undefined){
       return;
     }
-    // if (this.arrayOfDetailsAbRoute[indexOfAddresses] == undefined) {
-    //   detail = this.detailAboutRoute;
-    // }else{
-    //   detail = this.arrayOfDetailsAbRoute[indexOfAddresses];
-    // }
+
+    if (!detail){
+      return;
+    }
+
     this.transportForm.controls.sizeD.setValue(detail.sizeD);
     this.transportForm.controls.sizeV.setValue(detail.sizeV);
     this.transportForm.controls.sizeS.setValue(detail.sizeS);
