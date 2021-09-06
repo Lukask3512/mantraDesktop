@@ -1,3 +1,7 @@
+<header>
+  <h2>Zelene a cervene miesta sa vzdy porovnavaju s 1. adresou novej prepravy.</h2>
+</header>
+
 <div class="example-container">
   <h2>Nová preprava</h2>
   <div
@@ -6,14 +10,39 @@
     [cdkDropListData]="newRouteCopy"
     cdkDropListConnectedTo="even"
     class="example-list"
-    (cdkDropListDropped)="drop($event)"
-    [cdkDropListEnterPredicate]="noReturnPredicate">
+    cdkDropListSortingDisabled
+    (cdkDropListDropped)="drop($event)">
     <div
       class="example-box"
       *ngFor="let oneAddress of newRouteCopy ; index as i"
       [cdkDragData]="oneAddress"
       [cdkDragDisabled]="checkIndex(i)"
-      cdkDrag>{{oneAddress.nameOfTown}}</div>
+      cdkDrag>
+      <div *ngIf="this.newRoute.length == this.newRouteCopy.length" class="bednaWrapper">
+        <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
+        <div class="bednaWrapper" *ngIf="this.oneAddress.type == 'vykladka'" >
+          <div class="bedna" *ngFor="let detail of this.oneAddress.packagesId; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndexVykladka(detail, true)}}</span>
+          </div>
+        </div>
+        <div class="bednaWrapper" *ngIf="this.oneAddress.type == 'nakladka'">
+          <div class="bedna" *ngFor="let detail of this.oneAddress.packagesId; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndex(i, indexik, true)}}</span>
+          </div>
+        </div>
+      </div>
+
+    <div class="routeTown">
+      <p>
+        <span *ngIf="oneAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+        <span *ngIf="oneAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        {{oneAddress.nameOfTown}}
+      </p>
+    </div>
+
+
+
+    </div>
   </div>
   <button (click)="moveAll()">Presun vsetko</button>
 </div>
@@ -27,16 +56,40 @@
     cdkDropListConnectedTo="all"
     class="example-list"
     (cdkDropListDropped)="drop($event)">
-    <div>
 
+    <div>
         <div
           class="example-box"
-          *ngFor="let itiAddress of carItinerarAddresses"
+          [class]="getClass(itiAddress, i)"
+          *ngFor="let itiAddress of carItinerarAddresses ; index as i"
           cdkDrag
-          [cdkDragData]="itiAddress">{{itiAddress.nameOfTown}}</div>
+          [cdkDragData]="itiAddress">
+          <div  class="bednaWrapper">
+            <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
+            <div class="bednaWrapper" *ngIf="this.itiAddress.type == 'vykladka'" >
+              <div class="bedna" *ngFor="let detail of this.itiAddress.packagesId; let indexik = index">
+                <span class="numberOfBedna">{{getBednaIndexVykladka(detail, false)}}</span>
+              </div>
+            </div>
+            <div class="bednaWrapper" *ngIf="this.itiAddress.type == 'nakladka'">
+              <div class="bedna" *ngFor="let detail of this.itiAddress.packagesId; let indexik = index">
+                <span class="numberOfBedna">{{getBednaIndex(i, indexik, false)}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="routeTown">
+            <p>
+              <span *ngIf="itiAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+              <span *ngIf="itiAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+              {{itiAddress.nameOfTown}}
+              <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
+
+            </p>
+          </div>
+        </div>
+        </div>
     </div>
 
-  </div>
 </div>
 
 <button [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">Pridat</button>

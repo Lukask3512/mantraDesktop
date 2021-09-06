@@ -13,3 +13,35 @@
 .redTitle{
   color: red;
 }
+
+.bedna{
+  width: 60px;
+  margin: 6px;
+  cursor: pointer;
+}
+
+.lastAdded{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  flex-direction: column;
+}
+
+.vyska{
+  position: absolute;
+  top: 60px;
+  right: 30px;
+}
+
+.sirka{
+  position: absolute;
+  right: 50px;
+  bottom: -4px;
+}
+
+.dlzka{
+  position: absolute;
+  left: 45px;
+  bottom: -5px;
+}

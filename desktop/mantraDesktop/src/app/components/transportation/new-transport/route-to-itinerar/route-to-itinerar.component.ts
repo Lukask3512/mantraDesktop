@@ -7,6 +7,8 @@ import {DataService} from "../../../../data/data.service";
 import {CarService} from "../../../../services/car.service";
 import {PackageService} from "../../../../services/package.service";
 import {RouteService} from '../../../../services/route.service';
+import DeatilAboutAdresses from '../../../../models/DeatilAboutAdresses';
+import {CountFreeSpaceService} from '../../../../data/count-free-space.service';
 
 @Component({
   selector: 'app-route-to-itinerar',
@@ -16,15 +18,18 @@ import {RouteService} from '../../../../services/route.service';
 export class RouteToItinerarComponent implements OnInit {
 
   @Input() car: Cars;
+  myCarWithEverything;
+  myNewRouteWithEverything;
   @Input() newRoute: Address[];
   @Input() newDetails;
   @Output() carId = new EventEmitter<string>();
   @Output() offerInCar = new EventEmitter<Cars>();
   newRouteCopy: Address[];
   carItinerarAddresses: Address[] = [];
+  poleMiestKdeSaVopcha;
   constructor(private addressService: AddressService, private dataService: DataService,
               private carService: CarService, private addressesService: AddressService, private packageService: PackageService,
-              private routeService: RouteService) { }
+              private countFreeSpaceService: CountFreeSpaceService,) { }
 
   ngOnInit(): void {
     var adresy = this.addressService.getAddresses();// TODO toto treba majk check
@@ -35,13 +40,114 @@ export class RouteToItinerarComponent implements OnInit {
         this.car.itinerar.forEach(addId => {
           this.carItinerarAddresses.push(adresy.find(oneAddress => oneAddress.id === addId));
         });
+        this.naplnAutoDetailomAAdresami();
       }else{
         this.car = {...this.car, itinerar: []}
         this.carItinerarAddresses = [];
       }
     }
-    // console.log(this.newRoute)
     this.newRouteCopy = JSON.parse(JSON.stringify(this.newRoute));
+    this.naplnNovuRoutuDetailom();
+    this.skontrolujVolneMiesto();
+
+  }
+
+  najdiIndexNakladky(){
+    let maxIndexNakladky = -1;
+    if (this.myNewRouteWithEverything.adresyVPonuke[0] && this.myNewRouteWithEverything.adresyVPonuke[0].type === 'vykladka'){
+      // kontrolujem baliky vykladky v ponuke[0]
+      for (const [indexOffer, detailOffer] of this.myNewRouteWithEverything.detailVPonuke[0].entries()) {
+        // kontrolujem itinerar auta
+        for (const [indexAddressIti, detailElement] of this.myCarWithEverything.detailIti.entries()) {
+          // kontrolujem baliky v 1 adrese
+          for (const [indexBalika, oneBalik] of detailElement.entries()) {
+            if (detailOffer.id === oneBalik.id) {
+              maxIndexNakladky = indexAddressIti; // ukladam si index nakladky
+            }
+          }
+        }
+      }
+    }
+    return maxIndexNakladky;
+  }
+
+  skontrolujVolneMiesto(){
+    const itinerarAutaPocetPalietVMeste = this.countFreeSpaceService.vypocitajPocetPalietVKazomMeste(this.myCarWithEverything);
+    const pocetTonVIti = this.countFreeSpaceService.pocetTonVKazdomMeste(itinerarAutaPocetPalietVMeste);
+    const volnaVahaPreAutovIti = this.countFreeSpaceService.volnaVahaPreAutoVMeste(this.myCarWithEverything, pocetTonVIti, 1);
+    const volnaVahaPreAutovItiSPrekrocenim = this.countFreeSpaceService.volnaVahaPreAutoVMeste(this.myCarWithEverything, pocetTonVIti, 1);
+    const vopchaSa = this.countFreeSpaceService.countFreeSpace(this.myCarWithEverything, this.myNewRouteWithEverything, 1);
+    this.poleMiestKdeSaVopcha = vopchaSa;
+    console.log(this.myCarWithEverything);
+    console.log(this.myNewRouteWithEverything);
+    console.log(this.poleMiestKdeSaVopcha)
+  }
+
+  najdiDetaildries(adresy: Address[]){
+    var detailVPonuke = [];
+    adresy.forEach((address, indexAdresa)  => {
+      const packageVPoradiPreAdresu: DeatilAboutAdresses[] = [];
+      if (address){
+        address.packagesId.forEach(onePackageId => {
+          let balik: DeatilAboutAdresses = this.packageService.getOnePackage(onePackageId);
+          if (balik){
+            balik.id = onePackageId;
+          }else{
+            // setTimeout( () => {
+            balik = this.packageService.getOnePackage(onePackageId);
+            if (balik){
+              balik.id = onePackageId;
+            }
+            // }, 700 );
+          }
+          packageVPoradiPreAdresu.push(balik);
+        });
+      }
+      detailVPonuke.push(packageVPoradiPreAdresu);
+    });
+    return detailVPonuke;
+  }
+
+  naplnAutoDetailomAAdresami(){
+    // carsWithIti.push({...oneCar, itiAdresy: itinerarAuta, detailIti: detailAuta});
+    const detailVPonuke = this.najdiDetaildries(this.carItinerarAddresses);
+
+    this.myCarWithEverything = {...this.car, itiAdresy: this.carItinerarAddresses, detailIti: detailVPonuke};
+    console.log(this.myCarWithEverything);
+  }
+
+  naplnNovuRoutuDetailom(){
+    let prepravasDetailom;
+    let maxVaha = 0;
+    let sumVaha = 0;
+    let detailVPonuke = this.najdiDetaildries(this.newRouteCopy);
+    detailVPonuke.forEach((oneDetail, indexTown ) => { // detailom a zistujem max vahu
+      oneDetail.forEach((onePackage, indexPackage) => {
+        if (onePackage){
+          if (this.newRouteCopy[indexTown].type === 'nakladka'){
+            sumVaha += onePackage.weight;
+            if (sumVaha > maxVaha){
+              maxVaha = sumVaha;
+            }
+          }else{
+            sumVaha -= onePackage.weight;
+          }
+        }
+      });
+    });
+    const prvaAdresa = [this.newRouteCopy[0]];
+    detailVPonuke = [detailVPonuke[0]];
+    this.myNewRouteWithEverything = {adresyVPonuke: prvaAdresa , maxVaha, detailVPonuke};
+    console.log(this.myNewRouteWithEverything);
+  }
+
+  kontrolaCiSaVopcha(indexAdresy){
+    const najdiIndex = this.poleMiestKdeSaVopcha.poleMiestKdeSaVopcha.find(oneOffer => oneOffer === indexAdresy);
+    if (najdiIndex > -1){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   // kontrola ci mozem prehodit mesta - podla detailu
@@ -139,6 +245,9 @@ export class RouteToItinerarComponent implements OnInit {
       }
       if (mozemPresunut){
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        this.naplnNovuRoutuDetailom();
+        this.naplnAutoDetailomAAdresami();
+        this.skontrolujVolneMiesto();
       }
     } else {
       presuvaciDetail = this.newRouteCopy[event.previousIndex].packagesId;
@@ -149,6 +258,9 @@ export class RouteToItinerarComponent implements OnInit {
           event.previousIndex,
           event.currentIndex);
       }
+      this.naplnNovuRoutuDetailom();
+      this.naplnAutoDetailomAAdresami();
+      this.skontrolujVolneMiesto();
 
     }
   }
@@ -156,6 +268,7 @@ export class RouteToItinerarComponent implements OnInit {
   setCar(car: Cars){
     this.car = car;
     this.newRouteCopy = JSON.parse(JSON.stringify(this.newRoute));
+    this.naplnNovuRoutuDetailom();
     this.setAddresses();
   }
 
@@ -163,24 +276,14 @@ export class RouteToItinerarComponent implements OnInit {
     var allAddresses = this.addressService.getAddresses();// TODO toto treba majk check
     allAddresses = allAddresses.concat(this.addressService.getAddressesFromOffer());
 
-        var adresy = allAddresses.filter(jednaAdresa => this.car.itinerar.includes(jednaAdresa.id));
-        adresy = this.car.itinerar.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
-        // this.newRouteCopy = JSON.parse(JSON.stringify(adresy));
-        // this.newRoute = JSON.parse(JSON.stringify(adresy));
+    var adresy = allAddresses.filter(jednaAdresa => this.car.itinerar.includes(jednaAdresa.id));
+    adresy = this.car.itinerar.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
 
-        this.carItinerarAddresses = adresy;
+    this.carItinerarAddresses = adresy;
+    this.naplnAutoDetailomAAdresami();
+    this.naplnNovuRoutuDetailom();
+    this.skontrolujVolneMiesto();
 
-
-  }
-
-  /** Predicate function that only allows even numbers to be dropped into a list. */
-  evenPredicate(item: CdkDrag<number>) {
-    return item.data % 2 === 0;
-  }
-
-  /** Predicate function that doesn't allow items to be dropped into a list. */
-  noReturnPredicate() {
-    return false;
   }
 
   najdiVykladkuTovaru(townId, detailId){
@@ -218,5 +321,70 @@ export class RouteToItinerarComponent implements OnInit {
   moveAll(){
     this.carItinerarAddresses = [...this.carItinerarAddresses, ...this.newRouteCopy];
     this.newRouteCopy = [];
+    this.naplnNovuRoutuDetailom();
+    this.naplnAutoDetailomAAdresami();
+    this.skontrolujVolneMiesto();
+  }
+
+  getClass(address: Address, indexAdresy){
+
+    let classString = '';
+    const isNew = this.newRoute.find(oneAddress => oneAddress.id === address.id);
+    let indexMesta;
+
+    if (this.poleMiestKdeSaVopcha){
+      indexMesta = this.poleMiestKdeSaVopcha.poleMiestKdeSaVopcha.find(townIndex => townIndex === indexAdresy);
+    }
+    if (isNew){
+      classString = 'newAddress ';
+    }
+    if (indexMesta > -1 && this.najdiIndexNakladky() <= indexAdresy){
+      classString = classString + 'greenBack';
+    }else{
+      classString = classString + 'redBack';
+    }
+    return classString;
+  }
+
+  getCountOfPackages(townIndex, newRoute){
+    if (newRoute){
+      return this.newRouteCopy[townIndex].packagesId.length;
+    }else{
+      return this.carItinerarAddresses[townIndex].packagesId.length;
+    }
+  }
+  // pre nakladky
+  getBednaIndex(townIndex, detailIndex, newRoute){
+    if (!newRoute){ // ked to kontrolujem v itinerari
+      let indexBedne = 0;
+      for (let i = 0; i < townIndex; i++) {
+        indexBedne += this.getCountOfPackages(i, false);
+      }
+      indexBedne += detailIndex + 1;
+      return indexBedne;
+    }else{
+      let indexBedne = 0;
+      for (let i = 0; i < townIndex; i++) {
+        indexBedne += this.getCountOfPackages(i, true);
+      }
+      indexBedne += detailIndex + 1;
+      return indexBedne;
+    }
+  }
+
+  getBednaIndexVykladka(packageIdFrom, newRoute){
+    if (newRoute){
+      const townId = this.newRouteCopy.findIndex(oneAddress => oneAddress.packagesId.includes(packageIdFrom));
+      if (townId !== -1){
+        const packageId = this.newRouteCopy[townId].packagesId.findIndex(onePackage => onePackage === packageIdFrom);
+        return this.getBednaIndex(townId, packageId, newRoute);
+      }
+    }else{
+      const townId = this.carItinerarAddresses.findIndex(oneAddress => oneAddress.packagesId.includes(packageIdFrom));
+      if (townId !== -1){
+        const packageId = this.carItinerarAddresses[townId].packagesId.findIndex(onePackage => onePackage === packageIdFrom);
+        return this.getBednaIndex(townId, packageId, newRoute);
+      }
+    }
   }
 }

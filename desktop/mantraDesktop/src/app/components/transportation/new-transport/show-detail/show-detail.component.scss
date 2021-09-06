@@ -34,6 +34,26 @@
   display: flex;
 }
 
+.jedenBalik{
+  position: relative;
+}
+
+.vyska{
+  position: absolute;
+  top: 28px;
+  right: -3px;
+}
+.sirka{
+  position: absolute;
+  bottom: 0;
+  right: 16px;
+}
+.dlzka{
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+}
+
 
 
 

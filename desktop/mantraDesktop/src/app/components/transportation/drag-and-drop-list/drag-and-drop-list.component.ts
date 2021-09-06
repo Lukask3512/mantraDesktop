@@ -332,4 +332,20 @@ export class DragAndDropListComponent implements OnInit {
     console.log(this.address)
   }
 
+  getCountOfPackages(townIndex){
+    return this.detailArray[townIndex].length;
+  }
+
+  // pre nakladky
+  getBednaIndex(townIndex, detailIndex){
+    let indexBedne = 0;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.detailArray[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackages(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
+    return indexBedne;
+  }
+
 }

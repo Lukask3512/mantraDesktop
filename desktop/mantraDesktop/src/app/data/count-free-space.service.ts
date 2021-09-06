@@ -144,7 +144,7 @@ export class CountFreeSpaceService {
     var allTogether = [];
 
     // dorobeny aktualny naklad, treba majk check
-    if (auto.aktualnyNaklad){
+    if (auto.aktualnyNaklad && auto.aktualnyNaklad.length > 0){
       var oneAdress = {
         sizeS: [],
         sizeD: [],
@@ -245,7 +245,7 @@ export class CountFreeSpaceService {
   }
 
   vypocitajPocetPalietVPonuke(offer){
-    if (!offer.detailVPonuke || !offer.detailVPonuke[0] || !offer.detailVPonuke[0].sizesS){
+    if (!offer.detailVPonuke || !offer.detailVPonuke[0]){
       return [undefined];
     }
     var poleKsPalietPreKazduAdresu = [];
@@ -275,7 +275,7 @@ export class CountFreeSpaceService {
         });
         poleKsPalietPreKazduAdresu.push(oneAdress);
       }else{ // tu sa snazim odsranit veci kedze je vykladka
-        if (poleKsPalietPreKazduAdresu.length - 1 >= 0){
+        if (poleKsPalietPreKazduAdresu.length - 1 >= 0 && poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length - 1]){
           var lastVeci = JSON.parse(JSON.stringify(poleKsPalietPreKazduAdresu[poleKsPalietPreKazduAdresu.length -1]));
           oneDetail.forEach((oneSize, indexSize) => {
             for (var i =0; i < lastVeci.sizeS.length; i++){

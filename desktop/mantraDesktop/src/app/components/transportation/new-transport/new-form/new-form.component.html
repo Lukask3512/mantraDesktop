@@ -154,12 +154,23 @@
     <div class="formAndBedna">
 
       <h4>Počet kusov</h4>
+
+      <div *ngIf="this.lastAddedPackage && labelPosition == 'nakladka'" class="lastAdded">
+        <p>Posledne pridany balik: </p>
+        <img (click)="getLastAddedItem()" class="bedna nevylozene" src="./assets/logo/cube.png">
+        <span class="vyska">4</span>
+        <span class="sirka">2</span>
+        <span class="dlzka">5</span>
+      </div>
+
       <mat-form-field appearance="standard" >
         <mat-label>Počet kusov</mat-label>
         <input (change)="sizeUpdate()" [(ngModel)]="numberOfItems" min="1" type="number" matInput placeholder="Počet....">
         <span matSuffix> ks </span>
         <mat-hint>Počet</mat-hint>
       </mat-form-field>
+
+
 
       <p>Parametre {{actualItemInForm + 1}} z {{numberOfItems}}</p>
 

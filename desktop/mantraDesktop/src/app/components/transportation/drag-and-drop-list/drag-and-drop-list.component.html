@@ -6,12 +6,12 @@
 <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
         <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
-          <span class="numberOfBedna">{{indexik + 1}}</span>
+          <span class="numberOfBedna">{{getBednaIndex(this.detailArray[i].townsArray[indexik], this.detailArray[i].detailArray[indexik])}}</span>
         </div>
       </div>
       <div class="bednaWrapper" *ngIf="!this.detailArray[i].townsArray">
         <div (click)="openDialog(this.detailArray[i][indexik].id)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
-          <span class="numberOfBedna">{{indexik + 1}}</span>
+          <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
         </div>
       </div>
 

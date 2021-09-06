@@ -20,6 +20,8 @@ export class NewFormComponent implements OnInit {
   casPrichodu: 'rozhoduje' | 'nerozhoduje' | '';
   datumPrichodu: 'rozhoduje' | 'nerozhoduje'| '';
 
+  lastAddedPackage: DeatilAboutAdresses
+
   transportForm = this.fb.group({
     sizeD: ['', Validators.required],
     sizeV: ['', Validators.required],
@@ -357,8 +359,10 @@ export class NewFormComponent implements OnInit {
   pushItemsToArray(indexOfAddresses, indexOfPackage) {
     if (!this.detailsArray[indexOfPackage]) {
       this.detailsArray.push(this.getDetail());
+      this.setLastAddedItem();
     } else {
       this.detailsArray[indexOfPackage] = this.getDetail();
+      this.setLastAddedItem();
     }
     console.log(this.detailsArray);
     console.log(indexOfPackage);
@@ -504,31 +508,37 @@ export class NewFormComponent implements OnInit {
 
   }
 
+  setLastAddedItem(){
+    this.lastAddedPackage = new DeatilAboutAdresses();
+    this.lastAddedPackage.sizeS = this.getDetail().sizeS;
+    this.lastAddedPackage.sizeD = this.getDetail().sizeD;
+    this.lastAddedPackage.sizeV = this.getDetail().sizeV;
+    this.lastAddedPackage.weight = this.getDetail().weight;
+    this.lastAddedPackage.polohaNakladania = this.getDetail().polohaNakladania;
+    this.lastAddedPackage.vyskaNaklHrany = this.getDetail().vyskaNaklHrany;
+    this.lastAddedPackage.stohovatelnost = this.getDetail().stohovatelnost;
+  }
+
+  getLastAddedItem(){
+    if (this.lastAddedPackage){
+      this.assignToDetail(null, null, this.lastAddedPackage);
+    }
+  }
+
   getDetailByIds(townId, detailId){
     console.log(this.dataService.getDetails()[townId][detailId]);
     return this.dataService.getDetails()[townId][detailId];
   }
-  //TODO este to buguje ked zvacsujem pole
-  // ked sa nahodov zmensi pole, ale by som ho pohol opopovat
+
   sizeUpdate(){
-    // console.log(this.numberOfItems)
-    // console.log(this.detailsArray)
-    // console.log(this.actualItemInForm)
     if (this.numberOfItems <= this.detailsArray.length){
       this.actualItemInForm = this.numberOfItems - 1;
-      console.log('cutujem')
-      console.log(this.detailsArray);
       if (this.detailsArray.length > this.numberOfItems - 1){
         this.detailsArray = this.detailsArray.slice(0, this.actualItemInForm + 1);
         this.assignToDetail(0, this.actualItemInForm, null);
 
       }
-      console.log(this.detailsArray);
     }
-
-    // if (this.detailAboutRoute. > this.numberOfItems){
-    //   this.detailAboutRoute[]
-    // }
   }
 
   updateFormPosition(){
