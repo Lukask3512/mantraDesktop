@@ -70,6 +70,8 @@ import { AllDetailAboutRouteDialogComponent } from './dialogs/all-detail-about-r
 import {MatExpansionModule} from '@angular/material/expansion';
 import {NewDispecerComponent} from './dispecer/new-dispecer/new-dispecer.component';
 import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat-route-dialog.component';
+import { CancelRouteFromCarDialogComponent } from './dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -90,7 +92,7 @@ import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -128,7 +130,8 @@ import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat
         MatDatepickerModule,
         MatSortModule,
         MatExpansionModule,
-      CommonModule
+        CommonModule,
+        MatDialogModule
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

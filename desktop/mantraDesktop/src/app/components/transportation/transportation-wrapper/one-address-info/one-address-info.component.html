@@ -6,10 +6,25 @@
     <span *ngIf="this.address.status > 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
   </p>
 
-  <div class="bednaWrapper">
-      <div class="bedna">
-        <span class="numberOfBedna">{{this.address.packagesId.length}}</span>
+<!--  <div class="bednaWrapper">-->
+<!--      <div class="bedna">-->
+<!--        <span class="numberOfBedna">{{this.address.packagesId.length}}</span>-->
+<!--      </div>-->
+<!--  </div>-->
+
+  <div *ngIf="this.detail && this.detail[addressIndex] != undefined" class="bednaWrapper">
+    <div class="bednaWrapper" *ngIf="this.detail[addressIndex].townsArray">
+      <div class="bedna" *ngFor="let detailPrvok of this.detail[addressIndex].detailArray; let indexik = index">
+        <span class="numberOfBedna">{{getBednaIndex(this.detail[addressIndex].townsArray[indexik], this.detail[addressIndex].detailArray[indexik])}}</span>
       </div>
+    </div>
+    <div class="bednaWrapper" *ngIf="!this.detail[addressIndex].townsArray">
+      <div class="bedna" *ngFor="let detail of this.detail[addressIndex]; let indexik = index">
+        <span class="numberOfBedna">{{getBednaIndex(addressIndex, indexik)}}</span>
+      </div>
+    </div>
+
   </div>
+
 </div>
 

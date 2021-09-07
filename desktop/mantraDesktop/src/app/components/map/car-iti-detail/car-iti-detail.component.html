@@ -19,17 +19,23 @@
     [cdkDropListData]="offer.adresyVPonuke"
     cdkDropListConnectedTo="even"
     class="example-list"
-    (cdkDropListDropped)="drop($event)"
-    >
+    cdkDropListSortingDisabled
+    (cdkDropListDropped)="drop($event)">
     <div
       class="example-box"
       *ngFor="let ponuka of offer.adresyVPonuke; index as i"
       [cdkDragData]="ponuka"
       cdkDrag
-      [cdkDragDisabled]="checkIndex(i)">{{ponuka.nameOfTown}}</div>
+      [cdkDragDisabled]="checkIndex(i)">
+      <p>
+        <span *ngIf="ponuka.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+        <span *ngIf="ponuka.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        {{ponuka.nameOfTown}}
+      </p>
+    </div>
   </div>
 </div>
-
+<button *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">Presun vsetko</button>
 <div *ngIf="car" class="example-container">
   <h2>Itinerar vozidla {{this.car.ecv}}</h2>
 
@@ -48,7 +54,12 @@
       cdkDrag
       [cdkDragData]="address">
       <div>
-        {{address.nameOfTown}}
+        <p>
+          <span *ngIf="address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
+          <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+          {{address.nameOfTown}}
+        </p>
+
         <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
       </div>
       <div *ngIf="i !== this.car.itiAdresy.length -1 " class="bottomLine">

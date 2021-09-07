@@ -42,6 +42,8 @@ export class CarItiDetailComponent implements OnInit {
 
   @Output() uspecnePriradenie = new EventEmitter<any>();
 
+  ciSaVopcha;
+
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
               private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,) { }
@@ -54,6 +56,7 @@ export class CarItiDetailComponent implements OnInit {
     this.car = JSON.parse(JSON.stringify(car));
     this.offer = JSON.parse(JSON.stringify(this.realOffer));
     this.countDistanceOfItinerarWithou();
+    this.putFirstAddressFromOffer();
   }
 
   setPonuka(offer){
@@ -100,8 +103,6 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<any[]>) {
-    console.log(this.offer);
-    console.log(this.car);
     if (event.previousContainer === event.container) {
       let mozemPresunut;
       if (event.previousContainer.id === 'all'){
@@ -122,18 +123,22 @@ export class CarItiDetailComponent implements OnInit {
         }
       }
     } else {
-      // tu budem musiet dat ocekovanie ci sa nahodou package nakladky nenachadza za vykladkou
+      if (event.previousContainer.id === 'all'){
+
+        // tu budem musiet dat ocekovanie ci sa nahodou package nakladky nenachadza za vykladkou
       const presuvaciDetail = this.offer.detailVPonuke[event.previousIndex];
       const mozemPresunutDoItinerara = this.najdiCiMozemPresunutDoItinerara(presuvaciDetail, event.previousIndex, event.currentIndex);
       if (mozemPresunutDoItinerara){
 
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+
 
       // ked presuvam do auta
-      if (event.previousContainer.id === 'all'){
+
+        transferArrayItem(event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex);
+
         const idAdresyZPonuky = this.offer.addresses[event.previousIndex];
         const detailZPonuky = this.offer.detailVPonuke[event.previousIndex];
 
@@ -143,6 +148,7 @@ export class CarItiDetailComponent implements OnInit {
         this.offer.addresses.splice(event.previousIndex, 1); // odstranujem id adresy po presunuti
         this.offer.detailVPonuke.splice(event.previousIndex, 1); // odstranujem detail po presunuti
       }else { // ked presuvam z auta do ponuky
+        return;
         const idAdresyZAuta = this.car.itinerar[event.previousIndex];
         const detailZAuta = this.car.detailIti[event.previousIndex];
 
@@ -154,11 +160,15 @@ export class CarItiDetailComponent implements OnInit {
 
 
       }
+      }else{
+        return;
       }
 
     }
+
+    // this.countService.countFreeSpace(this.car, this.offer, this.prekrocenieVelkosti);
     // pri drrag and drop prepocitam volne miesta
-    const volneMiesta = this.countService.countFreeSpace(this.car, this.offer, this.prekrocenieVelkosti);
+    const volneMiesta = this.putFirstAddressFromOffer();
     let prepravaIndex = this.offer.zelenePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id);
     if (prepravaIndex > -1){
       this.offer.zelenePrepravy[prepravaIndex].vopchaSa = volneMiesta;
@@ -167,6 +177,17 @@ export class CarItiDetailComponent implements OnInit {
       prepravaIndex = this.offer.zltePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id);
       this.offer.zltePrepravy[prepravaIndex].vopchaSa = volneMiesta;
     }
+    console.log(this.offer);
+    console.log(this.car);
+  }
+
+  // kontroluje to vzdy len pre 1. adresu v ponuke
+  putFirstAddressFromOffer(){
+    let prvaAdresaSDetailom = JSON.parse(JSON.stringify(this.offer));
+    prvaAdresaSDetailom.adresyVPonuke = [prvaAdresaSDetailom.adresyVPonuke[0]];
+    prvaAdresaSDetailom.detailVPonuke = [prvaAdresaSDetailom.detailVPonuke[0]];
+    this.ciSaVopcha = this.countService.countFreeSpace(this.car, prvaAdresaSDetailom, this.prekrocenieVelkosti);
+    return this.kontrolaCiSaVopcha;
   }
 
 
@@ -252,15 +273,7 @@ export class CarItiDetailComponent implements OnInit {
     }
     return mozemPresunut;
   }
-  /** Predicate function that only allows even numbers to be dropped into a list. */
-  evenPredicate(item: CdkDrag<number>) {
-    return item.data % 2 === 0;
-  }
 
-  /** Predicate function that doesn't allow items to be dropped into a list. */
-  noReturnPredicate() {
-    return false;
-  }
 
   najdiIndexNakladky(){
     let maxIndexNakladky = -1;
@@ -282,6 +295,19 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   getColorForTown(indexOfAddress){
+    console.log(this.najdiIndexNakladky());
+    if (this.ciSaVopcha){
+      const indexMesta = this.ciSaVopcha.poleMiestKdeSaVopcha.findIndex(oneId => oneId === indexOfAddress);
+      if (indexMesta > -1){
+        if (this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress){
+          return 'yellow';
+        }else if (!this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress){
+          return 'green';
+        }else{
+          return;
+        }
+      }
+    }
 
     let preprava = this.offer.zelenePrepravy.find(oneOffer => oneOffer.id === this.car.id);
     let indexVPoli;
@@ -314,7 +340,7 @@ export class CarItiDetailComponent implements OnInit {
         }
       // }
     }else{
-      const volneMiesta = this.countService.countFreeSpace(this.car, this.offer, this.prekrocenieVelkosti);
+      const volneMiesta = this.ciSaVopcha;
       indexVPoli = volneMiesta.poleMiestKdeSaVopcha.findIndex(oneIndex => oneIndex === indexOfAddress);
       prekrocenie = volneMiesta.prekrocenieOPercenta[indexVPoli];
       const indexCiSaNachadza = volneMiesta.poleMiestKdeSaVopcha.find(oneIndex => oneIndex === indexOfAddress);
@@ -504,6 +530,17 @@ export class CarItiDetailComponent implements OnInit {
         return;
       }
     });
+  }
+
+  moveAll(){
+    this.car.itiAdresy = this.car.itiAdresy.concat(this.offer.adresyVPonuke);
+    this.car.itinerar = this.car.itinerar.concat(this.offer.addresses);
+    this.car.detailIti = this.car.detailIti.concat(this.offer.detailVPonuke);
+    this.offer.adresyVPonuke = [];
+    this.offer.addresses = [];
+    this.offer.detailVPonuke = [];
+    this.putFirstAddressFromOffer();
+
   }
 
 }

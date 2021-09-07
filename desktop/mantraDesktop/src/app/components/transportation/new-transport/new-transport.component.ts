@@ -32,6 +32,8 @@ import {Router} from '@angular/router';
 import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
+import {CarService} from '../../../services/car.service';
 
 
 
@@ -98,7 +100,8 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
               private dataService: DataService, private routeService: RouteService,
               private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService,
               private addressService: AddressService, private packageService: PackageService,
-              private router: Router, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService) { }
+              private router: Router, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService,
+              private carService: CarService) { }
 
 
 
@@ -178,7 +181,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
           this.childDropList.setAddresses(this.addresses);
         })
         this.carId = this.route.carId
-        if (this.carId != undefined || this.carId != null){
+        if (this.carId){
           this.car = this.dataService.getOneCarById(this.carId);
           setTimeout(() =>
             {
@@ -645,20 +648,59 @@ else{
     }, 100);
   }
 
+  changeToOffer(){
+
+  }
+
+  cancelFromCarDialog(){
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        if (!this.car){
+          this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+        }
+        this.addresses.forEach(oneAddress => {
+          if (this.car.aktualnyNaklad){
+            this.car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
+          }
+          oneAddress.carId = null;
+          this.addressService.updateAddress(oneAddress);
+          this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
+        });
+        this.route.carId = null;
+        this.routeService.updateRoute(this.route);
+        this.carService.updateCar(this.car, this.car.id);
+        this.getNewRoute(this.route.id);
+      }
+    });
+  }
+
   createRoute(price){
-    this.addPonuka().then(() => {
-      var route: Route;
-      route = JSON.parse(JSON.stringify(this.route));
-      route.createdAt = (new Date()).toString();
-      route.carId = null;
-      route.finished = false;
-      route.forEveryone = true;
-      route.createdBy = this.dataService.getMyIdOrMaster();
-      route.offerFrom = [];
-      route.priceFrom = [];
-      route.price = price;
-      var idNewRouty = this.routeService.createRoute(route);
-    })
+    if (this.route.id){
+      this.route.forEveryone = true;
+      this.route.offerFrom = [];
+      this.route.priceFrom = [];
+      this.route.price = price;
+      this.routeService.updateRoute(this.route);
+    }else{
+      this.addPonuka().then(() => {
+        var route: Route;
+        route = JSON.parse(JSON.stringify(this.route));
+        route.createdAt = (new Date()).toString();
+        route.carId = null;
+        route.finished = false;
+        route.forEveryone = true;
+        route.createdBy = this.dataService.getMyIdOrMaster();
+        route.offerFrom = [];
+        route.priceFrom = [];
+        route.price = price;
+        var idNewRouty = this.routeService.createRoute(route);
+      });
+    }
   }
 
   ciMozemVylozitBednu(detail,indexMesta, indexBedne){
