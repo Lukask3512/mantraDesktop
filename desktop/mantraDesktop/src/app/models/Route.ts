@@ -31,5 +31,7 @@ export default class Route {
   takenBy?: string;
   ponuknuteTo?: string;
   offerInRoute?: string;
+  cancelByCreator?: boolean;
+  cancelByDriver?: boolean;
 
 }

@@ -95,7 +95,6 @@ export class DetailComponent implements AfterViewInit {
               }
 
             });
-            console.log(this.detail)
             if (this.detail)
               this.childDropList.setDetails(this.detail);
 
@@ -256,6 +255,35 @@ export class DetailComponent implements AfterViewInit {
     this.route.takenBy = '';
     this.route.offerInRoute = '';
     this.offerService.updateRoute(this.route);
+  }
+
+  tryCancelOffer(){
+    if (this.createdBy()){
+      this.route.cancelByCreator = true;
+    }else{
+      this.route.cancelByDriver = true;
+    }
+    if (this.route.cancelByCreator && this.route.cancelByDriver){
+      this.route.finished = true;
+    }
+    this.offerService.updateRoute(this.route);
+  }
+
+  tryCancelOfferCancel(){
+    if (this.createdBy()){
+      this.route.cancelByCreator = false;
+    }else{
+      this.route.cancelByDriver = false;
+    }
+    this.offerService.updateRoute(this.route);
+  }
+
+  isCancel(){
+    if (this.route.cancelByDriver && this.route.cancelByCreator){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   chooseCompany(id){

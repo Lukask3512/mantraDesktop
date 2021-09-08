@@ -76,7 +76,7 @@ export class CountFreeSpaceService {
 
 
       this.prejdiPaletyaUlozIch(oneCar);
-      if (oneCar.naves){
+      if (oneCar.naves && this.prives){
         this.prejdiPaletyaUlozIchVNavese(this.prives);
       }
 

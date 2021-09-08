@@ -3,7 +3,16 @@
     <h4>
       Ponuka priradená za <h5>{{this.route.price}}</h5>
     </h4>
-    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
+    <div *ngIf="!isCancel()">
+      <h2 *ngIf="this.route.cancelByDriver">Zrusenie prepravy musi potvrdit zadavatel.</h2>
+      <h2 *ngIf="this.route.cancelByCreator">Zadavatel chce zrusit ponuku. Chcete potvrdit zrusenie?</h2>
+      <button *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">Zrusit ponuku</button>
+      <ng-template #elseCancel>
+        <button (click)="tryCancelOfferCancel()">Zrusit</button>
+      </ng-template>
+    </div>
+    <h2 *ngIf="isCancel()">Ponuka bola zrusena!!</h2>
+
   </div>
 </header>
 <button (click)="openAllDetailDialog()">Detail</button>
@@ -17,15 +26,15 @@
 
 <!--  </ol>-->
 <!--  <div>-->
-    <app-offer-to-route (routeToMap)="changeRouteOnMap($event)" [offerAddresses]="this.address" [offer]="this.route"
-                        *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute == ''"></app-offer-to-route>
+    <app-offer-to-route  (routeToMap)="changeRouteOnMap($event)" [offerAddresses]="this.address" [offer]="this.route"
+                        *ngIf="this.route.takenBy == getDispecerId() && !isCancel() && this.route.offerInRoute == ''"></app-offer-to-route>
 
   <h2  *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute != ''">
     Ponuka priradená vo vozidle: <button (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
   </h2>
 
 
-  <div *ngIf="!createdBy() && this.route.takenBy !== getDispecerId()" class="input">
+  <div *ngIf="!createdBy() && !isCancel() && this.route.takenBy !== getDispecerId()" class="input">
     <h4 *ngIf="this.offer">
       Vaša ponuka {{this.offer}}
     </h4>
@@ -51,7 +60,7 @@
     <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
   </div>
 
-  <div *ngIf="createdBy() && this.route.takenBy === ''" class="input">
+  <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="input">
     <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>
     <button (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">Upravit ponuku</button>
     <h4>
@@ -63,7 +72,10 @@
       <h4 *ngIf="this.route.price == 0">{{this.route.priceFrom[i]}}</h4>
       <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
     </div>
-    <button *ngIf="this.route.ponuknuteTo != '' " (click)="cancelOffer()">Zrusit ponuku</button>
+
+    <button *ngIf="this.route.ponuknuteTo != ''" (click)="cancelOffer()">Zrusit ponuku</button>
+
+
   </div>
 
   <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">
@@ -72,7 +84,16 @@
       <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company>
       za {{this.route.price}}
     </h4>
-    <button (click)="cancelOffer()">Zrusit ponuku</button>
+    <div *ngIf="!isCancel()">
+      <h2 *ngIf="this.route.cancelByDriver">Prepravca chce zrusit ponuku. Chcete potvrdit zrusenie?</h2>
+      <h2 *ngIf="this.route.cancelByCreator">Zrusenie prepravy musi potvrdit zadavatel.</h2>
+      <button (click)="tryCancelOffer()">Zrusit ponuku</button>
+      <ng-template #elseCancelCompany>
+        <button (click)="tryCancelOfferCancel()">Zrusit</button>
+      </ng-template>
+    </div>
+    <h2 *ngIf="isCancel()">Ponuka bola zrusena!</h2>
+
   </div>
 
 

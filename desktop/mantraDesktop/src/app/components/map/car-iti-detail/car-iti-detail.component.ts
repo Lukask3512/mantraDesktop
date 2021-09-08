@@ -60,7 +60,16 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer){
-    this.offer = JSON.parse(JSON.stringify(offer));
+    if (this.offer){
+      var offerAdresy = JSON.parse(JSON.stringify(offer)); // toto robim aby sa mi pri update nanovo nenacitali adresy v drag and drop
+      offerAdresy.detailVPonuke = this.offer.detailVPonuke;
+      offerAdresy.addresses = this.offer.addresses;
+      offerAdresy.adresyVPonuke = this.offer.adresyVPonuke;
+      this.offer = JSON.parse(JSON.stringify(offerAdresy));
+    }else{
+      this.offer = JSON.parse(JSON.stringify(offer));
+    }
+
     this.realOffer = JSON.parse(JSON.stringify(offer));
     if (this.posliPonukuComponent) {
     this.posliPonukuComponent.setOfferId(this.offer.id);
@@ -295,7 +304,6 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   getColorForTown(indexOfAddress){
-    console.log(this.najdiIndexNakladky());
     if (this.ciSaVopcha){
       const indexMesta = this.ciSaVopcha.poleMiestKdeSaVopcha.findIndex(oneId => oneId === indexOfAddress);
       if (indexMesta > -1){
@@ -405,6 +413,7 @@ export class CarItiDetailComponent implements OnInit {
 
   sendCarToPredpoklad(predpoklad: Predpoklad){
     this.sendCarToPredpokad.emit(predpoklad);
+    this.putFirstAddressFromOffer();
   }
 
   openSnackBar(message: string, action: string) {
