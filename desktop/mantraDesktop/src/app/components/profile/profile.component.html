@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <h2>{{this.dispecer.name}}</h2>
+  <h2>{{this.dispecer.surname}}</h2>
+  <h2>{{this.dispecer.email}}</h2>
+  <h2>{{this.dispecer.phone}}</h2>
+  <h2>Pristup k vozidlam:</h2>
+  <div *ngIf="!this.dispecer.allCars; else elseCars">
+    <ul *ngFor="let car of this.dispecer.myCars">
+      <li>{{this.getEcv(car).ecv}}</li>
+    </ul>
+  </div>
+  <ng-template #elseCars>
+    <p>Pouzivatel ma pristup ku vsetkym vozidlam</p>
+  </ng-template>
+
+
+  <h2>Pristup k privesom:</h2>
+  <div *ngIf="!this.dispecer.allPrives; else elsePrives">
+    <ul *ngFor="let prives of this.dispecer.myPrives">
+      <li>{{this.getEcvPrives(prives).ecv}}</li>
+    </ul>
+  </div>
+  <ng-template #elsePrives>
+    <p>Pouzivatel ma pristup ku vsetkym privesom</p>
+  </ng-template>
+
+
+  <button (click)="passwordChange()">Zmena hesla</button>
+
+</div>

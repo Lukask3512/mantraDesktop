@@ -25,11 +25,6 @@ export class AllDetailAboutRouteDialogComponent implements OnInit {
     this.stiahniDetail();
   }
 
-  catchOpen(value, index){
-    console.log(value);
-    console.log(index);
-  }
-
   stiahniDetail(){
     this.detail = [];
     this.addresses.forEach(oneAddress => {
@@ -62,7 +57,6 @@ export class AllDetailAboutRouteDialogComponent implements OnInit {
       }
 
     });
-    console.log(this.detail);
   }
 
   openPackageDialogTowns(townId, detailId){
@@ -106,6 +100,22 @@ export class AllDetailAboutRouteDialogComponent implements OnInit {
         return;
       }
     });
+  }
+
+  getCountOfPackages(townIndex){
+    return this.detail[townIndex].length;
+  }
+
+  // pre nakladky
+  getBednaIndex(townIndex, detailIndex){
+    let indexBedne = 0;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.detail[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackages(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
+    return indexBedne;
   }
 
 

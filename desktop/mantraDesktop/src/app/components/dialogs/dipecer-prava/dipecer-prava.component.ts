@@ -1,16 +1,16 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {CarService} from "../../../services/car.service";
-import {PrivesService} from "../../../services/prives.service";
-import Cars from "../../../models/Cars";
-import Prives from "../../../models/Prives";
-import {DataService} from "../../../data/data.service";
-import Dispecer from "../../../models/Dispecer";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {DispecerService} from "../../../services/dispecer.service";
-import {FormBuilder, Validators} from "@angular/forms";
-import {AccountService} from "../../../../login/_services/account.service";
-import {take} from "rxjs/operators";
-import {NewCarComponent} from "../../cars/new-car/new-car.component";
+import {CarService} from '../../../services/car.service';
+import {PrivesService} from '../../../services/prives.service';
+import Cars from '../../../models/Cars';
+import Prives from '../../../models/Prives';
+import {DataService} from '../../../data/data.service';
+import Dispecer from '../../../models/Dispecer';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {DispecerService} from '../../../services/dispecer.service';
+import {FormBuilder, Validators} from '@angular/forms';
+import {AccountService} from '../../../../login/_services/account.service';
+import {take} from 'rxjs/operators';
+import {NewCarComponent} from '../../cars/new-car/new-car.component';
 import {EmailService} from '../../../services/email/email.service';
 
 @Component({
@@ -46,12 +46,12 @@ export class DipecerPravaComponent implements OnInit {
     this.privesService.prives$.subscribe(prives => {
       this.prives = prives;
     });
-  if (this.data){
-    this.dispecer = this.data.dispecer;
-    this.assignToForm();
-  }else{
-    this.dispecer = new Dispecer();
-  }
+    if (this.data){
+      this.dispecer = this.data.dispecer;
+      this.assignToForm();
+    }else{
+      this.dispecer = new Dispecer();
+    }
 
   }
 
@@ -62,7 +62,7 @@ export class DipecerPravaComponent implements OnInit {
 
   catchChange(id){
     if (this.dispecer.myCars){
-      var jeTam = this.dispecer.myCars.find(carsId => carsId === id);
+      const jeTam = this.dispecer.myCars.find(carsId => carsId === id);
       if (jeTam){
         this.dispecer.myCars = this.dispecer.myCars.filter(cars => cars !== id);
       }else{
@@ -77,7 +77,7 @@ export class DipecerPravaComponent implements OnInit {
   checkBox(id){
     if (this.dispecer){
       if (this.dispecer.myCars){
-        var idcko = this.dispecer.myCars.find(oneCarId => oneCarId === id);
+        const idcko = this.dispecer.myCars.find(oneCarId => oneCarId === id);
         if (idcko){
           return true;
         }else{
@@ -93,14 +93,14 @@ export class DipecerPravaComponent implements OnInit {
 
   catchChangePrives(id){
     if (this.dispecer.myPrives){
-      var jeTam = this.dispecer.myPrives.find(carsId => carsId === id);
+      const jeTam = this.dispecer.myPrives.find(carsId => carsId === id);
       if (jeTam){
         this.dispecer.myPrives = this.dispecer.myPrives.filter(cars => cars !== id);
       }else{
         this.dispecer.myPrives.push(id);
       }
     }else{
-      this.dispecer = {...this.dispecer, myPrives: []}
+      this.dispecer = {...this.dispecer, myPrives: []};
       this.dispecer.myPrives.push(id);
     }
   }
@@ -108,7 +108,7 @@ export class DipecerPravaComponent implements OnInit {
   checkBoxPrives(id){
     if (this.dispecer) {
       if (this.dispecer.myPrives) {
-        var idcko = this.dispecer.myPrives.find(oneCarId => oneCarId == id);
+        const idcko = this.dispecer.myPrives.find(oneCarId => oneCarId == id);
         if (idcko) {
           return true;
         } else {
@@ -123,14 +123,14 @@ export class DipecerPravaComponent implements OnInit {
   }
 
   sendMail(password){
-    let email  = this.dispecerForm.get('email').value;
-    let header  = 'Vitajte v aplikacii Mantra';
-    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo: ' + password;
+    const email  = this.dispecerForm.get('email').value;
+    const header  = 'Vitajte v aplikacii Mantra';
+    const text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo: ' + password;
 
-    let reqObj = {
-      email: email,
-      header: header,
-      text: text
+    const reqObj = {
+      email,
+      header,
+      text
     };
     this.emailService.sendMessage(reqObj).subscribe(data => {
       console.log(data);
@@ -138,15 +138,15 @@ export class DipecerPravaComponent implements OnInit {
   }
 
   sendMailToRegisteredUser(){
-    let email  = this.dispecerForm.get('email').value;
-    let header  = 'Vitajte v aplikacii Mantra';
-    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo nebolo zmenene. Pokial si heslo nepamatate' +
+    const email  = this.dispecerForm.get('email').value;
+    const header  = 'Vitajte v aplikacii Mantra';
+    const text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo nebolo zmenene. Pokial si heslo nepamatate' +
       'mozete ho zmenit na stranke http://prototyp.mantra-online.eu. ' ;
 
-    let reqObj = {
-      email: email,
-      header: header,
-      text: text
+    const reqObj = {
+      email,
+      header,
+      text
     };
     this.emailService.sendMessage(reqObj).subscribe(data => {
       console.log(data);
@@ -161,7 +161,7 @@ export class DipecerPravaComponent implements OnInit {
       this.dialogRef.close();
     }
     else {
-      var valuesForm: Dispecer = this.assignToDirector();
+      const valuesForm: Dispecer = this.assignToDirector();
       this.dispecer.name = valuesForm.name;
       this.dispecer.surname = valuesForm.surname;
       this.dispecer.phone = valuesForm.phone;
@@ -170,8 +170,12 @@ export class DipecerPravaComponent implements OnInit {
       this.dispecer.companyId = this.dataService.getDispecer().companyId;
       this.dispecer.allCars = this.allCars;
       this.dispecer.allPrives = this.allPrives;
-      this.dispecer.myPrives = [];
-      this.dispecer.myCars = [];
+      if (!this.dispecer.myPrives){
+        this.dispecer.myPrives = [];
+      }
+      if (!this.dispecer.myCars){
+        this.dispecer.myCars = [];
+      }
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
         if (user.length > 0){
           // tento pouzivatel uz je v databaze
@@ -181,7 +185,7 @@ export class DipecerPravaComponent implements OnInit {
         else {
           const password = Math.random().toString(36).slice(-8);
           this.accountService.signup(this.dispecerForm.get('email').value, password).then( (registrovany) => {
-            this.dispecerService.createDispecer(valuesForm).then((pro) => {
+            this.dispecerService.createDispecer(this.dispecer).then((pro) => {
               if (registrovany){
                 this.sendMailToRegisteredUser();
               }else{
@@ -193,11 +197,11 @@ export class DipecerPravaComponent implements OnInit {
               this.dialogRef.close();
             });
           }).catch((err) => { // uzivatel je registrovany, ale v ziadnej spolocnosti nie je
-            console.log('Error' + err)
+            console.log('Error' + err);
             this.dispecerService.createDispecer(valuesForm).then((pro) => {
               this.sendMailToRegisteredUser();
-            }).catch((err) => {
-              console.log(err)
+            }).catch((erroro) => {
+              console.log(erroro);
             }).finally(() => {
               this.dialogRef.close();
             });
@@ -207,7 +211,7 @@ export class DipecerPravaComponent implements OnInit {
 
 
             // this.dispecerForm.reset();
-            this.dialogRef.close();
+          this.dialogRef.close();
           // }, 400);
 
 
@@ -219,10 +223,10 @@ export class DipecerPravaComponent implements OnInit {
 
 
   assignToForm(){
-    this.dispecerForm.controls['firstName'].setValue(this.data.dispecer.name);
-    this.dispecerForm.controls['lastName'].setValue(this.data.dispecer.surname);
-    this.dispecerForm.controls['phoneNumber'].setValue(this.data.dispecer.phone);
-    this.dispecerForm.controls['email'].setValue(this.data.dispecer.email);
+    this.dispecerForm.controls.firstName.setValue(this.data.dispecer.name);
+    this.dispecerForm.controls.lastName.setValue(this.data.dispecer.surname);
+    this.dispecerForm.controls.phoneNumber.setValue(this.data.dispecer.phone);
+    this.dispecerForm.controls.email.setValue(this.data.dispecer.email);
     if (this.data.dispecer.allCars){
       this.allCars = true;
     }
@@ -232,7 +236,7 @@ export class DipecerPravaComponent implements OnInit {
   }
 
   assignToDirector(): Dispecer{
-    var createdBy;
+    let createdBy;
     if (this.dataService.getDispecer().createdBy !== 'master'){
       // console.log("master" + this.dataService.getDispecer())
       createdBy = this.dataService.getDispecer().createdBy;
@@ -247,10 +251,12 @@ export class DipecerPravaComponent implements OnInit {
       phone: this.dispecerForm.get('phoneNumber').value,
       email: this.dispecerForm.get('email').value,
       status: false,
-      createdBy: createdBy,
+      createdBy,
       companyId: this.dataService.getDispecer().companyId,
       allCars: this.allCars,
       allPrives: this.allPrives,
+      myCars: this.cars,
+      myPrives: this.prives
     };
   }
 }

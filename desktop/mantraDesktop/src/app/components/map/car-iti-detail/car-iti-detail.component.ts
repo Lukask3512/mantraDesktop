@@ -549,7 +549,38 @@ export class CarItiDetailComponent implements OnInit {
     this.offer.addresses = [];
     this.offer.detailVPonuke = [];
     this.putFirstAddressFromOffer();
+  }
 
+  getCountOfPackages(townIndex){
+    return this.offer.detailVPonuke[townIndex].length;
+  }
+
+  // pre nakladky
+  getBednaIndex(townIndex, detailIndex){
+    let indexBedne = 0;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.offer.detailVPonuke[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackages(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
+    return indexBedne;
+  }
+
+  getCountOfPackagesAuto(townIndex){
+    return this.car.detailIti[townIndex].length;
+  }
+
+  // pre nakladky
+  getBednaIndexAuto(townIndex, detailIndex){
+    let indexBedne = 0;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.car.detailIti[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackagesAuto(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
+    return indexBedne;
   }
 
 }

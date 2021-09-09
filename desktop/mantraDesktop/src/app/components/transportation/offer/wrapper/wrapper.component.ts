@@ -18,12 +18,15 @@ export class WrapperComponent implements OnInit {
 
   routes: Route[];
   finishedRoutes: Route[];
+
+  routesToShow: Route[];
+  finishedRoutesToShow: Route[];
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
       this.routes = routes.filter(oneRoute => oneRoute.finished === false);
-      console.log(this.routes)
+
       this.finishedRoutes = routes.filter(oneRoute => oneRoute.finished === true);
-      console.log(this.finishedRoutes)
+      this.allActive();
     });
   }
 
@@ -39,14 +42,14 @@ export class WrapperComponent implements OnInit {
     this.offerService.deleteRoute(route.id);
   }
 
-  getDispecerId(){
-    var idCreated;
-    if (this.dataService.getDispecer().createdBy == 'master'){
-      return this.dataService.getDispecer().id
-    }else{
-      return this.dataService.getDispecer().createdBy
-    }
-  }
+  // getDispecerId(){
+  //   var idCreated;
+  //   if (this.dataService.getDispecer().createdBy == 'master'){
+  //     return this.dataService.getDispecer().id
+  //   }else{
+  //     return this.dataService.getDispecer().createdBy
+  //   }
+  // }
 
 
 
@@ -59,5 +62,25 @@ export class WrapperComponent implements OnInit {
         this.offerService.deleteRoute(route.id);
       }
     });
+  }
+
+  getDispecerId(){
+    return this.dataService.getMyIdOrMaster();
+  }
+
+  allActive(){
+    this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
+      && oneRoute.createdBy !== this.getDispecerId());
+  }
+  mine(){
+    this.routesToShow = this.routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished);
+    this.finishedRoutesToShow = this.finishedRoutes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && oneRoute.finished);
+  }
+
+  assigned(){
+    this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished)
+        || oneRoute.takenBy === this.getDispecerId() && !oneRoute.finished);
+    this.finishedRoutesToShow = this.finishedRoutes.filter(oneRoute => oneRoute.takenBy === this.getDispecerId() && oneRoute.finished);
+
   }
 }

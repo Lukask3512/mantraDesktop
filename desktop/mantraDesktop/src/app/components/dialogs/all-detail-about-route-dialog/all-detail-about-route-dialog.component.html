@@ -1,7 +1,7 @@
 <mat-dialog-content class="wrapper">
 
   <mat-accordion class="example-headers-align" multi>
-    <mat-expansion-panel (opened)="catchOpen(this, i)" *ngFor="let address of this.addresses; let i = index">
+    <mat-expansion-panel *ngFor="let address of this.addresses; let i = index">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{address.nameOfTown}}
@@ -14,13 +14,13 @@
       <div *ngIf="this.detail && this.detail[i] != undefined" class="bednaWrapper">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
         <div class="bednaWrapper" *ngIf="this.detail[i].townsArray">
-          <div (click)="openPackageDialogTowns(i, indexik)" class="bedna" *ngFor="let detail of this.detail[i].townsArray; let indexik = index">
-            <span class="numberOfBedna">{{indexik + 1}}</span>
+          <div (click)="openPackageDialogTowns(i, indexik)" class="bedna" *ngFor="let detailOf of this.detail[i].townsArray; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndex(this.detail[i].townsArray[indexik], this.detail[i].detailArray[indexik])}}</span>
           </div>
         </div>
         <div class="bednaWrapper" *ngIf="!this.detail[i].townsArray">
           <div (click)="openPackageDialog(i, indexik)" class="bedna" *ngFor="let detail of this.detail[i]; let indexik = index">
-            <span class="numberOfBedna">{{indexik + 1}}</span>
+            <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
           </div>
         </div>
 

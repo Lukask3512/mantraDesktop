@@ -72,6 +72,7 @@ import {NewDispecerComponent} from './dispecer/new-dispecer/new-dispecer.compone
 import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat-route-dialog.component';
 import { CancelRouteFromCarDialogComponent } from './dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -92,7 +93,7 @@ import {MatDialogModule} from '@angular/material/dialog';
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent
     ],
     exports: [
         OpenlayerComponent,

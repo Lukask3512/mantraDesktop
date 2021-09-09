@@ -1,10 +1,13 @@
 
 <div class="wrapper">
+  <button (click)="allActive()">Aktivne</button>
+  <button (click)="mine()">Moje</button>
+  <button (click)="assigned()">Prihlaseny</button>
 
   <h1 class="actFinHead">Aktívne</h1>
 
 
-  <div *ngFor="let route of this.routes; let i = index" class="oneRoute">
+  <div *ngFor="let route of this.routesToShow; let i = index" class="oneRoute">
     <div *ngIf="!route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
       <!--      <h2>Vykládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
@@ -31,7 +34,7 @@
 
   <h1 class="actFinHead">Ukoncene</h1>
 
-  <div *ngFor="let route of this.finishedRoutes; let i = index" class="oneRoute">
+  <div *ngFor="let route of this.finishedRoutesToShow; let i = index" class="oneRoute">
       <div *ngIf="route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
         <!--      <h2>Vykládky</h2>-->
         <ng-container *ngFor="let town of route.addresses; index as i">

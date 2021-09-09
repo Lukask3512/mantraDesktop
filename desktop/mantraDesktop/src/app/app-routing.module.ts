@@ -6,15 +6,16 @@ import {CarsWrapperComponent} from './components/cars/cars-wrapper/cars-wrapper.
 import {CarDetailComponent} from './components/cars/car-detail/car-detail.component';
 
 
-import {ViewComponent} from "./components/view.component";
-import {RegisterComponent} from "../login/account/register.component";
-import {AuthGuard} from "../login/_helpers/auth.guard";
-import {TransportationWrapperComponent} from "./components/transportation/transportation-wrapper/transportation-wrapper.component";
-import {NewTransportComponent} from "./components/transportation/new-transport/new-transport.component";
-import {WrapperComponent} from "./components/transportation/offer/wrapper/wrapper.component";
-import {DetailComponent} from "./components/transportation/offer/detail/detail.component";
+import {ViewComponent} from './components/view.component';
+import {RegisterComponent} from '../login/account/register.component';
+import {AuthGuard} from '../login/_helpers/auth.guard';
+import {TransportationWrapperComponent} from './components/transportation/transportation-wrapper/transportation-wrapper.component';
+import {NewTransportComponent} from './components/transportation/new-transport/new-transport.component';
+import {WrapperComponent} from './components/transportation/offer/wrapper/wrapper.component';
+import {DetailComponent} from './components/transportation/offer/detail/detail.component';
 import {VodiciWrapperComponent} from './components/vodici/vodici-wrapper/vodici-wrapper.component';
 import {CompaniesWrapperComponent} from './components/companies/companies-wrapper/companies-wrapper.component';
+import {ProfileComponent} from './components/profile/profile.component';
 
 
 
@@ -87,6 +88,14 @@ const routes: Routes = [
     children: [{
       path: 'companies',
       component: CompaniesWrapperComponent
+    }]
+  },
+  {
+    path: 'view', component: ViewComponent,
+    canActivate: [AuthGuard],
+    children: [{
+      path: 'profile',
+      component: ProfileComponent
     }]
   },
 
