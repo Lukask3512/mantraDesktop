@@ -20,6 +20,7 @@ export class RouteToItinerarComponent implements OnInit {
   @Input() car: Cars;
   myCarWithEverything;
   myNewRouteWithEverything;
+  myNewRouteWithEverythingCopy;
   @Input() newRoute: Address[];
   @Input() newDetails;
   @Output() carId = new EventEmitter<string>();
@@ -27,6 +28,7 @@ export class RouteToItinerarComponent implements OnInit {
   newRouteCopy: Address[];
   carItinerarAddresses: Address[] = [];
   poleMiestKdeSaVopcha;
+  ciSaVopchaCezOtvor = true;
   constructor(private addressService: AddressService, private dataService: DataService,
               private carService: CarService, private addressesService: AddressService, private packageService: PackageService,
               private countFreeSpaceService: CountFreeSpaceService,) { }
@@ -138,7 +140,10 @@ export class RouteToItinerarComponent implements OnInit {
     const prvaAdresa = [this.newRouteCopy[0]];
     detailVPonuke = [detailVPonuke[0]];
     this.myNewRouteWithEverything = {adresyVPonuke: prvaAdresa , maxVaha, detailVPonuke};
-    console.log(this.myNewRouteWithEverything);
+    if (!this.myNewRouteWithEverythingCopy){
+      this.myNewRouteWithEverythingCopy = JSON.parse(JSON.stringify(this.myNewRouteWithEverything));
+      this.ciSaVopchaCezOtvor = this.ciSaVopchaCezOtvory();
+    }
   }
 
   kontrolaCiSaVopcha(indexAdresy){
@@ -148,6 +153,10 @@ export class RouteToItinerarComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  ciSaVopchaCezOtvory(){
+    return this.countFreeSpaceService.ciSaVopchaTovarCezNakladaciPriestor(this.car, this.myNewRouteWithEverythingCopy.detailVPonuke);
   }
 
   // kontrola ci mozem prehodit mesta - podla detailu

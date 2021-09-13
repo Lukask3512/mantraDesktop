@@ -1,0 +1,29 @@
+<div class="wrapper">
+    <h2>Casove konflikty</h2>
+  <div *ngIf="!offer">
+    <ul>
+      <li [class]="getColorForTime(i)" *ngFor="let address of addresses; let i = index" >
+        {{address.nameOfTown}}
+        <span>{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="offer">
+    Itinerar vozidla
+    <ul>
+      <li [class]="getColorForTime(i)" *ngFor="let address of addresses; let i = index" >
+        {{address.nameOfTown}}
+        <span>ETA: {{estimatedTimeToLocal(address.estimatedTimeArrival)}}}</span>
+      </li>
+    </ul>
+    Ponuka
+    <ul>
+      <li [class]="getColorForTime(i)" *ngFor="let address of offer; let i = index" >
+        {{address.nameOfTown}}
+        <span>{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}</span>
+      </li>
+    </ul>
+  </div>
+
+</div>

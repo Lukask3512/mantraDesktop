@@ -561,4 +561,155 @@ export class CountFreeSpaceService {
     });
     return vahaVMestach;
   }
+
+  // prejdem detailami, a skontrolujem ci sa vopchaju cez nakladaci priestor
+  ciSaVopchaTovarCezNakladaciPriestor(car: Cars, detail){
+    let carZoZaduS;
+    let carZoZaduV;
+
+    let carZLavaS;
+    let carZLavaV;
+
+    let carZPravaS;
+    let carZPravaV;
+
+    let carZVrchuS;
+    let carZVrchuV;
+
+    if (car.nakladaciPriestorZoZadu[1]){
+      carZoZaduS = car.nakladaciPriestorZoZadu[1];
+      carZoZaduV = car.nakladaciPriestorZoZadu[0];
+    }
+
+    if (car.nakladaciPriestorZLava[1]){
+      carZLavaS = car.nakladaciPriestorZLava[1];
+      carZLavaV = car.nakladaciPriestorZLava[0];
+    }
+
+    if (car.nakladaciPriestorZPrava[1]){
+      carZPravaS = car.nakladaciPriestorZPrava[1];
+      carZPravaV = car.nakladaciPriestorZPrava[0];
+    }
+
+    if (car.nakladaciPriestorZVrchu[1]){
+      carZVrchuS = car.nakladaciPriestorZVrchu[1];
+      carZVrchuV = car.nakladaciPriestorZVrchu[0];
+    }
+
+
+    let vopchaSa = true;
+    if (detail){
+
+    detail.forEach(oneDetails => {
+      if (oneDetails){
+
+      oneDetails.forEach(oneDetail => {
+
+      const balikS = oneDetail.sizeS;
+      const balikV = oneDetail.sizeV;
+      const balikD = oneDetail.sizeD;
+      let dadeSaVopcha = false;
+      if (carZoZaduS && oneDetail.polohaNakladania.charAt(0) === '1'){
+       if (balikS > carZoZaduS || balikV > carZoZaduV) {
+         if (balikD > carZoZaduS || balikV > carZoZaduV) {
+         }else{
+           dadeSaVopcha = true;
+         }
+       }else{
+         dadeSaVopcha = true;
+       }
+     }
+      if (carZLavaS && oneDetail.polohaNakladania.charAt(1) === '1'){
+        if (balikS > carZLavaS || balikV > carZLavaV) {
+          if (balikD > carZLavaS || balikV > carZLavaV) {
+          }else{
+            dadeSaVopcha = true;
+          }
+        }else{
+          dadeSaVopcha = true;
+        }
+      }
+      if (carZPravaS && oneDetail.polohaNakladania.charAt(1) === '1'){
+        if (balikS > carZPravaS || balikV > carZPravaV) {
+          if (balikD > carZPravaS || balikV > carZPravaV) {
+          }else{
+            dadeSaVopcha = true;
+          }
+        }else{
+          dadeSaVopcha = true;
+        }
+      }
+
+      if (carZVrchuS && oneDetail.polohaNakladania.charAt(2) === '1'){
+        if (balikS > carZVrchuS || balikV > carZVrchuV) {
+          if (balikD > carZVrchuS || balikV > carZVrchuV) {
+          }else{
+            dadeSaVopcha = true;
+          }
+        }else{
+          dadeSaVopcha = true;
+        }
+      }
+
+      if (oneDetail.polohaNakladania.charAt(0) === '0' && oneDetail.polohaNakladania.charAt(1) === '0' && oneDetail.polohaNakladania.charAt(2) === '0'){
+        if (carZVrchuS){
+          if (balikS > carZVrchuS || balikV > carZVrchuV) {
+            if (balikD > carZVrchuS || balikV > carZVrchuV) {
+            }else{
+              dadeSaVopcha = true;
+            }
+          }else{
+            dadeSaVopcha = true;
+          }
+        }
+        if (carZLavaS){
+          if (balikS > carZLavaS || balikV > carZLavaV) {
+            if (balikD > carZLavaS || balikV > carZLavaV) {
+            }else{
+              dadeSaVopcha = true;
+            }
+          }else{
+            dadeSaVopcha = true;
+          }
+        }
+        if (carZPravaS){
+          if (balikS > carZPravaS || balikV > carZPravaV) {
+            if (balikD > carZPravaS || balikV > carZPravaV) {
+            }else{
+              dadeSaVopcha = true;
+            }
+          }else{
+            dadeSaVopcha = true;
+          }
+        }
+        if (carZoZaduS){
+          if (balikS > carZoZaduS || balikV > carZoZaduV) {
+            if (balikD > carZoZaduS || balikV > carZoZaduV) {
+            }else{
+              dadeSaVopcha = true;
+            }
+          }else{
+            dadeSaVopcha = true;
+          }
+        }
+      }
+
+      if (!dadeSaVopcha){ // ak sa balik nevopchal nikde, tak proste false pre celu ponuku
+        vopchaSa = false;
+      }
+      });
+      }
+
+    });
+    }
+
+    return vopchaSa;
+  }
+  vypocitajCiSaVopchaBalik(balikS, balikD, balikV, carS, carV){
+    if (balikS > carS || balikV > carV) {
+      if (balikD > carS || balikV > carV) {
+        return false;
+      }
+    }
+  }
 }

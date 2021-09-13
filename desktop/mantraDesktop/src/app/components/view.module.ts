@@ -73,6 +73,8 @@ import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat
 import { CancelRouteFromCarDialogComponent } from './dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ProfileComponent } from './profile/profile.component';
+import {MatIconModule} from '@angular/material/icon';
+import { TimeProblemDialogComponent } from './dialogs/time-problem-dialog/time-problem-dialog.component';
 
 
 @NgModule({
@@ -93,7 +95,7 @@ import { ProfileComponent } from './profile/profile.component';
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -132,7 +134,8 @@ import { ProfileComponent } from './profile/profile.component';
         MatSortModule,
         MatExpansionModule,
         CommonModule,
-        MatDialogModule
+        MatDialogModule,
+        MatIconModule
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

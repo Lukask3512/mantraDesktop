@@ -11,6 +11,9 @@
       </p>
     </h3>
   </h2>
+  <h2 class="red" *ngIf="!ciSaVopchaCezOtvor">
+    Nevopcha sa cez nakladacie otvory!!
+  </h2>
   <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>
   <app-ulozenie-ponuky [idPonuky]="this.offer.id" (itiOutput)="sendCarToPredpoklad($event)"></app-ulozenie-ponuky>
   <div

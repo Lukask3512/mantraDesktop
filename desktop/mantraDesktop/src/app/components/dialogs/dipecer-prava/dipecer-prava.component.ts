@@ -255,8 +255,6 @@ export class DipecerPravaComponent implements OnInit {
       companyId: this.dataService.getDispecer().companyId,
       allCars: this.allCars,
       allPrives: this.allPrives,
-      myCars: this.cars,
-      myPrives: this.prives
     };
   }
 }

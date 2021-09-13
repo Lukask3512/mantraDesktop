@@ -9,6 +9,7 @@ import Address from "../../../models/Address";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AddressService} from '../../../services/address.service';
 import {ShowDetailDialogComponent} from '../../dialogs/show-detail-dialog/show-detail-dialog.component';
+import {TimeProblemDialogComponent} from '../../dialogs/time-problem-dialog/time-problem-dialog.component';
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -31,12 +32,15 @@ export class DragAndDropListComponent implements OnInit {
 
   @Output() deleteFromIti = new EventEmitter<Address>();
   @Output() deleteFromItiTownIndex = new EventEmitter<any>();
+
+  dniKtoreSaPrelinaju;
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
               private _snackBar: MatSnackBar, private addressService: AddressService) { }
 
 
   setAddresses(addresses: Address[]){
     this.address = addresses;
+    this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
   }
 
   // kontrola ci mozem prehodit mesta - podla detailu
@@ -259,6 +263,7 @@ export class DragAndDropListComponent implements OnInit {
       moveItemInArray(this.address, event.previousIndex, event.currentIndex);
       this.outputRoute.emit(this.address);
       this.outputDetails.emit(this.detailArray);
+      this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
     }else{
       this.openSnackBar("Túto zmenu nemôžete vykonať.", "OK")
     }
@@ -278,6 +283,65 @@ export class DragAndDropListComponent implements OnInit {
       return "Neznámy"
     }
     return date.toLocaleString();
+  }
+
+  timeToLocal(dateUtc, oClock){
+    var date = (new Date(dateUtc));
+    if (oClock !== '0'){
+      date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
+    }
+    if (dateUtc == null || dateUtc === '0'){
+      return 'Neznámy';
+    }
+    return date.toLocaleString();
+  }
+
+  sortDays(array){
+    var arraySort = array.sort((a, b) => {
+      return a.pocetDni - b.pocetDni;
+    });
+    return arraySort;
+  }
+
+  sortHours(array){
+    var arraySort = array.sort((a, b) => {
+      return a.pocetHodin - b.pocetHodin;
+    });
+    return arraySort;
+  }
+
+  getColorForTime(townIndex){
+    if (this.dniKtoreSaPrelinaju){
+      this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
+      const denPrelinajuciSa = this.dniKtoreSaPrelinaju.filter(oneDen => oneDen.adresa1 === townIndex);
+      const denPrelinajuciSa2 = this.dniKtoreSaPrelinaju.filter(oneDen => oneDen.adresa2 === townIndex);
+      const usporiadanePole = this.sortHours(denPrelinajuciSa);
+      const usporiadanePole2 = this.sortHours(denPrelinajuciSa2);
+
+
+      if ((usporiadanePole[0] && usporiadanePole[0].pocetHodin < 7 && usporiadanePole[0].pocetHodin > 4)
+          || (usporiadanePole2[0] && usporiadanePole2[0].pocetHodin < 7 && usporiadanePole2[0].pocetHodin > 4)){
+        return 'yellowColor';
+      }else if ((usporiadanePole[0] && usporiadanePole[0].pocetHodin <= 4)
+             || usporiadanePole2[0] && usporiadanePole2[0].pocetHodin <= 4){
+        return 'redColor';
+      }
+    }else{
+      this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
+      const denPrelinajuciSa = this.dniKtoreSaPrelinaju.filter(oneDen => oneDen.adresa1 === townIndex);
+      const denPrelinajuciSa2 = this.dniKtoreSaPrelinaju.filter(oneDen => oneDen.adresa2 === townIndex);
+
+      const usporiadanePole = this.sortHours(denPrelinajuciSa);
+      const usporiadanePole2 = this.sortHours(denPrelinajuciSa2);
+      if ((usporiadanePole[0] && usporiadanePole[0].pocetHodin < 7 && usporiadanePole[0].pocetHodin > 4)
+        || (usporiadanePole2[0] && usporiadanePole2[0].pocetHodin < 7 && usporiadanePole2[0].pocetHodin > 4)){
+        return 'yellowColor';
+      }else if ((usporiadanePole[0] && usporiadanePole[0].pocetHodin <= 4)
+        || usporiadanePole2[0] && usporiadanePole2[0].pocetHodin <= 4){
+        return 'redColor';
+      }
+    }
+
   }
 
   deleteTownFromIti(townId){
@@ -346,6 +410,20 @@ export class DragAndDropListComponent implements OnInit {
     }
     indexBedne += detailIndex + 1;
     return indexBedne;
+  }
+
+  openDialogAboutTimeProblems(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      addresses: this.address,
+    };
+
+    const dialogRef = this.dialog.open(TimeProblemDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
   }
 
 }

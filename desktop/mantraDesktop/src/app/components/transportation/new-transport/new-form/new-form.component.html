@@ -158,9 +158,9 @@
       <div *ngIf="this.lastAddedPackage && labelPosition == 'nakladka'" class="lastAdded">
         <p>Posledne pridany balik: </p>
         <img (click)="getLastAddedItem()" class="bedna nevylozene" src="./assets/logo/cube.png">
-        <span class="vyska">4</span>
-        <span class="sirka">2</span>
-        <span class="dlzka">5</span>
+        <span class="vyska">{{this.lastAddedPackage.sizeV}}</span>
+        <span class="sirka">{{this.lastAddedPackage.sizeS}}</span>
+        <span class="dlzka">{{this.lastAddedPackage.sizeD}}</span>
       </div>
 
       <mat-form-field appearance="standard" >

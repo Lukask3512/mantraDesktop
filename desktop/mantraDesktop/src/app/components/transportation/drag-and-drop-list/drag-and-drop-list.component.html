@@ -14,6 +14,10 @@
           <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
         </div>
       </div>
+      <mat-icon (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
+                matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">
+        info
+      </mat-icon>
     </div>
 
 

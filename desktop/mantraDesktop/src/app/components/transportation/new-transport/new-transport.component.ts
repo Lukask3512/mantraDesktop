@@ -345,7 +345,7 @@ else{
 
   onDropListChange(changedRoute: Address[]){
     this.addresses = changedRoute;
-    // console.log(this.route)
+    // this.dataService.checkAddressesTime(this.addresses);
     this.setMapPoints();
 
     this.change = true;
@@ -358,6 +358,7 @@ else{
   receiveAddress(address: Address){
     this.addresses.push(address);
     this.child.notifyMe(this.addresses, undefined, undefined);
+    // this.dataService.checkAddressesTime(this.addresses);
   }
 
   receiveDetail(detail){

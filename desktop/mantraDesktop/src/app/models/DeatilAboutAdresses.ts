@@ -4,8 +4,8 @@ export default class DeatilAboutAdresses {
   sizeS: number;
   sizeD: number;
   weight: number;
-  stohovatelnost: number; //ak ano kolko unesie
+  stohovatelnost: number; // ak ano kolko unesie
   vyskaNaklHrany: number;
-  polohaNakladania: string;
+  polohaNakladania: string;  // back + side + upside
   specRezim?: number;
 }
