@@ -17,6 +17,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.component';
 import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
+import {MapComponent} from '../map.component';
 
 @Component({
   selector: 'app-car-iti-detail',
@@ -45,10 +46,14 @@ export class CarItiDetailComponent implements OnInit {
   ciSaVopcha;
   ciStihnePrijst;
   ciSaVopchaCezOtvor = true;
+  volnaVahaPreAuto;
 
+  casyPreAuto;
+  predpokladaneEsty;
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
-              private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,) { }
+              private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,
+              private matComponent: MapComponent) { }
 
   ngOnInit(): void {
   }
@@ -64,7 +69,7 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer) {
-    if (this.offer) {
+    if (this.offer && this.offer.id === offer.id) {
       var offerAdresy = JSON.parse(JSON.stringify(offer)); // toto robim aby sa mi pri update nanovo nenacitali adresy v drag and drop
       offerAdresy.detailVPonuke = this.offer.detailVPonuke;
       offerAdresy.addresses = this.offer.addresses;
@@ -85,6 +90,14 @@ export class CarItiDetailComponent implements OnInit {
     this.car = undefined;
     this.ciSaVopchaCezOtvor = true;
 
+  }
+
+  skontrolujVahu(){
+    const itinerarAutaPocetPalietVMeste = this.countService.vypocitajPocetPalietVKazomMeste(this.car);
+    const pocetTonVIti = this.countService.pocetTonVKazdomMeste(itinerarAutaPocetPalietVMeste);
+    const volnaVahaPreAutovIti = this.countService.volnaVahaPreAutoVMeste(this.car, pocetTonVIti, 1);
+    this.volnaVahaPreAuto = volnaVahaPreAutovIti;
+    console.log(volnaVahaPreAutovIti);
   }
 
   ciSaVopchaCezOtvory(){
@@ -189,7 +202,7 @@ export class CarItiDetailComponent implements OnInit {
 
     // this.countService.countFreeSpace(this.car, this.offer, this.prekrocenieVelkosti);
     // pri drrag and drop prepocitam volne miesta
-    const volneMiesta = this.putFirstAddressFromOffer();
+    const volneMiesta = this.volneMiesta();
     this.checkEstiAndLastTime();
     let prepravaIndex = this.offer.zelenePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id);
     if (prepravaIndex > -1){
@@ -209,7 +222,17 @@ export class CarItiDetailComponent implements OnInit {
     prvaAdresaSDetailom.adresyVPonuke = [prvaAdresaSDetailom.adresyVPonuke[0]];
     prvaAdresaSDetailom.detailVPonuke = [prvaAdresaSDetailom.detailVPonuke[0]];
     this.ciSaVopcha = this.countService.countFreeSpace(this.car, prvaAdresaSDetailom, this.prekrocenieVelkosti);
+    this.skontrolujVahu();
     return this.kontrolaCiSaVopcha;
+  }
+
+  // kontroluje to vzdy len pre 1. adresu v ponuke
+  volneMiesta(){
+    let prvaAdresaSDetailom = JSON.parse(JSON.stringify(this.offer));
+    prvaAdresaSDetailom.adresyVPonuke = [prvaAdresaSDetailom.adresyVPonuke[0]];
+    prvaAdresaSDetailom.detailVPonuke = [prvaAdresaSDetailom.detailVPonuke[0]];
+    this.ciSaVopcha = this.countService.countFreeSpace(this.car, prvaAdresaSDetailom, this.prekrocenieVelkosti);
+    return this.ciSaVopcha;
   }
 
 
@@ -315,12 +338,37 @@ export class CarItiDetailComponent implements OnInit {
     }
     return maxIndexNakladky;
   }
-
+// pre 1.adresu v ponuke
   checkEstiAndLastTime(){
     if (this.car){
+      this.skontrolujEstiALastTime();
       this.ciStihnePrijst = this.dataService.checkEstimatedAndLastTime(this.car.itiAdresy, this.offer.adresyVPonuke[0]);
       console.log(this.ciStihnePrijst)
     }
+  }
+
+  checkTime(townIndex){
+    if (this.casyPreAuto && this.casyPreAuto[townIndex]){
+      if (this.casyPreAuto[townIndex].pocetHodin == null){
+        return false;
+      }
+      if (this.casyPreAuto[townIndex].pocetHodin < 1){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  // pre vsetky adresy
+  skontrolujEstiALastTime(){
+    const estiAdresy = this.dataService.vypocitajEstimatedPreVsetkyAdresy(this.car.itiAdresy, this.car);
+    this.predpokladaneEsty = estiAdresy;
+    const ciVychadzajuCasy = this.dataService.porovnajEstiALastTime(estiAdresy, this.car.itiAdresy);
+    this.casyPreAuto = ciVychadzajuCasy;
+    console.log(ciVychadzajuCasy)
   }
 
   getColorForTown(indexOfAddress){
@@ -513,6 +561,7 @@ export class CarItiDetailComponent implements OnInit {
     });
     this.offerService.updateRoute(offer);
     this.uspecnePriradenie.emit(this.car);
+    this.matComponent.reDrawOffers();
   }
 
   chooseColor(type){

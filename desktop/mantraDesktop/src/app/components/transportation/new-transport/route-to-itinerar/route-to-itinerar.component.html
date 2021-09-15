@@ -87,7 +87,13 @@
               <span *ngIf="itiAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
               {{itiAddress.nameOfTown}}
               <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
-
+              <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">Pretazene o {{volnaVahaPreAuto[i]}}t</span>
+              <span class="oversize" matTooltip="Mozny datum prichodu {{timeToLocal(itiAddress.datumPrijazdu, itiAddress.casPrijazdu)}} - {{timeToLocal(itiAddress.datumLastPrijazdy, itiAddress.casLastPrijazdu)}}" matTooltipPosition="right" *ngIf="casyPreAuto[i].sediCas == false">Skontrolujte cas</span>
+<!--              <span class="oversize" matTooltip="Mozny datum prichodu {{itiAddress.datumPrijazdu}} - {{itiAddress.datumLastPrijazdy}}" matTooltipPosition="right" *ngIf="!casyPreAuto[i].pocetHodin < 3">Skontrolujte datum</span>-->
+              <mat-icon class="material-icons" matSuffix
+                        matTooltip="Predpokladany cas prijazdu {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
+                info
+              </mat-icon>
             </p>
           </div>
         </div>

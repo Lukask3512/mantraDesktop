@@ -39,12 +39,12 @@ export class FilterComponent implements OnInit {
     this.offerService.routes$.subscribe(routes => {
       if (!this.offers){
         setTimeout(() => {
-          this.offers = routes;
+          this.offers = routes.filter(oneRoute => oneRoute.finished === false);
           this.filterOffers();
         }, 1000);
       }else{
         setTimeout(() => {
-          this.offers = routes;
+          this.offers = routes.filter(oneRoute => oneRoute.finished === false);
           this.filterOffers();
         }, 4000);
       }

@@ -89,6 +89,7 @@
 .oversize{
   background: rgba(255,0,0,0.5);
   padding: 4px 2px;
+  margin-left: 2px;
 }
 
 .nakaldkaVykladka{
@@ -118,5 +119,17 @@
 
 .numberOfBedna{
   font-size: 15px;
+}
+
+.mainInfo{
+  width: 100%;
+}
+
+.nameOfTown{
+  display: inline-block;
+}
+
+.spanKm{
+  margin-left: 2px;
 }
 

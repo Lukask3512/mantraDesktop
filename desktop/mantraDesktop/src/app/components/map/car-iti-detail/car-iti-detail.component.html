@@ -83,20 +83,26 @@
         </div>
       </div>
 
-      <div>
-        <p>
+      <div class="mainInfo">
+        <p class="nameOfTown">
           <span *ngIf="address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
           <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
           {{address.nameOfTown}}
         </p>
-
+        <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">Pretazene o {{volnaVahaPreAuto[i]}}t</span>
         <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
       </div>
-      <div *ngIf="i !== this.car.itiAdresy.length -1 " class="bottomLine">
+      <div class="bottom">
+        <div *ngIf="i !== this.car.itiAdresy.length -1 " class="bottomLine">
+          <span class="spanKm">
+            {{this.countDistancePoints(i)}}km
+          </span>
+        </div>
         <p class="distance">
-          {{this.countDistancePoints(i)}}km
+          <span *ngIf="checkTime(i)">Nestihnete dorazit</span>
         </p>
       </div>
+
 
 
     </div>

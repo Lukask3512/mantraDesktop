@@ -75,6 +75,8 @@ export class MapComponent implements AfterViewInit {
 
   carWarningStatus = []; // ukladam si vectori sem, aby sa neduplikovali
 
+  emitFromFilter;
+
   colors = ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#27AE60', '#E67E22', '#F1C40F', '#E67E22',
   '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949'];
 
@@ -599,6 +601,13 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
+  public reDrawOffers(){
+    setTimeout(() => {
+      this.drawOffers(this.emitFromFilter);
+    }, 2500);
+  }
+
+
   addAddresses(){
     let mojeAdresy: Address[];
 
@@ -970,6 +979,7 @@ export class MapComponent implements AfterViewInit {
       this.map.removeLayer(this.vectorLayerOffersRed);
       this.map.removeLayer(this.vectorLayerOffersYellow);
     }else if (emitFromFilter != null){
+      this.emitFromFilter = emitFromFilter;
       const offers: Route[] = emitFromFilter.offers;
       const minVzdialenost = emitFromFilter.minDistance;
       const maxVzdialenost = emitFromFilter.maxDistance;
@@ -1112,6 +1122,9 @@ export class MapComponent implements AfterViewInit {
                   poleKadePojdem.push([jednaAdresa.coordinatesOfTownsLon, jednaAdresa.coordinatesOfTownsLat]);
                 });
                 const myItiString = new LineString(poleKadePojdem);
+
+
+
                 prepravasDetailom.adresyVPonuke.forEach((jednaAdPonuka, indexAd) => {
                   const vzdialenostOdTrasy = this.countClosesPoint(myItiString,
                     [jednaAdPonuka.coordinatesOfTownsLon,
@@ -1130,9 +1143,15 @@ export class MapComponent implements AfterViewInit {
                 }
               }
 
+              let poslednyIndexStihacky = this.dataService.najdiNajskorsiLastTimeArrival(prepravasDetailom.adresyVPonuke, car.itiAdresy, car);
+
+              if (poslednyIndexStihacky === null){
+                poslednyIndexStihacky = 1000;
+              }
               // tu si ulozim najvacsiu vzdialenost od mesta v itinerari
               const maximalnaVzialenostOdMesta = 0;
               let stihnemPrijst = true;
+
               prepravasDetailom.adresyVPonuke.forEach((offerLat, offerLatIndex) => { // prechadzam miestami v ponuke
                 // tu by som si mal skontrolovat estimatedCasy prijazdov,  a ci stihnem vylozit poslednu vykladku z ponuky
                 if (offerLat.datumLastPrijazdy !== '0'){
@@ -1175,7 +1194,6 @@ export class MapComponent implements AfterViewInit {
                                 // ked som na konci skontrulujem ci sedi vzdialenost
                 if (offerLatIndex === oneRouteOffer.addresses.length - 1 && ruka && adr && teplotnaSpec && stihnemPrijst) {
                   const vopchasaCezOtvory = this.countFreeSpaceService.ciSaVopchaTovarCezNakladaciPriestor(car, prepravasDetailom.detailVPonuke);
-                  console.log(vopchasaCezOtvory);
                   if (vopchasaCezOtvory) {
 
                   let flags = 0;
@@ -1188,22 +1206,22 @@ export class MapComponent implements AfterViewInit {
                   const prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; // ak false vopcha, ak true tak sa vopcha
                   // o uzivatelom definove % - yellow
 
-
-                  if (sediVaha && indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                    console.log(poslednyIndexStihacky);
+                  if (indexLon <= poslednyIndexStihacky && sediVaha && indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                     maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil) {
                     flags = 3;
                     zelenePrepravy.push({...car, vopchaSa});
-                  } else if (sediVaha && indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
+                  } else if (indexLon <= poslednyIndexStihacky && sediVaha && indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                     maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil) {
                     flags = 2;
                     zltePrepravy.push({...car, vopchaSa});
                   } else if ((sediVahaYellow && !sediVaha) && indexLon === vopchaSa.poleMiestKdeSaVopcha
                       .find(oneId => oneId === indexLon) &&
-                    maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil) {
+                    maxVzdialenostOdCelehoItinerara < maxVzdialenost && prekrocil && indexLon <= poslednyIndexStihacky) {
                     flags = 2;
                     zltePrepravy.push({...car, vopchaSa});
                   } else if ((sediVahaYellow && !sediVaha) && indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId === indexLon) &&
-                    maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil) {
+                    maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil && indexLon <= poslednyIndexStihacky) {
                     flags = 2;
                     zltePrepravy.push({...car, vopchaSa});
                   }

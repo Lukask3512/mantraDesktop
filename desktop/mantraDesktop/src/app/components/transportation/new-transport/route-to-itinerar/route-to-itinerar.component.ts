@@ -29,6 +29,9 @@ export class RouteToItinerarComponent implements OnInit {
   carItinerarAddresses: Address[] = [];
   poleMiestKdeSaVopcha;
   ciSaVopchaCezOtvor = true;
+  volnaVahaPreAuto;
+  casyPreAuto;
+  predpokladaneEsty;
   constructor(private addressService: AddressService, private dataService: DataService,
               private carService: CarService, private addressesService: AddressService, private packageService: PackageService,
               private countFreeSpaceService: CountFreeSpaceService,) { }
@@ -80,10 +83,37 @@ export class RouteToItinerarComponent implements OnInit {
     const volnaVahaPreAutovItiSPrekrocenim = this.countFreeSpaceService.volnaVahaPreAutoVMeste(this.myCarWithEverything, pocetTonVIti, 1);
     const vopchaSa = this.countFreeSpaceService.countFreeSpace(this.myCarWithEverything, this.myNewRouteWithEverything, 1);
     this.poleMiestKdeSaVopcha = vopchaSa;
-    console.log(this.myCarWithEverything);
-    console.log(this.myNewRouteWithEverything);
-    console.log(this.poleMiestKdeSaVopcha)
+    this.skontrolujVahu();
+    this.skontrolujEstiALastTime();
   }
+
+  skontrolujEstiALastTime(){
+    const estiAdresy = this.dataService.vypocitajEstimatedPreVsetkyAdresy(this.myCarWithEverything.itiAdresy, this.car);
+    this.predpokladaneEsty = estiAdresy;
+    const ciVychadzajuCasy = this.dataService.porovnajEstiALastTime(estiAdresy, this.myCarWithEverything.itiAdresy);
+    this.casyPreAuto = ciVychadzajuCasy;
+    console.log(ciVychadzajuCasy)
+  }
+
+  timeToLocal(dateUtc, oClock){
+    var date = (new Date(dateUtc));
+    if (oClock !== '0'){
+      date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
+    }
+    if (dateUtc == null || dateUtc === '0'){
+      return 'Neznámy';
+    }
+    return date.toLocaleString();
+  }
+
+  estimatedTimeToLocal(dateUtc){
+    var date = (new Date(dateUtc));
+    if (dateUtc == null){
+      return "Neznámy"
+    }
+    return date.toLocaleString();
+  }
+
 
   najdiDetaildries(adresy: Address[]){
     var detailVPonuke = [];
@@ -144,6 +174,14 @@ export class RouteToItinerarComponent implements OnInit {
       this.myNewRouteWithEverythingCopy = JSON.parse(JSON.stringify(this.myNewRouteWithEverything));
       this.ciSaVopchaCezOtvor = this.ciSaVopchaCezOtvory();
     }
+  }
+
+  skontrolujVahu(){
+    const itinerarAutaPocetPalietVMeste = this.countFreeSpaceService.vypocitajPocetPalietVKazomMeste(this.myCarWithEverything);
+    const pocetTonVIti = this.countFreeSpaceService.pocetTonVKazdomMeste(itinerarAutaPocetPalietVMeste);
+    const volnaVahaPreAutovIti = this.countFreeSpaceService.volnaVahaPreAutoVMeste(this.myCarWithEverything, pocetTonVIti, 1);
+    this.volnaVahaPreAuto = volnaVahaPreAutovIti;
+    console.log(volnaVahaPreAutovIti);
   }
 
   kontrolaCiSaVopcha(indexAdresy){
@@ -347,7 +385,7 @@ export class RouteToItinerarComponent implements OnInit {
     if (isNew){
       classString = 'newAddress ';
     }
-    if (indexMesta > -1 && this.najdiIndexNakladky() <= indexAdresy){
+    if (indexMesta > -1 && this.najdiIndexNakladky() <= indexAdresy && this.volnaVahaPreAuto[indexAdresy] > 0){
       classString = classString + 'greenBack';
     }else{
       classString = classString + 'redBack';

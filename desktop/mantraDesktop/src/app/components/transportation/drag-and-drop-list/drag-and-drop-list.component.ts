@@ -310,6 +310,8 @@ export class DragAndDropListComponent implements OnInit {
     return arraySort;
   }
 
+
+
   getColorForTime(townIndex){
     if (this.dniKtoreSaPrelinaju){
       this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
