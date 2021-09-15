@@ -42,6 +42,10 @@
             <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
           </div>
         </div>
+        <mat-icon class="material-icons" matSuffix
+                  matTooltip="{{timeToLocal(ponuka.datumPrijazdu, ponuka.casPrijazdu)}} - {{timeToLocal(ponuka.datumLastPrijazdy, ponuka.casLastPrijazdu)}}">
+          info
+        </mat-icon>
       </div>
       <p>
         <span *ngIf="ponuka.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
@@ -81,6 +85,10 @@
             <span class="numberOfBedna">{{getBednaIndexAuto(i, indexik)}}</span>
           </div>
         </div>
+        <mat-icon class="material-icons" matSuffix
+                  matTooltip="{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}">
+          info
+        </mat-icon>
       </div>
 
       <div class="mainInfo">
@@ -99,7 +107,21 @@
           </span>
         </div>
         <p class="distance">
-          <span *ngIf="checkTime(i)">Nestihnete dorazit</span>
+          <span class="oversize" *ngIf="checkDate(i); else time">Mimo mozneho datumu
+              <mat-icon class="material-icons" matSuffix
+                    matTooltip="Predpokladany cas prijazdu {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
+                info
+              </mat-icon>
+          </span>
+          <ng-template #time>
+            <span class="oversize" *ngIf="checkTime(i)">Mimo mozneho prichodu
+              <mat-icon class="material-icons" matSuffix
+                        matTooltip="Predpokladany cas prijazdu {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
+                info
+              </mat-icon>
+          </span>
+          </ng-template>
+
         </p>
       </div>
 

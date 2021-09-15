@@ -347,7 +347,7 @@ export class CarItiDetailComponent implements OnInit {
     }
   }
 
-  checkTime(townIndex){
+  checkDate(townIndex){
     if (this.casyPreAuto && this.casyPreAuto[townIndex]){
       if (this.casyPreAuto[townIndex].pocetHodin == null){
         return false;
@@ -360,6 +360,40 @@ export class CarItiDetailComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  checkTime(townIndex){
+    if (this.casyPreAuto && this.casyPreAuto[townIndex]){
+      if (this.casyPreAuto[townIndex].rozdielVHodinach == null){
+        return false;
+      }
+      if (this.casyPreAuto[townIndex].rozdielVHodinach < 3){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  timeToLocal(dateUtc, oClock){
+    var date = (new Date(dateUtc));
+    if (oClock !== '0'){
+      date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
+    }
+    if (dateUtc == null || dateUtc === '0'){
+      return 'Neznámy';
+    }
+    return date.toLocaleString();
+  }
+
+  estimatedTimeToLocal(dateUtc){
+    var date = (new Date(dateUtc));
+    if (dateUtc == null){
+      return "Neznámy"
+    }
+    return date.toLocaleString();
   }
 
   // pre vsetky adresy
@@ -375,9 +409,11 @@ export class CarItiDetailComponent implements OnInit {
     if (this.ciSaVopcha){
       const indexMesta = this.ciSaVopcha.poleMiestKdeSaVopcha.findIndex(oneId => oneId === indexOfAddress);
       if (indexMesta > -1){
-        if (this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress){
+        if (this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress
+          || (this.casyPreAuto[indexOfAddress].pocetHodin < 3 && this.casyPreAuto[indexOfAddress].pocetHodin > 1)){
           return 'yellow';
-        }else if (!this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress){
+        }else if (!this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress
+          && this.casyPreAuto[indexOfAddress].pocetHodin > 3){
           return 'green';
         }else{
           return;

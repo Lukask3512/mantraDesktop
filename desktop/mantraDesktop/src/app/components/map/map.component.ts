@@ -1206,7 +1206,6 @@ export class MapComponent implements AfterViewInit {
                   const prekrocil = vopchaSa.prekrocenieOPercenta[indexVPoli]; // ak false vopcha, ak true tak sa vopcha
                   // o uzivatelom definove % - yellow
 
-                    console.log(poslednyIndexStihacky);
                   if (indexLon <= poslednyIndexStihacky && sediVaha && indexLon === vopchaSa.poleMiestKdeSaVopcha.find(oneId => oneId == indexLon) &&
                     maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil) {
                     flags = 3;

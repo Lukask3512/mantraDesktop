@@ -32,6 +32,7 @@ export class RouteToItinerarComponent implements OnInit {
   volnaVahaPreAuto;
   casyPreAuto;
   predpokladaneEsty;
+  vyskaNaklHrany;
   constructor(private addressService: AddressService, private dataService: DataService,
               private carService: CarService, private addressesService: AddressService, private packageService: PackageService,
               private countFreeSpaceService: CountFreeSpaceService,) { }
@@ -85,6 +86,7 @@ export class RouteToItinerarComponent implements OnInit {
     this.poleMiestKdeSaVopcha = vopchaSa;
     this.skontrolujVahu();
     this.skontrolujEstiALastTime();
+    this.checkVyskaHrany();
   }
 
   skontrolujEstiALastTime(){
@@ -92,7 +94,6 @@ export class RouteToItinerarComponent implements OnInit {
     this.predpokladaneEsty = estiAdresy;
     const ciVychadzajuCasy = this.dataService.porovnajEstiALastTime(estiAdresy, this.myCarWithEverything.itiAdresy);
     this.casyPreAuto = ciVychadzajuCasy;
-    console.log(ciVychadzajuCasy)
   }
 
   timeToLocal(dateUtc, oClock){
@@ -112,6 +113,11 @@ export class RouteToItinerarComponent implements OnInit {
       return "Neznámy"
     }
     return date.toLocaleString();
+  }
+
+  checkVyskaHrany(){
+    const vyskaHrany = this.countFreeSpaceService.checkMaxMinNaklHrana(this.myNewRouteWithEverythingCopy.detailVPonuke);
+    this.vyskaNaklHrany = vyskaHrany;
   }
 
 
@@ -145,7 +151,6 @@ export class RouteToItinerarComponent implements OnInit {
     const detailVPonuke = this.najdiDetaildries(this.carItinerarAddresses);
 
     this.myCarWithEverything = {...this.car, itiAdresy: this.carItinerarAddresses, detailIti: detailVPonuke};
-    console.log(this.myCarWithEverything);
   }
 
   naplnNovuRoutuDetailom(){
@@ -181,7 +186,6 @@ export class RouteToItinerarComponent implements OnInit {
     const pocetTonVIti = this.countFreeSpaceService.pocetTonVKazdomMeste(itinerarAutaPocetPalietVMeste);
     const volnaVahaPreAutovIti = this.countFreeSpaceService.volnaVahaPreAutoVMeste(this.myCarWithEverything, pocetTonVIti, 1);
     this.volnaVahaPreAuto = volnaVahaPreAutovIti;
-    console.log(volnaVahaPreAutovIti);
   }
 
   kontrolaCiSaVopcha(indexAdresy){
@@ -358,7 +362,6 @@ export class RouteToItinerarComponent implements OnInit {
       this.addressService.updateAddress(oneAddress);
     });
     this.car.itinerar = addressesId;
-    console.log(this.carItinerarAddresses);
     this.carService.updateCar(this.car, this.car.id);
 
     this.carId.emit(this.car.id);

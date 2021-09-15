@@ -6,6 +6,17 @@
   Nevopcha sa cez nakladacie otvory!!
 </h3>
 
+<h3 class="redBack" *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1">
+  <p>Potrebna vyska nakladacej hrany:</p>
+  <span *ngIf="vyskaNaklHrany.minVyska > -1">Min: {{vyskaNaklHrany.minVyska}}</span>
+  <span>Max: {{vyskaNaklHrany.maxVyska}}</span>
+  <h2>Vyska nakl hrany v aute:</h2>
+  <p *ngIf="this.car.nakladaciaHrana.length == 2; else else1">Min:{{this.car.nakladaciaHrana[0]}} Max: {{this.car.nakladaciaHrana[1]}}</p>
+  <ng-template #else1>
+    <p>Vyska {{this.car.nakladaciaHrana[0]}}</p>
+  </ng-template>
+</h3>
+
 <div class="example-container">
   <h2>Nová preprava</h2>
   <div

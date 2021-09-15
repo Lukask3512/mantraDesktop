@@ -870,4 +870,27 @@ export class CountFreeSpaceService {
 
     return vopchaSa;
   }
+
+  checkMaxMinNaklHrana(detail){
+    let maxVyska = -1;
+    let minVyska;
+    detail.forEach(oneMesto => {
+      if (oneMesto){
+        oneMesto.forEach(oneDetail => {
+          if (oneDetail.vyskaNaklHrany !== -1){
+            if (oneDetail.vyskaNaklHrany > maxVyska){
+              maxVyska = oneDetail.vyskaNaklHrany;
+            }
+            if (minVyska === undefined){
+              minVyska = oneDetail.vyskaNaklHrany;
+            }
+            if (oneDetail.vyskaNaklHrany < minVyska){
+              minVyska = oneDetail.vyskaNaklHrany;
+            }
+          }
+        });
+      }
+    });
+    return {maxVyska, minVyska};
+  }
 }

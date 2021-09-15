@@ -238,8 +238,6 @@ export class DataService {
         let rozdielVHodinach;
         let sediCas;
         if (maxHours){
-          console.log(maxHours)
-          console.log(maxMinutes)
 
           const dnesSCasomFirst = new Date();
           dnesSCasomFirst.setHours(minHours, minMinutes);
