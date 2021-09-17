@@ -50,6 +50,7 @@ export class CarItiDetailComponent implements OnInit {
 
   casyPreAuto;
   predpokladaneEsty;
+  vyskaNaklHrany;
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
               private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,
@@ -66,6 +67,7 @@ export class CarItiDetailComponent implements OnInit {
     this.putFirstAddressFromOffer();
     this.checkEstiAndLastTime();
     this.ciSaVopchaCezOtvor = this.ciSaVopchaCezOtvory();
+    this.checkVyskaHrany();
   }
 
   setPonuka(offer) {
@@ -121,6 +123,27 @@ export class CarItiDetailComponent implements OnInit {
     });
     return {teplota, ruka, adr};
   }
+
+  getClassForNaklHrana(){
+    if (this.vyskaNaklHrany && this.vyskaNaklHrany.maxVyska > -1){
+      const carMin = this.car.nakladaciaHrana[0];
+      const carMax = this.car.nakladaciaHrana[1];
+      if (carMax){
+        if (this.vyskaNaklHrany.maxVyska <= carMax && this.vyskaNaklHrany.minVyska >= carMin){
+          return 'greenBack';
+        }else{
+          return 'redBack';
+        }
+      }else{
+        if (this.vyskaNaklHrany.maxVyska <= carMin && this.vyskaNaklHrany.minVyska >= carMin){
+          return 'greenBack';
+        }else{
+          return 'redBack';
+        }
+      }
+    }
+  }
+
   // na presunutie prvkov v poli
   arraymove(arr, fromIndex, toIndex) {
     const element = arr[fromIndex];
@@ -394,6 +417,11 @@ export class CarItiDetailComponent implements OnInit {
       return "Neznámy"
     }
     return date.toLocaleString();
+  }
+
+  checkVyskaHrany(){
+    const vyskaHrany = this.countService.checkMaxMinNaklHrana(this.realOffer.detailVPonuke);
+    this.vyskaNaklHrany = vyskaHrany;
   }
 
   // pre vsetky adresy

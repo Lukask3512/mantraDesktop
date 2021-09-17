@@ -6,7 +6,7 @@
   Nevopcha sa cez nakladacie otvory!!
 </h3>
 
-<h3 class="redBack" *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1">
+<h3 [class]="getClassForNaklHrana()" *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1 && getClassForNaklHrana() == 'redBack'; else elseHrana">
   <p>Potrebna vyska nakladacej hrany:</p>
   <span *ngIf="vyskaNaklHrany.minVyska > -1">Min: {{vyskaNaklHrany.minVyska}}</span>
   <span>Max: {{vyskaNaklHrany.maxVyska}}</span>
@@ -16,6 +16,12 @@
     <p>Vyska {{this.car.nakladaciaHrana[0]}}</p>
   </ng-template>
 </h3>
+<ng-template #elseHrana>
+  <h3 *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1" class="greenBack">
+      Vyska hrany vyhovuje
+  </h3>
+</ng-template>
+
 
 <div class="example-container">
   <h2>Nová preprava</h2>
@@ -79,9 +85,11 @@
           *ngFor="let itiAddress of carItinerarAddresses ; index as i"
           cdkDrag
           [cdkDragData]="itiAddress">
+          <div *ngIf="itiAddress">
+
           <div  class="bednaWrapper">
             <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
-            <div class="bednaWrapper" *ngIf="this.itiAddress.type == 'vykladka'" >
+            <div class="bednaWrapper" *ngIf="this.itiAddress && this.itiAddress.type == 'vykladka'" >
               <div class="bedna" *ngFor="let detail of this.itiAddress.packagesId; let indexik = index">
                 <span class="numberOfBedna">{{getBednaIndexVykladka(detail, false)}}</span>
               </div>
@@ -107,6 +115,9 @@
               </mat-icon>
             </p>
           </div>
+          </div>
+
+
         </div>
         </div>
     </div>

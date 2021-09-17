@@ -90,10 +90,13 @@ export class RouteToItinerarComponent implements OnInit {
   }
 
   skontrolujEstiALastTime(){
-    const estiAdresy = this.dataService.vypocitajEstimatedPreVsetkyAdresy(this.myCarWithEverything.itiAdresy, this.car);
-    this.predpokladaneEsty = estiAdresy;
-    const ciVychadzajuCasy = this.dataService.porovnajEstiALastTime(estiAdresy, this.myCarWithEverything.itiAdresy);
-    this.casyPreAuto = ciVychadzajuCasy;
+    if (this.myCarWithEverything.itiAdresy){
+      const estiAdresy = this.dataService.vypocitajEstimatedPreVsetkyAdresy(this.myCarWithEverything.itiAdresy, this.car);
+      this.predpokladaneEsty = estiAdresy;
+      const ciVychadzajuCasy = this.dataService.porovnajEstiALastTime(estiAdresy, this.myCarWithEverything.itiAdresy);
+      this.casyPreAuto = ciVychadzajuCasy;
+    }
+
   }
 
   timeToLocal(dateUtc, oClock){
@@ -377,7 +380,9 @@ export class RouteToItinerarComponent implements OnInit {
   }
 
   getClass(address: Address, indexAdresy){
-
+    if (!address || !this.newRoute){
+      return;
+    }
     let classString = '';
     const isNew = this.newRoute.find(oneAddress => oneAddress.id === address.id);
     let indexMesta;
@@ -394,6 +399,26 @@ export class RouteToItinerarComponent implements OnInit {
       classString = classString + 'redBack';
     }
     return classString;
+  }
+
+  getClassForNaklHrana(){
+    if (this.vyskaNaklHrany && this.vyskaNaklHrany.maxVyska > -1){
+      var carMin = this.car.nakladaciaHrana[0];
+      var carMax = this.car.nakladaciaHrana[1];
+      if (carMax){
+        if (this.vyskaNaklHrany.maxVyska <= carMax && this.vyskaNaklHrany.minVyska >= carMin){
+          return 'greenBack';
+        }else{
+          return 'redBack';
+        }
+      }else{
+            if (this.vyskaNaklHrany.maxVyska <= carMin && this.vyskaNaklHrany.minVyska >= carMin){
+              return 'greenBack';
+            }else{
+              return 'redBack';
+            }
+          }
+    }
   }
 
   getCountOfPackages(townIndex, newRoute){

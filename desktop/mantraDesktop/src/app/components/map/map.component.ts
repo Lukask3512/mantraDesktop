@@ -968,6 +968,26 @@ export class MapComponent implements AfterViewInit {
       const distance = getDistance(from, to);
       return distance;
   }
+  // skontroluj ci sedi nakl hrana pre auto
+  checkNaklHrana(car: Cars, vyskaNaklHrany){
+    if (vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1){
+      var carMin = car.nakladaciaHrana[0];
+      var carMax = car.nakladaciaHrana[1];
+      if (carMax){
+        if (vyskaNaklHrany.maxVyska <= carMax && vyskaNaklHrany.minVyska >= carMin){
+          return true
+        }else{
+          return false;
+        }
+      }else{
+        if (vyskaNaklHrany.maxVyska <= carMin && vyskaNaklHrany.minVyska >= carMin){
+          return true;
+        }else{
+          return false;
+        }
+      }
+    }
+  }
 
   // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
   offersUpdate(emitFromFilter){
@@ -1143,6 +1163,9 @@ export class MapComponent implements AfterViewInit {
                 }
               }
 
+              const vyskaHrany = this.countFreeSpaceService.checkMaxMinNaklHrana(prepravasDetailom.detailVPonuke);
+              const vyhodujeVyskaHrany = this.checkNaklHrana(car, vyskaHrany);
+
               let poslednyIndexStihacky = this.dataService.najdiNajskorsiLastTimeArrival(prepravasDetailom.adresyVPonuke, car.itiAdresy, car);
 
               if (poslednyIndexStihacky === null){
@@ -1194,7 +1217,7 @@ export class MapComponent implements AfterViewInit {
                                 // ked som na konci skontrulujem ci sedi vzdialenost
                 if (offerLatIndex === oneRouteOffer.addresses.length - 1 && ruka && adr && teplotnaSpec && stihnemPrijst) {
                   const vopchasaCezOtvory = this.countFreeSpaceService.ciSaVopchaTovarCezNakladaciPriestor(car, prepravasDetailom.detailVPonuke);
-                  if (vopchasaCezOtvory) {
+                  if (vopchasaCezOtvory && vyhodujeVyskaHrany) {
 
                   let flags = 0;
 
@@ -1234,6 +1257,22 @@ export class MapComponent implements AfterViewInit {
             });
             // pre auta ktore maju prazdy itinerar
             if (car.itiAdresy.length === 0){
+              let adr = true;
+              let ruka = true;
+              let teplotnaSpec = true;
+
+
+
+              const vyskaHrany = this.countFreeSpaceService.checkMaxMinNaklHrana(prepravasDetailom.detailVPonuke);
+              const vyhodujeVyskaHrany = this.checkNaklHrana(car, vyskaHrany);
+
+              let poslednyIndexStihacky = this.dataService.najdiNajskorsiLastTimeArrival(prepravasDetailom.adresyVPonuke, car.itiAdresy, car);
+              let stihnemPrijst = true;
+              if (poslednyIndexStihacky === null){
+                poslednyIndexStihacky = 1000;
+              }
+
+
               const poleKadePojdem = [];
               // vaha
               if (volnaVahaPreAutovIti[0] >= jednaPonuka.maxVaha){
@@ -1252,6 +1291,40 @@ export class MapComponent implements AfterViewInit {
 
                 maxVzdialenostOdCelehoItinerara = 0;
                 prepravasDetailom.adresyVPonuke.forEach((jednaAdPonuka, indexAd) => {
+                  if (jednaAdPonuka.datumLastPrijazdy !== '0'){
+                    const dateLast = (new Date(jednaAdPonuka.datumLastPrijazdy));
+                    if (jednaAdPonuka.casLastPrijazdu !== '0'){
+                      dateLast.setHours(jednaAdPonuka.casLastPrijazdu.substring(0, 2), jednaAdPonuka.casLastPrijazdu.substring(3, 5));
+                    }
+                    const dateEsti = (new Date(jednaAdPonuka.estimatedTimeArrival));
+                    const from = [car.longtitude , car.lattitude];
+                    const to = [jednaAdPonuka.longtitude , jednaAdPonuka.lattitude];
+                    // od auta k adrese z ponuky
+                    const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
+                    const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
+                    var casPrichoduAuta = new Date();
+                    casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese);
+                    const rozdielVMili = casPrichoduAuta.getTime() - dateLast.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
+                    if (rozdielVMili < 0){ // tu kontrolujem ci stihe auto prijst do vsetkych bodov v ponuke
+                      stihnemPrijst = false;
+                    }
+
+                  }
+                  // tu si kontrolujem abs ruku a teplotu
+                  if (jednaAdPonuka.ruka && !car.ruka){
+                    ruka = false;
+                  }
+                  if (jednaAdPonuka.adr && !car.adr){
+                    adr = false;
+                  }
+                  if (jednaAdPonuka.teplota && (car.minTeplota >= jednaAdPonuka.teplota ||
+                    car.maxTeplota <= jednaAdPonuka.teplota)){
+                    teplotnaSpec = false;
+                  }
+                  if (!car.minTeplota && jednaAdPonuka.teplota){
+                    teplotnaSpec = false;
+                  }
+
                   const vzdialenostOdTrasy = this.countClosesPoint(myItiString,
                     [jednaAdPonuka.coordinatesOfTownsLon,
                       jednaAdPonuka.coordinatesOfTownsLat]);
@@ -1268,6 +1341,10 @@ export class MapComponent implements AfterViewInit {
               }
 
               const prekrocil = vopchaSa.prekrocenieOPercenta[0];
+              const vopchasaCezOtvory = this.countFreeSpaceService.ciSaVopchaTovarCezNakladaciPriestor(car, prepravasDetailom.detailVPonuke);
+
+            if (ruka && adr && teplotnaSpec && stihnemPrijst && vopchasaCezOtvory && vyhodujeVyskaHrany){
+
 
               if (sediVaha && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&
                 maxVzdialenostOdCelehoItinerara < maxVzdialenost && !prekrocil){
@@ -1283,6 +1360,7 @@ export class MapComponent implements AfterViewInit {
                 zltePrepravy.push({...car, vopchaSa});
                 jednaPonuka.flag = 2;
               }
+            }
             }
 
             zltePrepravy = zltePrepravy.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);

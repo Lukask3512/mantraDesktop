@@ -187,7 +187,7 @@ export class DataService {
     const casPrichodovPreAdresy = [];
     let nemenilSomEsti = true;
     for (let i = 0; i < address.length; i++) {
-      if (!address[i].estimatedTimeArrival || !nemenilSomEsti){
+      if (address[i] && !address[i].estimatedTimeArrival || !nemenilSomEsti){
         nemenilSomEsti = false;
         let from;
         if (i === 0){ // ak pre 1. adresu nemam esti

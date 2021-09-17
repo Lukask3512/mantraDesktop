@@ -11,8 +11,27 @@
       </p>
     </h3>
   </h2>
+  <h3 [class]="getClassForNaklHrana()" *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1 && getClassForNaklHrana() == 'redBack'; else elseHrana">
+    <p>Potrebna vyska nakladacej hrany:</p>
+    <span *ngIf="vyskaNaklHrany.minVyska > -1">Min: {{vyskaNaklHrany.minVyska}}</span>
+    <span>Max: {{vyskaNaklHrany.maxVyska}}</span>
+    <h2>Vyska nakl hrany v aute:</h2>
+    <p *ngIf="this.car.nakladaciaHrana.length == 2; else else1">Min:{{this.car.nakladaciaHrana[0]}} Max: {{this.car.nakladaciaHrana[1]}}</p>
+    <ng-template #else1>
+      <p>Vyska {{this.car.nakladaciaHrana[0]}}</p>
+    </ng-template>
+  </h3>
+  <ng-template #elseHrana>
+    <h3 *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1" class="greenBack">
+      Vyska hrany vyhovuje
+    </h3>
+  </ng-template>
   <h2 class="red" *ngIf="!ciSaVopchaCezOtvor">
     Nevopcha sa cez nakladacie otvory!!
+  </h2>
+  <h2 class="red" *ngIf="this.car && !this.car.lattitude">
+    Upozornenie!! Vozidlo nema znamu polohu a nedokazeme urcit vzdialenost k ponuke.
+    Pre urcenie polohy sa prihlaste do vozidla cez mobilnu aplikaciu.
   </h2>
   <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>
   <app-ulozenie-ponuky [idPonuky]="this.offer.id" (itiOutput)="sendCarToPredpoklad($event)"></app-ulozenie-ponuky>
