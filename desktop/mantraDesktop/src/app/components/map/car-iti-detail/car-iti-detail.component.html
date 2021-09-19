@@ -51,14 +51,14 @@
       [cdkDragDisabled]="checkIndex(i)">
       <div *ngIf="this.ponuka && this.offer.detailVPonuke" class="bednaWrapper">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
-        <div class="bednaWrapper" *ngIf="this.offer.detailVPonuke[i].townsArray">
-          <div class="bedna" *ngFor="let detail of this.offer.detailVPonuke[i].detailArray; let indexik = index">
-            <span class="numberOfBedna">{{getBednaIndex(this.offer.detailVPonuke[i].townsArray[indexik], this.offer.detailVPonuke[i].detailArray[indexik])}}</span>
-          </div>
-        </div>
-        <div class="bednaWrapper" *ngIf="!this.offer.detailVPonuke[i].townsArray">
+        <div class="bednaWrapper" *ngIf="ponuka.type === 'nakladka'">
           <div class="bedna" *ngFor="let detail of this.offer.detailVPonuke[i]; let indexik = index">
             <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
+          </div>
+        </div>
+        <div class="bednaWrapper" *ngIf="ponuka.type === 'vykladka'">
+          <div class="bedna" *ngFor="let detail of this.offer.detailVPonuke[i]; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndexNakladky(detail.id)}}</span>
           </div>
         </div>
         <mat-icon class="material-icons" matSuffix
@@ -94,14 +94,14 @@
       [cdkDragData]="address">
       <div *ngIf="address && this.car.detailIti" class="bednaWrapper">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
-        <div class="bednaWrapper" *ngIf="this.car.detailIti[i].townsArray">
-          <div class="bedna" *ngFor="let detail of this.car.detailIti[i].detailArray; let indexik = index">
-            <span class="numberOfBedna">{{getBednaIndexAuto(this.car.detailIti[i].townsArray[indexik], this.car.detailIti[i].detailArray[indexik])}}</span>
+        <div class="bednaWrapper" *ngIf="address.type === 'nakladka'">
+          <div class="bedna" *ngFor="let detail of this.car.detailIti[i]; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndexNakladkyAuto(detail.id)}}</span>
           </div>
         </div>
-        <div class="bednaWrapper" *ngIf="!this.car.detailIti[i].townsArray">
+        <div class="bednaWrapper" *ngIf="address.type === 'vykladka'">
           <div class="bedna" *ngFor="let detail of this.car.detailIti[i]; let indexik = index">
-            <span class="numberOfBedna">{{getBednaIndexAuto(i, indexik)}}</span>
+            <span class="numberOfBedna">{{getBednaIndexNakladkyAuto(detail.id)}}</span>
           </div>
         </div>
         <mat-icon class="material-icons" matSuffix

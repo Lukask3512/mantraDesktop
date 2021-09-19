@@ -5,7 +5,7 @@
     <h2>Zadavatel: {{this.route.createdBy}}</h2>
     <h2>Prepravca: {{this.route.takenBy}}</h2>
   </header>
-  <h3>Cena: {{this.route.price}}</h3>
+  <h3 *ngIf="this.route.price">Cena: {{this.route.price}}</h3>
   <h1>Log</h1>
   <table id="routeLog" #routeLog1 *ngIf="this.routeLog != undefined">
     <tr>

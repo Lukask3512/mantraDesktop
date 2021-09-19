@@ -125,7 +125,7 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   getClassForNaklHrana(){
-    if (this.vyskaNaklHrany && this.vyskaNaklHrany.maxVyska > -1){
+    if (this.car && this.vyskaNaklHrany && this.vyskaNaklHrany.maxVyska > -1){
       const carMin = this.car.nakladaciaHrana[0];
       const carMax = this.car.nakladaciaHrana[1];
       if (carMax){
@@ -700,6 +700,41 @@ export class CarItiDetailComponent implements OnInit {
     indexBedne += detailIndex + 1;
     return indexBedne;
   }
+
+  getBednaIndexNakladky(packagaId){
+    let mesto;
+    let balik;
+    for (let i = 0; i < this.offer.detailVPonuke.length ; i++) {
+      for (let j = 0; j < this.offer.detailVPonuke[i].length ; j++) {
+        if (this.offer.detailVPonuke[i][j].id === packagaId){
+          if (mesto === undefined){ // ked najdem 1. nakladku
+            mesto = i;
+            balik = j;
+            break;
+          }
+        }
+      }
+    }
+    return this.getBednaIndex(mesto, balik);
+  }
+
+  getBednaIndexNakladkyAuto(packagaId){
+    let mesto;
+    let balik;
+    for (let i = 0; i < this.car.detailIti.length ; i++) {
+      for (let j = 0; j < this.car.detailIti[i].length ; j++) {
+        if (this.car.detailIti[i][j].id === packagaId){
+          if (mesto === undefined){ // ked najdem 1. nakladku
+            mesto = i;
+            balik = j;
+            break;
+          }
+        }
+      }
+    }
+    return this.getBednaIndexAuto(mesto, balik);
+  }
+
 
   getCountOfPackagesAuto(townIndex){
     return this.car.detailIti[townIndex].length;

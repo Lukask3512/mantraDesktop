@@ -4,13 +4,13 @@
     <div (click)="sendTown(i)" *ngIf="this.detail && this.detail[i] != undefined" class="bednaWrapper">
       <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detail[i].townsArray">
-        <div class="bedna" *ngFor="let detail of this.detail[i].townsArray; let indexik = index">
-          <span class="numberOfBedna">{{indexik + 1}}</span>
+        <div class="bedna" *ngFor="let detailil of this.detail[i].townsArray; let indexik = index">
+          <span class="numberOfBedna">{{getBednaIndex(this.detail[i].townsArray[indexik], this.detail[i].detailArray[indexik])}}</span>
         </div>
       </div>
       <div class="bednaWrapper" *ngIf="!this.detail[i].townsArray">
         <div class="bedna" *ngFor="let detail of this.detail[i]; let indexik = index">
-          <span class="numberOfBedna">{{indexik + 1}}</span>
+          <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
         </div>
       </div>
 
@@ -26,7 +26,7 @@
 
       <span *ngIf="this.address[i].estimatedTimeArrival">ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
 
-      <img (click)="openAddDialogToDelete(this.address[i])" class="delete" src="assets/logo/delete.svg">
+<!--      <img (click)="openAddDialogToDelete(this.address[i])" class="delete" src="assets/logo/delete.svg">-->
     </div>
     <div class="routeTown routeInfo">
       <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>

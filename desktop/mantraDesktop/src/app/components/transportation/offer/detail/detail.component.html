@@ -16,12 +16,22 @@
   </div>
 </header>
 <button (click)="openAllDetailDialog()">Detail</button>
-<div  class="wrapper">
+<div class="wrapper">
+  <section class="addressList">
     <app-drag-and-drop-list #dropList
                             [address]="this.address"
                             [draggable]="false">
 
     </app-drag-and-drop-list>
+
+    <footer>
+      <button (click)="openLog()">Log prepravy </button>
+    </footer>
+  </section>
+
+
+
+
 <div *ngIf="this.route" class="wrapper">
 
 <!--  </ol>-->
@@ -63,6 +73,7 @@
   <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="input">
     <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>
     <button (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">Upravit ponuku</button>
+    <button (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">Vymazat ponuku</button>
     <h4>
       Ponuky
     </h4>
@@ -102,7 +113,4 @@
     <app-openlayer #child></app-openlayer>
   </div>
 
-  <footer>
-    <button (click)="openLog()">Log prepravy </button>
-  </footer>
 </div>

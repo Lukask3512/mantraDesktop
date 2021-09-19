@@ -17,6 +17,9 @@ import {LogDialogComponent} from '../../../dialogs/log-dialog/log-dialog.compone
 import {UpdateOfferPriceComponent} from '../../../dialogs/update-offer-price/update-offer-price.component';
 import {OfferPriceComponent} from '../../../dialogs/offer-price/offer-price.component';
 import {AllDetailAboutRouteDialogComponent} from '../../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
+import {DeleteRouteComponent} from '../../../dialogs/delete-route/delete-route.component';
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-detail',
@@ -27,7 +30,8 @@ export class DetailComponent implements AfterViewInit {
 
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
-              private packageService: PackageService, private dialog: MatDialog) { }
+              private packageService: PackageService, private dialog: MatDialog, private router: Router,
+              private _snackBar: MatSnackBar,) { }
   route: Route;
   fakeRoute: Route;
   price: number;
@@ -175,7 +179,23 @@ export class DetailComponent implements AfterViewInit {
   // }
 
   vymazatPonuku(){
-    this.offerService.deleteRoute(this.route.id);
+    let dialogConfig = new MatDialogConfig();
+
+
+    const dialogRef = this.dialog.open(DeleteRouteComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else{
+        this.offerService.deleteRoute(this.route.id);
+        this.openSnackBar('Ponuka bola vymazana', 'Ok');
+        this.router.navigate(['/view/offerRoute']);
+      }
+    });
+
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 
   changeRouteOnMap(route: Route){

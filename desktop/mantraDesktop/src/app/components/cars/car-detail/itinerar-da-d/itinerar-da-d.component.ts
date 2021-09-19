@@ -52,6 +52,22 @@ export class ItinerarDaDComponent implements OnInit {
     // this.arrayOfDetailEvent.emit(this.arrayOfDetail);
   }
 
+  getCountOfPackages(townIndex){
+    return this.detail[townIndex].length;
+  }
+
+  // pre nakladky
+  getBednaIndex(townIndex, detailIndex){
+    let indexBedne = 0;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.detail[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackages(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
+    return indexBedne;
+  }
+
   // kontrola ci mozem prehodit mesta - podla detailu
   najdiCiMozemPresunut(detail, previous, current){
     let mozemPresunut = true;
@@ -156,7 +172,19 @@ export class ItinerarDaDComponent implements OnInit {
       if (value === undefined){
         return;
       }else {
-        this.deleteTownFromIti(adresa);
+        let indexAdries = [];
+        indexAdries.push(adresa.id);
+        this.address.forEach((jednaAdresa, indexik) => {
+          if (jednaAdresa.id !== adresa.id){
+            const packages = jednaAdresa.packagesId.find(oneId => adresa.packagesId.includes(oneId));
+            if (packages){
+              indexAdries.push(jednaAdresa.id);
+            }
+          }
+        });
+        this.car.itinerar = this.car.itinerar.filter(oneId => !indexAdries.includes(oneId));
+        this.carService.updateCar(this.car, this.car.id);
+        this.address = this.address.filter(oneAddress => !indexAdries.includes(oneAddress.id));
       }
     });
   }

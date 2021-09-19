@@ -670,7 +670,7 @@ else{
           }
           oneAddress.carId = null;
           this.addressService.updateAddress(oneAddress);
-          this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
+          this.car.itinerar = this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
         });
         this.route.carId = null;
         this.routeService.updateRoute(this.route);

@@ -18,17 +18,21 @@ import { NgxSpinnerService } from "ngx-spinner";
   // styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  form: FormGroup;
   loading = false;
   submitted = false;
-  email: string;
-  password: string;
+  // email: string;
+  // password: string;
 
   isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+
 
   user: Dispecer;
+
+  loginForm = this.formBuilder.group({
+    email: ['', Validators.required],
+    password: ['', Validators.required],
+
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,65 +49,22 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
 
-
-    this.firstFormGroup = this.formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-
-
-    this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
   }
+
 
   // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  get f() { return this.loginForm.controls; }
 
-  onSubmit() {
-    this.submitted = true;
-
-    // reset alerts on submit
-
-
-    // stop here if form is invalid
-    if (this.form.invalid) {
-      return;
-    }
-
-    this.loading = true;
+  loginOnEnter(event: Event){
+    console.log("som v logine on enter")
+    event.preventDefault();
+    this.login();
   }
 
-  signup() {
-    this.accountService.signup(this.email, this.password);
-    this.email = this.password = '';
-  }
-
-  sendMail(){
-    var password = Math.random().toString(36).slice(-8);
-
-    let email  = 'maf3@azet.sk';
-    let header  = 'Vitajte v aplikacii Mantra';
-    let text  = 'Vase prihlasovacie meno: maf3@azet.sk, vase heslo: ' + password;
-
-    let reqObj = {
-      email: email,
-      header: header,
-      text: text
-    }
-    this.emailService.sendMessage(reqObj).subscribe(data => {
-      console.log(data);
-    })
-  }
   login() {
     this.spinner.show();
 
-    this.accountService.login(this.email, this.password).subscribe(user => {
+    this.accountService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(user => {
       if (user){
 
       this.dispecerService.getOneDispecer(user.user.email).pipe(take(1)).subscribe(user => {
@@ -132,12 +93,13 @@ export class RegisterComponent implements OnInit {
       }
 
     });
-    this.email = this.password = '';
+    this.loginForm.controls.email.setValue('');
+    this.loginForm.controls.password.setValue('');
   }
 
 
   resetPass(){
-    this.accountService.passwordReset(this.email);
+    this.accountService.passwordReset(this.loginForm.get('email').value);
     this.openSnackBar('Na emailovu adresu bol zaslany email', 'Ok');
   }
 

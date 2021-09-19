@@ -45,6 +45,8 @@
       <button class="buttonTransport"  *ngIf="this.route && this.route.carId" (click)="cancelFromCarDialog()">Odstranit z vozidla</button>
       <!--      <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>-->
       <p *ngIf="!vylozeneBaliky() && this.addresses.length > 0 && !this.route.id">Musite vylozit vsetky baliky</p>
+      <button *ngIf="this.route && this.route.id" (click)="openLog()">Log prepravy</button>
+
     </div>
 
       <div *ngIf="this.route && !this.route.id" class="aframe">
@@ -59,7 +61,6 @@
   </div>
 
 
-<button *ngIf="this.route && this.route.id" (click)="openLog()">Log prepravy</button>
 </div>
 <!--<app-route-log *ngIf="route != undefined" [addresses]="this.addresses"></app-route-log>-->
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+<!--  <meta charset="utf-8" />-->
+<!--  <meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />-->
+<!--  <meta name="description" content="" />-->
+<!--  <meta name="author" content="" />-->
   <title>Page Title - Mantra</title>
 </head>
 
@@ -23,15 +22,15 @@
           <div class="col-lg-5">
             <div class="card shadow-lg border-0 rounded-lg mt-5">
               <div class="card-header"><h3 class="text-center font-weight-normal my-4">Prihlásiť sa</h3></div>
-              <div class="card-body">
+              <form [formGroup]="loginForm" class="card-body" (ngSubmit)="loginOnEnter($event)">
 
                   <div class="form-group">
                     <label class="small mb-1" for="inputEmailAddress">Email</label>
-                    <input type="text" [(ngModel)]="email" class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Tu vložte e-mail" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <input type="text"  formControlName="email"  class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Tu vložte e-mail" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                   </div>
                   <div class="form-group">
                     <label class="small mb-1" for="inputPassword">Heslo</label>
-                    <input type="password" [(ngModel)]="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Tu vložte heslo" />
+                    <input type="password" formControlName="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Tu vložte heslo" />
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
@@ -48,7 +47,7 @@
 
 
 
-              </div>
+              </form>
               <div class="card-footer text-center">
                 <div class="small">
                     <a href="https://drive.google.com/file/d/1dsT0UjL2uNmiETDyFmSy0TfboyzZy9AE/view?usp=sharing">
@@ -67,6 +66,6 @@
 
 </div>
 </body>
-</html>
+
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 
