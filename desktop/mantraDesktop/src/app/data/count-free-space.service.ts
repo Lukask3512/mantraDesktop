@@ -891,6 +891,9 @@ export class CountFreeSpaceService {
         });
       }
     });
+    if (maxVyska === -1){
+      minVyska = -1;
+    }
     return {maxVyska, minVyska};
   }
 }

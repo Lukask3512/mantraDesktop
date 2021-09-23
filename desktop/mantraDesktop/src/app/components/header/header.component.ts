@@ -15,6 +15,15 @@ export class HeaderComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
+
+  siteLanguage: string = 'English';
+  siteLocale: string;
+  languageList = [
+    { code: 'en', label: 'English' },
+    { code: 'fr', label: 'Français' },
+    { code: 'de', label: 'Deutsch' }
+  ];
+
   constructor(location: Location,  private element: ElementRef,
               private router: Router, private dataService: DataService,
               private accountService: AccountService
@@ -25,6 +34,8 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {
+    this.siteLocale = window.location.pathname.split('/')[1];
+    this.siteLanguage = this.languageList.find(f => f.code === this.siteLocale).label;
   }
 
   getCompany(){

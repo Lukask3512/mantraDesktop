@@ -31,7 +31,7 @@ import { AgmCoreModule } from '@agm/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 
 import { JwtInterceptor } from 'src/login/_helpers/jwt.interceptor';
 import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
@@ -53,6 +53,15 @@ import { NewFormComponent } from './components/transportation/new-transport/new-
 import {MatIconModule} from '@angular/material/icon';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatMenuModule} from '@angular/material/menu';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 
 @NgModule({
   declarations: [
@@ -77,6 +86,13 @@ import {MatExpansionModule} from '@angular/material/expansion';
     imports: [
         BrowserAnimationsModule,
         BrowserModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        }),
         AppRoutingModule,
         MatDialogModule,
         AngularFireModule.initializeApp(environment.firebase),
@@ -112,7 +128,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
         MatDatepickerModule,
         MatIconModule,
         NgxSpinnerModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatMenuModule
     ],
     exports: [
         MatFormFieldModule,
@@ -124,6 +141,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    HttpClient
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

@@ -21,12 +21,13 @@ export class WrapperComponent implements OnInit {
 
   routesToShow: Route[];
   finishedRoutesToShow: Route[];
+  whatIsActive = 0;
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
       this.routes = routes.filter(oneRoute => oneRoute.finished === false);
 
       this.finishedRoutes = routes.filter(oneRoute => oneRoute.finished === true);
-      this.allActive();
+      this.reClickOnTab();
     });
   }
 
@@ -68,19 +69,32 @@ export class WrapperComponent implements OnInit {
     return this.dataService.getMyIdOrMaster();
   }
 
+  // ked sa mi updatnu routy aby ma neprekliklo na iny tab
+  reClickOnTab(){
+    if (this.whatIsActive === 0){
+      this.allActive();
+    }else if(this.whatIsActive === 1){
+      this.mine();
+    }else if (this.whatIsActive === 2){
+      this.assigned();
+    }
+  }
+
   allActive(){
     this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
       && oneRoute.createdBy !== this.getDispecerId());
+    this.whatIsActive = 0;
   }
   mine(){
     this.routesToShow = this.routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished);
     this.finishedRoutesToShow = this.finishedRoutes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && oneRoute.finished);
+    this.whatIsActive = 1;
   }
 
   assigned(){
     this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished)
         || oneRoute.takenBy === this.getDispecerId() && !oneRoute.finished);
     this.finishedRoutesToShow = this.finishedRoutes.filter(oneRoute => oneRoute.takenBy === this.getDispecerId() && oneRoute.finished);
-
+    this.whatIsActive = 2;
   }
 }

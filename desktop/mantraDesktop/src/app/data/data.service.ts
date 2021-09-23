@@ -195,30 +195,41 @@ export class DataService {
             return [];
           }
           from = [car.longtitude , car.lattitude];
-          const to = [address[i].coordinatesOfTownsLon , address[i].coordinatesOfTownsLat];
-          const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
+          const to = [address[i].coordinatesOfTownsLon , address[i].coordinatesOfTownsLat]; // *1.2, lebo to nieje vzdusna...
+          const vzdialenostOdAutaKAdrese = (this.countDistancePoints(from, to) / 1000) * 1.2; // chcem to v km, preto / 1000
           const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
+          var hrs = parseInt(String(Number(casOdAutaKAdrese.toString(10))));
+          var min = Math.round((Number(casOdAutaKAdrese) - hrs) * 60);
+          var clocktime = hrs+':'+min;
+          console.log(clocktime)
           var casPrichoduAuta = new Date();
-          casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese);
+          casPrichoduAuta.setHours(casPrichoduAuta.getHours() + hrs, casPrichoduAuta.getMinutes() + min);
           casPrichodovPreAdresy.push(casPrichoduAuta.toISOString());
         }else{
           from = [address[i - 1].coordinatesOfTownsLon , address[i - 1].coordinatesOfTownsLat];
           const to = [address[i].coordinatesOfTownsLon , address[i].coordinatesOfTownsLat];
-          const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
+          const vzdialenostOdAutaKAdrese = (this.countDistancePoints(from, to) / 1000) * 1.2; // chcem to v km, preto / 1000
           const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
+          var hrs = parseInt(String(Number(casOdAutaKAdrese.toString(10))));
+          var min = Math.round((Number(casOdAutaKAdrese) - hrs) * 60);
+
           var casPrichoduAuta = new Date(casPrichodovPreAdresy[i - 1]); // zoberiem datum predchadzajuceho prijazdu
-          casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese + Number(address[i - 1].obsluznyCas)); // a k nemu pripocitam cas potrebny pre jazdu do dalsej
+          casPrichoduAuta.setHours(casPrichoduAuta.getHours() + hrs + Number(address[i - 1].obsluznyCas), casPrichoduAuta.getMinutes() + min); // a k nemu pripocitam cas potrebny pre jazdu do dalsej
           casPrichodovPreAdresy.push(casPrichoduAuta.toISOString());
         }
       }else{
         casPrichodovPreAdresy.push(address[i].estimatedTimeArrival);
       }
     }
+    if (address.length === 0){
+      casPrichodovPreAdresy.push(new Date().toISOString());
+    }
     return casPrichodovPreAdresy;
   }
 
   porovnajEstiALastTime(estimateds: any[], addresses: Address[]){
     const zostavajuciCas = [];
+    // TODO toto kuknut ked nemam ziadne adresy vo vozidle...
     for (let i = 0; i < addresses.length; i++) {
       if (addresses[i].datumLastPrijazdy !== '0'){
         const esti = new Date(estimateds[i]);
@@ -282,13 +293,14 @@ export class DataService {
           dnesSCasomFirst.setHours(minHours, minMinutes);
 
           const dnesSCasomEsti = new Date();
-          dnesSCasomLast.setHours(esti.getHours(), esti.getMinutes());
+          dnesSCasomEsti.setHours(esti.getHours(), esti.getMinutes());
           rozdielVHodinach = dnesSCasomLast.getTime() - dnesSCasomEsti.getTime();
           if (dnesSCasomEsti.getHours() >= dnesSCasomFirst.getHours() && dnesSCasomEsti.getHours() < dnesSCasomLast.getHours()){
             sediCas = true;
           }else{
             sediCas = false;
           }
+
 
           zostavajuciCas.push({pocetHodin: null, rozdielVHodinach: Number(rozdielVHodinach), sediCas: sediCas});
         }else{
@@ -300,6 +312,9 @@ export class DataService {
       }
 
   }
+    if (addresses.length === 0){
+      zostavajuciCas.push({pocetHodin: null, rozdielVHodinach: null, sediCas: null});
+    }
     return zostavajuciCas;
   }
 

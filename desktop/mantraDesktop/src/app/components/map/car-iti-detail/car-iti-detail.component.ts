@@ -227,6 +227,8 @@ export class CarItiDetailComponent implements OnInit {
     // pri drrag and drop prepocitam volne miesta
     const volneMiesta = this.volneMiesta();
     this.checkEstiAndLastTime();
+    this.skontrolujVahu();
+
     let prepravaIndex = this.offer.zelenePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id);
     if (prepravaIndex > -1){
       this.offer.zelenePrepravy[prepravaIndex].vopchaSa = volneMiesta;
@@ -245,7 +247,6 @@ export class CarItiDetailComponent implements OnInit {
     prvaAdresaSDetailom.adresyVPonuke = [prvaAdresaSDetailom.adresyVPonuke[0]];
     prvaAdresaSDetailom.detailVPonuke = [prvaAdresaSDetailom.detailVPonuke[0]];
     this.ciSaVopcha = this.countService.countFreeSpace(this.car, prvaAdresaSDetailom, this.prekrocenieVelkosti);
-    this.skontrolujVahu();
     return this.kontrolaCiSaVopcha;
   }
 
@@ -401,6 +402,9 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   timeToLocal(dateUtc, oClock){
+    if (dateUtc === '0' && oClock !== '0'){
+      return oClock;
+    }
     var date = (new Date(dateUtc));
     if (oClock !== '0'){
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
@@ -437,15 +441,24 @@ export class CarItiDetailComponent implements OnInit {
     if (this.ciSaVopcha){
       const indexMesta = this.ciSaVopcha.poleMiestKdeSaVopcha.findIndex(oneId => oneId === indexOfAddress);
       if (indexMesta > -1){
-        if (this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress
-          || (this.casyPreAuto[indexOfAddress].pocetHodin < 3 && this.casyPreAuto[indexOfAddress].pocetHodin > 1)){
-          return 'yellow';
-        }else if (!this.ciSaVopcha.prekrocenieOPercenta[indexMesta] && this.najdiIndexNakladky() <= indexOfAddress
-          && this.casyPreAuto[indexOfAddress].pocetHodin > 3){
-          return 'green';
-        }else{
+        if (this.najdiIndexNakladky() <= indexOfAddress){
+          if (this.volnaVahaPreAuto && this.volnaVahaPreAuto[indexOfAddress] && this.volnaVahaPreAuto[indexOfAddress] < 0){
+            return 'red';
+          }
+          if (this.ciSaVopcha.prekrocenieOPercenta[indexMesta]
+            || ((this.casyPreAuto[indexOfAddress].pocetHodin < 3 && this.casyPreAuto[indexOfAddress].pocetHodin > 1))){
+            return 'yellow';
+          }else if (!this.ciSaVopcha.prekrocenieOPercenta[indexMesta]
+            && (this.casyPreAuto[indexOfAddress].pocetHodin > 3 || !this.casyPreAuto[indexOfAddress].pocetHodin)){
+            return 'green';
+          }else{
+            return;
+          }
+        }else{ // ked som pred nakladkou
           return;
         }
+      }else{ // ked sa nevopcha
+        return 'red';
       }
     }
 

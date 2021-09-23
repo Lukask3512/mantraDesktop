@@ -34,6 +34,16 @@ export class RegisterComponent implements OnInit {
 
   });
 
+
+  // siteLanguage: string = 'English';
+  // siteLocale: string;
+  // languageList = [
+  //   { code: 'en', label: 'English' },
+  //   { code: 'fr', label: 'Français' },
+  //   { code: 'de', label: 'Deutsch' }
+  // ];
+  lang;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -48,7 +58,12 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.lang = localStorage.getItem('lang') || 'en';
+  }
 
+  changeLang(lang){
+    localStorage.setItem('lang', lang);
+    // window.location.reload();
   }
 
 

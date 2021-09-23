@@ -20,6 +20,10 @@ import {AllDetailAboutRouteDialogComponent} from '../../../dialogs/all-detail-ab
 import {DeleteRouteComponent} from '../../../dialogs/delete-route/delete-route.component';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import Company from '../../../../models/Company';
+import {CancelRouteFromCarDialogComponent} from '../../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
+import Cars from '../../../../models/Cars';
+import {RouteService} from '../../../../services/route.service';
 
 @Component({
   selector: 'app-detail',
@@ -31,7 +35,7 @@ export class DetailComponent implements AfterViewInit {
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
               private packageService: PackageService, private dialog: MatDialog, private router: Router,
-              private _snackBar: MatSnackBar,) { }
+              private _snackBar: MatSnackBar, private routeService: RouteService) { }
   route: Route;
   fakeRoute: Route;
   price: number;
@@ -39,6 +43,8 @@ export class DetailComponent implements AfterViewInit {
   arrayOfDetailsAbRoute: any[] =  [];
   address: Address[];
   detail: any[] = [];
+
+  companiesFromChild = [];
 
   @ViewChild('child')
   private child: OpenlayerComponent;
@@ -312,12 +318,48 @@ export class DetailComponent implements AfterViewInit {
     this.offerService.updateRoute(this.route);
   }
 
+  // TODO
+  deleteCompany(indexOfCompany){
+    this.route.offerFrom.splice(indexOfCompany, 1);
+    this.route.priceFrom.splice(indexOfCompany, 1);
+    this.offerService.updateRoute(this.route);
+  }
+
   vypocitajVahuPreMesto(infoMesto){
     var vahaVMeste = 0;
     infoMesto.weight.forEach(vaha => {
       vahaVMeste += vaha;
     });
     return vahaVMeste;
+  }
+
+  cancelFromCarDialog(){
+    var car: Cars = this.getCarById();
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.width = '23em';
+    const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+        if (!car){
+          car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+        }
+        this.address.forEach(oneAddress => {
+          if (car.aktualnyNaklad){
+            car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
+          }
+          oneAddress.carId = null;
+          this.addressesService.updateAddress(oneAddress);
+          car.itinerar = car.itinerar.filter(oneId => oneId !== oneAddress.id);
+        });
+        this.route.carId = null;
+        this.route.offerInRoute = '';
+        this.routeService.updateRoute(this.route);
+        this.carService.updateCar(car, car.id);
+        // this.getNewRoute(this.route.id);
+      }
+    });
   }
 
   upravCenuPonuky(){
@@ -365,6 +407,14 @@ export class DetailComponent implements AfterViewInit {
         return;
       }
     });
+  }
+
+  getCompaniesFromChild(company: Company){
+    this.companiesFromChild.push(company);
+  }
+
+  getCompanyById(companyid: string): Company{
+    return this.companiesFromChild.find(oneCompany => oneCompany.id === companyid);
   }
 
 

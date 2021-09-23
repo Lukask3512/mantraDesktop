@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import Dispecer from '../../../models/Dispecer';
 import {DispecerService} from '../../../services/dispecer.service';
 import {take} from 'rxjs/operators';
 import {CompanyService} from '../../../services/company.service';
 import Company from '../../../models/Company';
+import Predpoklad from '../../../models/Predpoklad';
 
 @Component({
   selector: 'app-get-info-about-company',
@@ -15,6 +16,7 @@ export class GetInfoAboutCompanyComponent implements OnInit {
   @Input() masterId: string;
   @Input() companyId: string;
   company: Company;
+  @Output() sendCompanyToParent = new EventEmitter<Company>();
   constructor(private dispecerService: DispecerService, private companyService: CompanyService) { }
 
   ngOnInit(): void {
@@ -23,6 +25,8 @@ export class GetInfoAboutCompanyComponent implements OnInit {
         if (dispecer){
           this.companyService.getCompany(dispecer.companyId).pipe(take(1)).subscribe(myCompany => {
             this.company = myCompany;
+            this.company.id = dispecer.companyId;
+            this.sendCompanyToParent.emit(this.company);
           });
         }
       });

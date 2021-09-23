@@ -286,6 +286,9 @@ export class DragAndDropListComponent implements OnInit {
   }
 
   timeToLocal(dateUtc, oClock){
+    if (dateUtc === '0' && oClock !== '0'){
+      return oClock;
+    }
     var date = (new Date(dateUtc));
     if (oClock !== '0'){
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));

@@ -986,6 +986,8 @@ export class MapComponent implements AfterViewInit {
           return false;
         }
       }
+    }else{
+      return true;
     }
   }
 

@@ -61,7 +61,7 @@
             <span class="numberOfBedna">{{getBednaIndexNakladky(detail.id)}}</span>
           </div>
         </div>
-        <mat-icon class="material-icons" matSuffix
+        <mat-icon *ngIf="ponuka.datumLastPrijazdy != '0' || ponuka.casPrijazdu != '0'" class="material-icons" matSuffix
                   matTooltip="{{timeToLocal(ponuka.datumPrijazdu, ponuka.casPrijazdu)}} - {{timeToLocal(ponuka.datumLastPrijazdy, ponuka.casLastPrijazdu)}}">
           info
         </mat-icon>
@@ -74,8 +74,9 @@
     </div>
   </div>
 </div>
-<button *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">Presun vsetko</button>
 <div *ngIf="car" class="example-container">
+  <button *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">Presun vsetko</button>
+
   <h2>Itinerar vozidla {{this.car.ecv}}</h2>
 
   <div
@@ -104,7 +105,7 @@
             <span class="numberOfBedna">{{getBednaIndexNakladkyAuto(detail.id)}}</span>
           </div>
         </div>
-        <mat-icon class="material-icons" matSuffix
+        <mat-icon *ngIf="address.datumLastPrijazdy != '0' || address.casPrijazdu != '0'" class="material-icons" matSuffix
                   matTooltip="{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}">
           info
         </mat-icon>
@@ -116,7 +117,7 @@
           <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
           {{address.nameOfTown}}
         </p>
-        <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">Pretazene o {{volnaVahaPreAuto[i]}}t</span>
+        <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">Pretazene o {{volnaVahaPreAuto[i]}}t</span>
         <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
       </div>
       <div class="bottom">

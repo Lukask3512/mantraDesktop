@@ -9,6 +9,13 @@
 </head>
 
 <body>
+
+
+<select (change)="changeLang($event.target.value)">
+  <option value="en" [selected]="lang == 'en'">English</option>
+  <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
+</select>
+
 <img class="alert" src="./assets/logo/mantralogin.png">
 
 
@@ -25,11 +32,11 @@
               <form [formGroup]="loginForm" class="card-body" (ngSubmit)="loginOnEnter($event)">
 
                   <div class="form-group">
-                    <label class="small mb-1" for="inputEmailAddress">Email</label>
+                    <label class="small mb-1" for="inputEmailAddress">{{'email' | translate}}</label>
                     <input type="text"  formControlName="email"  class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Tu vložte e-mail" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                   </div>
                   <div class="form-group">
-                    <label class="small mb-1" for="inputPassword">Heslo</label>
+                    <label class="small mb-1" for="inputPassword">{{'password' | translate}}</label>
                     <input type="password" formControlName="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Tu vložte heslo" />
                   </div>
                   <div class="form-group">
@@ -38,11 +45,11 @@
                     </div>
                   </div>
                   <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                     <a type="submit" (click)="login()" class="btn btn-secondary">Prihlásiť sa</a>      <!-- upravit button -->
+                     <a type="submit" (click)="login()" class="btn btn-secondary">{{'login' | translate}}</a>      <!-- upravit button -->
                   </div>
 
                 <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                  <a (click)="resetPass()" class="btn btn-secondary">Zabbudnute heslo</a>      <!-- upravit button -->
+                  <a (click)="resetPass()" class="btn btn-secondary">{{'forgotPassword' | translate}}</a>      <!-- upravit button -->
                 </div>
 
 

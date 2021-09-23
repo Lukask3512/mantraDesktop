@@ -41,6 +41,8 @@
 
   <h2  *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute != ''">
     Ponuka priradená vo vozidle: <button (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
+    <button class="buttonTransport" (click)="cancelFromCarDialog()">Odstranit z vozidla</button>
+
   </h2>
 
 
@@ -63,7 +65,7 @@
 
     <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">Pridat ponuku</button>
     <ng-template #elseUpravitCenu>
-      <button  (click)="addPrice()">Upravit cenu</button>
+      <button *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">Upravit cenu</button>
     </ng-template>
     <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>
     <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
@@ -78,13 +80,19 @@
       Ponuky
     </h4>
     <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">
-      <app-get-info-about-company [masterId]="offer"></app-get-info-about-company>
+      <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="offer"></app-get-info-about-company>
 <!--      <h5>{{}}</h5>-->
       <h4 *ngIf="this.route.price == 0">{{this.route.priceFrom[i]}}</h4>
       <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
+      <button *ngIf="this.route.ponuknuteTo == '' " (click)="deleteCompany(i)">X</button>
     </div>
 
-    <button *ngIf="this.route.ponuknuteTo != ''" (click)="cancelOffer()">Zrusit ponuku</button>
+    <div *ngIf="this.route.ponuknuteTo != ''">
+      <button  (click)="cancelOffer()">Zrusit </button>
+      <span>ponuku pre firmu</span>
+      <app-get-info-about-company [masterId]="this.route.ponuknuteTo"></app-get-info-about-company>
+    </div>
+
 
 
   </div>
