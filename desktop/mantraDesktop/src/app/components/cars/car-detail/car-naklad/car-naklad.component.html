@@ -1,5 +1,5 @@
 <div class="allWrapper">
-  <h3>Aktualny naklad v aute</h3>
+  <h3>{{'CAR.actualPackages' | translate}}</h3>
   <div class="bednaWrapper" *ngIf=" this.car && this.car.aktualnyNaklad">
     <div (click)="openDialog(detail, this.car.id)" class="bedna" *ngFor="let detail of this.car.aktualnyNaklad; let indexik = index">
       <span class="numberOfBedna">{{indexik + 1}}</span>

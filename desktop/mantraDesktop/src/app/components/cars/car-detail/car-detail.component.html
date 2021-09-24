@@ -1,40 +1,25 @@
-<div *ngIf="this.car" class="header">
-    <h1>Vozidlo: {{this.car.ecv}}</h1>
+  <div *ngIf="this.car" class="header">
+    <h1>{{'CAR.car' | translate}}: {{this.car.ecv}}</h1>
     <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
-  <app-car-naklad [car]="this.car"></app-car-naklad>
-
-  <p *ngIf="this.routes != undefined  && this.routes.estimatedTimeArrival && !this.routes.finished && this.car != undefined">
-    Približný čas dorazenia do navigovaného miesta: {{estimatedTimeToLocal(this.routes.estimatedTimeArrival)}}
-  </p>
+    <app-car-naklad [car]="this.car"></app-car-naklad>
   </div>
 
 
 <div class="allWrapper">
 
-<div class="routeList">
+  <div class="routeList">
 
+    <div class="routes">
+      <h1>{{'CAR.itinerar' | translate}}</h1>
+    </div>
 
-  <div class="routes">
-    <h1>Itinerár</h1>
+    <app-itinerar-da-d #dragDrop ></app-itinerar-da-d>
   </div>
 
-  <app-itinerar-da-d #dragDrop ></app-itinerar-da-d>
-
-
-</div>
-
-
-<div class="map">
+  <div class="map">
     <app-openlayer #child></app-openlayer>
   </div>
 
 
 </div>
-
-
-
-
-
-
-  <app-route-log *ngIf="routes != undefined" [routeId]="parentSubject"></app-route-log>
 

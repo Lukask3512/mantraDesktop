@@ -1,96 +1,96 @@
-<div >
-  <h1 *ngIf="!this.data" class="header">Pridať spolocnost</h1>
-  <h1 *ngIf="this.data" class="header">Upraviť spolocnost</h1>
+<div>
+  <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addCompany' | translate}}</h1>
+  <h1 *ngIf="this.data" class="header">{{'COMPANIES.updateCompany' | translate}}</h1>
   <form class="gridContainer" [formGroup]="companyForm">
     <mat-horizontal-stepper linear>
     <mat-step>
-      <ng-template matStepLabel>Udaje o spolocnosti</ng-template>
+      <ng-template matStepLabel>{{'COMPANIES.aboutCompany' | translate}}</ng-template>
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Nazov spolocnosti</mat-label>
-      <input formControlName="name" type="text"  matInput placeholder="Nazov...">
-      <mat-hint>Nazov spolocnosti</mat-hint>
+      <mat-label>{{'COMPANIES.companyName' | translate}}</mat-label>
+      <input formControlName="name" type="text"  matInput placeholder="{{'COMPANIES.companyName' | translate}}...">
+      <mat-hint>{{'COMPANIES.companyName' | translate}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Ulica</mat-label>
-      <input formControlName="street" type="text"  matInput placeholder="Ulica...">
-      <mat-hint>Ulica</mat-hint>
+      <mat-label>{{'COMPANIES.street' | translate}}</mat-label>
+      <input formControlName="street" type="text"  matInput placeholder="{{'COMPANIES.street' | translate}}...">
+      <mat-hint>{{'COMPANIES.street' | translate}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Mesto</mat-label>
-      <input formControlName="town" type="text" matInput placeholder="Mesto...">
-      <mat-hint>Mesto</mat-hint>
+      <mat-label>{{'COMPANIES.town' | translate}}</mat-label>
+      <input formControlName="town" type="text" matInput placeholder="{{'COMPANIES.town' | translate}}...">
+      <mat-hint>{{'COMPANIES.town' | translate}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Stat</mat-label>
-      <input formControlName="country" type="text" matInput placeholder="Stat">
-      <mat-hint>Stat</mat-hint>
+      <mat-label>{{'COMPANIES.state' | translate}}</mat-label>
+      <input formControlName="country" type="text" matInput placeholder="{{'COMPANIES.state' | translate}}">
+      <mat-hint>{{'COMPANIES.state' | translate}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Ico</mat-label>
-      <input type="text" formControlName="ico" matInput placeholder="Ico spolocnosti...">
-      <mat-hint>Ico</mat-hint>
+      <mat-label>{{'COMPANIES.ico' | translate}}</mat-label>
+      <input type="text" formControlName="ico" matInput placeholder="{{'COMPANIES.ico' | translate}}...">
+      <mat-hint>{{'COMPANIES.ico' | translate}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Dic/ic</mat-label>
-      <input type="text" formControlName="dicIc" matInput placeholder="Dic/ic...">
-      <mat-hint>Dic...</mat-hint>
+      <mat-label>{{'COMPANIES.dico' | translate}}</mat-label>
+      <input type="text" formControlName="dicIc" matInput placeholder="{{'COMPANIES.dico' | translate}}...">
+      <mat-hint>{{'COMPANIES.dico' | translate}}...</mat-hint>
     </mat-form-field>
 
 
     <mat-slide-toggle (change)="updatePoistenieForm()"
                       formControlName="poistkaToggle"
                       class="gridItem gridItemStart">
-      Poistka
+      {{'COMPANIES.poistenie' | translate}}
     </mat-slide-toggle>
 
     <mat-form-field *ngIf="this.companyForm.get('poistkaToggle').value"  appearance="standard" class="gridItem">
-      <mat-label>Vyska poistky</mat-label>
-      <input formControlName="poistenie" type="number" step="10" matInput placeholder="Cena...">
+      <mat-label> {{'COMPANIES.vyskaPoistky' | translate}}</mat-label>
+      <input formControlName="poistenie" type="number" step="10" matInput placeholder="{{'COMPANIES.vyskaPoistky' | translate}}...">
       <span matSuffix> € </span>
-      <mat-hint>V eurach</mat-hint>
+      <mat-hint>{{'HINT.vEurach' | translate}}</mat-hint>
     </mat-form-field>
 
       <mat-form-field appearance="standard" class="gridItem">
-        <mat-label>Licencia platna do</mat-label>
-        <input formControlName="licence" type="date" step="1" matInput placeholder="Datum...">
+        <mat-label>{{'COMPANIES.licendiaPlatnaDo' | translate}}</mat-label>
+        <input formControlName="licence" type="date" step="1" matInput placeholder="{{'HINT.datum' | translate}}...">
       </mat-form-field>
     </mat-step>
 
     <mat-step>
-      <ng-template matStepLabel>Master konto</ng-template>
+      <ng-template matStepLabel>{{'COMPANIES.masterAccount' | translate}}</ng-template>
       <form class="wrap" [formGroup]="dispecerForm">
 
         <div class="inputWrapper">
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Meno</mat-label>
-            <input matInput type="text" formControlName="firstName" placeholder="Zadajte meno...">
-            <mat-hint>Meno</mat-hint>
+            <mat-label>{{'DISPATCHER.name' | translate}}</mat-label>
+            <input matInput type="text" formControlName="firstName" placeholder="{{'DISPATCHER.name' | translate}}...">
+            <mat-hint>{{'DISPATCHER.name' | translate}}</mat-hint>
           </mat-form-field>
 
 
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Priezvisko</mat-label>
-            <input matInput type="text" formControlName="lastName" placeholder="Zadajte priezvisko...">
-            <mat-hint>Priezvisko</mat-hint>
+            <mat-label>{{'DISPATCHER.surname' | translate}}</mat-label>
+            <input matInput type="text" formControlName="lastName" placeholder="{{'DISPATCHER.surname' | translate}}...">
+            <mat-hint>{{'DISPATCHER.surname' | translate}}</mat-hint>
           </mat-form-field>
 
 
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Email</mat-label>
-            <input matInput type="text" formControlName="email" placeholder="Zadajte email...">
+            <mat-label>{{'DISPATCHER.email' | translate}}</mat-label>
+            <input matInput type="text" formControlName="email" placeholder="{{'DISPATCHER.email' | translate}}...">
             <mat-error *ngIf="dispecerForm.invalid">{{getErrorMessage()}}</mat-error>
-            <mat-hint>Email</mat-hint>
+            <mat-hint>{{'DISPATCHER.email' | translate}}</mat-hint>
           </mat-form-field>
 
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Tel cislo</mat-label>
-            <input matInput type="text" formControlName="phoneNumber" placeholder="Zadajte tel...">
-            <mat-hint>cislo</mat-hint>
+            <mat-label>{{'DISPATCHER.phoneNumber' | translate}}</mat-label>
+            <input matInput type="text" formControlName="phoneNumber" placeholder="{{'DISPATCHER.phoneNumber' | translate}}...">
+            <mat-hint>{{'DISPATCHER.phoneNumber' | translate}}</mat-hint>
           </mat-form-field>
 
         </div>
@@ -100,7 +100,7 @@
     </mat-horizontal-stepper>
 
   </form>
-  <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">Pridať</button>
-  <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">Upraviť</button>
+  <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">{{'OFTEN.add' | translate}}</button>
+  <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">{{'OFTEN.update' | translate}}</button>
 
 </div>

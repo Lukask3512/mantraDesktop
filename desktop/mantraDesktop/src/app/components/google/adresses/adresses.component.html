@@ -1,7 +1,7 @@
 <div class="container">
   <div class="form-group formular">
     <input class="form-control" type="text"  (keydown.enter)="$event.preventDefault()"
-           placeholder="Nájdi miesto..." autocorrect="off" autocapitalize="off"
+           placeholder=" {{'AUTOCOMPLETE.findTown' | translate}}" autocorrect="off" autocapitalize="off"
            spellcheck="off" type="text" #search [(ngModel)]="addTaskValue">
   </div>
 </div>

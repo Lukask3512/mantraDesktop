@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <h2>Casove konflikty</h2>
+    <h2>{{'TRANSPORT.casoveKonflikty' | translate}}</h2>
   <div *ngIf="!offer">
     <ul>
       <li [class]="getColorForTime(i)" *ngFor="let address of addresses; let i = index" >
@@ -10,14 +10,14 @@
   </div>
 
   <div *ngIf="offer">
-    Itinerar vozidla
+    {{'TRANSPORT.itinerarVozidla' | translate}}
     <ul>
       <li [class]="getColorForTime(i)" *ngFor="let address of addresses; let i = index" >
         {{address.nameOfTown}}
         <span>ETA: {{estimatedTimeToLocal(address.estimatedTimeArrival)}}}</span>
       </li>
     </ul>
-    Ponuka
+    {{'OFFER.ponuka' | translate}}
     <ul>
       <li [class]="getColorForTime(i)" *ngFor="let address of offer; let i = index" >
         {{address.nameOfTown}}

@@ -1,10 +1,10 @@
-<h2>Cena prepravy</h2>
+<h2>{{'OFFER.cenaPrepravy' | translate}}</h2>
 <mat-form-field appearance="standard" class="sizeInput">
-  <mat-label>Cena prepravy</mat-label>
-  <input [(ngModel)]="price" type="number"  min="1" matInput placeholder="Cena....">
+  <mat-label>{{'OFFER.cenaPrepravy' | translate}}</mat-label>
+  <input [(ngModel)]="price" type="number"  min="1" matInput placeholder="{{'OFFER.cenaPrepravy' | translate}}....">
   <span matSuffix> € </span>
-  <mat-hint>V eurách</mat-hint>
+  <mat-hint>{{'HINT.vEurach' | translate}}</mat-hint>
 </mat-form-field>
 
-<p>Pokiaľ pole necháte prázdne, spoločnosti Vám budú môcť posielať ponuky</p>
-<button (click)="add()">Pridaj ponuku</button>
+<p>{{'OFFER.praznePoleCeny' | translate}}</p>
+<button (click)="add()">{{'OFFER.pridajPonuku' | translate}}</button>

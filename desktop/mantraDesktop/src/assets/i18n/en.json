@@ -1,6 +1,29 @@
 {
-  "email": "Email",
-  "password": "Password",
-  "login": "Login",
-  "forgotPassword": "Forgot password"
+  "LOGIN": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "forgotPassword": "Forgot password"
+  },
+  "HEADER": {
+    "logout": "Logout",
+    "dispatcher": "Dispatcher",
+    "drivers": "Drivers",
+    "cars": "Cars",
+    "map": "Map",
+    "transport": "Transportations",
+    "offers": "Offers",
+    "companies": "Companies",
+    "profile": "Profile"
+  },
+  "DISPATCHER": {
+    "dispatcher": "Dispatchers",
+    "name": "Name",
+    "surname": "Surname",
+    "phoneNumber": "Phone number",
+    "email": "Email",
+    "update": "Update",
+    "delete": "Delete",
+    "infoAboutAdd": "You dont have access."
+  }
 }

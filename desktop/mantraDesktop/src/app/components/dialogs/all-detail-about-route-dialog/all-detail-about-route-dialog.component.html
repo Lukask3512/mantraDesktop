@@ -10,7 +10,7 @@
           {{address.type}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      Baliky:
+      {{'PACKAGES.packages' | translate}}:
       <div *ngIf="this.detail && this.detail[i] != undefined" class="bednaWrapper">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
         <div class="bednaWrapper" *ngIf="this.detail[i].townsArray">
@@ -26,17 +26,19 @@
 
       </div>
 
-      <p *ngIf="address.ruka">Potrebna ruka</p>
-      <p *ngIf="address.adr">Potrebny rezim pre specialny naklad</p>
-      <p>Obluzny cas: {{address.obsluznyCas}}hod</p>
-      <p *ngIf="address.datumPrijazdu != '0'; else elseDatumOd">Datum mozneho prijazdu od{{address.datumPrijazdu}}</p>
-      <ng-template #elseDatumOd><p>Datum mozneho prijazdy od: nerozhoduje</p></ng-template>
-      <p *ngIf="address.datumLastPrijazdy != '0'; else elseDatumDo">Datum mozneho prijazdu do{{address.datumLastPrijazdy}}</p>
-      <ng-template #elseDatumDo><p>Datum mozneho prijazdy od: nerozhoduje</p></ng-template>
-      <p  *ngIf="address.casPrijazdu != '0'; else elseCasOd">Cas prijazdy od {{address.casPrijazdu}}</p>
-      <ng-template #elseCasOd><p>Cas mozneho prijazdu od: nerozhoduje</p></ng-template>
-      <p  *ngIf="address.casLastPrijazdu != '0'; else elseCasDo">Cas prijazdy od {{address.casLastPrijazdu}}</p>
-      <ng-template #elseCasDo><p>Cas mozneho prijazdu do: nerozhoduje</p></ng-template>
+      <p *ngIf="address.ruka">{{'PACKAGES.potHydRuka' | translate}}</p>
+      <p *ngIf="address.adr">{{'PACKAGES.potAdr' | translate}}</p>
+      <p>{{'TRANSPORT.obsluznyCas' | translate}}: {{address.obsluznyCas}} {{'HINT.hodin' | lowercase | translate}}</p>
+      <p *ngIf="address.datumPrijazdu != '0'; else elseDatumOd">{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}} {{address.datumPrijazdu}}</p>
+      <ng-template #elseDatumOd>
+        <p>{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | translate}}</p>
+      </ng-template>
+      <p *ngIf="address.datumLastPrijazdy != '0'; else elseDatumDo">{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.do' | lowercase | translate}}{{address.datumLastPrijazdy}}</p>
+      <ng-template #elseDatumDo><p>{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | lowercase | translate}}</p></ng-template>
+      <p  *ngIf="address.casPrijazdu != '0'; else elseCasOd">{{'TRANSPORT.casPrijazdu' | translate}}{{'HINT.od' | lowercase | translate}} {{address.casPrijazdu}}</p>
+      <ng-template #elseCasOd><p>{{'TRANSPORT.casPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | lowercase | translate}}</p></ng-template>
+      <p  *ngIf="address.casLastPrijazdu != '0'; else elseCasDo">{{'TRANSPORT.casPrijazdu' | translate}}{{'HINT.od' | lowercase | translate}} {{address.casLastPrijazdu}}</p>
+      <ng-template #elseCasDo><p>{{'TRANSPORT.casPrijazdu' | translate}} {{'HINT.do' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | lowercase | translate}}</p></ng-template>
       <p>{{address.teplota}}</p>
       <p></p>
     </mat-expansion-panel>

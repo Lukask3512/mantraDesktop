@@ -7,16 +7,16 @@
   <div id="map"></div>
   <div class="info">
     <div class="infoHeader">
-      <h1>Info</h1>
+      <h1>{{'MAP.informacie' | translate}}</h1>
       <button (click)="closeInfo()" class="closeInfo">x</button>
     </div>
 
       <div *ngIf="this.offersToShow == null" class="car">
         <table *ngIf="carToShow">
           <tr class="tableHeader">
-            <th>EČV</th>
-            <th>STAV</th>
-            <th>KONTAKT</th>
+            <th>{{'CAR.ecv' | translate}}</th>
+            <th>{{'CAR.status' | translate}}</th>
+            <th>{{'MAP.kontakt' | translate}}</th>
           </tr>
 
           <tr class="tablerow" >
@@ -31,15 +31,15 @@
           </tr>
         </table>
 
-        <h2 *ngIf="routesToShow">Preprava</h2>
-        <h2 *ngIf="!routesToShow && carToShow != undefined && carToShow.itinerar.length > 0">Itinerár</h2>
+        <h2 *ngIf="routesToShow">{{'TRANSPORT.preprava' | translate}}</h2>
+        <h2 *ngIf="!routesToShow && carToShow != undefined && carToShow.itinerar.length > 0">{{'CAR.itinerar' | translate}}</h2>
         <app-drag-and-drop-list class="dragDropList" *ngIf="carToShow || routesToShow" #dragDrop [draggable]="false">
 
         </app-drag-and-drop-list>
 
 
-        <h4 *ngIf="carToShow == undefined && routesToShow == undefined">Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.</h4>
-        <h4 *ngIf="carToShow == undefined && routesToShow != undefined">Nepriradená trasa</h4>
+        <h4 *ngIf="carToShow == undefined && routesToShow == undefined">{{'MAP.klikniNaBodNaMape' | translate}}.</h4>
+        <h4 *ngIf="carToShow == undefined && routesToShow != undefined">{{'MAP.nepriradenaTrasa' | translate}}</h4>
 <!--        <button class="buttonG" *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">-->
 <!--          Priradiť autu</button>-->
       </div>
@@ -47,9 +47,9 @@
 
     <div *ngIf="this.offersToShow != null" class="offers">
 
-      <h3>Celková vzialenosť: ~ {{this.distanceOfOffer}} km</h3>
+      <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
 
-      Vyberte vozidlo
+      {{'MAP.vyberVozidlo' | translate}}
       <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
       <app-car-iti-detail (uspecnePriradenie)="otvorAuto($event)" (sendCarToPredpokad)="getPredpoklad($event)"></app-car-iti-detail>
     </div>

@@ -1,69 +1,67 @@
 <div >
-  <h1 class="header">Pridať prives</h1>
+  <h1 class="header">{{'PRIVES.addPrives' | translate}}</h1>
   <form class="gridContainer" [formGroup]="privesForm">
 
     <mat-horizontal-stepper linear #stepper>
       <mat-step>
-        <ng-template matStepLabel>EČV, tel. číslo</ng-template>
+        <ng-template matStepLabel>{{'CAR.ecv' | translate}}</ng-template>
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>EČV</mat-label>
-          <input formControlName="ecv" matInput placeholder="Ečv..." required>
-          <mat-hint>Evidenčné číslo</mat-hint>
+          <mat-label>{{'CAR.ecv' | translate}}</mat-label>
+          <input formControlName="ecv" matInput placeholder="{{'CAR.ecv' | translate}}..." required>
+          <mat-hint>{{'CAR.ecv' | translate}}</mat-hint>
         </mat-form-field>
-        <div class="gridItem">
-        </div>
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Veľkosť vozidla</ng-template>
+        <ng-template matStepLabel>{{'PRIVES.size' | translate}}</ng-template>
 
-        <h3>Veľkosť prívesu</h3>
+        <h3>{{'PRIVES.sizeOfPrives' | translate}}</h3>
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Výška vozidla</mat-label>
+          <mat-label>{{'CAR.vyskaVozidla' | translate}}</mat-label>
           <input formControlName="autoVyska" matInput type="number" min="0" class="example-right-align" required>
           <span matSuffix>cm</span>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Dĺžka prívesu</mat-label>
+          <mat-label>{{'CAR.dlzkaVozidla' | translate}}</mat-label>
           <input formControlName="autoDlzka" matInput type="number" min="0" class="example-right-align" required>
           <span matSuffix>cm</span>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Šírka prívesu</mat-label>
+          <mat-label>{{'CAR.sirkaVozidla' | translate}}</mat-label>
           <input formControlName="autoSirka" matInput type="number" min="0" class="example-right-align" required>
           <span matSuffix>cm</span>
         </mat-form-field>
         <br>
-        <h3>Veľkosť priestoru na tovar</h3>
+        <h3>{{'CAR.priestorNaTovar' | translate}}</h3>
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Výška priestoru na tovar</mat-label>
+          <mat-label>{{'CAR.vyskaPriestoru' | translate}}</mat-label>
           <input formControlName="priestorVyska" matInput type="number" min="0" class="example-right-align" required>
           <span matSuffix>cm</span>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Dĺžka priestoru na tovar</mat-label>
+          <mat-label>{{'CAR.dlzkaPriestoru' | translate}}</mat-label>
           <input formControlName="priestorDlzka" matInput type="number" min="0" class="example-right-align" required>
           <span matSuffix>cm</span>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Šírka priestoru na tovar</mat-label>
+          <mat-label>{{'CAR.sirkaPriestoru' | translate}}</mat-label>
           <input formControlName="priestorSirka" matInput type="number" min="0" class="example-right-align" required>
           <span matSuffix>cm</span>
         </mat-form-field>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Nakladacia hrana</ng-template>
+        <ng-template matStepLabel>{{'CAR.nakladaciaHrana' | translate}}</ng-template>
         <mat-slide-toggle formControlName="pohyblivaNakHrana"  class="gridItem gridItemStart">
-          Pohyblivá nakladacia hrana
+          {{'CAR.pohybliva' | translate}}
         </mat-slide-toggle>
 
         <div>
           <mat-form-field *ngIf="!this.privesForm.get('pohyblivaNakHrana').value" appearance="standard" class="gridItem">
-            <mat-label>Výška nakladacej hrany</mat-label>
+            <mat-label> {{'CAR.vyskaHrany' | translate}}</mat-label>
             <input formControlName="vyskaHrany" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>cm</span>
           </mat-form-field>
@@ -71,13 +69,13 @@
 
         <div *ngIf="this.privesForm.get('pohyblivaNakHrana').value">
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Min. výška</mat-label>
+            <mat-label>{{'CAR.minVyskaHrany' | translate}}</mat-label>
             <input formControlName="minHrana" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>cm</span>
           </mat-form-field>
 
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Max. výška</mat-label>
+            <mat-label>{{'CAR.maxVyskahrany' | translate}}</mat-label>
             <input formControlName="maxHrana" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>cm</span>
           </mat-form-field>
@@ -92,20 +90,20 @@
       <!--    <input  type="text" matInput formControlName="phone" >-->
 
       <mat-step>
-        <ng-template matStepLabel>Váha a nosnosť</ng-template>
+        <ng-template matStepLabel>{{'CAR.vahaANosnost' | translate}}</ng-template>
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Váha prívesu</mat-label>
-          <input formControlName="vahaVozidlo" matInput min="0" type="number" placeholder="V tonách...." required>
+          <mat-label>{{'PRIVES.vahaPrivesu' | translate}}</mat-label>
+          <input formControlName="vahaVozidlo" matInput min="0" type="number" placeholder="{{'HINT.vTonach' | translate}}...." required>
           <span matSuffix> t </span>
-          <mat-hint>V tonách</mat-hint>
+          <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
         </mat-form-field>
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Nosnosť prívesu</mat-label>
-          <input formControlName="nosnost" matInput type="number" min="0" placeholder="V tonách...." required>
+          <mat-label>{{'PRIVES.nostnost' | translate}}</mat-label>
+          <input formControlName="nosnost" matInput type="number" min="0" placeholder="{{'HINT.vTonach' | translate}}...." required>
           <span matSuffix> t </span>
-          <mat-hint>V tonách</mat-hint>
+          <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
         </mat-form-field>
         <div class="gridItem">
 
@@ -113,90 +111,84 @@
       </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Možnosti naloženia</ng-template>
+        <ng-template matStepLabel>{{'CAR.moznostiNalozenia' | translate}}</ng-template>
 
 
         <div class="gridContainer">
-          <mat-slide-toggle formControlName="fromBack"  class="gridItem gridItemStart">Zo zadu</mat-slide-toggle>
+          <mat-slide-toggle formControlName="fromBack"  class="gridItem gridItemStart">{{'CAR.nalozenieZoZadu' | translate}}</mat-slide-toggle>
 
           <div class="DSV" *ngIf="this.privesForm.get('fromBack').value">
             <mat-form-field  appearance="standard" class="gridItem">
-              <mat-label>Výška nak. pristoru</mat-label>
-              <input formControlName="zoZaduVyska" matInput placeholder="Výška...">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zoZaduVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="standard" class="gridItem">
-              <mat-label>Šírka nak. pristoru</mat-label>
-              <input formControlName="zoZaduSirka" matInput placeholder="Šírka....">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zoZaduSirka" matInput placeholder="{{'CAR.sirkaVozidla' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
           </div>
 
 
-          <mat-slide-toggle formControlName="fromRight" class="gridItem gridItemStart">Z prava</mat-slide-toggle>
+          <mat-slide-toggle formControlName="fromRight" class="gridItem gridItemStart">{{'CAR.nalozenieZPrava' | translate}}</mat-slide-toggle>
           <div class="DSV" *ngIf="this.privesForm.get('fromRight').value">
             <mat-form-field  appearance="standard" class="gridItem">
-              <mat-label>Výška nak. pristoru</mat-label>
-              <input formControlName="zPravaVyska" matInput placeholder="Výška...">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zPravaVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="standard" class="gridItem">
-              <mat-label>Šírka nak. pristoru</mat-label>
-              <input formControlName="zPravaSirka" matInput placeholder="Šírka....">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zPravaSirka" matInput placeholder="{{'CAR.sirkaVozidla' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
 
           </div>
 
-          <mat-slide-toggle formControlName="fromLeft" class="gridItem gridItemStart">Z ľava</mat-slide-toggle>
+          <mat-slide-toggle formControlName="fromLeft" class="gridItem gridItemStart">{{'CAR.nalozenieZLava' | translate}}</mat-slide-toggle>
           <div class="DSV" *ngIf="this.privesForm.get('fromLeft').value">
             <mat-form-field  appearance="standard" class="gridItem">
-              <mat-label>Výška nak. pristoru</mat-label>
-              <input formControlName="zLavaVyska" matInput placeholder="Výška...">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zLavaVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="standard" class="gridItem">
-              <mat-label>Šírka nak. pristoru</mat-label>
-              <input formControlName="zLavaSirka" matInput placeholder="Šírka....">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zLavaSirka" matInput placeholder="{{'CAR.sirkaVozidla' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
 
           </div>
 
-          <mat-slide-toggle formControlName="fromUp" class="gridItem gridItemStart">Z vrchu</mat-slide-toggle>
+          <mat-slide-toggle formControlName="fromUp" class="gridItem gridItemStart">{{'CAR.nalozenieZVrchu' | translate}}</mat-slide-toggle>
           <div class="DSV" *ngIf="this.privesForm.get('fromUp').value">
             <mat-form-field  appearance="standard" class="gridItem">
-              <mat-label>Výška nak. pristoru</mat-label>
-              <input formControlName="zHoraVyska" matInput placeholder="Výška...">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zHoraVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="standard" class="gridItem">
-              <mat-label>Šírka nak. pristoru</mat-label>
-              <input formControlName="zHoraSirka" matInput placeholder="Šírka....">
-              <span matSuffix> cm </span>
-              <mat-hint>V centimetroch</mat-hint>
+              <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+              <input formControlName="zHoraSirka" matInput placeholder="{{'CAR.sirkaVozidla' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
             </mat-form-field>
 
           </div>
         </div>
       </mat-step>
 
-      <!--    <mat-form-field appearance="standard">-->
-      <!--      <mat-label>Amount</mat-label>-->
-      <!--      <input matInput type="number" class="example-right-align">-->
-      <!--      <span matSuffix> cm</span>-->
-      <!--    </mat-form-field>-->
-
     </mat-horizontal-stepper>
 
   </form>
 
-  <button (click)="savePrives()" type="submit" class="example_c" [disabled]="!privesForm.valid">Pridať +</button>
+  <button (click)="savePrives()" type="submit" class="example_c" [disabled]="!privesForm.valid">{{'OFTEN.add' | translate}}</button>
 </div>

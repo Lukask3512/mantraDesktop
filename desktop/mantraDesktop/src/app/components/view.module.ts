@@ -75,6 +75,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ProfileComponent } from './profile/profile.component';
 import {MatIconModule} from '@angular/material/icon';
 import { TimeProblemDialogComponent } from './dialogs/time-problem-dialog/time-problem-dialog.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -135,7 +136,8 @@ import { TimeProblemDialogComponent } from './dialogs/time-problem-dialog/time-p
         MatExpansionModule,
         CommonModule,
         MatDialogModule,
-        MatIconModule
+        MatIconModule,
+        TranslateModule
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

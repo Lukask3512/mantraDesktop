@@ -3,6 +3,7 @@ import { Location, LocationStrategy, PathLocationStrategy } from '@angular/commo
 import { Router } from '@angular/router';
 import {DataService} from "../../data/data.service";
 import {AccountService} from "../../../login/_services/account.service";
+import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,17 +17,12 @@ export class HeaderComponent implements OnInit {
   public listTitles: any[];
   public location: Location;
 
-  siteLanguage: string = 'English';
-  siteLocale: string;
-  languageList = [
-    { code: 'en', label: 'English' },
-    { code: 'fr', label: 'Français' },
-    { code: 'de', label: 'Deutsch' }
-  ];
+  lang;
 
   constructor(location: Location,  private element: ElementRef,
               private router: Router, private dataService: DataService,
-              private accountService: AccountService
+              private accountService: AccountService,
+              private translateService: TranslateService
   ) {
     this.location = location;
   }
@@ -34,8 +30,12 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {
-    this.siteLocale = window.location.pathname.split('/')[1];
-    this.siteLanguage = this.languageList.find(f => f.code === this.siteLocale).label;
+    this.lang = localStorage.getItem('lang') || 'en';
+  }
+
+  changeLang(lang){
+    localStorage.setItem('lang', lang);
+    this.translateService.use(lang);
   }
 
   getCompany(){
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
 
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());
-    if(titlee.charAt(0) === '#'){
+    if (titlee.charAt(0) === '#'){
       titlee = titlee.slice( 1 );
     }
 

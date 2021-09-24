@@ -2,7 +2,7 @@
 <div>
   <mat-horizontal-stepper #stepper linear (selectionChange)="selectionChange($event)">
     <mat-step>
-      <ng-template matStepLabel>Vyber auta</ng-template>
+      <ng-template matStepLabel>{{'TRANSPORT.vyberAuta' | translate}}</ng-template>
 <table class="car" *ngFor="let car of cars" >
   <tr>
     <th>{{car.ecv}}</th>
@@ -16,8 +16,8 @@
     </mat-step>
 
     <mat-step >
-      <ng-template *ngIf="chosenCar" matStepLabel>Presun prepravy do itinerara {{this.chosenCar.ecv}}</ng-template>
-      <ng-template *ngIf="!chosenCar" matStepLabel>Vyberte vozidlo!</ng-template>
+      <ng-template *ngIf="chosenCar" matStepLabel>{{'TRANSPORT.presunPrepravy' | translate}} {{this.chosenCar.ecv}}</ng-template>
+      <ng-template *ngIf="!chosenCar" matStepLabel>{{'TRANSPORT.vyberAuta' | translate}}!</ng-template>
       <app-route-to-itinerar *ngIf="this.chosenCar"
                              [newRoute]="addressesToDragDrop"
                              [car]="this.chosenCar"

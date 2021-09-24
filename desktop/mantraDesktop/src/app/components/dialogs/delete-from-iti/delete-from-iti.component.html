@@ -1,10 +1,10 @@
 <div class="wrapper">
   <h2>
-    Chcete vymazat adresu {{data.adresa.nameOfTown}} a s nou suvisiace nakladky/vykladky z itinerara?
+    {{'HINT.deleteAdress' | translate}} {{data.adresa.nameOfTown}}  {{'HINT.deleteAdressMore' | translate}}?
   </h2>
 
   <button (click)="deleteAddress()">
-    Ano
+    {{'OFTEN.ano' | translate}}
   </button>
-  <button (click)="close()">Nie</button>
+  <button (click)="close()">  {{'OFTEN.nie' | translate}}</button>
 </div>

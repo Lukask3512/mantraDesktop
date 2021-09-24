@@ -1,10 +1,8 @@
 
-<h1 class="header">Upraviť poznámku</h1>
+<h1 class="header">{{'TRANSPORT.upravitPoznamku' | translate}}</h1>
 <mat-form-field [formGroup]="routeInfo">
-  <label>Info</label>
+  <label>{{'TRANSPORT.info' | translate}}</label>
   <input matInput formControlName="info">
-
-
 </mat-form-field>
 
-  <button (click)="updateRouteInfo()">Zmeniť</button>
+  <button (click)="updateRouteInfo()">{{'OFTEN.potvrdit' | translate}}</button>

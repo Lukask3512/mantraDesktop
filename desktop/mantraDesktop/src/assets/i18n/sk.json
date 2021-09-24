@@ -1,6 +1,261 @@
 {
-  "email": "Email",
-  "password": "Heslo",
-  "login": "Prihlasit sa",
-  "forgotPassword": "Zabudnute heslo"
+  "OFTEN": {
+    "update": "Upraviť",
+    "delete": "Vymazať",
+    "detail": "Detail",
+    "add": "Pridať",
+    "ulozit": "Uložiť",
+    "phone": "Tel. čislo",
+    "nerozhoduje": "Nerozhoduje",
+    "rozhoduje": "Rozhoduje",
+    "ano": "Áno",
+    "nie": "Nie",
+    "potvrdit": "Potvrdiť",
+    "cena": "Cena",
+    "vytvorit": "Vytvoriť",
+    "vyzaduje": "Vyžaduje",
+    "priradit": "Priradiť"
+  },
+
+  "LOGIN": {
+    "email": "Email",
+    "password": "Heslo",
+    "login": "Prihlasit sa",
+    "forgotPassword": "Zabudnute heslo",
+    "zmenaHesla": "Zmena hesla"
+  },
+  "HEADER": {
+    "logout": "Odhlásenie",
+    "dispatcher": "Dispečéri",
+    "drivers": "Vodiči",
+    "cars": "Vozidlá",
+    "map": "Mapa",
+    "transport": "Prepravy",
+    "offers": "Ponuky",
+    "companies": "Spoločnosti",
+    "profile": "Profil"
+  },
+  "DISPATCHER": {
+    "dispatcher": "Dispečér",
+    "name": "Meno",
+    "surname": "Priezvisko",
+    "phoneNumber": "Tel. číslo",
+    "email": "Email",
+    "update": "Upraviť",
+    "delete": "Vymazať",
+    "infoAboutAdd": "Nemate povolenie pridať dispečera.",
+    "add": "Pridať",
+    "udajeODisp": "Údaje o dispečerovi",
+    "pristupKuVozidlam": "Pristup ku vozidlam",
+    "pristupKuVsetkymVozidlam": "Pristup ku všetkým ku vozidlam",
+    "pristupKuPrivesom": "Pristup k prívesom",
+    "pristupKuVsetkymPrivesom": "Pristup ku všetkým ku prívesom",
+  },
+  "CAR": {
+    "car": "Vozidlo",
+    "ecv": "EČV",
+    "phone": "Tel. číslo",
+    "status": "Status",
+    "naves": "Náves",
+    "pripojit": "Pripojiť",
+    "nepodporuje": "Nepodporuje",
+    "itinerar": "Itinerár",
+    "nakladka": "Nakládka",
+    "vykladka": "Vykládka",
+    "actualPackages": "Aktuálny náklad v aute.",
+    "noAdress": "Prázdny itinerár",
+    "changeItinerar": "Zmeň itinerár",
+    "add": "Pridať",
+    "pocetNaprav": "Počet náprav",
+    "size": "Veľkosť vozidla",
+
+    "vyskaVozidla": "Výška",
+    "sirkaVozidla": "Šírka",
+    "dlzkaVozidla": "Dĺžka",
+
+    "priestorNaTovar": "Veľkosť priestoru na tovar",
+    "vyskaPriestoru": "Výška priestoru na tovar",
+    "sirkaPriestoru": "Šírka priestoru na tovar",
+    "dlzkaPriestoru": "Dĺžka priestoru na tovar",
+
+    "nakladaciaHrana": "Nakladacia hrana",
+    "pohybliva": "Pohyblivá nakaldacia hrana",
+    "vyskaHrany": "Výška nakladacej hrany",
+    "vyskaHranyVAute": "Výška nakladacej hrany v aute",
+    "minVyskaHrany": "Min vyska hrany",
+    "maxVyskahrany": "Max vyska hrany",
+
+    "vahaANosnost": "Váha a nosnosť",
+    "vahaVozidla": "Váha vozidla",
+    "nostnostVozidla": "Nostnosť vozidla",
+
+    "moznostiNalozenia": "Možnosti naloženia",
+    "nalozenieZoZadu": "Zo zadu",
+    "nalozenieZPrava": "Z prava",
+    "nalozenieZLava": "Z ľava",
+    "nalozenieZVrchu": "Z vrchu",
+    "nalozenieZBoku": "Z boku",
+    "vyskaNakPriestoru": "Výška nak. priestoru",
+    "sirkaNakPriestoru": "Šírka nak. priestoru",
+
+    "navesASpecRezimy": "Náves, špec. režimy",
+    "moznostPripojitNaves": "Možnosť pripojiť náves",
+    "teplotnyRezim": "Teplotny režim",
+    "minTeplota": "Minimálna teplota",
+    "maxTeplota": "Maximálna teplota",
+    "hydraulickaruka": "Hydraulická ruka",
+    "adr": "ADR",
+    "teplota": "Teplota",
+
+    "pristupKVozidlu": "Prístup ku vozidlu",
+    "pristupVsetkym": "Udeliť prístup všetkým",
+    "pravaPreVodica": "Práva",
+    "neznamaPolohaAuta": " Upozornenie!! Vozidlo nema znamu polohu a nedokazeme urcit vzdialenost k ponuke. Pre urcenie polohy sa prihlaste do vozidla cez mobilnu aplikaciu."
+
+  },
+  "VODIC": {
+    "vodic": "Vodič",
+    "udajeO": "Údaje o vodičovi",
+    "pristupKVozidlam": "Prístup ku vozidlám",
+    "pristupKuVsetkymVozidlam": "Prístup ku všetkým vozidlám"
+
+  },
+  "PRIVES": {
+    "prives": "Príves",
+    "addPrives": "Pridať príves",
+    "pripojitPrives": "Pripojiť príves",
+    "size": "Veľkosť prívesu",
+    "sizeOfPrives": "Veľkosť prívesu",
+    "vahaPrivesu": "Váha prívesu",
+    "nostnost": "Nostnosť prívesu",
+    "odpojeniezVozidla": "Naozaj chcete odpojiť náves z vozidla"
+
+  },
+  "COMPANIES": {
+    "comapnies": "Spoločnosti",
+    "name": "Názov",
+    "street": "Ulica",
+    "town": "Mesto",
+    "state": "Štát",
+    "ico": "IČO",
+    "dico": "DIČ",
+    "poistenie": "Poistenie",
+    "vyskaPoistky": "Výška poistenia",
+    "licendiaPlatnaDo": "Licendia platná do",
+    "licenica": "Licencia",
+    "addComapny": "Pridať spoločnosť",
+    "updateCompany": "Upraviť spoločnosť",
+    "aboutCompany": "Údaje o spoločnosti",
+    "companyName": "Názov spoločnosti",
+    "masterAccount": "Master konto"
+  },
+
+  "HINT": {
+    "ecv": "Evidenčné číslo",
+    "vTonach": "V tonách",
+    "vMetroch": "V metroch",
+    "vStupnochC": "V stupňoch Celsia",
+    "vEurach": "V eurách",
+    "datum": "Dátum",
+    "hodin": "Hodín",
+    "mobileNumber": "Vodici sa do vozidla mozu prihlasit pomocou svojho telefoneho cisla, alebo pomocou telefoneho cisla vozidla.",
+    "sizeWarning": "Upozornenie! Veľkosť priestoru je väčšia ako vecľkost vozidla",
+    "nemajuTelefoneCislo": "Vodič ani vozidlo nemajú telefónne čislo.",
+    "vodicMaPristupKuVsetkym": "Vodic ma pristup ku vsetkym vozidlam",
+    "kAutuVsetciVodici": "K vozidlu maju pristup vsetci vodici",
+    "od": "od",
+    "do": "do",
+    "deleteAdresyZVozidla": "Naozaj chcete odstranit adresy z vodila?",
+    "deleteAdresyHint": "Ak sa vo vozidle nachadzaju baliky z nakladky, odstrania sa",
+    "deleteCar": "Naozaj chcete odstrániť vozidlo",
+    "deleteAdress": "Naozaj chcete odstrániť adresu",
+    "deleteAdressMore": "a s nou suvisiace nakladky/vykladky z itinerara",
+    "deleteDispecer": "Naozaj chcete odstrániť dispečéra",
+    "deleteRoute": "Naozaj chcete odstrániť trasu",
+    "max": "max",
+    "min": "min"
+
+  },
+
+  "PACKAGES": {
+    "packages": "Balíky",
+    "potHydRuka": "Potrebná hydraulická ruka",
+    "potAdr": "Potrebny rezim pre specialny naklad",
+    "stohovatelnost": "Stohovateľnosť",
+    "vaha": "Váha",
+    "vyskaHranyVyhovuje": "Výška hrany vyhovuje",
+    "nevopchaSaCezNaklOtvory": "Nevopchá sa cez nakladacie otvory",
+    "nevopchasa": "Nevopchá sa",
+    "pretazene": "Preťažené o"
+
+  },
+
+  "TRANSPORT": {
+    "obsluznyCas": "Obslužný čas",
+    "datumPrijazdu": "Dátum možného príjazdu",
+    "casPrijazdu": "Čas možného príjazdu",
+    "upravitPoznamku": "Upraviť poznámku",
+    "info": "Informácie",
+    "zopakovatPrepravu": "Chcete zopakovat prepravu",
+    "upravitDatumy": "Upravte datumy prijazdov",
+    "obdobieMoznehoPrijazdu": "Datumy mozneho prijazdu",
+    "casMoznehoPrijazdu": "Casy mozneho prijazdu",
+    "timeFrom": "Časové okno od",
+    "timeTo": "Časové okno do",
+    "vyberAuta": "Výber vozidla",
+    "presunPrepravy": "Presun prepravy do itinerára",
+    "casoveKonflikty": "Časové konflitky",
+    "itinerarVozidla": "Itinerár vozidla",
+    "potrebnaVyskaNakHrany": "Potrebna vyska nakladacej hrany",
+    "presunutVsetko": "Presuň všetko",
+    "priraditDoVozidla": "Priradiť do vozidla",
+    "preprava": "Preprava"
+  },
+
+  "OFFER": {
+    "ponuka": "Ponuka",
+    "cenaPrepravy": "Cena prepravy",
+    "praznePoleCeny": "Pokiaľ pole necháte prázdne, spoločnosti Vám budú môcť posielať ponuky",
+    "zadavatel": "Zadávateľ",
+    "prepravca": "Prepravca",
+    "log": "Log",
+    "mesto": "Mesto",
+    "cas": "Cas",
+    "status": "Status",
+    "zSirka": "Z. sirka",
+    "yDlzka": "Z. dlzka",
+    "stiahnutie": "Stiahnuť",
+    "pridajPonuku": "Pridať ponuku",
+    "podrobneInfo": "Detail",
+    "mimoMoznehoDatumu": "Mimo možného dátumu",
+    "mimoMoznehoPrichodu": "Mimo možného príchodu",
+    "predbezneUlozenie": "chcete si predbezne uložit uloženie ponuky v itinerári vozidla",
+    "povodnaVzdusnaVzialenost": "Pôvodná vzdušná vzdialenosť",
+    "novaVzdialenost": "Nová vzdialenosť",
+    "rozdiel": "Rozdiel"
+  },
+  "FILTER": {
+    "typVzialenosti": "Typ vzdialenosti",
+    "maximalnaVzialenostBodov": "Maximálna vzdialenosť všetkým bodov",
+    "max1Bodu": "Maximálnja vzdialenosť 1. bodu,",
+    "maxVzdialenost": "Max vzdialenosť",
+    "maxPrekrocenieVahy": "Max prekročenie váhy",
+    "maxPrekrocenieVelkosti": "Max prekročenie veľkosti",
+    "vyhovujuce": "Vyhovujúce",
+    "povolenePrekrocenie": "Povolené prekročenie",
+    "ostatne": "Ostatné"
+  },
+  "MAP": {
+    "informacie": "Informácie",
+    "kontakt": "Kontakt",
+    "klikniNaBodNaMape": "Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.",
+    "nepriradenaTrasa": "Nepriradená trasa",
+    "celkovaVzdialenost": "Celková vzdialenosť",
+    "vyberVozidlo": "Vyberte vozidlo"
+  },
+
+  "AUTOCOMPLETE": {
+    "findTown": "Nájdi mesto"
+  }
+
 }

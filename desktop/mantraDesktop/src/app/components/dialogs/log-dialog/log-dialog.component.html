@@ -2,20 +2,20 @@
 <!--<p>Pdf generátor nepodporuje mäkčene</p>-->
 <div id="allWrapper">
   <header *ngIf="this.route.price" class="headerWrapper">
-    <h2>Zadavatel: <app-get-info-about-company [masterId]="this.route.createdBy"></app-get-info-about-company>
+    <h2>{{'OFFER.zadavatel' | translate}}: <app-get-info-about-company [masterId]="this.route.createdBy"></app-get-info-about-company>
     </h2>
-    <h2>Prepravca: <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company></h2>
+    <h2>{{'OFFER.prepravca' | translate}}: <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company></h2>
   </header>
-  <h3 *ngIf="this.route.price">Cena: {{this.route.price}}</h3>
-  <h1>Log</h1>
+  <h3 *ngIf="this.route.price">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+  <h1>{{'OFFER.log' | translate}}</h1>
   <table id="routeLog" #routeLog1 *ngIf="this.routeLog != undefined">
     <tr>
       <!--    <th>Dessert (100g)</th>-->
-      <th>Mesto</th>
-      <th>Status</th>
-      <th>Cas</th>
-      <th>Z. sirka</th>
-      <th>Z. dlzka</th>
+      <th>{{'OFFER.mesto' | translate}}</th>
+      <th>{{'OFFER.status' | translate}}</th>
+      <th>{{'OFFER.cas' | translate}}</th>
+      <th>{{'OFFER.zSirka' | translate}}</th>
+      <th>{{'OFFER.zDlzka' | translate}}</th>
 
     </tr>
     <tbody *ngFor="let jedenAllLog of this.routeLog; let i = index;">
@@ -32,5 +32,5 @@
     <!--  <p>Ukoncené {{this.toDate(this.routeLog.timestamp[this.routeLog.timestamp.length - 1])}}</p>-->
   </table>
 </div>
-<button class="buttonDownload" (click)="downloadAsPDF()">Download</button>
+<button class="buttonDownload" (click)="downloadAsPDF()">{{'OFFER.stiahnutie' | translate}}</button>
 

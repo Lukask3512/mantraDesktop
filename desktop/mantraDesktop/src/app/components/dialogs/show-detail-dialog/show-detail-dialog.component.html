@@ -1,24 +1,24 @@
 <section *ngIf="this.detail">
   <h2 *ngIf="this.car">{{this.car.ecv}}</h2>
-  <p>Sirka: {{this.detail.sizeS}}</p>
-  <p>Vyska: {{this.detail.sizeV}}</p>
-  <p>Dlzka: {{this.detail.sizeD}}</p>
-  <p>Vaha: {{this.detail.weight}}</p>
-  <p>Stohovaltenost: {{this.detail.stohovatelnost}}</p>
+  <p>{{'CAR.sirkaVozidla' | translate}}: {{this.detail.sizeS}}</p>
+  <p>{{'CAR.vyskaVozidla' | translate}}: {{this.detail.sizeV}}</p>
+  <p>{{'CAR.dlzkaVozidla' | translate}}: {{this.detail.sizeD}}</p>
+  <p>{{'PACKAGES.vaha' | translate}}: {{this.detail.weight}}</p>
+  <p>{{'PACKAGES.stohovatelnost' | translate}}: {{this.detail.stohovatelnost}}</p>
 
-  <h3>Moznosti nalozenia:</h3>
+  <h3>{{'CAR.moznostiNalozenia' | translate}}:</h3>
   <div *ngIf="this.detail.polohaNakladania.charAt(0) != '0' || this.detail.polohaNakladania.charAt(1) != '0'
    || this.detail.polohaNakladania.charAt(2) != '0'; else elseBlock">
-    <p *ngIf="this.detail.polohaNakladania.charAt(0) != '0'">Zo zadu</p>
-    <p *ngIf="this.detail.polohaNakladania.charAt(1) != '0'">Z boku</p>
-    <p *ngIf="this.detail.polohaNakladania.charAt(2) != '0'">z vrchu</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(0) != '0'">{{'CAR.nalozenieZoZadu' | translate}}</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(1) != '0'">{{'CAR.nalozenieZBoku' | translate}}</p>
+    <p *ngIf="this.detail.polohaNakladania.charAt(2) != '0'">{{'CAR.nalozenieZVrchu' | translate}}</p>
   </div>
   <ng-template #elseBlock>
-    <p>Nerozhoduje</p>
+    <p>{{'OFTEN.nerozhoduje' | translate}}</p>
   </ng-template>
 
-  <p>Vyska nakladadej hrany:
-    <span *ngIf="this.detail.vyskaNaklHrany == -1; else elseVyska">Nerozhoduje</span>
+  <p>{{'CAR.vyskaHrany' | translate}}:
+    <span *ngIf="this.detail.vyskaNaklHrany == -1; else elseVyska">{{'OFTEN.nerozhoduje' | translate}}</span>
     <ng-template #elseVyska>{{this.detail.vyskaNaklHrany}}</ng-template>
   </p>
 </section>

@@ -2,40 +2,41 @@
   <img class="logo" src="./assets/logo/Mantra-Horizontal-White.svg">
 
   <div class="logout-btn">
-<!--    <mat-menu #menu="matMenu">-->
-<!--      <a mat-menu-item href="/en">English</a>-->
-<!--      <a mat-menu-item href="/fr">Français</a>-->
-<!--      <a mat-menu-item href="/de">Deutsch</a>-->
-<!--    </mat-menu>-->
-    <button routerLink="" (click)="logout()" class="button_c" >Odhlásenie    </button>
+
+    <select (change)="changeLang($event.target.value)">
+      <option value="en" [selected]="lang == 'en'">English</option>
+      <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
+    </select>
+
+    <button routerLink="" (click)="logout()" class="button_c" >{{'HEADER.logout' | translate}}</button>
     <nav #navbar (click)="openHamMenu()" class="navbar">
       <ul #navMenu class="nav-menu">
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/dispecer" class="nav">Dispečeri</a>
+          <a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/vodici" class="nav">Vodiči</a>
+          <a routerLinkActive="active" routerLink="/view/vodici" class="nav">{{'HEADER.drivers' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/cars" class="nav">Vozidlá</a>
+          <a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active"  routerLink="/view/transport" class="nav">Prepravy</a>
+          <a routerLinkActive="active"  routerLink="/view/transport" class="nav">{{'HEADER.transport' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/map" class="nav">Mapa</a>
+          <a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.map' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">Ponuky</a>
+          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.offer' | translate}} </a>
         </li>
         <li *ngIf="getCompany()" class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/companies" class="nav">Spolocnosti</a>
+          <a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/profile" class="nav">Profil</a>
+          <a routerLinkActive="active" routerLink="/view/profile" class="nav">{{'HEADER.profile' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLink="" (click)="logout()" class="nav">Odhlasenie</a>
+          <a routerLink="" (click)="logout()" class="nav">{{'HEADER.logout' | translate}} </a>
         </li>
       </ul>
       <div class="hamburger">

@@ -1,37 +1,37 @@
 
 <div *ngIf="offer" class="example-container">
-  <h2>Ponuka <button (click)="openAllDetailDialog()">Podrobne info</button></h2>
-  <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">Vyzaduje:
-    <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">ADR</h3>
-    <h3 [class]="chooseColor('ruka')" *ngIf="checkRukaAdrTeplota(realOffer).ruka">Ruka</h3>
+  <h2>{{'OFFER.ponuka' | translate}} <button (click)="openAllDetailDialog()">{{'OFFER.podrobneInfo' | translate}}</button></h2>
+  <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">
+    {{'OFTEN.vyzaduje' | translate}}:
+    <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">{{'CAR.adr' | translate}}</h3>
+    <h3 [class]="chooseColor('ruka')" *ngIf="checkRukaAdrTeplota(realOffer).ruka">{{'CAR.hydraulickaruka' | translate}}</h3>
     <h3  *ngIf="checkRukaAdrTeplota(realOffer).teplota.length > 0">
-      Teplota:
+      {{'CAR.teplota' | translate}}:
       <p [class]="getMinMaxTeplotaFromOffer(teplota)" *ngFor="let teplota of checkRukaAdrTeplota(realOffer).teplota">
         {{teplota}}
       </p>
     </h3>
   </h2>
   <h3 [class]="getClassForNaklHrana()" *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1 && getClassForNaklHrana() == 'redBack'; else elseHrana">
-    <p>Potrebna vyska nakladacej hrany:</p>
-    <span *ngIf="vyskaNaklHrany.minVyska > -1">Min: {{vyskaNaklHrany.minVyska}}</span>
-    <span>Max: {{vyskaNaklHrany.maxVyska}}</span>
-    <h2>Vyska nakl hrany v aute:</h2>
-    <p *ngIf="this.car.nakladaciaHrana.length == 2; else else1">Min:{{this.car.nakladaciaHrana[0]}} Max: {{this.car.nakladaciaHrana[1]}}</p>
+    <p>{{'TRANSPORT.potrebnaVyskaNakHrany' | translate}}:</p>
+    <span *ngIf="vyskaNaklHrany.minVyska > -1"> {{'HINT.min' | translate}}: {{vyskaNaklHrany.minVyska}}</span>
+    <span>{{'HINT.max' | translate}}: {{vyskaNaklHrany.maxVyska}}</span>
+    <h2>{{'CAR.vyskaHranyVAute' | translate}}:</h2>
+    <p *ngIf="this.car.nakladaciaHrana.length == 2; else else1">{{'HINT.min' | translate}}:{{this.car.nakladaciaHrana[0]}} {{'HINT.max' | translate}}: {{this.car.nakladaciaHrana[1]}}</p>
     <ng-template #else1>
-      <p>Vyska {{this.car.nakladaciaHrana[0]}}</p>
+      <p> {{'CAR.vyskaVozidla' | translate}}: {{this.car.nakladaciaHrana[0]}}</p>
     </ng-template>
   </h3>
   <ng-template #elseHrana>
     <h3 *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1" class="greenBack">
-      Vyska hrany vyhovuje
+      {{'PACKAGES.vyskaHranyVyhovuje' | translate}}
     </h3>
   </ng-template>
   <h2 class="red" *ngIf="!ciSaVopchaCezOtvor">
-    Nevopcha sa cez nakladacie otvory!!
+    {{'PACKAGES.nevopchaSaCezNaklOtvory' | translate}}
   </h2>
   <h2 class="red" *ngIf="this.car && !this.car.lattitude">
-    Upozornenie!! Vozidlo nema znamu polohu a nedokazeme urcit vzdialenost k ponuke.
-    Pre urcenie polohy sa prihlaste do vozidla cez mobilnu aplikaciu.
+    {{'CAR.neznamaPolohaAuta' | translate}}
   </h2>
   <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>
   <app-ulozenie-ponuky [idPonuky]="this.offer.id" (itiOutput)="sendCarToPredpoklad($event)"></app-ulozenie-ponuky>
@@ -75,9 +75,9 @@
   </div>
 </div>
 <div *ngIf="car" class="example-container">
-  <button *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">Presun vsetko</button>
+  <button *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">{{'TRANSPORT.presunutVsetko' | translate}}</button>
 
-  <h2>Itinerar vozidla {{this.car.ecv}}</h2>
+  <h2> {{'TRANSPORT.itinerarVozidla' | translate}} {{this.car.ecv}}</h2>
 
   <div
     id="even"
@@ -117,8 +117,8 @@
           <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
           {{address.nameOfTown}}
         </p>
-        <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">Pretazene o {{volnaVahaPreAuto[i]}}t</span>
-        <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
+        <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
+        <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
       </div>
       <div class="bottom">
         <div *ngIf="i !== this.car.itiAdresy.length -1 " class="bottomLine">
@@ -127,16 +127,16 @@
           </span>
         </div>
         <p class="distance">
-          <span class="oversize" *ngIf="checkDate(i); else time">Mimo mozneho datumu
+          <span class="oversize" *ngIf="checkDate(i); else time">{{'OFFER.mimoMoznehoDatumu' | translate}}
               <mat-icon class="material-icons" matSuffix
-                    matTooltip="Predpokladany cas prijazdu {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
+                    matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
                 info
               </mat-icon>
           </span>
           <ng-template #time>
-            <span class="oversize" *ngIf="checkTime(i)">Mimo mozneho prichodu
+            <span class="oversize" *ngIf="checkTime(i)">{{'OFFER.mimoMoznehoPrichodu' | translate}}
               <mat-icon class="material-icons" matSuffix
-                        matTooltip="Predpokladany cas prijazdu {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
+                        matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
                 info
               </mat-icon>
           </span>
@@ -151,16 +151,16 @@
   </div>
 
   <div *ngIf="this.offer.takenBy == ''">
-    <h3>Chcete si predbezne ulozit ulozenie ponuky v itinerari auta?</h3>
-    <button (click)="ulozPredbezneUlozenie()">Ulozit</button>
+    <h3>{{'OFFER.predbezneUlozenie' | translate}}?</h3>
+    <button (click)="ulozPredbezneUlozenie()">{{'OFTEN.ulozit' | translate}}</button>
   </div>
 
   <div *ngIf="this.offer.takenBy == this.dataService.getMyIdOrMaster()">
-    <h3>Priradit do vozidla?</h3>
-    <button [disabled]="offer.adresyVPonuke.length > 0" (click)="priraditVozidlu()">Priradit</button>
+    <h3>{{'TRANSPORT.priraditDoVozidla' | translate}}?</h3>
+    <button [disabled]="offer.adresyVPonuke.length > 0" (click)="priraditVozidlu()">{{'OFTEN.priradit' | translate}}</button>
   </div>
 
-  <h3>Povodna vzdusna vzdialenost {{this.distanceOfIti}}km</h3>
-  <h3>Nova vzdialenost {{this.countDistanceOfItinerarWithOffer()}}km</h3>
-  <h3>Rozdiel {{this.countDistanceOfItinerarWithOffer() - this.distanceOfIti}}km</h3>
+  <h3>{{'OFTEN.povodnaVzdusnaVzialenost' | translate}} {{this.distanceOfIti}}km</h3>
+  <h3>{{'OFTEN.novaVzdialenost' | translate}} {{this.countDistanceOfItinerarWithOffer()}}km</h3>
+  <h3>{{'OFTEN.rozdiel' | translate}} {{this.countDistanceOfItinerarWithOffer() - this.distanceOfIti}}km</h3>
 </div>

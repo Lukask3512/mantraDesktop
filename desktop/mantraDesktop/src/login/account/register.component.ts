@@ -11,6 +11,7 @@ import {GetOneCompanyService} from '../../app/services/companies/get-one-company
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {EmailService} from '../../app/services/email/email.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
@@ -54,7 +55,8 @@ export class RegisterComponent implements OnInit {
     private companyService: GetOneCompanyService,
     private _snackBar: MatSnackBar,
     private emailService: EmailService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -63,7 +65,7 @@ export class RegisterComponent implements OnInit {
 
   changeLang(lang){
     localStorage.setItem('lang', lang);
-    // window.location.reload();
+    this.translateService.use(lang);
   }
 
 

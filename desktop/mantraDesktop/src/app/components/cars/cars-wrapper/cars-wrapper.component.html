@@ -1,51 +1,51 @@
 
   <div class="widthColumn">
   <div class="carsWrapper">
-    <h2>Vozidla</h2>
+    <h2>{{'CAR.car' | translate}}</h2>
     <table mat-table [dataSource]="dataSource" matSort class="tabulka">
       <!-- Name Column -->
       <ng-container class="blackHeader" matColumnDef="ecv">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> ECV </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.ecv' | translate}} </th>
         <td mat-cell *matCellDef="let element"> {{element.ecv}} </td>
       </ng-container>
 
       <!-- Weight Column -->
       <ng-container class="tbl-header" matColumnDef="phoneNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tel. Cislo </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.phone' | translate}} </th>
         <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container class="tbl-header" matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.status' | translate}} </th>
         <td mat-cell *matCellDef="let element"> {{routeStatusService.getStatus(element.status)}} </td>
       </ng-container>
 
 
       <ng-container class="tbl-header" matColumnDef="naves">
-        <th mat-header-cell *matHeaderCellDef> Náves </th>
+        <th mat-header-cell *matHeaderCellDef> {{'CAR.naves' | translate}} </th>
         <td mat-cell *matCellDef="let element">
-          <button *ngIf="element.naves && element.navesis.length == 0" class="button" (click)="addNaves(element)">Pripojiť</button>
+          <button *ngIf="element.naves && element.navesis.length == 0" class="button" (click)="addNaves(element)">{{'CAR.pripojit' | translate}}</button>
           <button *ngIf="element.navesis[0] != undefined && element.naves && element.navesis.length > 0" class="button" (click)="offNaves(element)">
             {{this.privesService.getPrivesById(element.navesis[0]).ecv}}
           </button>
 
-          <p *ngIf="!element.naves">Nepodporuje</p>
+          <p *ngIf="!element.naves">{{'CAR.nepodporuje' | translate}}</p>
         </td>
       </ng-container>
 
       <ng-container class="tbl-header" matColumnDef="detail">
-        <th mat-header-cell *matHeaderCellDef> Detail </th>
-        <td mat-cell *matCellDef="let element"> <button class="button" (click)="sendCar(element)" routerLink="/view/cars/detail">Detail</button> </td>
+        <th mat-header-cell *matHeaderCellDef> {{'OFTEN.detail' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> <button class="button" (click)="sendCar(element)" routerLink="/view/cars/detail">{{'OFTEN.detail' | translate}}</button> </td>
       </ng-container>
 
       <ng-container class="tbl-header" matColumnDef="update">
-        <th mat-header-cell *matHeaderCellDef> Upraviť </th>
-        <td mat-cell *matCellDef="let element"> <button [disabled]="getDispecer()" class="button" (click)="updateCar(element)">Upraviť</button>  </td>
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.update' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> <button [disabled]="getDispecer()" class="button" (click)="updateCar(element)">{{'OFTEN.update' | translate}}</button>  </td>
       </ng-container>
 
       <ng-container class="tbl-header" matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.delete' | translate}}</th>
         <td mat-cell *matCellDef="let element"> <img alt="delete" (click)="deleteCar(element)" class="delete" src="./assets/logo/delete.svg"> </td>
       </ng-container>
 
@@ -57,7 +57,7 @@
     <app-new-car *ngIf="!this.getDispecer()"></app-new-car>
   </div>
     <div class="privesWrapper">
-      <h2>Privesy</h2>
+      <h2>{{'PRIVES.prives' | translate}}</h2>
       <app-prives-wrapper></app-prives-wrapper>
     </div>
 

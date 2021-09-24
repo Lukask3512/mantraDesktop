@@ -1,34 +1,34 @@
 <div >
-  <h1 *ngIf="!this.data" class="header">Pridať vozidlo</h1>
-  <h1 *ngIf="this.data" class="header">Upraviť vozidlo</h1>
+  <h1 *ngIf="!this.data" class="header">{{'OFTEN.add' | translate}} {{'CAR.car' | lowercase  | translate}}</h1>
+  <h1 *ngIf="this.data" class="header">{{'OFTEN.update' | translate}} {{'CAR.car' | lowercase | translate}}</h1>
   <form class="gridContainer" [formGroup]="carForm">
 
     <mat-horizontal-stepper linear #stepper>
       <mat-step>
-        <ng-template matStepLabel>EČV, tel. číslo</ng-template>
+        <ng-template matStepLabel>{{'CAR.ecv' | translate}}, {{'OFTEN.phone' | lowercase | translate}}</ng-template>
         <div class="carsWrapper">
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>EČV</mat-label>
-          <input formControlName="ecv" matInput placeholder="Ečv..." required>
-          <mat-hint>Evidenčné číslo</mat-hint>
+          <mat-label>{{'CAR.ecv' | translate}}</mat-label>
+          <input formControlName="ecv" matInput placeholder="{{'CAR.ecv' | translate}}..." required>
+          <mat-hint>{{'HINT.ecv' | translate}}</mat-hint>
         </mat-form-field>
 
         <!--    <label>EČV</label>-->
         <!--    <input type="text" matInput formControlName="ecv" >-->
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Telefónne číslo</mat-label>
+          <mat-label>{{'OFTEN.phone' | translate}}</mat-label>
           <input formControlName="phone" matInput placeholder="Tel. číslo...">
           <mat-icon class="material-icons" matSuffix
-                    matTooltip="Vodici sa do vozidla mozu prihlasit pomocou svojho telefoneho cisla, alebo pomocou telefoneho cisla vozidla.">
+                    matTooltip="{{'HINT.mobileNumber' | translate}}">
             info
           </mat-icon>
-          <mat-hint>Tel. Číslo</mat-hint>
+          <mat-hint>{{'OFTEN.phone' | translate}}</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Počet náprav</mat-label>
-          <input formControlName="pocetNaprav" type="number" min="0" matInput placeholder="Počet náprav..." required>
-          <mat-hint>Počet náprav</mat-hint>
+          <mat-label>{{'CAR.pocetNaprav' | translate}}</mat-label>
+          <input formControlName="pocetNaprav" type="number" min="0" matInput placeholder="{{'CAR.pocetNaprav' | translate}}..." required>
+          <mat-hint>{{'CAR.pocetNaprav' | translate}}</mat-hint>
         </mat-form-field>
 
         </div>
@@ -36,56 +36,56 @@
 
 
 <mat-step errorMessage="Chybajuce udaje!" >
-  <ng-template matStepLabel>Veľkosť vozidla</ng-template>
+  <ng-template matStepLabel>{{'CAR.size' | translate}}</ng-template>
 
-  <h3>Veľkosť vozidla</h3>
+  <h3>{{'CAR.size' | translate}}</h3>
   <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Výška vozidla</mat-label>
+      <mat-label>{{'CAR.vyskaVozidla' | translate}}</mat-label>
       <input formControlName="autoVyska" step="0.1" matInput type="number" min="0" class="example-right-align" required>
       <span matSuffix>m</span>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Dĺžka vozidla</mat-label>
+      <mat-label>{{'CAR.dlzkaVozidla' | translate}}</mat-label>
       <input formControlName="autoDlzka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
       <span matSuffix>m</span>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Šírka vozidla</mat-label>
+      <mat-label>{{'CAR.sirkaVozidla' | translate}}</mat-label>
       <input formControlName="autoSirka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
       <span matSuffix>m</span>
     </mat-form-field>
   <br>
-  <h3>Veľkosť priestoru na tovar</h3>
+  <h3>{{'CAR.priestorNaTovar' | translate}}</h3>
   <mat-form-field appearance="standard" class="gridItem">
-    <mat-label>Výška priestoru na tovar</mat-label>
+    <mat-label>{{'CAR.vyskaPriestoru' | translate}}</mat-label>
     <input formControlName="priestorVyska" step="0.1" matInput type="number" min="0" class="example-right-align" required>
     <span matSuffix>m</span>
   </mat-form-field>
 
   <mat-form-field appearance="standard" class="gridItem">
-    <mat-label>Dĺžka priestoru na tovar</mat-label>
+    <mat-label>{{'CAR.dlzkaPriestoru' | translate}}</mat-label>
     <input formControlName="priestorDlzka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
     <span matSuffix>m</span>
   </mat-form-field>
 
   <mat-form-field appearance="standard" class="gridItem">
-    <mat-label>Šírka priestoru na tovar</mat-label>
+    <mat-label>{{'CAR.sirkaPriestoru' | translate}}</mat-label>
     <input formControlName="priestorSirka" step="0.1" matInput type="number" min="0" class="example-right-align" required>
     <span matSuffix>m</span>
   </mat-form-field>
-  <h4 *ngIf="checkBiggetSize()">Upozornenie! Veľkost priestoru je väčšia ako veľkosť vozidla!!</h4>
+  <h4 *ngIf="checkBiggetSize()">{{'HINT.sizeWarning' | translate}}</h4>
 </mat-step>
       <mat-step errorMessage="Chybajuce udaje!" >
-        <ng-template matStepLabel>Nakladacia hrana</ng-template>
+        <ng-template matStepLabel>{{'CAR.nakladaciaHrana' | translate}}</ng-template>
         <mat-slide-toggle (change)="this.updateFormNakHrana()" formControlName="pohyblivaNakHrana"  class="gridItem gridItemStart">
-          Pohyblivá nakladacia hrana
+          {{'CAR.pohybliva' | translate}}
         </mat-slide-toggle>
 
         <div>
           <mat-form-field *ngIf="!this.carForm.get('pohyblivaNakHrana').value" appearance="standard" class="gridItem">
-            <mat-label>Výška nakladacej hrany</mat-label>
+            <mat-label> {{'CAR.vyskaHrany' | translate}}</mat-label>
             <input formControlName="vyskaHrany" step="0.1" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>m</span>
           </mat-form-field>
@@ -93,13 +93,13 @@
 
         <div *ngIf="this.carForm.get('pohyblivaNakHrana').value">
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Min. výška</mat-label>
+            <mat-label>{{'CAR.minVyskaHrany' | translate}}</mat-label>
             <input formControlName="minHrana" step="0.1" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>m</span>
           </mat-form-field>
 
           <mat-form-field appearance="standard" class="gridItem">
-            <mat-label>Max. výška</mat-label>
+            <mat-label>{{'CAR.maxVyskaHrany' | translate}}</mat-label>
             <input formControlName="maxHrana" step="0.1" matInput type="number" min="0" class="example-right-align">
             <span matSuffix>m</span>
           </mat-form-field>
@@ -114,20 +114,20 @@
 <!--    <input  type="text" matInput formControlName="phone" >-->
 
       <mat-step errorMessage="Chybajuce udaje!">
-        <ng-template matStepLabel>Váha a nosnosť</ng-template>
+        <ng-template matStepLabel>{{'CAR.vahaANosnost' | translate}}</ng-template>
 
         <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Váha vozidla</mat-label>
-      <input formControlName="vahaVozidlo" step="0.1" matInput min="0" type="number" placeholder="V tonách...." required>
+      <mat-label>{{'CAR.vahaVozidla' | translate}}</mat-label>
+      <input formControlName="vahaVozidlo" step="0.1" matInput min="0" type="number" placeholder="{{'HINT.vTonach' | translate}}...." required>
       <span matSuffix> t </span>
-      <mat-hint>V tonách</mat-hint>
+      <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Nosnosť vozidla</mat-label>
-      <input formControlName="nosnost" step="0.1" matInput type="number" min="0" placeholder="V tonách...." required>
+      <mat-label>{{'CAR.nostnostVozidla' | translate}}</mat-label>
+      <input formControlName="nosnost" step="0.1" matInput type="number" min="0" placeholder="{{'HINT.vTonach' | translate}}...." required>
       <span matSuffix> t </span>
-      <mat-hint>V tonách</mat-hint>
+      <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
     </mat-form-field>
     <div class="gridItem">
 
@@ -135,150 +135,146 @@
       </mat-step>
 
       <mat-step errorMessage="Chybajuce udaje!">
-        <ng-template matStepLabel>Možnosti naloženia</ng-template>
+        <ng-template matStepLabel>{{'CAR.moznostiNalozenia' | translate}}</ng-template>
 
 
 <div class="gridContainer">
-    <mat-slide-toggle (change)="this.updateFormFromBack()" formControlName="fromBack"  class="gridItem gridItemStart">Zo zadu</mat-slide-toggle>
+    <mat-slide-toggle (change)="this.updateFormFromBack()" formControlName="fromBack"  class="gridItem gridItemStart">{{'CAR.nalozenieZoZadu' | translate}}</mat-slide-toggle>
 
       <div class="DSV" *ngIf="this.carForm.get('fromBack').value">
         <mat-form-field  appearance="standard" class="gridItem">
-          <mat-label>Výška nak. pristoru</mat-label>
-          <input formControlName="zoZaduVyska" step="0.1" type="number" matInput placeholder="Výška...">
+          <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+          <input formControlName="zoZaduVyska" step="0.1" type="number" matInput placeholder="{{'CAR.vyskaNakPriestoru' | translate}}...">
           <span matSuffix> m </span>
-          <mat-hint>V metroch</mat-hint>
+          <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>Šírka nak. pristoru</mat-label>
-          <input formControlName="zoZaduSirka" step="0.1" type="number" matInput placeholder="Šírka....">
+          <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+          <input formControlName="zoZaduSirka" step="0.1" type="number" matInput placeholder="{{'CAR.sirkaNakPriestoru' | translate}}....">
           <span matSuffix> m </span>
-          <mat-hint>V metroch</mat-hint>
+          <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
         </mat-form-field>
       </div>
 
 
-    <mat-slide-toggle (change)="this.updateFormFromRight()" formControlName="fromRight" class="gridItem gridItemStart">Z prava</mat-slide-toggle>
+    <mat-slide-toggle (change)="this.updateFormFromRight()" formControlName="fromRight" class="gridItem gridItemStart">{{'CAR.nalozenieZPrava' | translate}}</mat-slide-toggle>
   <div class="DSV" *ngIf="this.carForm.get('fromRight').value">
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Výška nak. pristoru</mat-label>
-      <input formControlName="zPravaVyska" type="number" step="0.1" matInput placeholder="Výška...">
+      <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+      <input formControlName="zPravaVyska" type="number" step="0.1" matInput placeholder="{{'CAR.vyskaNakPriestoru' | translate}}...">
       <span matSuffix> m </span>
-      <mat-hint>V metroch</mat-hint>
+      <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Šírka nak. pristoru</mat-label>
-      <input formControlName="zPravaSirka" type="number" step="0.1" matInput placeholder="Šírka....">
+      <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+      <input formControlName="zPravaSirka" type="number" step="0.1" matInput placeholder="{{'CAR.sirkaNakPriestoru' | translate}}....">
       <span matSuffix> m </span>
-      <mat-hint>V metroch</mat-hint>
+      <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
     </mat-form-field>
 
   </div>
 
-    <mat-slide-toggle (change)="updateFormFromLeft()" formControlName="fromLeft" class="gridItem gridItemStart">Z ľava</mat-slide-toggle>
+    <mat-slide-toggle (change)="updateFormFromLeft()" formControlName="fromLeft" class="gridItem gridItemStart">{{'CAR.nalozenieZLava' | translate}}</mat-slide-toggle>
   <div class="DSV" *ngIf="this.carForm.get('fromLeft').value">
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Výška nak. pristoru</mat-label>
-      <input formControlName="zLavaVyska" type="number" step="0.1" matInput placeholder="Výška...">
+      <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+      <input formControlName="zLavaVyska" type="number" step="0.1" matInput placeholder="{{'CAR.vyskaNakPriestoru' | translate}}...">
       <span matSuffix> m </span>
-      <mat-hint>V metroch</mat-hint>
+      <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Šírka nak. pristoru</mat-label>
-      <input formControlName="zLavaSirka" type="number" step="0.1" matInput placeholder="Šírka....">
+      <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+      <input formControlName="zLavaSirka" type="number" step="0.1" matInput placeholder="{{'CAR.sirkaNakPriestoru' | translate}}....">
       <span matSuffix> m </span>
-      <mat-hint>V metroch</mat-hint>
+      <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
     </mat-form-field>
 
   </div>
 
-    <mat-slide-toggle (change)="updateFormFromUp()" formControlName="fromUp" class="gridItem gridItemStart">Z vrchu</mat-slide-toggle>
+    <mat-slide-toggle (change)="updateFormFromUp()" formControlName="fromUp" class="gridItem gridItemStart">{{'CAR.nalozenieZVrchu' | translate}}</mat-slide-toggle>
   <div class="DSV" *ngIf="this.carForm.get('fromUp').value">
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Výška nak. pristoru</mat-label>
-      <input formControlName="zHoraVyska" step="0.1" matInput placeholder="Výška...">
+      <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
+      <input formControlName="zHoraVyska" step="0.1" matInput placeholder="{{'CAR.vyskaNakPriestoru' | translate}}...">
       <span matSuffix> m </span>
       <mat-hint>V metroch</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
-      <mat-label>Šírka nak. pristoru</mat-label>
-      <input formControlName="zHoraSirka" step="0.1" matInput placeholder="Šírka....">
+      <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>
+      <input formControlName="zHoraSirka" step="0.1" matInput placeholder="{{'CAR.sirkaNakPriestoru' | translate}}....">
       <span matSuffix> m </span>
-      <mat-hint>V metroch</mat-hint>
+      <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
     </mat-form-field>
 
   </div>
 </div>
       </mat-step>
 
-<!--    <mat-form-field appearance="standard">-->
-<!--      <mat-label>Amount</mat-label>-->
-<!--      <input matInput type="number" class="example-right-align">-->
-<!--      <span matSuffix> cm</span>-->
-<!--    </mat-form-field>-->
+
 <mat-step>
-  <ng-template matStepLabel>Náves, špec. režimy</ng-template>
+  <ng-template matStepLabel>{{'CAR.navesASpecRezimy' | translate}}</ng-template>
 
   <mat-slide-toggle formControlName="pripojitNaves"
       class="gridItem gridItemStart">
-      Možnosť pripojiť náves
+    {{'CAR.moznostPripojitNaves' | translate}}
     </mat-slide-toggle>
 
   <mat-slide-toggle formControlName="teplota"
                     class="gridItem gridItemStart">
-    Teplotný režim
+    {{'CAR.teplotnyRezim' | translate}}
   </mat-slide-toggle>
 
   <div *ngIf="this.carForm.get('teplota').value">
       <mat-form-field  appearance="standard" class="gridItem">
-        <mat-label>Minimálna teplota</mat-label>
-        <input formControlName="minTeplota" type="number" step="0.1" matInput placeholder="Min teplota...">
+        <mat-label>{{'CAR.minTeplota' | translate}}</mat-label>
+        <input formControlName="minTeplota" type="number" step="0.1" matInput placeholder="{{'CAR.minTeplota' | translate}}...">
         <span matSuffix> C </span>
-        <mat-hint>V stupnoch Celsia</mat-hint>
+        <mat-hint>{{'CAR.vStupnochC' | translate}}</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="standard" class="gridItem">
-        <mat-label>Maximálna teplota</mat-label>
-        <input formControlName="maxTeplota" type="number" step="0.1" matInput placeholder="Max teplota....">
+        <mat-label>{{'CAR.maxTeplota' | translate}}</mat-label>
+        <input formControlName="maxTeplota" type="number" step="0.1" matInput placeholder="{{'CAR.maxTeplota' | translate}}....">
         <span matSuffix> C </span>
-        <mat-hint>V stupnoch Celsia</mat-hint>
+        <mat-hint>{{'CAR.vStupnochC' | translate}}</mat-hint>
       </mat-form-field>
   </div>
 
   <mat-slide-toggle formControlName="ruka"
                     class="gridItem gridItemStart">
-    Hydraulická ruka
+    {{'CAR.hydraulickaruka' | translate}}
   </mat-slide-toggle>
 
   <mat-slide-toggle formControlName="adr"
                     class="gridItem gridItemStart">
-    ADR(prevoz rizikového tovaru)
+    {{'CAR.adr' | translate}}
   </mat-slide-toggle>
 
 </mat-step>
 
       <mat-step>
-        <ng-template matStepLabel>Pristup k vozidlu</ng-template>
+        <ng-template matStepLabel> {{'CAR.pristupKVozidlu' | translate}}</ng-template>
 
         <div class="carsWrapper">
-          <mat-checkbox formControlName="allVodici">Udelit pristup vsetkym</mat-checkbox>
+          <mat-checkbox formControlName="allVodici">{{'CAR.pristupVsetkym' | translate}}</mat-checkbox>
           <table mat-table [dataSource]="vodici">
             <!-- Position Column -->
             <ng-container matColumnDef="meno">
-              <th mat-header-cell *matHeaderCellDef> Meno </th>
+              <th mat-header-cell *matHeaderCellDef> {{'DISPATCHER.name' | translate}} </th>
               <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
 
             <ng-container matColumnDef="priezisko">
-              <th mat-header-cell *matHeaderCellDef> Priezvisko </th>
+              <th mat-header-cell *matHeaderCellDef> {{'DISPATCHER.surname' | translate}} </th>
               <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
             </ng-container>
 
             <!-- Name Column -->
             <ng-container matColumnDef="prava">
-              <th mat-header-cell *matHeaderCellDef> Práva </th>
+              <th mat-header-cell *matHeaderCellDef> {{'CAR.pravaPreVodica' | translate}} </th>
               <td mat-cell *matCellDef="let element">
                 <mat-checkbox [disabled]="checkForPhone(element)" (change)="catchChange(element.id)" [checked]="checkBox(element)"></mat-checkbox>
-                <span *ngIf="checkForPhoneNoAllCars(element)">Vozidlo ani vodic nemaju telefone cislo</span>
-                <span *ngIf="textForVodici(element)">Vodic ma pristup ku vsetkym vozidlam</span>
+                <span *ngIf="checkForPhoneNoAllCars(element)">{{'HINT.nemajuTelefoneCislo' | translate}}</span>
+                <span *ngIf="textForVodici(element)">{{'HINT.vodicMaPristupKuVsetkym' | translate}}</span>
 
               </td>
             </ng-container>
@@ -291,7 +287,7 @@
     </mat-horizontal-stepper>
 
   </form>
-  <button *ngIf="!this.data" (click)="saveCar()" type="submit" class="example_c" [disabled]="!carForm.valid">Pridať</button>
-  <button *ngIf="this.data" (click)="updateCar()" type="submit" class="example_c" [disabled]="!carForm.valid">Upraviť</button>
+  <button *ngIf="!this.data" (click)="saveCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.add' | translate}}</button>
+  <button *ngIf="this.data" (click)="updateCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.update' | translate}}</button>
 
 </div>

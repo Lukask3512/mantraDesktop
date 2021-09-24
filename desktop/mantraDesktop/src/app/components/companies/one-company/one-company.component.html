@@ -1,54 +1,54 @@
 <div class="companyWrapper">
-  <h2>Spolocnosti</h2>
+  <h2>{{'COMPANIES.comapnies' | translate}}</h2>
   <table mat-table [dataSource]="dataSource" matSort class="tabulka">
     <!-- Name Column -->
     <ng-container class="blackHeader" matColumnDef="nazov">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazov </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.name' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
     <!-- Weight Column -->
     <ng-container class="tbl-header" matColumnDef="ulica">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Ulica </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.street' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.street}} </td>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container class="tbl-header" matColumnDef="mesto">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Mesto </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.town' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.town}} </td>
     </ng-container>
     r
     <ng-container class="tbl-header" matColumnDef="stat">
-      <th mat-header-cell *matHeaderCellDef> Stat </th>
+      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.state' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.country}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="ico">
-      <th mat-header-cell *matHeaderCellDef> Ico </th>
+      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.ico' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.ico}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="dic">
-      <th mat-header-cell *matHeaderCellDef> Dic </th>
+      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.dico' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.dicIc}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="poistenie">
-      <th mat-header-cell *matHeaderCellDef> Poistenie </th>
+      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.poistenie' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.poistenie}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="licencia">
-      <th mat-header-cell *matHeaderCellDef> Licencia </th>
+      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.licenica' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.licenceUntil}} </td>
     </ng-container>
 
 
 
     <ng-container class="tbl-header" matColumnDef="update">
-      <th mat-header-cell *matHeaderCellDef> Upraviť </th>
-      <td mat-cell *matCellDef="let element"> <button (click)="updateCompany(element)" class="button" >Upraviť</button>  </td>
+      <th mat-header-cell *matHeaderCellDef> {{'OFTEN.update' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> <button (click)="updateCompany(element)" class="button" >{{'OFTEN.update' | translate}}</button>  </td>
     </ng-container>
 
 <!--    <ng-container class="tbl-header" matColumnDef="delete">-->
@@ -59,7 +59,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <button (click)="addCompany()" class="buttonG">Pridat</button>
+  <button (click)="addCompany()" class="buttonG">{{'OFTEN.add' | translate}}</button>
 </div>
 
 

@@ -19,8 +19,8 @@
 
     <div class="routeTown" (click)="sendTown(i)">
       <p *ngIf="this.address[i]">{{this.address[i].nameOfTown}}
-        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">N</span>
+        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">V</span>
       </p>
       <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 
@@ -36,8 +36,8 @@
 </div>
 
 <div *ngIf="!this.address || this.address.length === 0">
-  <h2>Nepriradena ziadna adresa</h2>
+  <h2>{{'CAR.noAdress' | translate}}</h2>
 </div>
 
-<button [disabled]="!itiChanged" (click)="updateItinerar()">Zmenit itinerar</button>
+<button [disabled]="!itiChanged" (click)="updateItinerar()">{{'CAR.changeItinerar' | translate}}</button>
 
