@@ -1,10 +1,10 @@
 
 <div class="wrapper">
-  <button (click)="allActive()">Aktivne</button>
-  <button (click)="mine()">Moje</button>
-  <button (click)="assigned()">Prihlaseny</button>
+  <button (click)="allActive()"> {{'OFFER.aktivne' | translate}}</button>
+  <button (click)="mine()">{{'OFFER.moje' | translate}}</button>
+  <button (click)="assigned()">{{'OFFER.prihlaseny' | translate}}</button>
 
-  <h1 class="actFinHead">Aktívne</h1>
+  <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
 
 
   <div *ngFor="let route of this.routesToShow; let i = index" class="oneRoute">
@@ -21,18 +21,18 @@
       <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
 
       <p *ngIf="this.route.price">{{this.route.price}}€</p>
-      <p *ngIf="!this.route.price">Cenu ponuknite</p>
+      <p *ngIf="!this.route.price">{{'OFFER.ponukniteCenu' | translate}}</p>
 
             <div *ngIf="route.createdBy == this.getDispecerId()">
 <!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
-              <button (click)="vymazatPonuku(route)">Odstranit</button>
+              <button (click)="vymazatPonuku(route)">{{'OFFER.delete' | translate}}</button>
             </div>
 
 
     </div>
   </div>
 
-  <h1 class="actFinHead">Ukoncene</h1>
+  <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>
 
   <div *ngFor="let route of this.finishedRoutesToShow; let i = index" class="oneRoute">
       <div *ngIf="route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">

@@ -14,7 +14,10 @@
     "cena": "Cena",
     "vytvorit": "Vytvoriť",
     "vyzaduje": "Vyžaduje",
-    "priradit": "Priradiť"
+    "priradit": "Priradiť",
+    "typ": "Typ",
+    "cas": "Cas",
+    "zopakovat": "Zopakovať"
   },
 
   "LOGIN": {
@@ -49,7 +52,7 @@
     "pristupKuVozidlam": "Pristup ku vozidlam",
     "pristupKuVsetkymVozidlam": "Pristup ku všetkým ku vozidlam",
     "pristupKuPrivesom": "Pristup k prívesom",
-    "pristupKuVsetkymPrivesom": "Pristup ku všetkým ku prívesom",
+    "pristupKuVsetkymPrivesom": "Pristup ku všetkým ku prívesom"
   },
   "CAR": {
     "car": "Vozidlo",
@@ -117,7 +120,8 @@
     "vodic": "Vodič",
     "udajeO": "Údaje o vodičovi",
     "pristupKVozidlam": "Prístup ku vozidlám",
-    "pristupKuVsetkymVozidlam": "Prístup ku všetkým vozidlám"
+    "pristupKuVsetkymVozidlam": "Prístup ku všetkým vozidlám",
+    "pridatMoze": "Nemáte povolenie vytvárať nových vodičov"
 
   },
   "PRIVES": {
@@ -173,7 +177,10 @@
     "deleteDispecer": "Naozaj chcete odstrániť dispečéra",
     "deleteRoute": "Naozaj chcete odstrániť trasu",
     "max": "max",
-    "min": "min"
+    "min": "min",
+    "teplota": "Teplota",
+    "prevozRizikovehoTovaru": "Prevoz rizikového tovaru",
+    "skratkaKs": "ks"
 
   },
 
@@ -186,7 +193,8 @@
     "vyskaHranyVyhovuje": "Výška hrany vyhovuje",
     "nevopchaSaCezNaklOtvory": "Nevopchá sa cez nakladacie otvory",
     "nevopchasa": "Nevopchá sa",
-    "pretazene": "Preťažené o"
+    "pretazene": "Preťažené o",
+    "tuVyber": "Tu vyber"
 
   },
 
@@ -202,6 +210,8 @@
     "casMoznehoPrijazdu": "Casy mozneho prijazdu",
     "timeFrom": "Časové okno od",
     "timeTo": "Časové okno do",
+    "dateFrom": "Dátum od",
+    "dateTo": "Dátum po",
     "vyberAuta": "Výber vozidla",
     "presunPrepravy": "Presun prepravy do itinerára",
     "casoveKonflikty": "Časové konflitky",
@@ -209,7 +219,13 @@
     "potrebnaVyskaNakHrany": "Potrebna vyska nakladacej hrany",
     "presunutVsetko": "Presuň všetko",
     "priraditDoVozidla": "Priradiť do vozidla",
-    "preprava": "Preprava"
+    "preprava": "Preprava",
+    "zeleneACervere": "Zelené a červené miesta sa vždy porovnávajú s 1. adresout novej prepravy",
+    "novaPreprava": "Nová preprava",
+    "prilizTazky": "Tovar je príliž ťažký",
+    "prilizVelky": "Tovar je príliž veľký",
+    "moznyDatumPrichodu": "Možný dátum príchodu",
+    "predpokladanyCasPrijazdu": "Predpokladaný čas príjazdu"
   },
 
   "OFFER": {
@@ -220,7 +236,7 @@
     "prepravca": "Prepravca",
     "log": "Log",
     "mesto": "Mesto",
-    "cas": "Cas",
+    "cas": "Čas",
     "status": "Status",
     "zSirka": "Z. sirka",
     "yDlzka": "Z. dlzka",
@@ -232,7 +248,33 @@
     "predbezneUlozenie": "chcete si predbezne uložit uloženie ponuky v itinerári vozidla",
     "povodnaVzdusnaVzialenost": "Pôvodná vzdušná vzdialenosť",
     "novaVzdialenost": "Nová vzdialenosť",
-    "rozdiel": "Rozdiel"
+    "rozdiel": "Rozdiel",
+    "vasaPonuka": "Vaša ponuka",
+    "zrusitPonuku": "Zrušiť ponuku",
+    "ponukniteCenu": "Ponúknite cenu",
+    "pridatPonuku": "Pridať ponuku",
+    "upravitCenu": "Upraviť cenu",
+    "finalnePrijatie": "Finálne prijatie",
+    "prijatPrepravu": "Prijať prepravu",
+    "odmietnutPrepravu": "Odmietnuť prepravu",
+    "ziskaliStePonuku": "Získali ste ponuku",
+    "presuntePonukuDoIti": "Presuňte ponuku do itinerára vozidla",
+    "ponukaPriradenaZa": "Ponuka priradená za",
+    "zruseniePrepravyOznam": "Zrušenie prepravy musí potvrdiť zadávateľ",
+    "zruseniePrepravyPotvrdenie": "Zadávateľ chce zrušiť ponuku. Chcete potvrdiť zrušenie?",
+    "zruseniePrepravca": "Prepravca chce zrusit ponuku. Chcete potvrdit zrusenie?",
+    "zrusenie": "Zrušiť",
+    "ponukuPreFirmu": "ponuku pre firmu",
+    "bolaZrusena": "Ponuka bola zrušená",
+    "ponukaVoVozidle": "Ponuka priradená vo vozidle",
+    "upravitPonuku": "Upraviť ponuku",
+    "vymazatPonuku": "Vymazať ponuku",
+    "ponukuPrijalaFrima": "Ponuku prijala firma",
+    "ukoncene": "Ukončené",
+    "aktivne": "Aktívne",
+    "moje": "Moje",
+    "prihlaseny": "Prihlásený",
+    "pdfNepodporuje": "Pdf generátor nepodporuje mäkčene"
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdialenosti",
@@ -251,11 +293,39 @@
     "klikniNaBodNaMape": "Kliknite na vozidlo, trasu, alebo bod na mape pre viac informácií.",
     "nepriradenaTrasa": "Nepriradená trasa",
     "celkovaVzdialenost": "Celková vzdialenosť",
-    "vyberVozidlo": "Vyberte vozidlo"
+    "vyberVozidlo": "Vyberte vozidlo",
+    "ulozeneUlozenieVoVozidlach": "Uložené uloženia vo vozidlách"
   },
 
   "AUTOCOMPLETE": {
     "findTown": "Nájdi mesto"
+  },
+  "NEWADDRESSFORM": {
+    "vyberMestoATyp": "Vyberte mesto a typ (nakladka, vykladka)",
+    "vyberTyp": "Vyber typ",
+    "pridajPoznamku": "Pridaj poznámku k adrese...",
+    "vyberDatumACas": "Vyberte datum a cas prijazdu",
+    "pocetHodin": "Počet hodín",
+    "skratkaHodin": "hod",
+    "teplotaRukaAdr": "Teplotny rezim, Hydraulicka ruka, Adr",
+    "potrebnaTeplota": "Potrebná teplota",
+    "velkostiBalikov": "Veľkosti balíkov",
+    "zadajteVelkostiNakladu": "Zadajte veľkosti nákladu",
+    "pocetKusov": "Počet kusov",
+    "poslednePridanyBalik": "Posledne pridaný balík",
+    "pocet": "Počet",
+    "parametre": "Parametre",
+    "polohaNakladania": "Poloha nakladania",
+    "pozadovanaVyskaHrany": "Požadovaná výška nakladacej hrany",
+    "maximalnaNosnost": "Max. nosnosť",
+    "spat": "Späť",
+    "dalej": "Ďalej",
+    "vytvoritPrepravu": "Vytvoriť prepravu",
+    "ponuknutSpolocnostiam": "Ponúknuť spoločnostiam",
+    "vybraťVozidlo": "Vybrať vozidlo",
+    "odstranitZVoziudla": "Odstrániť z vozidla",
+    "vylozitVsetko": "Musíte Vyložiť všetky bvalíky",
+    "logPrepravy": "Log prepravy"
   }
 
 }

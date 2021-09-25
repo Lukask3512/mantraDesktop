@@ -14,8 +14,8 @@ export class AppComponent {
   user: User;
   constructor(private accountService: AccountService, private translateService: TranslateService) {
     this.accountService.user.subscribe(x => this.user = x);
-    this.translateService.setDefaultLang('en');
-    this.translateService.use(localStorage.getItem('lang') || 'en');
+    this.translateService.setDefaultLang('sk');
+    this.translateService.use(localStorage.getItem('lang') || 'sk');
   }
 
   logout() {

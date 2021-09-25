@@ -1,30 +1,30 @@
 <header>
-  <h2>Zelene a cervene miesta sa vzdy porovnavaju s 1. adresou novej prepravy.</h2>
+  <h2>{{'TRANSPORT.zeleneACervere' | translate}}.</h2>
 </header>
 
 <h3 class="redBack" *ngIf="!ciSaVopchaCezOtvor">
-  Nevopcha sa cez nakladacie otvory!!
+  {{'PACKAGES.nevopchaSaCezNaklOtvory' | translate}}!!
 </h3>
 
 <h3 [class]="getClassForNaklHrana()" *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1 && getClassForNaklHrana() == 'redBack'; else elseHrana">
-  <p>Potrebna vyska nakladacej hrany:</p>
-  <span *ngIf="vyskaNaklHrany.minVyska > -1">Min: {{vyskaNaklHrany.minVyska}}</span>
-  <span>Max: {{vyskaNaklHrany.maxVyska}}</span>
-  <h2>Vyska nakl hrany v aute:</h2>
-  <p *ngIf="this.car.nakladaciaHrana.length == 2; else else1">Min:{{this.car.nakladaciaHrana[0]}} Max: {{this.car.nakladaciaHrana[1]}}</p>
+  <p>{{'TRANSPORT.potrebnaVyskaNakHrany' | translate}}:</p>
+  <span *ngIf="vyskaNaklHrany.minVyska > -1">{{'HINT.min' | translate}}: {{vyskaNaklHrany.minVyska}}</span>
+  <span>{{'HINT.max' | translate}}: {{vyskaNaklHrany.maxVyska}}</span>
+  <h2>{{'CAR.vyskaHrany' | translate}}:</h2>
+  <p *ngIf="this.car.nakladaciaHrana.length == 2; else else1">{{'HINT.min' | translate}}:{{this.car.nakladaciaHrana[0]}} {{'HINT.max' | translate}}: {{this.car.nakladaciaHrana[1]}}</p>
   <ng-template #else1>
-    <p>Vyska {{this.car.nakladaciaHrana[0]}}</p>
+    <p>{{'CAR.vyskaVozidla' | translate}} {{this.car.nakladaciaHrana[0]}}</p>
   </ng-template>
 </h3>
 <ng-template #elseHrana>
   <h3 *ngIf="vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1" class="greenBack">
-      Vyska hrany vyhovuje
+    {{'PACKAGES.vyskaHranyVyhovuje' | translate}}
   </h3>
 </ng-template>
 
 
 <div class="example-container">
-  <h2>Nová preprava</h2>
+  <h2>{{'TRANSPORT.novaPreprava' | translate}}</h2>
   <div
     id="all"
     cdkDropList
@@ -65,11 +65,11 @@
 
     </div>
   </div>
-  <button (click)="moveAll()">Presun vsetko</button>
+  <button (click)="moveAll()">{{'TRANSPORT.presunutVsetko' | translate}}</button>
 </div>
 
 <div *ngIf="this.car" class="example-container">
-  <h2>Itinerár</h2>
+  <h2>{{'CAR.itinerar' | translate}}</h2>
   <div
     id="even"
     cdkDropList
@@ -105,12 +105,12 @@
               <span *ngIf="itiAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
               <span *ngIf="itiAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
               {{itiAddress.nameOfTown}}
-              <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">Nevopcha sa</span>
-              <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">Pretazene o {{volnaVahaPreAuto[i]}}t</span>
-              <span class="oversize" matTooltip="Mozny datum prichodu {{timeToLocal(itiAddress.datumPrijazdu, itiAddress.casPrijazdu)}} - {{timeToLocal(itiAddress.datumLastPrijazdy, itiAddress.casLastPrijazdu)}}" matTooltipPosition="right" *ngIf="casyPreAuto[i].sediCas == false">Skontrolujte cas</span>
+              <span class="oversize" matTooltip="{{'TRANSPORT.prilizVelky' | translate}}" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
+              <span class="oversize" matTooltip="{{'TRANSPORT.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
+              <span class="oversize" matTooltip="{{'TRANSPORT.moznyDatumPrichodu' | translate}} {{timeToLocal(itiAddress.datumPrijazdu, itiAddress.casPrijazdu)}} - {{timeToLocal(itiAddress.datumLastPrijazdy, itiAddress.casLastPrijazdu)}}" matTooltipPosition="right" *ngIf="casyPreAuto[i].sediCas == false">Skontrolujte cas</span>
 <!--              <span class="oversize" matTooltip="Mozny datum prichodu {{itiAddress.datumPrijazdu}} - {{itiAddress.datumLastPrijazdy}}" matTooltipPosition="right" *ngIf="!casyPreAuto[i].pocetHodin < 3">Skontrolujte datum</span>-->
               <mat-icon class="material-icons" matSuffix
-                        matTooltip="Predpokladany cas prijazdu {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
+                        matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
                 info
               </mat-icon>
             </p>
@@ -124,4 +124,4 @@
 
 </div>
 
-<button [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">Pridat</button>
+<button [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">{{'OFTEN.potvrdit' | translate}}</button>

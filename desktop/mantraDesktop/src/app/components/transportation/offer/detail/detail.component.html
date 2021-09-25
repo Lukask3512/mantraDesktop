@@ -1,21 +1,21 @@
 <header *ngIf="this.route">
   <div *ngIf="this.route.takenBy == getDispecerId()" class="input">
     <h4>
-      Ponuka priradená za <h5>{{this.route.price}}</h5>
+      {{'OFFER.ponukaPriradenaZa' | translate}} <h5>{{this.route.price}}</h5>
     </h4>
     <div *ngIf="!isCancel()">
-      <h2 *ngIf="this.route.cancelByDriver">Zrusenie prepravy musi potvrdit zadavatel.</h2>
-      <h2 *ngIf="this.route.cancelByCreator">Zadavatel chce zrusit ponuku. Chcete potvrdit zrusenie?</h2>
-      <button *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">Zrusit ponuku</button>
+      <h2 *ngIf="this.route.cancelByDriver">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
+      <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyPotvrdenie' | translate}}</h2>
+      <button *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
       <ng-template #elseCancel>
-        <button (click)="tryCancelOfferCancel()">Zrusit</button>
+        <button (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
     </div>
-    <h2 *ngIf="isCancel()">Ponuka bola zrusena!!</h2>
+    <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!!</h2>
 
   </div>
 </header>
-<button (click)="openAllDetailDialog()">Detail</button>
+<button (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
 <div class="wrapper">
   <section class="addressList">
     <app-drag-and-drop-list #dropList
@@ -25,7 +25,7 @@
     </app-drag-and-drop-list>
 
     <footer>
-      <button (click)="openLog()">Log prepravy </button>
+      <button (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}} </button>
     </footer>
   </section>
 
@@ -40,56 +40,56 @@
                         *ngIf="this.route.takenBy == getDispecerId() && !isCancel() && this.route.offerInRoute == ''"></app-offer-to-route>
 
   <h2  *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute != ''">
-    Ponuka priradená vo vozidle: <button (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
-    <button class="buttonTransport" (click)="cancelFromCarDialog()">Odstranit z vozidla</button>
+    {{'OFFER.ponukaVoVozidle' | translate}}: <button (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
+    <button class="buttonTransport" (click)="cancelFromCarDialog()">{{'NEWADDRESSFORM.odstranitZVoziudla' | translate}}</button>
 
   </h2>
 
 
   <div *ngIf="!createdBy() && !isCancel() && this.route.takenBy !== getDispecerId()" class="input">
     <h4 *ngIf="this.offer">
-      Vaša ponuka {{this.offer}}
+      {{'OFFER.vasaPonuka' | translate}} {{this.offer}}
     </h4>
-    <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>
-    <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
-    <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">Zrusit ponuku</button>
+    <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h4>
+    <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+    <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
 
     <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">
-      <mat-label>Ponuknite cenu</mat-label>
+      <mat-label>{{'OFFER.ponukniteCenu' | translate}}</mat-label>
       <input type="number" matInput placeholder="Cena...."  [(ngModel)]="price">
       <span matSuffix> € </span>
-      <mat-hint>V eurách</mat-hint>
+      <mat-hint>{{'HINT.vEurach' | translate}}</mat-hint>
     </mat-form-field>
 
 <!--    <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>-->
 
-    <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">Pridat ponuku</button>
+    <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
     <ng-template #elseUpravitCenu>
-      <button *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">Upravit cenu</button>
+      <button *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
     </ng-template>
-    <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >Finálne prijatie prepravy</h2>
-    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">Prijat prepravu</button>
-    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">Odmietnut prepravu</button>
+    <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >{{'OFFER.finalnePrijatie' | translate}}</h2>
+    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>
+    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">{{'OFFER.odmietnutPrepravu' | translate}}</button>
   </div>
 
   <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="input">
-    <h4 *ngIf="this.route.price != 0">Cena: {{this.route.price}}</h4>
-    <button (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">Upravit ponuku</button>
-    <button (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">Vymazat ponuku</button>
+    <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h4>
+    <button (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
+    <button (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
     <h4>
-      Ponuky
+      {{'HEADER.offers' | translate}}
     </h4>
     <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">
       <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="offer"></app-get-info-about-company>
 <!--      <h5>{{}}</h5>-->
       <h4 *ngIf="this.route.price == 0">{{this.route.priceFrom[i]}}</h4>
-      <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])">Potvrdit</button>
+      <button *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])"> {{'OFTEN.potvrdit' | translate}}</button>
       <button *ngIf="this.route.ponuknuteTo == '' " (click)="deleteCompany(i)">X</button>
     </div>
 
     <div *ngIf="this.route.ponuknuteTo != ''">
-      <button  (click)="cancelOffer()">Zrusit </button>
-      <span>ponuku pre firmu</span>
+      <button  (click)="cancelOffer()"> {{'OFFER.zrusenie' | translate}} </button>
+      <span>{{'OFFER.ponukuPreFirmu' | translate}}</span>
       <app-get-info-about-company [masterId]="this.route.ponuknuteTo"></app-get-info-about-company>
     </div>
 
@@ -99,19 +99,19 @@
 
   <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">
     <h4>
-      Ponuku prijala firma:
+      {{'OFFER.ponukuPrijalaFrima' | translate}}:
       <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company>
       za {{this.route.price}}
     </h4>
     <div *ngIf="!isCancel()">
-      <h2 *ngIf="this.route.cancelByDriver">Prepravca chce zrusit ponuku. Chcete potvrdit zrusenie?</h2>
-      <h2 *ngIf="this.route.cancelByCreator">Zrusenie prepravy musi potvrdit zadavatel.</h2>
-      <button (click)="tryCancelOffer()">Zrusit ponuku</button>
+      <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}:</h2>
+      <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
+      <button (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
       <ng-template #elseCancelCompany>
-        <button (click)="tryCancelOfferCancel()">Zrusit</button>
+        <button (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
     </div>
-    <h2 *ngIf="isCancel()">Ponuka bola zrusena!</h2>
+    <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!</h2>
 
   </div>
 

@@ -38,14 +38,14 @@
     </app-drag-and-drop-list>
     <div class="changeButtons" *ngIf="checkFinished()" (click)="vylozeneBaliky()" >
 <!--      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.updateDetails()">Odoslať vodičovi</button>-->
-      <button class="buttonTransport"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="createMyRoute()">Vytvorit prepravu</button>
-      <button class="buttonTransport"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="openOfferDialog()">Poúktnuť spoločnostiam</button>
-      <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openAddDialog()">Vybrať vozidlo</button>
-      <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openOfferDialog()">Ponuknut spolocnostiam</button>
-      <button class="buttonTransport"  *ngIf="this.route && this.route.carId" (click)="cancelFromCarDialog()">Odstranit z vozidla</button>
+      <button class="buttonTransport"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="createMyRoute()">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
+      <button class="buttonTransport"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="openOfferDialog()">{{'NEWADDRESSFORM.ponuknutSpolocnostiam' | translate}}</button>
+      <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openAddDialog()">{{'NEWADDRESSFORM.vybraťVozidlo' | translate}}</button>
+      <button class="buttonTransport"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openOfferDialog()">{{'NEWADDRESSFORM.ponuknutSpolocnostiam' | translate}}</button>
+      <button class="buttonTransport"  *ngIf="this.route && this.route.carId" (click)="cancelFromCarDialog()">{{'NEWADDRESSFORM.odstranitZVoziudla' | translate}}</button>
       <!--      <button class="buttonChange"  *ngIf="carId != null" (click)="openAddDialogChangeCar()">Zmeň vozidlo</button>-->
-      <p *ngIf="!vylozeneBaliky() && this.addresses.length > 0 && !this.route.id">Musite vylozit vsetky baliky</p>
-      <button *ngIf="this.route && this.route.id" (click)="openLog()">Log prepravy</button>
+      <p *ngIf="!vylozeneBaliky() && this.addresses.length > 0 && !this.route.id">{{'NEWADDRESSFORM.vylozitVsetko' | translate}}</p>
+      <button *ngIf="this.route && this.route.id" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>
 
     </div>
 

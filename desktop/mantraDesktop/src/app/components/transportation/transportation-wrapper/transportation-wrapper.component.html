@@ -2,10 +2,10 @@
 
 <div *ngIf="allActiveRoutes" class="wrapper">
 
-  <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">Vytvoriť trasu</button>
+  <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
 
 
-  <h1 class="actFinHead">Aktívne</h1>
+  <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
 
 
   <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute" >
@@ -20,10 +20,10 @@
   <div *ngIf="allActiveRoutes.length" class="vykladka">
     <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
     <div *ngIf="route.carId == null">
-      <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >Priradiť autu</button>
+      <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
     </div>
     <div>
-      <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
+      <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
     </div>
 
     </div>
@@ -34,7 +34,7 @@
   <!--  ////////////-->
 
 
-  <h1 class="actFinHead">Ukončené</h1>
+  <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>
   <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 <!--      <h2>Nakládky</h2>-->
@@ -45,8 +45,8 @@
 
     <div class="vykladka">
 <!--      <h2>Vykládky</h2>-->
-      <button (click)="openAddDialog(route)" class="buttonB">Zopakovať</button>
-      <button (click)="deleteRoute(route)" class="buttonR" >Odstrániť</button>
+      <button (click)="openAddDialog(route)" class="buttonB">{{'OFTEN.zopakovat' | translate}}</button>
+      <button (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
 
     </div>
 <!--    <div class="repetRoute">-->
@@ -58,34 +58,5 @@
   </div>
 
 </div>
-
-<!--  <table mat-table [dataSource]="this.allActiveRoutes" matSort class="mat-elevation-z8">-->
-
-
-<!--    &lt;!&ndash; Name Column &ndash;&gt;-->
-<!--    <ng-container matColumnDef="naklady">-->
-<!--      <th mat-header-cell *matHeaderCellDef> Nakladky </th>-->
-<!--      <td mat-cell *matCellDef="let element"> {{element.carId}} </td>-->
-<!--    </ng-container>-->
-
-<!--    &lt;!&ndash; Weight Column &ndash;&gt;-->
-<!--    <ng-container matColumnDef="vykladky">-->
-<!--      <th mat-header-cell *matHeaderCellDef> Tel. Cislo </th>-->
-<!--      <td mat-cell *matCellDef="let element; let i = dataIndex"-->
-<!--          [attr.rowspan]="getRowSpan('Priority',i)"-->
-<!--          [style.display]="getRowSpan('Priority', i) ? '' : 'none'"-->
-<!--      >{{element.nameOfTowns}} </td>-->
-<!--    </ng-container>-->
-
-<!--    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
-<!--    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-
-<!--</table>-->
-
-
-
-
-
-
 
 

@@ -1,5 +1,5 @@
   <div class="wrapper">
-    <h4 *ngIf="labelPosition == 'vykladka'">Tu vyber</h4>
+    <h4 *ngIf="labelPosition == 'vykladka'">{{'PACKAGES.tuVyber' | translate}}</h4>
     <div class="bednaWapper" *ngFor="let details of this.detailsArray; let index = index">
       <div *ngIf="isArray(details)">
         <div class="jedenBalik" *ngFor="let oneDetail of details; let indexik = index">
