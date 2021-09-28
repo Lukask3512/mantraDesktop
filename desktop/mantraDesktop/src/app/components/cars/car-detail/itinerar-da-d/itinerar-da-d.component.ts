@@ -122,34 +122,35 @@ export class ItinerarDaDComponent implements OnInit {
   stiahniDetail(){
     this.detail = [];
     this.address.forEach(oneAddress => {
-      var myPackages = [];
-      var detailAr = {detailArray: [], townsArray: [], packageId: []}
-      oneAddress.packagesId.forEach( oneId => {
-        if (oneAddress.type === 'nakladka'){
-          var balik = this.packageService.getOnePackage(oneId);
-          myPackages.push(balik);
+      if (oneAddress){
+        var myPackages = [];
+        var detailAr = {detailArray: [], townsArray: [], packageId: []}
+        oneAddress.packagesId.forEach( oneId => {
+          if (oneAddress.type === 'nakladka'){
+            var balik = this.packageService.getOnePackage(oneId);
+            myPackages.push(balik);
+          }else{
+            // u by som mal vlozit len indexy do vykladky
+            this.detail.forEach((oneDetail, townId) => {
+              if (oneDetail.townsArray === undefined){
+                oneDetail.forEach((oneDetailId, packageId) => {
+                  if (oneDetailId && oneDetailId.id === oneId){
+                    detailAr.detailArray.push(packageId);
+                    detailAr.townsArray.push(townId);
+                    detailAr.packageId.push(oneDetailId.id);
+                  }
+                });
+              }
+            });
+
+          }
+        });
+        if (myPackages.length !== 0){
+          this.detail.push(myPackages);
         }else{
-          // u by som mal vlozit len indexy do vykladky
-          this.detail.forEach((oneDetail, townId) => {
-            if (oneDetail.townsArray === undefined){
-              oneDetail.forEach((oneDetailId, packageId) => {
-                if (oneDetailId && oneDetailId.id === oneId){
-                  detailAr.detailArray.push(packageId);
-                  detailAr.townsArray.push(townId);
-                  detailAr.packageId.push(oneDetailId.id);
-                }
-              });
-            }
-          });
-
+          this.detail.push(detailAr);
         }
-      });
-      if (myPackages.length !== 0){
-        this.detail.push(myPackages);
-      }else{
-        this.detail.push(detailAr);
       }
-
     });
   }
 
@@ -183,6 +184,15 @@ export class ItinerarDaDComponent implements OnInit {
           }
         });
         this.car.itinerar = this.car.itinerar.filter(oneId => !indexAdries.includes(oneId));
+        var adresyKtoreMazem = this.address.filter(oneAddress => indexAdries.includes(oneAddress.id));
+        adresyKtoreMazem.forEach(oneAddress => {
+          oneAddress.packagesId.forEach(oneDetailId => {
+            const detail = this.car.aktualnyNaklad.find(oneId => oneId === oneDetailId);
+            if (detail){
+              this.car.aktualnyNaklad = this.car.aktualnyNaklad.filter(oneId => oneId !== detail);
+            }
+          });
+        });
         this.carService.updateCar(this.car, this.car.id);
         this.address = this.address.filter(oneAddress => !indexAdries.includes(oneAddress.id));
       }

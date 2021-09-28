@@ -35,8 +35,14 @@ export class WrapperComponent implements OnInit {
     this.dataService.changeRealRoute(route);
   }
 
-  myOffer(){
-
+  getClass(tab: string){
+    if (tab === 'all' && this.whatIsActive === 0){
+      return 'green';
+    }else if (tab === 'mine' && this.whatIsActive === 1){
+      return 'green';
+    }else if (tab === 'assigned' && this.whatIsActive === 2){
+      return 'green';
+    }
   }
 
   vymazatPonuku(route){

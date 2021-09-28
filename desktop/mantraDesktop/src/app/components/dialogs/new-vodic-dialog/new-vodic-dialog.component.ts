@@ -110,7 +110,7 @@ export class NewVodicDialogComponent implements OnInit {
       return true;
     }
 
-    if (this.vodic && car.vodici.includes(this.vodic.id)){
+    if (car.vodici && this.vodic && car.vodici.includes(this.vodic.id)){
       return true;
     }
 

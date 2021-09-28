@@ -11,13 +11,15 @@
 <body>
 
 
-<select (change)="changeLang($event.target.value)">
-  <option value="en" [selected]="lang == 'en'">English</option>
-  <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
-</select>
 
 <img class="alert" src="./assets/logo/mantralogin.png">
 
+<div class="floatRight">
+  <select  (change)="changeLang($event.target.value)">
+    <option value="en" [selected]="lang == 'en'">English</option>
+    <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
+  </select>
+</div>
 
 
 <div id="layoutAuthentication">
@@ -57,7 +59,7 @@
               </form>
               <div class="card-footer text-center">
                 <div class="small">
-                    <a href="https://drive.google.com/file/d/1dsT0UjL2uNmiETDyFmSy0TfboyzZy9AE/view?usp=sharing">
+                    <a href="https://drive.google.com/file/d/1BFBm5cQHkISrOxY800axmPMgJ36Ak4L0/view?usp=sharing">
                     Mobilná aplikácia
                     </a>
                 </div>

@@ -57,39 +57,42 @@ export class OneAddressInfoComponent implements OnInit {
     this.allAddresses.forEach((oneAddress, indexAddress) => {
       var myPackages = [];
       var detailAr = {detailArray: [], townsArray: [], packageId: []};
-      oneAddress.packagesId.forEach( oneId => {
-        if (oneAddress.type === 'nakladka'){
-          var balik = this.packageService.getOnePackage(oneId);
-          myPackages.push(balik);
-        }else{
-          //tu by som mal vlozit len indexy do vykladky
-          this.detail.forEach((oneDetail, townId) => {
-            if (oneDetail.townsArray === undefined){
-              oneDetail.forEach((oneDetailId, packageId) => {
-                if (oneDetailId && oneDetailId.id === oneId){
-                  detailAr.detailArray.push(packageId);
-                  detailAr.townsArray.push(townId);
-                  detailAr.packageId.push(oneDetailId.id);
-                }
-              });
-            }
-          });
+      if (oneAddress){
+        oneAddress.packagesId.forEach( oneId => {
+          if (oneAddress.type === 'nakladka'){
+            var balik = this.packageService.getOnePackage(oneId);
+            myPackages.push(balik);
+          }else{
+            //tu by som mal vlozit len indexy do vykladky
+            this.detail.forEach((oneDetail, townId) => {
+              if (oneDetail.townsArray === undefined){
+                oneDetail.forEach((oneDetailId, packageId) => {
+                  if (oneDetailId && oneDetailId.id === oneId){
+                    detailAr.detailArray.push(packageId);
+                    detailAr.townsArray.push(townId);
+                    detailAr.packageId.push(oneDetailId.id);
+                  }
+                });
+              }
+            });
 
-        }
-      });
-      if (myPackages.length !== 0){
-        if (this.detail[indexAddress]){
-          this.detail[indexAddress] = myPackages;
+          }
+        });
+        if (myPackages.length !== 0){
+          if (this.detail[indexAddress]){
+            this.detail[indexAddress] = myPackages;
+          }else{
+            this.detail.push(myPackages);
+          }
         }else{
-          this.detail.push(myPackages);
-        }
-      }else{
-        if (this.detail[indexAddress]){
-          this.detail[indexAddress] = detailAr;
-        }else{
-          this.detail.push(detailAr);
+          if (this.detail[indexAddress]){
+            this.detail[indexAddress] = detailAr;
+          }else{
+            this.detail.push(detailAr);
+          }
         }
       }
+
 
     });
   }

@@ -57,15 +57,15 @@ export class AddressService {
         let vsetkyDokoncene = true;
         for (const idAddress of route.addresses) {
           var adresa = await this.promiseForDownAdd(idAddress);
-
+          if (justFirstTime) {
+            setTimeout(() => {
+              this.checkFinishedAddresAndUpdateRouteOffer();
+              justFirstTime = false;
+            }, 2000);
+          }
         }
       }
-      if (justFirstTime) {
-      setTimeout(() => {
-        this.checkFinishedAddresAndUpdateRouteOffer();
-        justFirstTime = false;
-      }, 2000);
-      }
+
 
     });
   }

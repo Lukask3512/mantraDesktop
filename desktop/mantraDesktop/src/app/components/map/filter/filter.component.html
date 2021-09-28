@@ -1,38 +1,43 @@
-<mat-slide-toggle [disabled]="fewSecDisable" [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
+<div class="filterWrapper">
+  <mat-slide-toggle [disabled]="fewSecDisable" [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
+  <div class="detalWrapper" *ngIf="checked">
+    <section class="example-section">
+      <label class="example-margin">{{'FILTER.typVzialenosti' | translate}}</label>
+      <mat-radio-group (change)="filterOffers()" [disabled]="!checked" [(ngModel)]="typeDistance">
+        <mat-radio-button  class="example-margin" value="maxAll">
+          {{'FILTER.maximalnaVzialenostBodov' | translate}}
+        </mat-radio-button>
+        <mat-radio-button class="example-margin" value="maxFirst">
+          {{'FILTER.max1Bodu' | translate}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </section>
 
-  <section class="example-section">
-    <label class="example-margin">{{'FILTER.typVzialenosti' | translate}}</label>
-    <mat-radio-group (change)="filterOffers()" [disabled]="!checked" [(ngModel)]="typeDistance">
-      <mat-radio-button  class="example-margin" value="maxAll">
-        {{'FILTER.maximalnaVzialenostBodov' | translate}}
-      </mat-radio-button>
-      <mat-radio-button class="example-margin" value="maxFirst">
-        {{'FILTER.max1Bodu' | translate}}
-      </mat-radio-button>
-    </mat-radio-group>
-  </section>
+    <mat-form-field>
+      <mat-label> {{'FILTER.maxVzdialenost' | translate}}</mat-label>
+      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="maxDistance" type="number" placeholder="{{'FILTER.maxVzdialenost' | translate}}" class="example-right-align">
+      <span *ngIf="checked" matSuffix> km</span>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label> {{'FILTER.maxVzdialenost' | translate}}</mat-label>
-        <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="maxDistance" type="number" placeholder="{{'FILTER.maxVzdialenost' | translate}}" class="example-right-align">
-        <span *ngIf="checked" matSuffix> km</span>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{'FILTER.maxPrekrocenieVahy' | translate}}</mat-label>
+      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="weight" type="number" placeholder="{{'FILTER.maxPrekrocenieVahy' | translate}}..." class="example-right-align">
+      <span *ngIf="checked" matSuffix> %</span>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>{{'FILTER.maxPrekrocenieVahy' | translate}}</mat-label>
-    <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="weight" type="number" placeholder="{{'FILTER.maxPrekrocenieVahy' | translate}}..." class="example-right-align">
-    <span *ngIf="checked" matSuffix> %</span>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{'FILTER.maxPrekrocenieVelkosti' | translate}}</mat-label>
+      <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="size" type="number" placeholder="{{'FILTER.maxPrekrocenieVelkosti' | translate}}..." class="example-right-align">
+      <span *ngIf="checked" matSuffix> %</span>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>{{'FILTER.maxPrekrocenieVelkosti' | translate}}</mat-label>
-    <input [disabled]="!checked" (change)="filterOffers()" matInput [(ngModel)]="size" type="number" placeholder="{{'FILTER.maxPrekrocenieVelkosti' | translate}}..." class="example-right-align">
-    <span *ngIf="checked" matSuffix> %</span>
-  </mat-form-field>
+    <mat-checkbox [disabled]="!checked" [(ngModel)]="vyhovuje" color="primary" (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
+    <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" color="accent" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
+    <mat-checkbox [disabled]="!checked" [(ngModel)]="prekrocenie" color="warn" (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
 
-  <mat-checkbox [disabled]="!checked" [(ngModel)]="vyhovuje" color="primary" (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
-  <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" color="accent" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
-  <mat-checkbox [disabled]="!checked" [(ngModel)]="prekrocenie" color="warn" (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
+    <button [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
+  </div>
+</div>
 
-  <button [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
+
 

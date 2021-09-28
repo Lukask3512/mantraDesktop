@@ -17,18 +17,18 @@
     </div>
 
 
-    <div class="routeTown" (click)="sendTown(i)">
-      <p *ngIf="this.address[i]">{{this.address[i].nameOfTown}}
+    <div *ngIf="this.address[i]" class="routeTown" (click)="sendTown(i)">
+      <p>{{this.address[i].nameOfTown}}
         <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">N</span>
         <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">V</span>
       </p>
-      <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
+      <span  class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 
       <span *ngIf="this.address[i].estimatedTimeArrival">ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
 
-<!--      <img (click)="openAddDialogToDelete(this.address[i])" class="delete" src="assets/logo/delete.svg">-->
+      <img (click)="openAddDialogToDelete(this.address[i])" class="delete" src="assets/logo/delete.svg">
     </div>
-    <div class="routeTown routeInfo">
+    <div *ngIf="this.address[i]" class="routeTown routeInfo">
       <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
       <img (click)="openAddDialogToEditInfo(this.address[i])" class="delete" src="assets/logo/edit.svg">
     </div>

@@ -32,6 +32,8 @@ import {RouteService} from '../../../../services/route.service';
 })
 export class DetailComponent implements AfterViewInit {
 
+
+  displayedColumns: string[] = ['spolocnost', 'cena', 'potvrdit', 'zrusit'];
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
               private packageService: PackageService, private dialog: MatDialog, private router: Router,

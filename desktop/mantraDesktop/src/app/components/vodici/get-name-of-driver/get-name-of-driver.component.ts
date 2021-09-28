@@ -18,7 +18,9 @@ export class GetNameOfDriverComponent implements OnInit {
   ngOnInit(): void {
     if (this.car.driverInside){
       this.vodicService.allVodici$.subscribe(allVodici => {
-        this.vodic = allVodici.find(jedenVodic => jedenVodic.id === this.car.driverInside);
+        if (allVodici){
+          this.vodic = allVodici.find(jedenVodic => jedenVodic.id === this.car.driverInside);
+        }
       });
     }
   }

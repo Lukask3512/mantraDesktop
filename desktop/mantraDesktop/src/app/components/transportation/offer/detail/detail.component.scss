@@ -2,6 +2,19 @@
   display: flex;
 }
 
+.ponukaWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 3px;
+  margin-left: 3px;
+}
+
+.marginMid{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .map{
   width: 30%;
   height: auto;
@@ -20,3 +33,8 @@ li{
   display: flex;
   align-items: center;
 }
+
+td{
+  padding-left: 10px;
+}
+

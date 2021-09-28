@@ -28,12 +28,15 @@ export class OfferRouteService {
       let allKindTogether = res[0].concat(res[1], res[2]);
       this.routesForGet = allKindTogether;
       this.routesForGet.forEach(oneRoute => {
-        if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId){
-          this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+        if (!oneRoute.cancelByDriver && !oneRoute.cancelByCreator){
+          if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId){
+            this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+          }
+          if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === ''){
+            this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
+          }
         }
-        if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === ''){
-          this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
-        }
+
       });
       this._routes.next(allKindTogether);
     });
