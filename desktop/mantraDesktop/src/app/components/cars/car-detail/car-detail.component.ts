@@ -74,7 +74,7 @@ export class CarDetailComponent implements AfterViewInit {
       this.carService.cars$.subscribe(cars => {
         // @ts-ignore
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
-
+        this.child.notifyMe(this.myAddresses, this.car, this.routes);
       });
 
       var allAddresses: Address[];
@@ -135,7 +135,7 @@ export class CarDetailComponent implements AfterViewInit {
     // this.type = route.type;
     // this.status = route.status;
     // this.aboutRoute = route.aboutRoute;
-    this.child.notifyMe(this.myAddresses,this.car, this.routes);
+    this.child.notifyMe(this.myAddresses, this.car, this.routes);
     this.notifyChildren(this.routes.id);
 
   }

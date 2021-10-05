@@ -21,9 +21,10 @@
     </div>
 
     <div class="routeTown" (click)="sendTown(i)">
-      <p>{{this.address[i].nameOfTown}}
+      <p>
         <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
         <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        {{this.address[i].nameOfTown}}
       </p>
       <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 

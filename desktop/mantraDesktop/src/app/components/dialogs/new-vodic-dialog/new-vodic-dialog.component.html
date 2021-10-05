@@ -1,8 +1,8 @@
-<div >
+<mat-dialog-content class="wrapper">
   <h1 class="header">{{'VODIC.vodic' | translate}}</h1>
 
 
-  <mat-horizontal-stepper linear #stepper>
+  <mat-vertical-stepper #stepper>
 
     <mat-step>
       <ng-template matStepLabel>{{'VODIC.udajeO' | translate}}</ng-template>
@@ -61,8 +61,8 @@
             <th mat-header-cell *matHeaderCellDef> {{'CAR.pravaPreVodica' | translate}} </th>
             <td mat-cell *matCellDef="let element">
               <mat-checkbox [disabled]="checkForPhone(element)" (change)="catchChange(element.id)" [checked]="checkBox(element)"></mat-checkbox>
-              <span *ngIf="checkForPhoneNoAllCars(element)">{{'CAR.nemajuTelefoneCislo' | translate}}</span>
-              <span *ngIf="vsetcviVodiciMessage(element)">{{'HINT.kAutuVsetciVodici' | translate}}</span>
+              <span class="infoNoNumber" *ngIf="checkForPhoneNoAllCars(element)">{{'HINT.nemajuTelefoneCislo' | translate}}</span>
+              <span class="infoNoNumber" *ngIf="vsetcviVodiciMessage(element)">{{'HINT.kAutuVsetciVodici' | translate}}</span>
             </td>
           </ng-container>
 
@@ -72,7 +72,7 @@
       </div>
     </mat-step>
 
-  </mat-horizontal-stepper>
+  </mat-vertical-stepper>
 
-  <button [disabled]="!dispecerForm.valid" type="submit" class="example_c" (click)="updateVodic()">{{'OFTEN.potvrdit' | translate}}</button>
-</div>
+  <button [disabled]="!dispecerForm.valid" type="submit" class="addButton" (click)="updateVodic()">{{'OFTEN.potvrdit' | translate}}</button>
+</mat-dialog-content>

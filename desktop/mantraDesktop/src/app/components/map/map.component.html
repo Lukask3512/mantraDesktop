@@ -49,7 +49,8 @@
 
       <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
 
-      {{'MAP.vyberVozidlo' | translate}}
+      <h2>{{'MAP.vyberVozidlo' | translate}}</h2>
+
       <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
       <app-car-iti-detail (uspecnePriradenie)="otvorAuto($event)" (sendCarToPredpokad)="getPredpoklad($event)"></app-car-iti-detail>
     </div>

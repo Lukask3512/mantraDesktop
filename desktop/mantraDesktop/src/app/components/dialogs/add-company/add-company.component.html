@@ -1,8 +1,8 @@
-<div>
+<mat-dialog-content class="wrapper">
   <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addCompany' | translate}}</h1>
   <h1 *ngIf="this.data" class="header">{{'COMPANIES.updateCompany' | translate}}</h1>
   <form class="gridContainer" [formGroup]="companyForm">
-    <mat-horizontal-stepper linear>
+    <mat-vertical-stepper>
     <mat-step>
       <ng-template matStepLabel>{{'COMPANIES.aboutCompany' | translate}}</ng-template>
     <mat-form-field  appearance="standard" class="gridItem">
@@ -97,10 +97,10 @@
 
       </form>
     </mat-step>
-    </mat-horizontal-stepper>
+    </mat-vertical-stepper>
 
   </form>
-  <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">{{'OFTEN.add' | translate}}</button>
-  <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="example_c" [disabled]="checkFormsValid()">{{'OFTEN.update' | translate}}</button>
+  <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="buttonG" [disabled]="checkFormsValid()">{{'OFTEN.add' | translate}}</button>
+  <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="buttonG" [disabled]="checkFormsValid()">{{'OFTEN.update' | translate}}</button>
 
-</div>
+</mat-dialog-content>

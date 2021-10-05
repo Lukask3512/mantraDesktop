@@ -1,11 +1,11 @@
-<div >
-  <h1 *ngIf="!this.data" class="header">{{'OFTEN.add' | translate}} {{'CAR.car' | lowercase  | translate}}</h1>
-  <h1 *ngIf="this.data" class="header">{{'OFTEN.update' | translate}} {{'CAR.car' | lowercase | translate}}</h1>
+<mat-dialog-content class="wrapper">
+  <h1 *ngIf="!this.data" class="header">{{'OFTEN.add' | translate}} {{'CAR.car' | translate}}</h1>
+  <h1 *ngIf="this.data" class="header">{{'OFTEN.update' | translate}} {{'CAR.car' | translate}}</h1>
   <form class="gridContainer" [formGroup]="carForm">
 
-    <mat-horizontal-stepper linear #stepper>
+    <mat-vertical-stepper #stepper>
       <mat-step>
-        <ng-template matStepLabel>{{'CAR.ecv' | translate}}, {{'OFTEN.phone' | lowercase | translate}}</ng-template>
+        <ng-template matStepLabel>{{'CAR.ecv' | translate}}, {{'OFTEN.phone' | translate}}</ng-template>
         <div class="carsWrapper">
         <mat-form-field appearance="standard" class="gridItem">
           <mat-label>{{'CAR.ecv' | translate}}</mat-label>
@@ -284,10 +284,10 @@
           </table>
         </div>
       </mat-step>
-    </mat-horizontal-stepper>
+    </mat-vertical-stepper>
 
   </form>
   <button *ngIf="!this.data" (click)="saveCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.add' | translate}}</button>
   <button *ngIf="this.data" (click)="updateCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.update' | translate}}</button>
 
-</div>
+</mat-dialog-content>

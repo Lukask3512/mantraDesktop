@@ -1,0 +1,9 @@
+@import "./src/sccs/shared/mixins";
+
+.deleteOfferBut{
+  @include button(red)
+}
+
+.pridatPonuku{
+  @include button(lime)
+}

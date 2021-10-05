@@ -1,4 +1,14 @@
+@import "./src/sccs/shared/mixins";
+
 .inputWrapper{
   display: flex;
   flex-direction: column;
+}
+
+td{
+  padding-left: 8px;
+}
+
+.buttonG {
+  @include tableAddButton();
 }

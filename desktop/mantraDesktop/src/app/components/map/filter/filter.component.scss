@@ -1,5 +1,24 @@
 @import "./src/sccs/shared/mixins";
 
+
+
+    ::ng-deep .redMat .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+      background-color: red;
+
+
+    ::ng-deep .greenMat .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+      background-color: limegreen;
+
+    }
+
+
+    ::ng-deep .yellowMat .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+      background-color: yellow;
+
+    }
+
+}
+
 .example-container .mat-form-field + .mat-form-field {
   margin-left: 8px;
 }

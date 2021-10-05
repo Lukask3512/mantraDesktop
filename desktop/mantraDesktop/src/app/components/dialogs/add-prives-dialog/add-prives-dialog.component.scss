@@ -1,0 +1,9 @@
+@import "./src/sccs/shared/mixins";
+
+td{
+  padding-left: 8px;
+}
+
+.addButton{
+  @include tableAddButton();
+}

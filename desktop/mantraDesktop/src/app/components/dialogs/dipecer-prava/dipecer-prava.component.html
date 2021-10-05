@@ -2,7 +2,7 @@
   <h1 class="header">{{'DISPATCHER.dispatcher' | translate}}</h1>
 
 
-    <mat-horizontal-stepper linear #stepper>
+    <mat-vertical-stepper #stepper>
 
       <mat-step>
         <ng-template matStepLabel>{{'DISPATCHER.udajeODisp' | translate}}</ng-template>
@@ -92,7 +92,7 @@
         </div>
       </mat-step>
 
-    </mat-horizontal-stepper>
+    </mat-vertical-stepper>
 
-  <button [disabled]="!dispecerForm.valid" type="submit" class="example_c" (click)="updateDispecer()">{{'OFTEN.potvrdit' | translate}}</button>
+  <button [disabled]="!dispecerForm.valid" type="submit" class="buttonG" (click)="updateDispecer()">{{'OFTEN.potvrdit' | translate}}</button>
 </div>

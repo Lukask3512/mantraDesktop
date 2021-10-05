@@ -31,9 +31,9 @@
       <span *ngIf="checked" matSuffix> %</span>
     </mat-form-field>
 
-    <mat-checkbox [disabled]="!checked" [(ngModel)]="vyhovuje" color="primary" (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
-    <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" color="accent" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
-    <mat-checkbox [disabled]="!checked" [(ngModel)]="prekrocenie" color="warn" (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
+    <mat-checkbox class="greenMat" [disabled]="!checked" [(ngModel)]="vyhovuje"  (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
+    <mat-checkbox class="yellowMat" [disabled]="!checked" [(ngModel)]="povPre" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
+    <mat-checkbox class="redMat"  [disabled]="!checked" [(ngModel)]="prekrocenie"  (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
 
     <button [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
   </div>

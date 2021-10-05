@@ -70,6 +70,10 @@ p{
 
 }
 
+.button{
+  @include tableButton();
+}
+
 .buttonR:hover{
   background-color: #f44336;
   transition: 0.2s, 0.2s;

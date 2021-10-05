@@ -11,7 +11,8 @@
     </ng-template>
 
     <mat-panel-description *ngIf="this.labelPosition; else elseLabel">
-      {{this.labelPosition}} : {{infoAboutRoute}}
+      <span *ngIf="labelPosition === 'nakladka'">{{'CAR.nakladka' | translate}} : {{infoAboutRoute}}</span>
+      <span *ngIf="labelPosition === 'vykladka'">{{'CAR.vykladka' | translate}} : {{infoAboutRoute}}</span>
     </mat-panel-description>
 
     <ng-template #elseLabel>
@@ -21,18 +22,24 @@
     </ng-template>
   </mat-expansion-panel-header>
 
-  <app-adresses #childGoogle *ngIf="checkFinished()"  (placeName)="getAdress($event)"
-                (placeLat)="getLat($event)"
-                (placeLon)="getLon($event)">
-  </app-adresses>
+  <div class="velkosti">
+    <app-adresses #childGoogle *ngIf="checkFinished()"  (placeName)="getAdress($event)"
+                  (placeLat)="getLat($event)"
+                  (placeLon)="getLon($event)">
+    </app-adresses>
+  </div>
 
-  <mat-radio-group (change)="formUpdate()"  class="radioButtons" [(ngModel)]="labelPosition">
-    <mat-radio-button class="radios" value="nakladka">{{'CAR.nakladka' | translate}}</mat-radio-button>
-    <mat-radio-button class="radios" value="vykladka">{{'CAR.vykladka' | translate}}</mat-radio-button>
-  </mat-radio-group>
+  <div class="velkosti2">
+    <mat-radio-group (change)="formUpdate()"  class="radioButtons" [(ngModel)]="labelPosition">
+      <mat-radio-button class="radios" value="nakladka">{{'CAR.nakladka' | translate}}</mat-radio-button>
+      <mat-radio-button class="radios" value="vykladka">{{'CAR.vykladka' | translate}}</mat-radio-button>
+    </mat-radio-group>
+  </div>
 
+  <div class="velkosti">
+    <input class="form-control" placeholder="{{'NEWADDRESSFORM.pridajPoznamku' | translate}}..." type="text" [(ngModel)]="infoAboutRoute">
+  </div>
 
-  <input class="form-control" placeholder="{{'NEWADDRESSFORM.pridajPoznamku' | translate}}..." type="text" [(ngModel)]="infoAboutRoute">
 
 </mat-expansion-panel>
 
@@ -49,7 +56,7 @@
       <mat-panel-description>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="dateAlone">
+    <div class="dateAlone velkosti">
       <h2> {{'HINT.datum' | translate}}</h2>
       <mat-radio-group [(ngModel)]="datumPrichodu">
         <mat-radio-button class="radios" value="nerozhoduje">{{'OFTEN.nerozhoduje' | translate}}</mat-radio-button>
@@ -67,7 +74,7 @@
       </mat-form-field>
     </div>
 
-    <div class="dateAlone">
+    <div class="dateAlone velkosti2">
       <h2>{{'OFFER.cas' | translate}}</h2>
       <mat-radio-group [(ngModel)]="casPrichodu">
         <mat-radio-button class="radios" value="nerozhoduje">{{'OFTEN.nerozhoduje' | translate}}</mat-radio-button>
@@ -75,12 +82,12 @@
       </mat-radio-group>
 
       <div [formGroup]="dateRange" *ngIf="casPrichodu == 'rozhoduje'">
-        <mat-form-field  class="sizeInput">
+        <mat-form-field >
           <mat-label>{{'TRANSPORT.timeFrom' | translate}}</mat-label>
           <input formControlName="timeFrom" matInput type="time">
         </mat-form-field>
 
-        <mat-form-field class="sizeInput">
+        <mat-form-field >
           <mat-label>{{'TRANSPORT.timeTo' | translate}}</mat-label>
           <input matInput type="time" formControlName="timeTo">
         </mat-form-field>
@@ -88,7 +95,8 @@
     </div>
 
 
-    <div class="dateAlone">
+    <div class="dateAlone velkosti">
+      <h2>{{'TRANSPORT.obsluznyCas'| translate}}</h2>
       <mat-form-field [formGroup]="dateRange" appearance="standard" >
         <mat-label>{{'TRANSPORT.obsluznyCas' | translate}}</mat-label>
         <input min="0" type="number" matInput placeholder="{{'NEWADDRESSFORM.pocetHodin' | translate}}...." formControlName="obsluznyCas">
@@ -107,33 +115,40 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="oneGroup" [formGroup]="specForm">
-      <mat-slide-toggle formControlName="teplota"
-                        class="gridItem gridItemStart">
-        {{'CAR.teplotnyRezim' | translate}}
-      </mat-slide-toggle>
+      <div class="velkosti">
+          <mat-slide-toggle formControlName="teplota"
+                            class="gridItem gridItemStart">
+            {{'CAR.teplotnyRezim' | translate}}
+          </mat-slide-toggle>
 
-      <div *ngIf="this.specForm.get('teplota').value">
-        <mat-form-field  appearance="standard" class="gridItem">
-          <mat-label> {{'NEWADDRESSFORM.potrebnaTeplota' | translate}}</mat-label>
-          <input formControlName="potrebnaTeplota" type="number" step="1" matInput placeholder="{{'HINT.teplota' | translate}}...">
-          <span matSuffix> C </span>
-          <mat-hint>{{'HINT.vStupnochC' | translate}}</mat-hint>
-        </mat-form-field>
+          <div *ngIf="this.specForm.get('teplota').value">
+            <mat-form-field  appearance="standard" class="gridItem">
+              <mat-label> {{'NEWADDRESSFORM.potrebnaTeplota' | translate}}</mat-label>
+              <input formControlName="potrebnaTeplota" type="number" step="1" matInput placeholder="{{'HINT.teplota' | translate}}...">
+              <span matSuffix> C </span>
+              <mat-hint>{{'HINT.vStupnochC' | translate}}</mat-hint>
+            </mat-form-field>
+          </div>
       </div>
 
-      <mat-slide-toggle formControlName="ruka"
-                        class="gridItem gridItemStart">
-        {{'CAR.hydraulickaruka' | translate}}
-      </mat-slide-toggle>
+      <div class="velkosti2">
+        <mat-slide-toggle formControlName="ruka"
+                          class="gridItem gridItemStart">
+          {{'CAR.hydraulickaruka' | translate}}
+        </mat-slide-toggle>
+      </div>
 
-      <mat-slide-toggle formControlName="adr"
-                        class="gridItem gridItemStart">
-        {{'CAR.adr' | translate}}
-        <mat-icon class="material-icons" matSuffix
-                  matTooltip="{{'CAR.prevozRizikovehoTovaru' | translate}}">
-          info
-        </mat-icon>
-      </mat-slide-toggle>
+      <div class="velkosti">
+        <mat-slide-toggle formControlName="adr"
+                          class="gridItem gridItemStart">
+          {{'CAR.adr' | translate}}
+          <mat-icon class="material-icons" matSuffix
+                    matTooltip="{{'HINT.prevozRizikovehoTovaru' | translate}}">
+            info
+          </mat-icon>
+        </mat-slide-toggle>
+      </div>
+
     </div>
   </mat-expansion-panel>
 
@@ -152,8 +167,9 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="formAndBedna">
+      <div class="velkosti2">
 
-      <h4>{{'NEWADDRESSFORM.pocetKusov' | translate}}</h4>
+      <h4 class="boldFont">{{'NEWADDRESSFORM.pocetKusov' | translate}}</h4>
 
       <div *ngIf="this.lastAddedPackage && labelPosition == 'nakladka'" class="lastAdded">
         <p>{{'NEWADDRESSFORM.poslednePridanyBalik' | translate}}: </p>
@@ -163,94 +179,106 @@
         <span class="dlzka">{{this.lastAddedPackage.sizeD}}</span>
       </div>
 
-      <mat-form-field appearance="standard" >
-        <mat-label>{{'NEWADDRESSFORM.pocetKusov' | translate}}</mat-label>
-        <input (change)="sizeUpdate()" [(ngModel)]="numberOfItems" min="1" type="number" matInput placeholder="{{'NEWADDRESSFORM.pocet' | translate}}....">
-        <span matSuffix> {{'HINT.skratkaKs' | translate}} </span>
-        <mat-hint>{{'NEWADDRESSFORM.pocet' | translate}}</mat-hint>
-      </mat-form-field>
+        <mat-form-field appearance="standard" >
+          <mat-label>{{'NEWADDRESSFORM.pocetKusov' | translate}}</mat-label>
+          <input (change)="sizeUpdate()" [(ngModel)]="numberOfItems" min="1" type="number" matInput placeholder="{{'NEWADDRESSFORM.pocet' | translate}}....">
+          <span matSuffix> {{'HINT.skratkaKs' | translate}} </span>
+          <mat-hint>{{'NEWADDRESSFORM.pocet' | translate}}</mat-hint>
+        </mat-form-field>
 
+      </div>
 
-
-      <p>{{'NEWADDRESSFORM.parametre' | translate}} {{actualItemInForm + 1}} z {{numberOfItems}}</p>
 
       <form  class="detailFormular" [formGroup]="transportForm" #detailForm="ngForm">
         <div class="size">
-          <mat-form-field (change)="upravBednu()" appearance="standard" class="sizeInput">
-            <mat-label>{{'CAR.sirkaVozidla' | translate}}</mat-label>
-            <input formControlName="sizeS" type="number" step="0.1" matInput placeholder="{{'CAR.sirkaVozidla' | translate}}....">
-            <span matSuffix> m </span>
-            <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
-          </mat-form-field>
+          <div class="velkosti">
+            <p class="boldFont">{{'NEWADDRESSFORM.parametre' | translate}} {{actualItemInForm + 1}} z {{numberOfItems}}</p>
 
-          <mat-form-field (change)="upravBednu()" appearance="standard" class="sizeInput">
-            <mat-label>{{'CAR.vyskaVozidla' | translate}}</mat-label>
-            <input formControlName="sizeV" type="number" step="0.1" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}....">
-            <span matSuffix> m </span>
-            <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
-          </mat-form-field>
+            <mat-form-field (change)="upravBednu()" appearance="standard" class="sizeInput">
+              <mat-label>{{'PACKAGES.sirka' | translate}}</mat-label>
+              <input formControlName="sizeS" type="number" step="0.1" matInput placeholder="{{'PACKAGES.sirka' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
+            </mat-form-field>
 
-          <mat-form-field (change)="upravBednu()" appearance="standard" class="sizeInput">
-            <mat-label>{{'CAR.dlzkaVozidla' | translate}}</mat-label>
-            <input formControlName="sizeD" type="number" step="0.1" matInput placeholder="{{'CAR.dlzkaVozidla' | translate}}....">
-            <span matSuffix> m </span>
-            <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
-          </mat-form-field>
+            <mat-form-field (change)="upravBednu()" appearance="standard" class="sizeInput">
+              <mat-label>{{'PACKAGES.vyska' | translate}}</mat-label>
+              <input formControlName="sizeV" type="number" step="0.1" matInput placeholder="{{'PACKAGES.vyska' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
+            </mat-form-field>
 
-          <h4>{{'PACKAGES.vaha' | translate}}</h4>
+            <mat-form-field (change)="upravBednu()" appearance="standard" class="sizeInput">
+              <mat-label>{{'PACKAGES.dlzka' | translate}}</mat-label>
+              <input formControlName="sizeD" type="number" step="0.1" matInput placeholder="{{'PACKAGES.dlzka' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
+            </mat-form-field>
 
-          <mat-form-field (change)="upravSipku()" appearance="standard" class="sizeInput">
-            <mat-label>{{'PACKAGES.vaha' | translate}}</mat-label>
-            <input type="number" formControlName="weight" step="0.1" matInput placeholder="{{'PACKAGES.vaha' | translate}}....">
-            <span matSuffix> t </span>
-            <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
-          </mat-form-field>
+            <!--          <h4>{{'PACKAGES.vaha' | translate}}</h4>-->
 
-          <h4>{{'NEWADDRESSFORM.polohaNakladania' | translate}}</h4>
-
-          <mat-radio-group formControlName="poziciaNakladania">
-            <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="nerozhoduje">{{'OFTEN.nerozhoduje' | translate}}</mat-radio-button>
-            <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="rozhoduje">{{'OFTEN.rozhoduje' | translate}}</mat-radio-button>
-          </mat-radio-group>
-
-          <div  *ngIf="this.transportForm.get('poziciaNakladania').value == 'rozhoduje'">
-            <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromBackSide">{{'CAR.nalozenieZoZadu' | translate}}</mat-checkbox>
-            <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromSide">{{'CAR.nalozenieZBoku' | translate}}</mat-checkbox>
-            <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromUpSide">{{'CAR.nalozenieZVrchu' | translate}}</mat-checkbox>
+            <mat-form-field (change)="upravSipku()" appearance="standard" class="sizeInput">
+              <mat-label>{{'PACKAGES.vaha' | translate}}</mat-label>
+              <input type="number" formControlName="weight" step="0.1" matInput placeholder="{{'PACKAGES.vaha' | translate}}....">
+              <span matSuffix> t </span>
+              <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
+            </mat-form-field>
           </div>
 
-          <h4>{{'NEWADDRESSFORM.pozadovanaVyskaHrany' | translate}}</h4>
+          <div class="velkosti2">
+            <h4 class="boldFont">{{'NEWADDRESSFORM.polohaNakladania' | translate}}</h4>
 
-          <mat-radio-group formControlName="vyskaHrany">
-            <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="nerozhoduje">{{'OFTEN.nerozhoduje' | translate}}</mat-radio-button>
-            <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="rozhoduje">{{'OFTEN.rozhoduje' | translate}}</mat-radio-button>
-          </mat-radio-group>
+            <mat-radio-group formControlName="poziciaNakladania">
+              <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="nerozhoduje">{{'OFTEN.nerozhoduje' | translate}}</mat-radio-button>
+              <mat-radio-button (change)="updateFormPosition()" class="example-margin" value="rozhoduje">{{'OFTEN.rozhoduje' | translate}}</mat-radio-button>
+            </mat-radio-group>
 
-          <mat-form-field *ngIf="this.transportForm.get('vyskaHrany').value == 'rozhoduje'" appearance="standard" class="sizeInput">
-            <mat-label>{{'CAR.vyskaHrany' | translate}}</mat-label>
-            <input type="number"  min="0" step="0.1" formControlName="vyskaHranySize" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}....">
-            <span matSuffix> m </span>
-            <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
-          </mat-form-field>
+            <div  *ngIf="this.transportForm.get('poziciaNakladania').value == 'rozhoduje'">
+              <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromBackSide">{{'CAR.nalozenieZoZadu' | translate}}</mat-checkbox>
+              <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromSide">{{'CAR.nalozenieZBoku' | translate}}</mat-checkbox>
+              <mat-checkbox (change)="updateMatLabelForm()" formControlName="fromUpSide">{{'CAR.nalozenieZVrchu' | translate}}</mat-checkbox>
+            </div>
+          </div>
 
-          <h4>{{'PACKAGES.stohovatelnost' | translate}}</h4>
+          <div class="velkosti">
+            <h4 class="boldFont">{{'NEWADDRESSFORM.pozadovanaVyskaHrany' | translate}}</h4>
 
-          <mat-radio-group formControlName="stohovatelnost">
-            <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="nie">{{'OFTEN.nie' | translate}}</mat-radio-button>
-            <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="ano">{{'OFTEN.ano' | translate}}</mat-radio-button>
-          </mat-radio-group>
+            <mat-radio-group formControlName="vyskaHrany">
+              <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="nerozhoduje">{{'OFTEN.nerozhoduje' | translate}}</mat-radio-button>
+              <mat-radio-button (change)="updateValidFormHrana()"  class="example-margin" value="rozhoduje">{{'OFTEN.rozhoduje' | translate}}</mat-radio-button>
+            </mat-radio-group>
 
-          <mat-form-field *ngIf="this.transportForm.get('stohovatelnost').value == 'ano'" appearance="standard" class="sizeInput">
-            <mat-label>{{'NEWADDRESSFORM.maximalnaNosnost' | translate}}</mat-label>
-            <input type="number"  min="0" step="0.1" formControlName="stohoSize" matInput placeholder="{{'PACKAGES.vaha' | translate}}....">
-            <span matSuffix> t </span>
-            <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
-          </mat-form-field>
+            <mat-form-field *ngIf="this.transportForm.get('vyskaHrany').value == 'rozhoduje'" appearance="standard" class="sizeInput">
+              <mat-label>{{'CAR.vyskaHrany' | translate}}</mat-label>
+              <input type="number"  min="0" step="0.1" formControlName="vyskaHranySize" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}....">
+              <span matSuffix> m </span>
+              <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
+            </mat-form-field>
+          </div>
 
-          <button [disabled]="this.checkIfCanSKipToPrevious()" (click)="previousItem()">{{'NEWADDRESSFORM.spat' | translate}}</button>
-          <button [disabled]="this.checkIfCanSKipToNext()" (click)="nextItem()">{{'NEWADDRESSFORM.dalej' | translate}}</button>
+
+          <div class="velkosti2">
+            <h4 class="boldFont">{{'PACKAGES.stohovatelnost' | translate}}</h4>
+
+            <mat-radio-group formControlName="stohovatelnost">
+              <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="nie">{{'OFTEN.nie' | translate}}</mat-radio-button>
+              <mat-radio-button (change)="updateFormStoho()"  class="example-margin" value="ano">{{'OFTEN.ano' | translate}}</mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field *ngIf="this.transportForm.get('stohovatelnost').value == 'ano'" appearance="standard" class="sizeInput">
+              <mat-label>{{'NEWADDRESSFORM.maximalnaNosnost' | translate}}</mat-label>
+              <input type="number"  min="0" step="0.1" formControlName="stohoSize" matInput placeholder="{{'PACKAGES.vaha' | translate}}....">
+              <span matSuffix> t </span>
+              <mat-hint>{{'HINT.vTonach' | translate}}</mat-hint>
+            </mat-form-field>
+          </div>
+
+
 
         </div>
+        <button class="nextBack" [disabled]="this.checkIfCanSKipToPrevious()" (click)="previousItem()">{{'NEWADDRESSFORM.spat' | translate}}</button>
+        <button class="nextBack" [disabled]="this.checkIfCanSKipToNext()" (click)="nextItem()">{{'NEWADDRESSFORM.dalej' | translate}}</button>
+
 
       </form>
 

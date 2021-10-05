@@ -1,0 +1,13 @@
+@import "./src/sccs/shared/mixins";
+
+td{
+  padding-left: 8px;
+}
+
+.infoNoNumber{
+  margin-left: 5px;
+}
+
+.addButton{
+  @include tableAddButton();
+}

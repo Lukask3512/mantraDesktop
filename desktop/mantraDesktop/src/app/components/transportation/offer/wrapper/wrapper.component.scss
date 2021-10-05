@@ -1,3 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
 .oneRoute{
   //background-image: linear-gradient(to right, rgba(0,0,0,0) ,rgba(128,128,128,0.3), rgba(0,0,0,0));
   border-bottom: 2px solid gray;
@@ -14,8 +16,18 @@
 
 .green{
   background: lime;
+  color: white;
 }
 
+.buttonTab{
+  @include buttonNoColor();
+  margin: 10px;
+}
+
+.buttonChoose{
+  display: flex;
+  justify-content: center;
+}
 
 
 .oneRoute:hover{

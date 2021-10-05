@@ -1,8 +1,14 @@
+@import "./src/sccs/shared/mixins";
+
 .chooseCar{
   overflow: auto;
   white-space: nowrap;
 }
 
+.carButton{
+  @include buttonNoColor();
+  margin: 7px;
+}
 
 //farby
 .greenCol {

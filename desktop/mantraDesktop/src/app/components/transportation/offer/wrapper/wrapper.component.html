@@ -1,8 +1,11 @@
 
 <div class="wrapper">
-  <button [class]="getClass('all')" (click)="allActive()"> {{'OFFER.aktivne' | translate}}</button>
-  <button [class]="getClass('mine')" (click)="mine()">{{'OFFER.moje' | translate}}</button>
-  <button [class]="getClass('assigned')" (click)="assigned()">{{'OFFER.prihlaseny' | translate}}</button>
+  <div class="buttonChoose">
+    <button class="buttonTab" [class]="getClass('all')" (click)="allActive()"> {{'OFFER.aktivne' | translate}}</button>
+    <button class="buttonTab" [class]="getClass('mine')" (click)="mine()">{{'OFFER.moje' | translate}}</button>
+    <button class="buttonTab" [class]="getClass('assigned')" (click)="assigned()">{{'OFFER.prihlaseny' | translate}}</button>
+  </div>
+
 
   <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
 

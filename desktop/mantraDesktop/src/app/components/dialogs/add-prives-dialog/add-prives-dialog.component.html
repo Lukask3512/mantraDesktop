@@ -1,8 +1,8 @@
-<div >
+<mat-dialog-content class="wrapper">
   <h1 class="header">{{'PRIVES.addPrives' | translate}}</h1>
   <form class="gridContainer" [formGroup]="privesForm">
 
-    <mat-horizontal-stepper linear #stepper>
+    <mat-vertical-stepper #stepper>
       <mat-step>
         <ng-template matStepLabel>{{'CAR.ecv' | translate}}</ng-template>
         <mat-form-field appearance="standard" class="gridItem">
@@ -186,9 +186,9 @@
         </div>
       </mat-step>
 
-    </mat-horizontal-stepper>
+    </mat-vertical-stepper>
 
   </form>
 
-  <button (click)="savePrives()" type="submit" class="example_c" [disabled]="!privesForm.valid">{{'OFTEN.add' | translate}}</button>
-</div>
+  <button (click)="savePrives()" type="submit" class="addButton" [disabled]="!privesForm.valid">{{'OFTEN.add' | translate}}</button>
+</mat-dialog-content>

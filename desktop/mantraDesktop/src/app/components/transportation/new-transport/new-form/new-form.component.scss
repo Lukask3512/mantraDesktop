@@ -1,10 +1,10 @@
+@import "./src/sccs/shared/mixins";
+
 .radios{
   margin-left: 5px;
 }
 
 .oneGroup{
-  border: 2px solid;
-  border-radius: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,17 +31,71 @@
 .vyska{
   position: absolute;
   top: 60px;
-  right: 30px;
+  right: 55px;
 }
 
 .sirka{
   position: absolute;
-  right: 50px;
+  right: 73px;
   bottom: -4px;
 }
 
 .dlzka{
   position: absolute;
-  left: 45px;
+  left: 65px;
   bottom: -5px;
+}
+
+.sizeInput{
+  width: 8em;
+  margin: {
+    left: 5px;
+    top: 5px;
+  }
+}
+
+.nextBack{
+  @include smallButton(#343a40)
+}
+
+.buttonG{
+  @include buttonNoColor();
+  background-color: lime;
+  color: white;
+}
+
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.addButton{
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.radioButtons{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.velkosti{
+  background-color: rgb(240, 240, 240);
+  border-radius: 8px;
+  margin-bottom: 5px;
+  padding: 7px;
+}
+
+.velkosti2{
+  background-color: rgb(210, 210, 210);
+  border-radius: 8px;
+  margin-bottom: 5px;
+  padding: 7px;
+}
+
+.boldFont{
+  font-weight: 500;
 }

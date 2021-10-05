@@ -1,6 +1,6 @@
 
 <div *ngIf="offer" class="example-container">
-  <h2>{{'OFFER.ponuka' | translate}} <button (click)="openAllDetailDialog()">{{'OFFER.podrobneInfo' | translate}}</button></h2>
+  <button class="detailBut" (click)="openAllDetailDialog()">{{'OFFER.ponuka' | translate}}</button>
   <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">
     {{'OFTEN.vyzaduje' | translate}}:
     <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">{{'CAR.adr' | translate}}</h3>
@@ -160,7 +160,7 @@
     <button [disabled]="offer.adresyVPonuke.length > 0" (click)="priraditVozidlu()">{{'OFTEN.priradit' | translate}}</button>
   </div>
 
-  <h3>{{'OFTEN.povodnaVzdusnaVzialenost' | translate}} {{this.distanceOfIti}}km</h3>
-  <h3>{{'OFTEN.novaVzdialenost' | translate}} {{this.countDistanceOfItinerarWithOffer()}}km</h3>
-  <h3>{{'OFTEN.rozdiel' | translate}} {{this.countDistanceOfItinerarWithOffer() - this.distanceOfIti}}km</h3>
+  <h3>{{'OFFER.povodnaVzdusnaVzialenost' | translate}} {{this.distanceOfIti}}km</h3>
+  <h3>{{'OFFER.novaVzdialenost' | translate}} {{this.countDistanceOfItinerarWithOffer()}}km</h3>
+  <h3>{{'OFFER.rozdiel' | translate}} {{this.countDistanceOfItinerarWithOffer() - this.distanceOfIti}}km</h3>
 </div>

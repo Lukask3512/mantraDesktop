@@ -11,6 +11,18 @@
   color: white;
 }
 
+@mixin buttonNoColor(){
+  padding: {
+    top: 12px;
+    bottom: 12px;
+    left: 20px;
+    right: 20px;
+  };
+  border-radius: 5px;
+  border: none;
+  //color: white;
+}
+
 @mixin smallButton($color){
   background: $color;
   padding: {

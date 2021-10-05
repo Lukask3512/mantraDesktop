@@ -1,3 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
 .gridContainer{
   display: grid;
   grid-template-columns: auto auto auto;
@@ -56,4 +58,9 @@ button[disabled]{
   background-color: #8d8d8d;
   cursor: default;
 }
+
+td{
+  padding-left: 8px;
+}
+
 

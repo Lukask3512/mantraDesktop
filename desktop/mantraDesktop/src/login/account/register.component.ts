@@ -4,14 +4,15 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {take} from 'rxjs/operators';
 
 import { AccountService } from 'src/login/_services/account.service';
-import {DispecerService} from "../../app/services/dispecer.service";
-import {DataService} from "../../app/data/data.service";
-import Dispecer from "../../app/models/Dispecer";
+import {DispecerService} from '../../app/services/dispecer.service';
+import {DataService} from '../../app/data/data.service';
+import Dispecer from '../../app/models/Dispecer';
 import {GetOneCompanyService} from '../../app/services/companies/get-one-company.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {EmailService} from '../../app/services/email/email.service';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 import {TranslateService} from '@ngx-translate/core';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-register',
@@ -56,11 +57,25 @@ export class RegisterComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private emailService: EmailService,
     private spinner: NgxSpinnerService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private cookieService: CookieService,
   ) { }
 
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'en';
+    this.deleteAllCookies();
+  }
+
+  deleteAllCookies() {
+    this.cookieService.deleteAll();
+    let cookies = document.cookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+      let cookie = cookies[i];
+      let eqPos = cookie.indexOf('=');
+      let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    }
   }
 
   changeLang(lang){
@@ -73,7 +88,7 @@ export class RegisterComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   loginOnEnter(event: Event){
-    console.log("som v logine on enter")
+    console.log('som v logine on enter');
     event.preventDefault();
     this.login();
   }

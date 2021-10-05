@@ -1,8 +1,10 @@
 
 
 <div *ngIf="allActiveRoutes" class="wrapper">
+  <div class="repetRoute">
+    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
+  </div>
 
-  <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG  ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
 
 
   <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>

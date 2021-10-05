@@ -1,0 +1,6 @@
+@import "./src/sccs/shared/mixins";
+
+
+.buttonG {
+  @include tableAddButton();
+}

@@ -30,7 +30,6 @@ export class FilterComponent implements OnInit {
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
 
-
   ngOnInit(): void {
     setTimeout(() => {
       this.fewSecDisable = false;
