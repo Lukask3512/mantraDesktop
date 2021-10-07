@@ -6,6 +6,8 @@
   width: 100%;
   overflow: hidden;
 }
+
+
 .sideBar{
   //float: left;
   height: 100%;
@@ -31,6 +33,7 @@
   }
   .wrapper{
     margin-left: 0;
+    overflow: initial;
   }
 }
 

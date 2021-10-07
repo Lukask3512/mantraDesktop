@@ -22,28 +22,13 @@ import {CookieService} from 'ngx-cookie-service';
 export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
-  // email: string;
-  // password: string;
-
   isLinear = false;
-
-
   user: Dispecer;
-
   loginForm = this.formBuilder.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
 
   });
-
-
-  // siteLanguage: string = 'English';
-  // siteLocale: string;
-  // languageList = [
-  //   { code: 'en', label: 'English' },
-  //   { code: 'fr', label: 'Français' },
-  //   { code: 'de', label: 'Deutsch' }
-  // ];
   lang;
 
   constructor(
@@ -87,10 +72,11 @@ export class RegisterComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-  loginOnEnter(event: Event){
-    console.log('som v logine on enter');
-    event.preventDefault();
-    this.login();
+  loginOnEnter(event){
+    if (event.keyCode === 13){
+      event.preventDefault();
+      this.login();
+    }
   }
 
   login() {

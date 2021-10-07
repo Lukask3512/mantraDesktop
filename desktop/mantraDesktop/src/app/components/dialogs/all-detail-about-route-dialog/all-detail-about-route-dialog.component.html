@@ -7,7 +7,8 @@
           {{address.nameOfTown}}
         </mat-panel-title>
         <mat-panel-description>
-          {{address.type}}
+          <span *ngIf="address.type === 'nakladka'">{{'CAR.nakladka' | translate}}</span>
+          <span *ngIf="address.type === 'vykladka'">{{'CAR.vykladka' | translate}}</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       {{'PACKAGES.packages' | translate}}:
@@ -28,17 +29,17 @@
 
       <p *ngIf="address.ruka">{{'PACKAGES.potHydRuka' | translate}}</p>
       <p *ngIf="address.adr">{{'PACKAGES.potAdr' | translate}}</p>
-      <p>{{'TRANSPORT.obsluznyCas' | translate}}: {{address.obsluznyCas}} {{'HINT.hodin' | lowercase | translate}}</p>
-      <p *ngIf="address.datumPrijazdu != '0'; else elseDatumOd">{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}} {{address.datumPrijazdu}}</p>
+      <p>{{'TRANSPORT.obsluznyCas' | translate}}: {{address.obsluznyCas}} {{'HINT.hodin' | translate}}</p>
+      <p *ngIf="address.datumPrijazdu != '0'; else elseDatumOd">{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | translate}} {{address.datumPrijazdu}}</p>
       <ng-template #elseDatumOd>
-        <p>{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | translate}}</p>
+        <p>{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od'  | translate}}: {{'OFTEN.nerozhoduje' | translate}}</p>
       </ng-template>
-      <p *ngIf="address.datumLastPrijazdy != '0'; else elseDatumDo">{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.do' | lowercase | translate}}{{address.datumLastPrijazdy}}</p>
-      <ng-template #elseDatumDo><p>{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | lowercase | translate}}</p></ng-template>
-      <p  *ngIf="address.casPrijazdu != '0'; else elseCasOd">{{'TRANSPORT.casPrijazdu' | translate}}{{'HINT.od' | lowercase | translate}} {{address.casPrijazdu}}</p>
-      <ng-template #elseCasOd><p>{{'TRANSPORT.casPrijazdu' | translate}} {{'HINT.od' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | lowercase | translate}}</p></ng-template>
-      <p  *ngIf="address.casLastPrijazdu != '0'; else elseCasDo">{{'TRANSPORT.casPrijazdu' | translate}}{{'HINT.od' | lowercase | translate}} {{address.casLastPrijazdu}}</p>
-      <ng-template #elseCasDo><p>{{'TRANSPORT.casPrijazdu' | translate}} {{'HINT.do' | lowercase | translate}}: {{'OFTEN.nerozhoduje' | lowercase | translate}}</p></ng-template>
+      <p *ngIf="address.datumLastPrijazdy != '0'; else elseDatumDo">{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.do' | translate}}{{address.datumLastPrijazdy}}</p>
+      <ng-template #elseDatumDo><p>{{'TRANSPORT.datumPrijazdu' | translate}} {{'HINT.od' | translate}}: {{'OFTEN.nerozhoduje' | translate}}</p></ng-template>
+      <p  *ngIf="address.casPrijazdu != '0'; else elseCasOd">{{'TRANSPORT.casPrijazdu' | translate}}{{'HINT.od' | translate}} {{address.casPrijazdu}}</p>
+      <ng-template #elseCasOd><p>{{'TRANSPORT.casPrijazdu' | translate}} {{'HINT.od' | translate}}: {{'OFTEN.nerozhoduje' | translate}}</p></ng-template>
+      <p  *ngIf="address.casLastPrijazdu != '0'; else elseCasDo">{{'TRANSPORT.casPrijazdu' | translate}}{{'HINT.od' | translate}} {{address.casLastPrijazdu}}</p>
+      <ng-template #elseCasDo><p>{{'TRANSPORT.casPrijazdu' | translate}} {{'HINT.do' | translate}}: {{'OFTEN.nerozhoduje'| translate}}</p></ng-template>
       <p>{{address.teplota}}</p>
       <p></p>
     </mat-expansion-panel>

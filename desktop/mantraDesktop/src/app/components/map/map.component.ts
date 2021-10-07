@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 
@@ -143,6 +143,14 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
+  @ViewChild('infoElement')
+  private infoDivElement: ElementRef;
+
+  @ViewChild('filterElement')
+  private filterElement: ElementRef;
+
+
+
   @ViewChild(CarItiDetailComponent)
   private carIti: CarItiDetailComponent;
 
@@ -234,6 +242,19 @@ export class MapComponent implements AfterViewInit {
 
     this.countDistance([48.920836, 19.180706], [48.920779, 19.180593]);
   }
+
+  scrollToInfo(){
+    setTimeout(() => {
+      this.infoDivElement.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    }, 150);
+  }
+
+  scrollToUp(){
+    setTimeout(() => {
+      this.filterElement.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    }, 100);
+  }
+
 // ak kliknem na auto
   onClickFindInfo(id){
     this.carToShow = this.carsWithItinerar.find(car => car.id === id);
@@ -243,6 +264,7 @@ export class MapComponent implements AfterViewInit {
       // @ts-ignore
       this.dragComponent.setAddresses(this.carToShow.itiAdresy);
     }, 100);
+    this.scrollToInfo();
   }
 
   // ak kliknem na adresu
@@ -259,6 +281,7 @@ export class MapComponent implements AfterViewInit {
     setTimeout(() => {
       this.dragComponent.setAddresses(this.routesToShow);
     }, 100);
+    this.scrollToInfo();
   }
 
   // ak kliknem na ponuku
@@ -271,16 +294,11 @@ export class MapComponent implements AfterViewInit {
     this.chooseCar.setFarby(this.offersToShow);
     this.carIti.setPonuka(this.offersToShow);
     this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
-    // this.carIti.setPrekrocenieVahy(this.va);
+    this.scrollToInfo();
 
   }
   sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  countFreeIndexis(route, offer){
-    // this.indexisOfFreeTowns =  this.countFreeSpaceService
-    // .countFreeSpace(route.detailArray, offer.detailArray, route.carId, route, this.maxPrekrocenieRozmerov, offer);
   }
 
   addRouteNewSystem(){
@@ -919,6 +937,7 @@ export class MapComponent implements AfterViewInit {
     });
     this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
       duration: 800} );
+    this.scrollToUp();
   }
 
   zoomToAddressOrCar(address){
@@ -971,11 +990,11 @@ export class MapComponent implements AfterViewInit {
   // skontroluj ci sedi nakl hrana pre auto
   checkNaklHrana(car: Cars, vyskaNaklHrany){
     if (vyskaNaklHrany && vyskaNaklHrany.maxVyska > -1){
-      var carMin = car.nakladaciaHrana[0];
-      var carMax = car.nakladaciaHrana[1];
+      let carMin = car.nakladaciaHrana[0];
+      let carMax = car.nakladaciaHrana[1];
       if (carMax){
         if (vyskaNaklHrany.maxVyska <= carMax && vyskaNaklHrany.minVyska >= carMin){
-          return true
+          return true;
         }else{
           return false;
         }
@@ -1190,7 +1209,7 @@ export class MapComponent implements AfterViewInit {
                   // od auta k adrese z ponuky
                   const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
                   const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
-                  var casPrichoduAuta = new Date();
+                  let casPrichoduAuta = new Date();
                   casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese);
                   const rozdielVMili = casPrichoduAuta.getTime() - dateLast.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
                   if (rozdielVMili < 0){ // tu kontrolujem ci stihe auto prijst do vsetkych bodov v ponuke
@@ -1304,7 +1323,7 @@ export class MapComponent implements AfterViewInit {
                     // od auta k adrese z ponuky
                     const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
                     const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
-                    var casPrichoduAuta = new Date();
+                    let casPrichoduAuta = new Date();
                     casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese);
                     const rozdielVMili = casPrichoduAuta.getTime() - dateLast.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
                     if (rozdielVMili < 0){ // tu kontrolujem ci stihe auto prijst do vsetkych bodov v ponuke
@@ -1345,7 +1364,7 @@ export class MapComponent implements AfterViewInit {
               const prekrocil = vopchaSa.prekrocenieOPercenta[0];
               const vopchasaCezOtvory = this.countFreeSpaceService.ciSaVopchaTovarCezNakladaciPriestor(car, prepravasDetailom.detailVPonuke);
 
-            if (ruka && adr && teplotnaSpec && stihnemPrijst && vopchasaCezOtvory && vyhodujeVyskaHrany){
+              if (ruka && adr && teplotnaSpec && stihnemPrijst && vopchasaCezOtvory && vyhodujeVyskaHrany){
 
 
               if (sediVaha && vopchaSa.poleMiestKdeSaVopcha.length > 0 &&

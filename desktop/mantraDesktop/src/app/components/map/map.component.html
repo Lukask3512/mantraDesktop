@@ -1,28 +1,32 @@
-<div class="filter">
-  <app-filter (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
-</div>
-
-
-<div class="wrapper">
-  <div id="map"></div>
-  <div class="info">
-    <div class="infoHeader">
-      <h1>{{'MAP.informacie' | translate}}</h1>
-      <button (click)="closeInfo()" class="closeInfo">x</button>
-    </div>
+<div class="mapComponentWrapper">
+  <div #filterElement class="filter">
+    <app-filter (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
+  </div>
+  <div class="wrapper">
+    <div id="map"></div>
+    <div #infoElement class="info">
+      <div class="infoHeader">
+        <h1>{{'MAP.informacie' | translate}}</h1>
+        <button (click)="closeInfo()" class="closeInfo">x</button>
+      </div>
 
       <div *ngIf="this.offersToShow == null" class="car">
+
         <table *ngIf="carToShow">
           <tr class="tableHeader">
             <th>{{'CAR.ecv' | translate}}</th>
             <th>{{'CAR.status' | translate}}</th>
             <th>{{'MAP.kontakt' | translate}}</th>
           </tr>
-
           <tr class="tablerow" >
             <td>{{carToShow.ecv}}</td>
             <td>{{this.routeStatusService.getStatus(carToShow.status)}}</td>
             <td>{{carToShow.phoneNumber}}</td>
+          </tr>
+          <tr class="tableHeader">
+            <th>{{'DISPATCHER.name' | translate}}</th>
+            <th>{{'DISPATCHER.surname' | translate}}</th>
+            <th>{{'DISPATCHER.phoneNumber' | translate}}</th>
           </tr>
           <tr *ngIf="getVodic()" class="tablerow" >
             <td>{{getVodic().name}}</td>
@@ -40,20 +44,25 @@
 
         <h4 *ngIf="carToShow == undefined && routesToShow == undefined">{{'MAP.klikniNaBodNaMape' | translate}}.</h4>
         <h4 *ngIf="carToShow == undefined && routesToShow != undefined">{{'MAP.nepriradenaTrasa' | translate}}</h4>
-<!--        <button class="buttonG" *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">-->
-<!--          Priradiť autu</button>-->
+        <!--        <button class="buttonG" *ngIf="carToShow == undefined && routesToShow != undefined" (click)="openAddDialog(this.routesToShow[0], false, this.routesToShow[0].id)">-->
+        <!--          Priradiť autu</button>-->
       </div>
 
 
-    <div *ngIf="this.offersToShow != null" class="offers">
+      <div *ngIf="this.offersToShow != null" class="offers">
 
-      <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
+        <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
 
-      <h2>{{'MAP.vyberVozidlo' | translate}}</h2>
+        <h2>{{'MAP.vyberVozidlo' | translate}}</h2>
 
-      <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
-      <app-car-iti-detail (uspecnePriradenie)="otvorAuto($event)" (sendCarToPredpokad)="getPredpoklad($event)"></app-car-iti-detail>
+        <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
+        <app-car-iti-detail (uspecnePriradenie)="otvorAuto($event)" (sendCarToPredpokad)="getPredpoklad($event)"></app-car-iti-detail>
+      </div>
     </div>
   </div>
+
+
 </div>
+
+
 

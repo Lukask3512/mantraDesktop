@@ -75,7 +75,7 @@
   </div>
 </div>
 <div *ngIf="car" class="example-container">
-  <button *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">{{'TRANSPORT.presunutVsetko' | translate}}</button>
+  <button class="buttonPresun" *ngIf="car" [disabled]="this.offer.adresyVPonuke.length === 0" (click)="moveAll()">{{'TRANSPORT.presunutVsetko' | translate}}</button>
 
   <h2> {{'TRANSPORT.itinerarVozidla' | translate}} {{this.car.ecv}}</h2>
 
@@ -152,12 +152,12 @@
 
   <div *ngIf="this.offer.takenBy == ''">
     <h3>{{'OFFER.predbezneUlozenie' | translate}}?</h3>
-    <button (click)="ulozPredbezneUlozenie()">{{'OFTEN.ulozit' | translate}}</button>
+    <button class="buttonPresun" (click)="ulozPredbezneUlozenie()">{{'OFTEN.ulozit' | translate}}</button>
   </div>
 
   <div *ngIf="this.offer.takenBy == this.dataService.getMyIdOrMaster()">
     <h3>{{'TRANSPORT.priraditDoVozidla' | translate}}?</h3>
-    <button [disabled]="offer.adresyVPonuke.length > 0" (click)="priraditVozidlu()">{{'OFTEN.priradit' | translate}}</button>
+    <button class="buttonPresun" [disabled]="offer.adresyVPonuke.length > 0" (click)="priraditVozidlu()">{{'OFTEN.priradit' | translate}}</button>
   </div>
 
   <h3>{{'OFFER.povodnaVzdusnaVzialenost' | translate}} {{this.distanceOfIti}}km</h3>

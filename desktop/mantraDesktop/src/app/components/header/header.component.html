@@ -6,6 +6,7 @@
       <select (change)="changeLang($event.target.value)">
         <option value="en" [selected]="lang == 'en'">English</option>
         <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
+        <option value="cz" [selected]="lang == 'cz'">Czech</option>
       </select>
 
       <button routerLink="" (click)="logout()" class="button_c" >{{'HEADER.logout' | translate}}</button>
@@ -29,7 +30,7 @@
           <a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.map' | translate}} </a>
         </li>
         <li class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.offer' | translate}} </a>
+          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.offers' | translate}} </a>
         </li>
         <li *ngIf="getCompany()" class="nav-item">
           <a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}} </a>

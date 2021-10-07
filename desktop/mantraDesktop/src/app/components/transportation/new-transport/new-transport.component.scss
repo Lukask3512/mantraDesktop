@@ -33,6 +33,47 @@ header{
   margin-right: 6px;
 }
 
+.map{
+  flex-grow: 2;
+  width: 25%;
+  height: auto;
+  margin-left: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.aframe{
+  width: 500px;
+  height: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+
+@media (max-width: 1400px) {
+  .allWrapper{
+    flex-direction: column;
+  }
+  .wrapper{
+    width: 100%;
+    margin: 0;
+  }
+  .addresses{
+    width: 100%;
+    margin: 0;
+  }
+  .map{
+    margin: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .aframe{
+    width: 100%;
+    height: 500px;
+    margin: 0;
+  }
+}
+
 .center{
   display: flex;
   justify-content: center;
@@ -42,14 +83,7 @@ header{
 min-width: 180px;
 }
 
-.map{
-  flex-grow: 2;
-  width: 25%;
-  height: auto;
-  margin-left: 20px;
-  border-radius: 8px;
-  overflow: hidden;
-}
+
 
 .oneButton{
   padding: {
@@ -209,12 +243,7 @@ button[disabled]{
   display: flex;
 }
 
-.aframe{
-  width: 500px;
-  height: 500px;
-  border-radius: 8px;
-  overflow: hidden;
-}
+
 
 
 

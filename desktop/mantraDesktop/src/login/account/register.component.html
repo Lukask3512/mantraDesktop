@@ -18,6 +18,7 @@
   <select  (change)="changeLang($event.target.value)">
     <option value="en" [selected]="lang == 'en'">English</option>
     <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
+    <option value="cz" [selected]="lang == 'cz'">Czech</option>
   </select>
 </div>
 
@@ -31,7 +32,7 @@
           <div class="col-lg-5">
             <div class="card shadow-lg border-0 rounded-lg mt-5">
               <div class="card-header"><h3 class="text-center font-weight-normal my-4">{{'LOGIN.login' | translate}}</h3></div>
-              <form [formGroup]="loginForm" class="card-body" (ngSubmit)="loginOnEnter($event)">
+              <form [formGroup]="loginForm" class="card-body" (keydown.enter)="loginOnEnter($event)">
 
                   <div class="form-group">
                     <label class="small mb-1" for="inputEmailAddress">{{'LOGIN.email' | translate}}</label>
@@ -47,7 +48,7 @@
                     </div>
                   </div>
                   <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                     <a type="submit" (click)="login()" class="btn btn-secondary">{{'LOGIN.login' | translate}}</a>      <!-- upravit button -->
+                     <button type="submit" (click)="login()" class="btn btn-secondary">{{'LOGIN.login' | translate}}</button>      <!-- upravit button -->
                   </div>
 
                 <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
@@ -59,7 +60,7 @@
               </form>
               <div class="card-footer text-center">
                 <div class="small">
-                    <a href="https://drive.google.com/file/d/1iaStAHIzIE01AZe6jHwpQGXMB3booON1/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                    <a href="https://drive.google.com/drive/folders/1liSbpq4mCDKfUwR7no8c68LZ86jZZKlO?usp=sharing" target="_blank" rel="noopener noreferrer">
                     Mobilná aplikácia
                     </a>
                 </div>

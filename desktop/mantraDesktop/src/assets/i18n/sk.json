@@ -21,7 +21,7 @@
   },
 
   "LOGIN": {
-    "email": "Email",
+    "email": "E-mail",
     "password": "Heslo",
     "login": "Prihlásiť sa",
     "forgotPassword": "Zabudnuté heslo",
@@ -43,7 +43,7 @@
     "name": "Meno",
     "surname": "Priezvisko",
     "phoneNumber": "Tel. číslo",
-    "email": "Email",
+    "email": "E-mail",
     "update": "Upraviť",
     "delete": "Vymazať",
     "infoAboutAdd": "Nemáte povolenie pridať dispečera.",
@@ -59,7 +59,7 @@
     "ecv": "EČV",
     "phone": "Tel. číslo",
     "status": "Status",
-    "naves": "Náves",
+    "naves": "Príves",
     "pripojit": "Pripojiť",
     "nepodporuje": "Nepodporuje",
     "itinerar": "Itinerár",
@@ -88,8 +88,8 @@
     "minVyskaHrany": "Minimálna výška hrany",
     "maxVyskahrany": "Maximálna výška hrany",
 
-    "vahaANosnost": "Váha a nosnosť",
-    "vahaVozidla": "Váha vozidla",
+    "vahaANosnost": "Hmotnosť a nosnosť",
+    "vahaVozidla": "Hmotnosť vozidla",
     "nostnostVozidla": "Nosnosť vozidla",
 
     "moznostiNalozenia": "Možnosti naloženia",
@@ -101,8 +101,8 @@
     "vyskaNakPriestoru": "Výška nák. priestoru",
     "sirkaNakPriestoru": "Šírka nák. priestoru",
 
-    "navesASpecRezimy": "Náves - špeciálne režimy",
-    "moznostPripojitNaves": "Možnosť pripojiť náves",
+    "navesASpecRezimy": "Príves - špeciálne režimy",
+    "moznostPripojitNaves": "Možnosť pripojiť príves",
     "teplotnyRezim": "Teplotný režim",
     "minTeplota": "Minimálna teplota",
     "maxTeplota": "Maximálna teplota",
@@ -113,7 +113,7 @@
     "pristupKVozidlu": "Prístup ku vozidlu",
     "pristupVsetkym": "Udeliť prístup všetkým",
     "pravaPreVodica": "Práva",
-    "neznamaPolohaAuta": " Upozornenie! Vozidlo nemá známu polohu a nedokážeme určiť vzdialenosť k ponuke. Pre určenie polohy sa prihláste do vozidla cez mobilnú aplikáciu."
+    "neznamaPolohaAuta": "Upozornenie! Vozidlo nemá známu polohu a nedokážeme určiť vzdialenosť k ponuke. Pre určenie polohy sa prihláste do vozidla cez mobilnú aplikáciu."
 
   },
   "VODIC": {
@@ -132,7 +132,7 @@
     "sizeOfPrives": "Veľkosť prívesu",
     "vahaPrivesu": "Hmotnosť prívesu",
     "nostnost": "Nosnosť prívesu",
-    "odpojeniezVozidla": "Naozaj chcete odpojiť náves z vozidla?"
+    "odpojeniezVozidla": "Naozaj chcete odpojiť príves od vozidla?"
 
   },
   "COMPANIES": {
@@ -170,10 +170,10 @@
     "od": "od",
     "do": "do",
     "deleteAdresyZVozidla": "Naozaj chcete odstrániť adresy z vozidla?",
-    "deleteAdresyHint": "Ak sa vo vozidle nachádzajú balíky z nakládky, odstránia sa",
+    "deleteAdresyHint": "Ak sa vo vozidle nachádzajú balíky / palety z nakládky, odstránia sa",
     "deleteCar": "Naozaj chcete odstrániť vozidlo?",
     "deleteAdress": "Naozaj chcete odstrániť adresu",
-    "deleteAdressMore": "a s ňou súvisiace nakládky/vykládky z itinerára?",
+    "deleteAdressMore": "a s ňou súvisiace nakládky / vykládky z itinerára?",
     "deleteDispecer": "Naozaj chcete odstrániť dispečera?",
     "deleteRoute": "Naozaj chcete odstrániť trasu?",
     "max": "max",
@@ -185,7 +185,7 @@
   },
 
   "PACKAGES": {
-    "packages": "Balíky",
+    "packages": "Balíky / palety",
     "potHydRuka": "Potrebná hydraulická ruka",
     "potAdr": "Potrebný režim ADR",
     "stohovatelnost": "Stohovateľnosť",
@@ -227,7 +227,7 @@
     "novaPreprava": "Nová preprava",
     "prilizTazky": "Tovar je príliš ťažký",
     "prilizVelky": "Tovar je príliš veľký",
-    "moznyDatumPrichodu": "Možný dátum príchodu",
+    "moznyDatumPrichodu": "Možný dátum príjazdu",
     "predpokladanyCasPrijazdu": "Predpokladaný čas príjazdu"
   },
 
@@ -242,12 +242,12 @@
     "cas": "Čas",
     "status": "Status",
     "zSirka": "Zemepisná šírka",
-    "zDlzka": "Zemepisná dĺžka",
+    "yDlzka": "Zemepisná dĺžka",
     "stiahnutie": "Stiahnuť",
     "pridajPonuku": "Pridať ponuku",
     "podrobneInfo": "Detail",
     "mimoMoznehoDatumu": "Mimo možného dátumu",
-    "mimoMoznehoPrichodu": "Mimo možného príchodu",
+    "mimoMoznehoPrichodu": "Mimo možného príjazdu",
     "predbezneUlozenie": "Chcete si predbežne uložiť ponuku v itinerári vozidla?",
     "povodnaVzdusnaVzialenost": "Pôvodná vzdušná vzdialenosť",
     "novaVzdialenost": "Nová vzdialenosť",
@@ -265,7 +265,7 @@
     "ponukaPriradenaZa": "Ponuka priradená za",
     "zruseniePrepravyOznam": "Zrušenie prepravy musí potvrdiť zadávateľ",
     "zruseniePrepravyPotvrdenie": "Zadávateľ chce zrušiť ponuku. Chcete potvrdiť zrušenie?",
-    "zruseniePrepravca": "Prepravca chce zrusiť ponuku. Chcete potvrdiť zrušenie?",
+    "zruseniePrepravca": "Prepravca chce zrušiť ponuku. Chcete potvrdiť zrušenie?",
     "zrusenie": "Zrušiť",
     "ponukuPreFirmu": "ponuku pre firmu",
     "bolaZrusena": "Ponuka bola zrušená",

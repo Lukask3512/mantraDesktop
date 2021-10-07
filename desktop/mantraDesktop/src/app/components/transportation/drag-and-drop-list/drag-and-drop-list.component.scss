@@ -50,6 +50,12 @@
   overflow: hidden;
 }
 
+@media (max-width: 700px) {
+  .example-list{
+    width: initial;
+  }
+}
+
 .example-box {
   padding: 10px 10px;
   border-bottom: solid 1px #ccc;

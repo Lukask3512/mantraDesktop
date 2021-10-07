@@ -4,6 +4,16 @@
   margin-right: 5px;
 }
 
+.mapComponentWrapper{
+  //height: 100%;
+  width: 100%;
+  display: contents;
+}
+
+.headerName{
+  display: flex;
+}
+
 .wrapper{
   display: flex;
   height: 95%;
@@ -12,6 +22,7 @@
   font-family: "Lato", sans-serif;
   font-size: medium;
 }
+
 
 .debnaWrapper{
   display: flex;
@@ -118,6 +129,7 @@
 #map{
   height: 90%;
   width: 70%;
+  min-height: 700px;
   border-bottom: 2px solid gray;
   box-shadow: 5px 5px 5px grey;
 }
@@ -195,31 +207,31 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-@media
-only screen and (max-width: 800px),
-(min-device-width: 800px) and (max-device-width: 1024px)  {
-
-  /* Force table to not be like tables anymore */
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  /* Hide table headers (but not display: none;, for accessibility) */
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
-  tr { border: 1px solid #ccc; }
-
-  td {
-    /* Behave  like a "row" */
-    border: none;
-    border-bottom: 1px solid white;
-    position: relative;
-    padding-left: 50%;
-  }}
+//@media
+//only screen and (max-width: 800px),
+//(min-device-width: 800px) and (max-device-width: 1024px)  {
+//
+//  /* Force table to not be like tables anymore */
+//  table, thead, tbody, th, td, tr {
+//    display: block;
+//  }
+//
+//  /* Hide table headers (but not display: none;, for accessibility) */
+//  thead tr {
+//    position: absolute;
+//    top: -9999px;
+//    left: -9999px;
+//  }
+//
+//  tr { border: 1px solid #ccc; }
+//
+//  td {
+//    /* Behave  like a "row" */
+//    border: none;
+//    border-bottom: 1px solid white;
+//    position: relative;
+//    padding-left: 50%;
+//  }}
 
   td:before {
     /* Now like a table header */
@@ -252,3 +264,21 @@ only screen and (max-width: 800px),
 .buttonG:hover{
   background-color: #4CAF50;
 }
+
+@media (max-width: 1200px) {
+  .wrapper{
+    flex-direction: column;
+  }
+  #map{
+    width: 100%;
+  }
+  .info{
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.offers{
+  width: 100%;
+}
+
