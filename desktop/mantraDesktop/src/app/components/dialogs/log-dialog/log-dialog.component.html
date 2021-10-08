@@ -1,16 +1,32 @@
-<!-- button class="button2" (click)="downloadAsPDF()">⇊download⇊</button -->
-<!--<p>Pdf generátor nepodporuje mäkčene</p>-->
+
+<app-get-info-about-company  (sendCompanyToParent)="getCompanyZadavatel($event)" [masterId]="this.route.createdBy"></app-get-info-about-company>
+<app-get-info-about-company *ngIf="this.route.price" (sendCompanyToParent)="getCompanyPrepravca($event)" [masterId]="this.route.takenBy"></app-get-info-about-company>
 <div id="allWrapper">
-  <header *ngIf="this.route.price" class="headerWrapper">
-    <h2>{{'OFFER.zadavatel' | translate}}: <app-get-info-about-company [masterId]="this.route.createdBy"></app-get-info-about-company>
-    </h2>
-    <h2>{{'OFFER.prepravca' | translate}}: <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company></h2>
+  <header class="headerWrapper">
+    <div *ngIf="this.companyZadavatel" class="zadavatel">
+      <h2>{{'OFFER.zadavatel' | translate}}</h2>
+      <h3>{{this.companyZadavatel.name}}</h3>
+      <h3>{{this.companyZadavatel.street}}</h3>
+      <h3>{{this.companyZadavatel.town}}</h3>
+      <h3>{{this.companyZadavatel.country}}</h3>
+      <h3>{{this.companyZadavatel.ico}}</h3>
+      <h3>{{this.companyZadavatel.dicIc}}</h3>
+    </div>
+
+    <div *ngIf="this.companyPrepravca" class="prepravca">
+      <h2>{{'OFFER.prepravca' | translate}}: </h2>
+      <h3>{{this.companyPrepravca.name}}</h3>
+      <h3>{{this.companyPrepravca.street}}</h3>
+      <h3>{{this.companyPrepravca.town}}</h3>
+      <h3>{{this.companyPrepravca.country}}</h3>
+      <h3>{{this.companyPrepravca.ico}}</h3>
+      <h3>{{this.companyPrepravca.dicIc}}</h3>
+    </div>
   </header>
   <h3 *ngIf="this.route.price">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
   <h1>{{'OFFER.log' | translate}}</h1>
   <table id="routeLog" #routeLog1 *ngIf="this.routeLog != undefined">
     <tr>
-      <!--    <th>Dessert (100g)</th>-->
       <th>{{'OFFER.mesto' | translate}}</th>
       <th>{{'OFFER.status' | translate}}</th>
       <th>{{'OFFER.cas' | translate}}</th>
@@ -21,8 +37,8 @@
     <tbody *ngFor="let jedenAllLog of this.routeLog; let i = index;">
 
     <tr *ngFor="let jedenLog of jedenAllLog.place; let j = index;">
-      <td>{{deleteSpecialChar(jedenAllLog.place[j])}}</td>
-      <td>{{deleteSpecialChar(this.routeStatusService.getStatus(jedenAllLog.state[j]))}}</td>
+      <td>{{jedenAllLog.place[j]}}</td>
+      <td>{{this.routeStatusService.getStatus(jedenAllLog.state[j])}}</td>
       <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
       <td>{{jedenAllLog.lattitude[j]}}</td>
       <td>{{jedenAllLog.longtitude[j]}}</td>

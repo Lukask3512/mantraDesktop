@@ -12,6 +12,11 @@ body {
 
 }
 
+@font-face {
+  font-family: "ARIALUNI";
+  src: local("ARIALUNI"), url(./assets/fonts/arial/arialuni.ttf) format("truetype");
+}
+
 body.background{
   //background-image: url("src/assets/logo/pozadie1.jpg");
   width: 100%;

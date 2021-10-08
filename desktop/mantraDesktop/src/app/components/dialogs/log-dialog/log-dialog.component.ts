@@ -6,7 +6,8 @@ import RouteLog from '../../../models/RouteLog';
 import {jsPDF} from 'jspdf';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import Route from '../../../models/Route';
-
+import '../../../../assets/fonts/arial/ARIALUNI-normal';
+import Company from '../../../models/Company';
 @Component({
   selector: 'app-log-dialog',
   templateUrl: './log-dialog.component.html',
@@ -23,6 +24,8 @@ export class LogDialogComponent implements OnInit {
   @Input() addresses: Address[];
   route: Route;
   routeLog: RouteLog[] = [];
+  companyZadavatel: Company;
+  companyPrepravca: Company;
   ngOnInit(): void {
     if (this.data){
       this.addresses = this.data.addresses;
@@ -48,70 +51,41 @@ export class LogDialogComponent implements OnInit {
   }
 
   toDate(datum){
-    var date = new Date(datum);
-    return date.toDateString() + " " + date.getHours()+":" + date.getMinutes();
-  }
-
-  // ngOnDestroy() {
-  //   this.routeId.unsubscribe();
-  // }
-
-  deleteSpecialChar(word){
-    const chars = [...word]
-    for(let i = 0; i < word.length; i++){
-      if(word[i] == "š")
-        chars[i] = 's';
-      if(word[i] == "Š")
-        chars[i] = 's';
-      if(word[i] == "č")
-        chars[i] = 'c';
-      if(word[i] == "Č")
-        chars[i] = 'C';
-      if(word[i] == "ť")
-        chars[i] = 't';
-      if(word[i] == "Ť")
-        chars[i] = 't';
-      if(word[i] == "ž")
-        chars[i] = 'z';
-      if(word[i] == "Ž")
-        chars[i] = 'Z';
-      if(word[i] == "ä")
-        chars[i] = 'a';
-      if(word[i] == "ô")
-        chars[i] = 'o';
-      if(word[i] == "ň")
-        chars[i] = 'n';
-      if(word[i] == "Ň")
-        chars[i] = 'N';
-      if(word[i] == "á")
-        chars[i] = 'a';
-      if(word[i] == 'é')
-        chars[i] = 'e';
-    }
-    let skusam = chars.join("")
-    return skusam;
+    const date = new Date(datum);
+    return date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes();
   }
 
   downloadAsPDF(){
-    // const DATA = this.pdfTable.nativeElement;
 
-    const doc: jsPDF = new jsPDF("l", "pt", 'letter');
-    var data2 = document.getElementById("allWrapper")
-    // data2.style.fontSize = '9px'
-    // data2.style.padding = '2px'
+
+    const doc: jsPDF = new jsPDF('l', 'pt', 'letter');
+    doc.setFont('ARIALUNI', 'normal');
+    const data2 = document.getElementById('allWrapper');
+    data2.style.fontSize = '9px';
+    data2.style.padding = '2px';
     data2.style.width = '800px';
     doc.setFontSize(7);
-    // console.log(data2)
+
     doc.html(data2, {
       callback: (doc) => {
-        doc.output("dataurlnewwindow");
-        setTimeout(function(){
-          data2.style.fontSize = '16px'
-          data2.style.padding = '8px' }, 3000);
+        doc.output('dataurlnewwindow');
+        setTimeout(() => {
+          data2.style.fontSize = '16px';
+          data2.style.padding = '8px'; }, 3000);
         data2.style.width = '100%';
 
       }
     });
   }
 
+  getCompanyPrepravca(company: Company){
+    this.companyPrepravca = company;
+  }
+
+  getCompanyZadavatel(company: Company){
+    this.companyZadavatel = company;
+  }
+
 }
+
+
