@@ -8,6 +8,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import Route from '../../../models/Route';
 import '../../../../assets/fonts/arial/ARIALUNI-normal';
 import Company from '../../../models/Company';
+import html2canvas from 'html2canvas';
+import {PackageService} from '../../../services/package.service';
 @Component({
   selector: 'app-log-dialog',
   templateUrl: './log-dialog.component.html',
@@ -17,7 +19,8 @@ export class LogDialogComponent implements OnInit {
 
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private routeLogService: RouteLogService, public routeStatusService: RouteStatusService,
-              @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<LogDialogComponent>) { }
+              @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<LogDialogComponent>,
+              private packageService: PackageService) { }
   dataSource;
   displayedColumns: string[] = ['town', 'status', 'time'];
 
@@ -26,12 +29,68 @@ export class LogDialogComponent implements OnInit {
   routeLog: RouteLog[] = [];
   companyZadavatel: Company;
   companyPrepravca: Company;
+  detail = [];
   ngOnInit(): void {
     if (this.data){
       this.addresses = this.data.addresses;
       this.getLog();
       this.route = this.data.route;
+      this.getDetail();
+      console.log(this.detail);
     }
+  }
+
+  thoursLocal(time){
+    if (time == null || time === '0'){
+      return 'Neuverejneny';
+    }else{
+      return time;
+    }
+  }
+
+  timeToLocal(dateUtc){
+
+    var date = (new Date(dateUtc));
+
+    if (dateUtc == null || dateUtc === '0'){
+      return 'Neuverejneny';
+    }
+    return date.toLocaleString();
+  }
+
+  getDetail(){
+    this.addresses.forEach(oneAddress => {
+      var myPackages = [];
+      var detailAr = {detailArray: [], townsArray: [], packageId: []};
+      oneAddress.packagesId.forEach( oneId => {
+        // if (oneAddress.type === 'nakladka'){
+          var balik = this.packageService.getOnePackage(oneId);
+          myPackages.push(balik);
+        // }else{
+        //   // tu by som mal vlozit len indexy do vykladky
+        //   this.detail.forEach((oneDetail, townId) => {
+        //     if (oneDetail.townsArray === undefined){
+        //       oneDetail.forEach((oneDetailId, packageId) => {
+        //         if (oneDetailId && oneDetailId.id === oneId){
+        //           detailAr.detailArray.push(packageId);
+        //           detailAr.townsArray.push(townId);
+        //           detailAr.packageId.push(oneDetailId.id);
+        //         }
+        //       });
+        //     }
+        //   });
+        //
+        // }
+      });
+      // if (myPackages.length !== 0){
+      //   this.detail.push(myPackages);
+      // }else{
+      //   this.detail.push(detailAr);
+      // }
+      this.detail = myPackages;
+
+    });
+    console.log(this.detail);
   }
 
   getLog(){
@@ -58,25 +117,38 @@ export class LogDialogComponent implements OnInit {
   downloadAsPDF(){
 
 
-    const doc: jsPDF = new jsPDF('l', 'pt', 'letter');
+    const doc: jsPDF = new jsPDF('p', 'pt', 'a4');
     doc.setFont('ARIALUNI', 'normal');
-    const data2 = document.getElementById('allWrapper');
-    data2.style.fontSize = '9px';
-    data2.style.padding = '2px';
-    data2.style.width = '800px';
-    doc.setFontSize(7);
+    const data2 = document.getElementById('allWrapperToDownload');
+    // data2.style.display = 'initial';
 
     doc.html(data2, {
-      callback: (doc) => {
-        doc.output('dataurlnewwindow');
+      callback: (docCal) => {
+        docCal.output('dataurlnewwindow');
         setTimeout(() => {
-          data2.style.fontSize = '16px';
-          data2.style.padding = '8px'; }, 3000);
-        data2.style.width = '100%';
-
+          // data2.style.display = 'none';
+          }, 2000);
       }
     });
   }
+
+  // downloadAsPDFImg(){
+  //   // html2
+  //   const data2 = document.getElementById('allWrapperToDownload');
+  //
+  //   // data2.style.display = 'initial';
+  //   // data2.style.width = '200px';
+  //
+  //
+  //   let data = document.getElementById('allWrapper');
+  //   html2canvas(data).then(canvas => {
+  //     const contentDataURL = canvas.toDataURL('image/jpg')
+  //     const pdf = new jsPDF('l', 'cm', 'a4'); //Generates PDF in landscape mode
+  //     // let pdf = new jspdf('p', 'cm', 'a4'); Generates PDF in portrait mode
+  //     pdf.addImage(contentDataURL, 'JPG', 0, 0, 29.7, 21.0);
+  //     pdf.save('Filename.pdf');
+  //   });
+  // }
 
   getCompanyPrepravca(company: Company){
     this.companyPrepravca = company;

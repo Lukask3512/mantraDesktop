@@ -1205,13 +1205,13 @@ export class MapComponent implements AfterViewInit {
                   }
                   const dateEsti = (new Date(route.estimatedTimeArrival));
                   const from = [car.longtitude , car.lattitude];
-                  const to = [offerLat.longtitude , offerLat.lattitude];
+                  const to = [offerLat.coordinatesOfTownsLon , offerLat.coordinatesOfTownsLat];
                   // od auta k adrese z ponuky
                   const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
                   const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
                   let casPrichoduAuta = new Date();
                   casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese);
-                  const rozdielVMili = casPrichoduAuta.getTime() - dateLast.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
+                  const rozdielVMili = dateLast.getTime() - casPrichoduAuta.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
                   if (rozdielVMili < 0){ // tu kontrolujem ci stihe auto prijst do vsetkych bodov v ponuke
                     stihnemPrijst = false;
                   }
@@ -1319,13 +1319,13 @@ export class MapComponent implements AfterViewInit {
                     }
                     const dateEsti = (new Date(jednaAdPonuka.estimatedTimeArrival));
                     const from = [car.longtitude , car.lattitude];
-                    const to = [jednaAdPonuka.longtitude , jednaAdPonuka.lattitude];
+                    const to = [jednaAdPonuka.coordinatesOfTownsLon , jednaAdPonuka.coordinatesOfTownsLat];
                     // od auta k adrese z ponuky
                     const vzdialenostOdAutaKAdrese = this.countDistancePoints(from, to) / 1000; // chcem to v km, preto / 1000
                     const casOdAutaKAdrese = vzdialenostOdAutaKAdrese / 90; // 90 je max rychlost kamionu
                     let casPrichoduAuta = new Date();
                     casPrichoduAuta.setHours(casPrichoduAuta.getHours() + casOdAutaKAdrese);
-                    const rozdielVMili = casPrichoduAuta.getTime() - dateLast.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
+                    const rozdielVMili = dateLast.getTime() - casPrichoduAuta.getTime(); // tu mam ulozeny rozdiel v case mezdi last a esti
                     if (rozdielVMili < 0){ // tu kontrolujem ci stihe auto prijst do vsetkych bodov v ponuke
                       stihnemPrijst = false;
                     }

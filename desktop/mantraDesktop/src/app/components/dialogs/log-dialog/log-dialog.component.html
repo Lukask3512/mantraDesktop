@@ -1,31 +1,73 @@
-
+<mat-dialog-content class="wrapper">
 <app-get-info-about-company  (sendCompanyToParent)="getCompanyZadavatel($event)" [masterId]="this.route.createdBy"></app-get-info-about-company>
 <app-get-info-about-company *ngIf="this.route.price" (sendCompanyToParent)="getCompanyPrepravca($event)" [masterId]="this.route.takenBy"></app-get-info-about-company>
 <div id="allWrapper">
   <header class="headerWrapper">
-    <div *ngIf="this.companyZadavatel" class="zadavatel">
+    <div *ngIf="this.companyZadavatel" class="prepravca">
       <h2>{{'OFFER.zadavatel' | translate}}</h2>
-      <h3>{{this.companyZadavatel.name}}</h3>
-      <h3>{{this.companyZadavatel.street}}</h3>
-      <h3>{{this.companyZadavatel.town}}</h3>
-      <h3>{{this.companyZadavatel.country}}</h3>
-      <h3>{{this.companyZadavatel.ico}}</h3>
-      <h3>{{this.companyZadavatel.dicIc}}</h3>
+      <h3 class="companyName">{{this.companyZadavatel.name}}</h3>
+      <h3 class="address">{{this.companyZadavatel.street}}</h3>
+      <h3 class="address">{{this.companyZadavatel.town}}</h3>
+      <h3 class="address">{{this.companyZadavatel.country}}</h3>
+      <h3 class="icodico">{{'COMPANIES.ico' | translate}}: {{this.companyZadavatel.ico}}</h3>
+      <h3 class="icodico">{{'COMPANIES.dico' | translate}}: {{this.companyZadavatel.dicIc}}</h3>
     </div>
 
     <div *ngIf="this.companyPrepravca" class="prepravca">
-      <h2>{{'OFFER.prepravca' | translate}}: </h2>
-      <h3>{{this.companyPrepravca.name}}</h3>
-      <h3>{{this.companyPrepravca.street}}</h3>
-      <h3>{{this.companyPrepravca.town}}</h3>
-      <h3>{{this.companyPrepravca.country}}</h3>
-      <h3>{{this.companyPrepravca.ico}}</h3>
-      <h3>{{this.companyPrepravca.dicIc}}</h3>
+      <h2>{{'OFFER.prepravca' | translate}}</h2>
+      <h3 class="companyName">{{this.companyPrepravca.name}}</h3>
+      <h3 class="address">{{this.companyPrepravca.street}}</h3>
+      <h3 class="address">{{this.companyPrepravca.town}}</h3>
+      <h3 class="address">{{this.companyPrepravca.country}}</h3>
+      <h3 class="icodico">{{'COMPANIES.ico' | translate}}: {{this.companyPrepravca.ico}}</h3>
+      <h3 class="icodico">{{'COMPANIES.dico' | translate}}: {{this.companyPrepravca.dicIc}}</h3>
     </div>
   </header>
   <h3 *ngIf="this.route.price">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+
+<!--  TODO prelozit-->
+  <h1>Prepravované palety</h1>
+  <table *ngIf="this.detail">
+    <tr>
+      <th>Sirka</th>
+      <th>Vyska</th>
+      <th>Dlzka</th>
+      <th>Vaha</th>
+
+    </tr>
+<!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
+
+    <tr *ngFor="let jedenLog of this.detail; let j = index;">
+      <td>{{jedenLog.sizeS}}</td>
+      <td>{{jedenLog.sizeV}}</td>
+      <td>{{jedenLog.sizeD}}</td>
+      <td>{{jedenLog.weight}}</td>
+    </tr>
+<!--    </tbody>-->
+  </table>
+
+  <h1>Časy a datumy možných príchodov na adresy</h1>
+  <table *ngIf="this.addresses">
+    <tr>
+      <th>Datum od</th>
+      <th>Datum do</th>
+      <th>Cas od</th>
+      <th>Cas do</th>
+
+    </tr>
+    <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
+
+    <tr *ngFor="let adresa of this.addresses; let j = index;">
+      <td>{{timeToLocal(adresa.datumPrijazdu)}}</td>
+      <td>{{timeToLocal(adresa.datumLastPrijazdy)}}</td>
+      <td>{{thoursLocal(adresa.casPrijazdu)}}</td>
+      <td>{{thoursLocal(adresa.casLastPrijazdu)}}</td>
+    </tr>
+    <!--    </tbody>-->
+  </table>
+
   <h1>{{'OFFER.log' | translate}}</h1>
-  <table id="routeLog" #routeLog1 *ngIf="this.routeLog != undefined">
+  <table id="routeLogToSee" #routeLog1 *ngIf="this.routeLog != undefined">
     <tr>
       <th>{{'OFFER.mesto' | translate}}</th>
       <th>{{'OFFER.status' | translate}}</th>
@@ -49,4 +91,97 @@
   </table>
 </div>
 <button class="buttonDownload" (click)="downloadAsPDF()">{{'OFFER.stiahnutie' | translate}}</button>
+<!--<button class="buttonDownload" (click)="downloadAsPDFImg()">{{'OFFER.stiahnutie' | translate}}</button>-->
+<div id="allWrapperToDownload">
+  <header class="headerWrapper">
+    <div *ngIf="this.companyZadavatel" class="prepravca">
+      <p class="companyNameSmall">{{'OFFER.zadavatel' | translate}}</p>
+      <p class="companyNameSmall">{{this.companyZadavatel.name}}</p>
+      <p class="addressSmall">{{this.companyZadavatel.street}}</p>
+      <p class="addressSmall">{{this.companyZadavatel.town}}</p>
+      <p class="addressSmall">{{this.companyZadavatel.country}}</p>
+      <p class="addressSmall">{{'COMPANIES.ico' | translate}}: {{this.companyZadavatel.ico}}</p>
+      <p class="addressSmall">{{'COMPANIES.dico' | translate}}: {{this.companyZadavatel.dicIc}}</p>
+    </div>
 
+
+    <div *ngIf="this.companyPrepravca" class="prepravca">
+      <p class="companyNameSmall">{{'OFFER.prepravca' | translate}}</p>
+      <p class="companyNameSmall">{{this.companyPrepravca.name}}</p>
+      <p class="addressSmall">{{this.companyPrepravca.street}}</p>
+      <p class="addressSmall">{{this.companyPrepravca.town}}</p>
+      <p class="addressSmall">{{this.companyPrepravca.country}}</p>
+      <p class="addressSmall">{{'COMPANIES.ico' | translate}}: {{this.companyPrepravca.ico}}</p>
+      <p class="addressSmall">{{'COMPANIES.dico' | translate}}: {{this.companyPrepravca.dicIc}}</p>
+    </div>
+  </header>
+
+  <!--  TODO prelozit-->
+  <h2>Prepravované palety</h2>
+  <table class="routeLogSmall" *ngIf="this.detail">
+    <tr>
+      <th>Sirka</th>
+      <th>Vyska</th>
+      <th>Dlzka</th>
+      <th>Vaha</th>
+
+    </tr>
+    <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
+
+    <tr *ngFor="let jedenLog of this.detail; let j = index;">
+      <td>{{jedenLog.sizeS}}</td>
+      <td>{{jedenLog.sizeV}}</td>
+      <td>{{jedenLog.sizeD}}</td>
+      <td>{{jedenLog.weight}}</td>
+    </tr>
+    <!--    </tbody>-->
+  </table>
+
+  <h2>Časy a datumy možných príchodov na adresy</h2>
+  <table class="routeLogSmall" *ngIf="this.addresses">
+    <tr>
+      <th>Datum od</th>
+      <th>Datum do</th>
+      <th>Cas od</th>
+      <th>Cas do</th>
+
+    </tr>
+    <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
+
+    <tr *ngFor="let adresa of this.addresses; let j = index;">
+      <td>{{timeToLocal(adresa.datumPrijazdu)}}</td>
+      <td>{{timeToLocal(adresa.datumLastPrijazdy)}}</td>
+      <td>{{thoursLocal(adresa.casPrijazdu)}}</td>
+      <td>{{thoursLocal(adresa.casLastPrijazdu)}}</td>
+    </tr>
+    <!--    </tbody>-->
+  </table>
+
+
+  <h3 class="icodicoSmall" *ngIf="this.route.price">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+  <h1  class="companyNameSmall">{{'OFFER.log' | translate}}</h1>
+  <table class="routeLogSmall" #routeLog1 *ngIf="this.routeLog != undefined">
+    <tr>
+      <th>{{'OFFER.mesto' | translate}}</th>
+      <th>{{'OFFER.status' | translate}}</th>
+      <th>{{'OFFER.cas' | translate}}</th>
+      <th>{{'OFFER.zSirka' | translate}}</th>
+      <th>{{'OFFER.zDlzka' | translate}}</th>
+
+    </tr>
+    <tbody *ngFor="let jedenAllLog of this.routeLog; let i = index;">
+
+    <tr *ngFor="let jedenLog of jedenAllLog.place; let j = index;">
+      <td>{{jedenAllLog.place[j]}}</td>
+      <td>{{this.routeStatusService.getStatus(jedenAllLog.state[j])}}</td>
+      <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
+      <td>{{jedenAllLog.lattitude[j]}}</td>
+      <td>{{jedenAllLog.longtitude[j]}}</td>
+    </tr>
+    </tbody>
+
+    <!--  <p>Ukoncené {{this.toDate(this.routeLog.timestamp[this.routeLog.timestamp.length - 1])}}</p>-->
+  </table>
+</div>
+
+</mat-dialog-content>

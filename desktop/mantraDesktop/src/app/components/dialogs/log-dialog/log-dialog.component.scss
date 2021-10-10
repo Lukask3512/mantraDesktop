@@ -6,10 +6,63 @@
   margin: 10px;
 }
 
-#allWrapper{
-  font-family: ARIALUNI, Arial, serif !important;
+#allWrapperToDownload{
+  //display: none;
+  width: 600px;
+  padding: 10px;
 }
 
+.headerWrapper{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+h2{
+  font-family: ARIALUNI;
+}
+
+.prepravca{
+  border: 2px solid black;
+  padding: 10px;
+}
+
+
+.companyName{
+  font-family: ARIALUNI;
+  font-size: large;
+  margin-bottom: 0;
+}
+
+.companyNameSmall{
+  font-family: ARIALUNI;
+  margin: 0;
+  font-size: 12px;
+}
+.address{
+  font-family: ARIALUNI;
+  font-size: medium;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin: 0;
+}
+
+.addressSmall{
+  font-size: 10px;
+  font-family: ARIALUNI;
+  margin: 0;
+}
+
+
+.icodico{
+  font-family: ARIALUNI;
+  font-size: medium;
+}
+.icoDicoSmall{
+  font-family: ARIALUNI;
+  font-size: 10px;
+  margin: 0;
+}
 
 
 table {
@@ -32,6 +85,10 @@ p,ol{
 }
 li{
   list-style-type: none;
+}
+
+.routeLogSmall{
+  font-size: 8px;
 }
 
 .button2 {
