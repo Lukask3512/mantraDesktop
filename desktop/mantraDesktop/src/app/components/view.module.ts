@@ -76,6 +76,7 @@ import { ProfileComponent } from './profile/profile.component';
 import {MatIconModule} from '@angular/material/icon';
 import { TimeProblemDialogComponent } from './dialogs/time-problem-dialog/time-problem-dialog.component';
 import {TranslateModule} from '@ngx-translate/core';
+import { GetNameOfComapnyByMasterIdComponent } from './companies/get-name-of-comapny-by-master-id/get-name-of-comapny-by-master-id.component';
 
 
 @NgModule({
@@ -96,7 +97,7 @@ import {TranslateModule} from '@ngx-translate/core';
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -115,7 +116,8 @@ import {TranslateModule} from '@ngx-translate/core';
         ItinerarDaDComponent,
         CarNakladComponent,
         GetNameOfDriverComponent,
-      AllDetailAboutRouteDialogComponent
+        AllDetailAboutRouteDialogComponent,
+        PosliPonukuComponent
     ],
     imports: [
         CommonModule,

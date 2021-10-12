@@ -1,6 +1,6 @@
 
 <div *ngIf="offer" class="example-container">
-  <button class="detailBut" (click)="openAllDetailDialog()">{{'OFFER.ponuka' | translate}}</button>
+  <button class="detailBut" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
   <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">
     {{'OFTEN.vyzaduje' | translate}}:
     <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">{{'CAR.adr' | translate}}</h3>
@@ -33,7 +33,7 @@
   <h2 class="red" *ngIf="this.car && !this.car.lattitude">
     {{'CAR.neznamaPolohaAuta' | translate}}
   </h2>
-  <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>
+<!--  <app-posli-ponuku [offerId]="this.offer.id" ></app-posli-ponuku>-->
   <app-ulozenie-ponuky [idPonuky]="this.offer.id" (itiOutput)="sendCarToPredpoklad($event)"></app-ulozenie-ponuky>
   <div
     id="all"
@@ -61,10 +61,12 @@
             <span class="numberOfBedna">{{getBednaIndexNakladky(detail.id)}}</span>
           </div>
         </div>
-        <mat-icon *ngIf="ponuka.datumLastPrijazdy != '0' || ponuka.casPrijazdu != '0'" class="material-icons" matSuffix
-                  matTooltip="{{timeToLocal(ponuka.datumPrijazdu, ponuka.casPrijazdu)}} - {{timeToLocal(ponuka.datumLastPrijazdy, ponuka.casLastPrijazdu)}}">
-          info
-        </mat-icon>
+        <i *ngIf="ponuka.datumLastPrijazdy != '0' || ponuka.casPrijazdu != '0'" matSuffix
+           matTooltip="{{timeToLocal(ponuka.datumPrijazdu, ponuka.casPrijazdu)}} - {{timeToLocal(ponuka.datumLastPrijazdy, ponuka.casLastPrijazdu)}}" class="material-icons">date_range</i>
+<!--        <mat-icon *ngIf="ponuka.datumLastPrijazdy != '0' || ponuka.casPrijazdu != '0'" class="material-icons" matSuffix-->
+<!--                  matTooltip="{{timeToLocal(ponuka.datumPrijazdu, ponuka.casPrijazdu)}} - {{timeToLocal(ponuka.datumLastPrijazdy, ponuka.casLastPrijazdu)}}">-->
+<!--          info-->
+<!--        </mat-icon>-->
       </div>
       <p>
         <span *ngIf="ponuka.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
@@ -105,10 +107,12 @@
             <span class="numberOfBedna">{{getBednaIndexNakladkyAuto(detail.id)}}</span>
           </div>
         </div>
-        <mat-icon *ngIf="address.datumLastPrijazdy != '0' || address.casPrijazdu != '0'" class="material-icons" matSuffix
-                  matTooltip="{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}">
-          info
-        </mat-icon>
+        <i *ngIf="address.datumLastPrijazdy != '0' || address.casPrijazdu != '0'" class="material-icons" matSuffix
+           matTooltip="{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}">date_range</i>
+<!--        <mat-icon *ngIf="address.datumLastPrijazdy != '0' || address.casPrijazdu != '0'" class="material-icons" matSuffix-->
+<!--                  matTooltip="{{timeToLocal(address.datumPrijazdu, address.casPrijazdu)}} - {{timeToLocal(address.datumLastPrijazdy, address.casLastPrijazdu)}}">-->
+<!--          info-->
+<!--        </mat-icon>-->
       </div>
 
       <div class="mainInfo">

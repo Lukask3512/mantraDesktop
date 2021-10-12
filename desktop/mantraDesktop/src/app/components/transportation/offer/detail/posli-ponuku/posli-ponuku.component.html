@@ -1,10 +1,11 @@
-<div *ngIf="this.route" class="input">
-  <h3 *ngIf="this.offer">
-    {{'OFFER.vasaPonuka' | translate}} {{this.offer}}
-  </h3>
-  <h4 *ngIf="this.route.price">
-    {{'OFTEN.cena' | translate}}: {{this.route.price}}
-  </h4>
+<div *ngIf="this.route" class="wrapper">
+  <div class="priceWrapper" *ngIf="this.offer">
+    <h3>{{'OFFER.vasaPonuka' | translate}}</h3>
+      <h2 class="priceMargin">{{this.offer}} €</h2>
+  </div>
+  <h2 *ngIf="this.route.price">
+    {{'OFTEN.cena' | translate}}: {{this.route.price}}€
+  </h2>
 
   <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">
     <mat-label>{{'OFFER.ponukniteCenu' | translate}}</mat-label>

@@ -1,5 +1,11 @@
 @import "./src/sccs/shared/mixins";
 
+.chooseCar{
+ overflow: auto;
+  white-space: nowrap;
+  width: 400px;
+}
+
 .filter{
   margin-right: 5px;
 }

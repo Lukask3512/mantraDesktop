@@ -1,3 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
 .wrapper{
   display: flex;
 }
@@ -8,6 +10,18 @@
   align-items: center;
   margin-right: 3px;
   margin-left: 3px;
+}
+
+.detailLog{
+  @include button(#343a40)
+}
+
+.deletePrice{
+  @include button(orangered);
+}
+
+.addPrice{
+  @include button(darkorange);
 }
 
 .marginMid{

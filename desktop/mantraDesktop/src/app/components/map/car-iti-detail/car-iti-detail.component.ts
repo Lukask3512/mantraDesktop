@@ -66,8 +66,10 @@ export class CarItiDetailComponent implements OnInit {
     this.countDistanceOfItinerarWithou();
     this.putFirstAddressFromOffer();
     this.checkEstiAndLastTime();
+    this.skontrolujEstiALastTime();
     this.ciSaVopchaCezOtvor = this.ciSaVopchaCezOtvory();
     this.checkVyskaHrany();
+    this.skontrolujVahu();
   }
 
   setPonuka(offer) {
@@ -438,6 +440,9 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   getColorForTown(indexOfAddress){
+    if (!this.casyPreAuto || !this.casyPreAuto[indexOfAddress]){
+      this.skontrolujEstiALastTime();
+    }
     if (this.ciSaVopcha){
       const indexMesta = this.ciSaVopcha.poleMiestKdeSaVopcha.findIndex(oneId => oneId === indexOfAddress);
       if (indexMesta > -1){
@@ -572,6 +577,7 @@ export class CarItiDetailComponent implements OnInit {
   // a zobrazit v itinerari, ak sa mi to nepodari, vypisem o tom spravu a zobrazim osobitne itinerar a ponuku
   spracujPredpoklad(predpoklad: Predpoklad, carFromMap){
     // tu musim natiahnut auto do this.car
+    this.offer = JSON.parse(JSON.stringify(this.realOffer));
 
     let car = JSON.parse(JSON.stringify(carFromMap));
 
@@ -696,6 +702,7 @@ export class CarItiDetailComponent implements OnInit {
     this.offer.detailVPonuke = [];
     this.putFirstAddressFromOffer();
     this.checkEstiAndLastTime();
+    this.skontrolujVahu();
   }
 
   getCountOfPackages(townIndex){

@@ -50,12 +50,15 @@
 
 
       <div *ngIf="this.offersToShow != null" class="offers">
-
+        <app-posli-ponuku [offerId]="this.offersToShow.id" ></app-posli-ponuku>
         <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
 
         <h2>{{'MAP.vyberVozidlo' | translate}}</h2>
 
-        <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
+        <div class="chooseCar">
+          <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
+        </div>
+
         <app-car-iti-detail (uspecnePriradenie)="otvorAuto($event)" (sendCarToPredpokad)="getPredpoklad($event)"></app-car-iti-detail>
       </div>
     </div>

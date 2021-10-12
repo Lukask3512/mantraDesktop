@@ -5,7 +5,7 @@
 }
 
 .red{
-  background: red;
+  color: red;
 }
 
 .detailBut{
@@ -88,13 +88,14 @@
 .bottomLine{
   background: white;
   background: linear-gradient(#000, #000) no-repeat center/2px 100%;
-  display: block;
+  display: flex;
+  align-items: center;
   height: 30px;
   width: 1%;
 }
 
 .distance{
-  margin: 2px;
+  margin-left: 2px;
 }
 
 .oversize{
@@ -142,6 +143,6 @@
 }
 
 .spanKm{
-  margin-left: 2px;
+  margin-left: 6px;
 }
 

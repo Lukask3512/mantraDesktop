@@ -2,9 +2,12 @@
 
   <h2>{{'MAP.ulozeneUlozenieVoVozidlach' | translate}}</h2>
 
-  <div *ngFor="let ulozenie of this.predUlozenie">
-    <button (click)="this.sendIti(ulozenie)">{{ulozenie.ecv}}</button>
-  </div>
+  <section class="carsWrapper">
+    <div *ngFor="let ulozenie of this.predUlozenie">
+      <button class="carButton" (click)="this.sendIti(ulozenie)">{{ulozenie.ecv}}</button>
+    </div>
+  </section>
+
 
 </div>
 

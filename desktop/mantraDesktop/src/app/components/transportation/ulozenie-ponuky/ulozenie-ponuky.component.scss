@@ -1,0 +1,10 @@
+@import "./src/sccs/shared/mixins";
+
+.carButton{
+  @include smallButton(gray);
+  margin-left: 2px;
+}
+
+.carsWrapper{
+  display: flex;
+}

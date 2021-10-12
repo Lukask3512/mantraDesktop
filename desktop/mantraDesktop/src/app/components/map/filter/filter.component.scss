@@ -1,21 +1,53 @@
 @import "./src/sccs/shared/mixins";
 
 
+.matCheboxGreen{
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: gray;
+  }
+}
 
-    ::ng-deep .redMat .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-      background-color: red;
+.greenMat{
+  display: inline-block;
+  padding: 2px;
+  border-bottom: 2px solid lime;
+  border-radius: 4px;
+  margin-left: 6px;
+}
 
+.yellowMat{
+  display: inline-block;
+  padding: 2px;
+  border-bottom: 2px solid orange;
+  border-radius: 4px;
+  margin-left: 6px;
+}
 
-    ::ng-deep .greenMat .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-      background-color: limegreen;
+.redMat{
+  display: inline-block;
+  padding: 2px;
+  border-bottom: 2px solid red;
+  border-radius: 4px;
+  margin-left: 6px;
+}
 
-    }
+.okButton{
+  @include smallButton(lime);
+}
 
+mat-checkbox {
+  margin-left: 3px;
+}
 
-    ::ng-deep .yellowMat .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-      background-color: yellow;
+mat-form-field{
+  margin-left: 5px;
+}
 
-    }
+.radioButon{
+  margin-left: 5px;
+}
+
+.distanceType{
 
 }
 

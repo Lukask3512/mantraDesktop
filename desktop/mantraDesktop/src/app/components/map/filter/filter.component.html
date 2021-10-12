@@ -2,12 +2,12 @@
   <mat-slide-toggle [disabled]="fewSecDisable" [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
   <div class="detalWrapper" *ngIf="checked">
     <section class="example-section">
-      <label class="example-margin">{{'FILTER.typVzialenosti' | translate}}</label>
-      <mat-radio-group (change)="filterOffers()" [disabled]="!checked" [(ngModel)]="typeDistance">
-        <mat-radio-button  class="example-margin" value="maxAll">
+      <label class="distanceType">{{'FILTER.typVzialenosti' | translate}}</label>
+      <mat-radio-group class="radioButtons" (change)="filterOffers()" [disabled]="!checked" [(ngModel)]="typeDistance">
+        <mat-radio-button  class="radioButon" value="maxAll">
           {{'FILTER.maximalnaVzialenostBodov' | translate}}
         </mat-radio-button>
-        <mat-radio-button class="example-margin" value="maxFirst">
+        <mat-radio-button class="radioButon" value="maxFirst">
           {{'FILTER.max1Bodu' | translate}}
         </mat-radio-button>
       </mat-radio-group>
@@ -31,11 +31,18 @@
       <span *ngIf="checked" matSuffix> %</span>
     </mat-form-field>
 
-    <mat-checkbox class="greenMat" [disabled]="!checked" [(ngModel)]="vyhovuje"  (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
-    <mat-checkbox class="yellowMat" [disabled]="!checked" [(ngModel)]="povPre" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
-    <mat-checkbox class="redMat"  [disabled]="!checked" [(ngModel)]="prekrocenie"  (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
+    <div class="greenMat">
+      <mat-checkbox class="matCheboxGreen" [disabled]="!checked" [(ngModel)]="vyhovuje"  (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
+    </div>
 
-    <button [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
+    <div class="yellowMat">
+      <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
+    </div>
+    <div class="redMat">
+      <mat-checkbox  [disabled]="!checked" [(ngModel)]="prekrocenie"  (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
+    </div>
+
+    <button class="okButton" [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
   </div>
 </div>
 

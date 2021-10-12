@@ -7,3 +7,20 @@
 .pridatPonuku{
   @include button(lime)
 }
+
+button{
+  margin: 8px;
+}
+
+.wrapper{
+  margin: 5px;
+}
+
+.priceMargin{
+  margin-left: 5px;
+}
+
+.priceWrapper{
+  display: flex;
+  align-items: center;
+}

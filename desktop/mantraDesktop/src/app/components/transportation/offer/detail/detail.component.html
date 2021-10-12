@@ -24,8 +24,8 @@
     </app-drag-and-drop-list>
 
     <footer>
-      <button (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}} </button>
-      <button (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
+      <button class="detailLog" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}} </button>
+      <button class="detailLog" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
 
     </footer>
   </section>
@@ -63,12 +63,12 @@
 
 <!--    <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>-->
 
-    <button *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
+    <button class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
     <ng-template #elseUpravitCenu>
-      <button *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
+      <button class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
     </ng-template>
-    <button *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
-    <button *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+    <button class="deletePrice" *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+    <button class="deletePrice" *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
     <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >{{'OFFER.finalnePrijatie' | translate}}</h2>
     <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>
     <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">{{'OFFER.odmietnutPrepravu' | translate}}</button>
@@ -87,7 +87,7 @@
       <table mat-table [dataSource]="this.route.offerFrom">
         <ng-container matColumnDef="spolocnost">
           <th mat-header-cell *matHeaderCellDef> Spolocnost </th>
-          <td mat-cell *matCellDef="let element">  <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="element"></app-get-info-about-company>
+          <td mat-cell *matCellDef="let element; let i = index"><span *ngIf="companiesFromChild[i]">{{companiesFromChild[i].name}}</span>  <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="element"></app-get-info-about-company>
           </td>
         </ng-container>
 
@@ -118,6 +118,7 @@
       <button  (click)="cancelOffer()"> {{'OFFER.zrusenie' | translate}} </button>
       <span>{{'OFFER.ponukuPreFirmu' | translate}}</span>
       <app-get-info-about-company [masterId]="this.route.ponuknuteTo"></app-get-info-about-company>
+      <span *ngIf="this.route.ponuknuteTo && companiesFromChild">{{getCompanyById(this.route.ponuknuteTo)}}</span>
     </div>
 
 
@@ -127,7 +128,7 @@
   <div *ngIf="createdBy() && this.route.takenBy !== ''" class="input">
     <h4>
       {{'OFFER.ponukuPrijalaFrima' | translate}}:
-      <app-get-info-about-company [masterId]="this.route.takenBy"></app-get-info-about-company>
+      <app-get-name-of-comapny-by-master-id [masterId]="this.route.takenBy"></app-get-name-of-comapny-by-master-id>
       za {{this.route.price}}
     </h4>
     <div *ngIf="!isCancel() && !this.route.finished">
