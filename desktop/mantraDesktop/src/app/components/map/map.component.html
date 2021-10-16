@@ -4,6 +4,11 @@
   </div>
   <div class="wrapper">
     <div id="map"></div>
+    <app-cars-pop-up (carEmitter)="carFromDialog($event)" id="popup"></app-cars-pop-up>
+<!--    <div id="popup" class="ol-popup">-->
+<!--      <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>-->
+<!--      <div id="popup-content"></div>-->
+<!--    </div>-->
     <div #infoElement class="info">
       <div class="infoHeader">
         <h1>{{'MAP.informacie' | translate}}</h1>

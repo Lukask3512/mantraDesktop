@@ -93,7 +93,7 @@ export class RegisterComponent implements OnInit {
             if (new Date(myCompany.licenceUntil) >= new Date()){
               this.dataService.setDispecer(this.user);
               if (user){
-                this.router.navigate(['/view/cars']);
+                this.router.navigate(['/view/map']);
                 this.spinner.hide();
               }
             }else{
@@ -117,8 +117,14 @@ export class RegisterComponent implements OnInit {
 
 
   resetPass(){
-    this.accountService.passwordReset(this.loginForm.get('email').value);
-    this.openSnackBar('Na emailovu adresu bol zaslany email', 'Ok');
+    const emailAddress: string = this.loginForm.get('email').value;
+    if (emailAddress === '' || !emailAddress){
+      this.openSnackBar('Zadajte email', 'Ok');
+    }else{
+      this.accountService.passwordReset(emailAddress);
+      this.openSnackBar('Na emailovu adresu bol zaslany email', 'Ok');
+
+    }
   }
 
   openSnackBar(message: string, action: string) {

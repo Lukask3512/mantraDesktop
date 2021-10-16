@@ -131,6 +131,7 @@
       <th>Vyska</th>
       <th>Dlzka</th>
       <th>Vaha</th>
+      <th>Stohovatelnost</th>
 
     </tr>
     <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
@@ -140,6 +141,7 @@
       <td>{{jedenLog.sizeV}}</td>
       <td>{{jedenLog.sizeD}}</td>
       <td>{{jedenLog.weight}}</td>
+      <td>{{jedenLog.stohovatelnost}}</td>
     </tr>
     <!--    </tbody>-->
   </table>
@@ -194,6 +196,10 @@
 
     <!--  <p>Ukoncené {{this.toDate(this.routeLog.timestamp[this.routeLog.timestamp.length - 1])}}</p>-->
   </table>
+  <p class="infoText">Tento log predstavuje objednávku a dodací list. Podľa zmluvných strán sa môžu vyžadovať ďaľšie dokumenty(napr. CMR, faktúra a pod.).
+  Preprava sa riadi príslušnými predpismi. Ide o obchodný vzťah. Môžu sa aplikovať zákonné podmienky a/alebo všeobecné obchodné podmienky
+  zmluvných strán, vrátane prepravných a iných poriadkov. Log bol vygenerovaný automaticky a zodpovedá záznamom prevádzkovateľa
+  aplikáie. Prístup k logu majú obe zmluvné strany vo svojej aplikácií. Pre viac informácií navštívte ....</p>
 </div>
 
 </mat-dialog-content>

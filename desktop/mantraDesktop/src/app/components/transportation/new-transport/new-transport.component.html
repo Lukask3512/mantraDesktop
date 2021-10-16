@@ -53,15 +53,16 @@
       <button class="buttonTransport" *ngIf="this.route && this.route.id" (click)="openAllDetailDialog()">{{'OFFER.podrobneInfo' | translate}}</button>
     </div>
 
-      <div *ngIf="this.route && !this.route.id" class="aframe">
-        <app-size-of-box></app-size-of-box>
-      </div>
+
 
   </div>
 
 
   <div class="map">
     <app-openlayer #child></app-openlayer>
+    <div *ngIf="this.route && !this.route.id" class="aframe">
+      <app-size-of-box></app-size-of-box>
+    </div>
   </div>
 
 

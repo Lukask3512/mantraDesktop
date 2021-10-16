@@ -63,7 +63,7 @@
 
 <!--    <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>-->
 
-    <button class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
+    <button class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">Odoslať ponuku</button>
     <ng-template #elseUpravitCenu>
       <button class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId()" (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
     </ng-template>

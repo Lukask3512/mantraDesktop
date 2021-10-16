@@ -134,9 +134,9 @@ export class AddCompanyComponent implements OnInit {
             if (res){
               this.checkCompaniesForDico().then(async resDico => {
                 if (resDico){
-                  var password = Math.random().toString(36).slice(-8);
-
-                  await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
+                  // var password = Math.random().toString(36).slice(-8);
+                  var password = '123456';
+                    await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
                     if (registrovany){
                       this.sendMailToRegisteredUser();
                     }else{

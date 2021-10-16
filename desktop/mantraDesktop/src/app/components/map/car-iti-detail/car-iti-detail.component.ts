@@ -73,6 +73,7 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer) {
+    console.log(offer)
     if (this.offer && this.offer.id === offer.id) {
       var offerAdresy = JSON.parse(JSON.stringify(offer)); // toto robim aby sa mi pri update nanovo nenacitali adresy v drag and drop
       offerAdresy.detailVPonuke = this.offer.detailVPonuke;

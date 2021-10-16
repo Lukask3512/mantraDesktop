@@ -10,7 +10,7 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import {fromLonLat} from 'ol/proj';
-import VectorSource from 'ol/source/Vector';
+
 
 import LineString from 'ol/geom/LineString';
 import {HttpClient} from '@angular/common/http';
@@ -49,7 +49,9 @@ import {VodicService} from '../../services/vodic.service';
 import Vodic from '../../models/Vodic';
 import {take} from 'rxjs/operators';
 import {RouteCoordinatesService} from '../../services/route/route-coordinates.service';
-
+import Overlay from 'ol/Overlay';
+import {Cluster, Vector as VectorSource} from 'ol/source';
+import {CarsPopUpComponent} from './cars-pop-up/cars-pop-up.component';
 
 
 @Component({
@@ -140,6 +142,10 @@ export class MapComponent implements AfterViewInit {
 
   lastClickedOnaddressId;
 
+  overlay;
+  content;
+  closer;
+  container;
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
@@ -157,6 +163,9 @@ export class MapComponent implements AfterViewInit {
   @ViewChild(ChoosCarToMoveComponent)
   private chooseCar: ChoosCarToMoveComponent;
 
+  @ViewChild(CarsPopUpComponent)
+  private chooseCarPopup: CarsPopUpComponent;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
               private dialog: MatDialog, private offerRouteService: OfferRouteService,
@@ -172,6 +181,20 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() =>
     {
+
+      this.container = document.getElementById('popup');
+      this.content = document.getElementById('popup-content');
+      this.closer = document.getElementById('popup-closer');
+
+      this.overlay = new Overlay({
+        element: this.container,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250,
+        },
+      });
+
+
     this.view = new View({
       center: olProj.fromLonLat([0, 0]),
       zoom: 1
@@ -182,6 +205,7 @@ export class MapComponent implements AfterViewInit {
       layers: [
         this.tileLayer, this.vectorLayerAdress
       ],
+      overlays: [this.overlay],
       view: this.view
     });
 
@@ -196,7 +220,6 @@ export class MapComponent implements AfterViewInit {
 
 
 
-
     // onlick
     this.map.on('click', evt => {
       const feature = this.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
@@ -204,7 +227,19 @@ export class MapComponent implements AfterViewInit {
       });
       if (feature) {
         const type = feature.get('type');
-        if (type === 'car'){
+        if (feature.get('features')){
+            if (feature.get('features')[0].get('type') === 'car'){
+              this.zoomToAddressOrCar(feature);
+              if (feature.get('features').length === 1){ // ak som klikol na 1 auto
+                this.onClickFindInfo(feature.get('features')[0].get('name'));
+              }else{ // ak som klikol na viacero aut
+                const coordinate = evt.coordinate;
+                this.overlay.setPosition(coordinate);
+                this.chooseCarPopup.setCars(feature.get('features'));
+              }
+            }
+        }
+        else if (type === 'car'){
           this.onClickFindInfo(feature.get('name'));
           this.zoomToAddressOrCar(feature);
         }
@@ -241,6 +276,16 @@ export class MapComponent implements AfterViewInit {
       200);
 
     this.countDistance([48.920836, 19.180706], [48.920779, 19.180593]);
+  }
+
+  carFromDialog(carId){
+    this.closePopUp();
+    this.onClickFindInfo(carId);
+  }
+
+  closePopUp(){
+    this.overlay.setPosition(undefined);
+    this.closer.blur();
   }
 
   scrollToInfo(){
@@ -373,7 +418,7 @@ export class MapComponent implements AfterViewInit {
 
     // routes.forEach((route, index) => {
 
-
+  // this.ca
 
     const ref = this.storage.ref('Routes/' + route.id + '.json');
     try {
@@ -484,15 +529,17 @@ export class MapComponent implements AfterViewInit {
             });
 
 
-            const carStyle = new Style({
-              image: new Icon({
-                color: '#8959A8',
-                crossOrigin: 'anonymous',
-                src: 'assets/logo/truck.png',
-                scale: 0.05
-              })
-            });
-            carFeature.setStyle(carStyle);
+
+
+            // const carStyle = new Style({
+            //   image: new Icon({
+            //     color: '#8959A8',
+            //     crossOrigin: 'anonymous',
+            //     src: 'assets/logo/truck.png',
+            //     scale: 0.05
+            //   })
+            // });
+            // carFeature.setStyle(carStyle);
             this.cars.push(carFeature);
             if (car[i].status === 4) {
               this.pulseCar = true;
@@ -525,6 +572,9 @@ export class MapComponent implements AfterViewInit {
           }
 
         }
+
+
+
       }
       this.addAddresses();
       this.map.removeLayer(this.vectorLayerCars);
@@ -533,9 +583,67 @@ export class MapComponent implements AfterViewInit {
         features: this.cars
       });
 
-      this.vectorLayerCars = new VectorLayer({
-        source: vectorSource,
-      });
+      // this.vectorLayerCars = new VectorLayer({
+      //   source: clusterSource,
+      // });
+
+    if (this.cars && this.cars.length > 0){
+
+
+    const clusterSource = new Cluster({
+      distance: 40,
+      minDistance: 20,
+      source: vectorSource,
+    });
+    const styleCache = {};
+    this.vectorLayerCars = new VectorLayer({
+      source: clusterSource,
+      style: (feature) => {
+        const size = feature.get('features').length;
+        let style = styleCache[size];
+        if (!style){
+          if (size > 1) {
+            style = new Style({
+              image: new Icon({
+                color: '#8959A8',
+                crossOrigin: 'anonymous',
+                src: 'assets/logo/truck.png',
+                scale: 0.05
+              }),
+              text: new Text({
+                text: size.toString(),
+                fill: new Fill({
+                  color: '#fff',
+                }),
+              }),
+            });
+            styleCache[size] = style;
+          }else{
+            const carId = feature.get('features')[0].get('name');
+            const carToShow: Cars = this.carsFromDatabase.find(carFrom => carFrom.id === carId);
+            style = new Style({
+              image: new Icon({
+                color: '#8959A8',
+                crossOrigin: 'anonymous',
+                src: 'assets/logo/truck.png',
+                scale: 0.05
+              }),
+              text: new Text({
+                text: carToShow.ecv,
+                fill: new Fill({
+                  color: '#000000',
+                }),
+                offsetY: 15
+              }),
+            });
+            styleCache[size] = style;
+          }
+        }
+
+        return style;
+      },
+    });
+
       this.vectorLayerCars.setZIndex(3);
       this.map.addLayer(this.vectorLayerCars);
 
@@ -548,6 +656,7 @@ export class MapComponent implements AfterViewInit {
         this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
           duration: 800} );
         this.firstZoomCars = true;
+    }
     }
 
     }
@@ -1476,6 +1585,7 @@ export class MapComponent implements AfterViewInit {
       route.adresyVPonuke.forEach((adresa, index) => {
         coordinatesToArray.push([adresa.coordinatesOfTownsLon, adresa.coordinatesOfTownsLat]);
       });
+
       // draw lines
       const routeString = new LineString(coordinatesToArray)
         .transform('EPSG:4326', 'EPSG:3857');

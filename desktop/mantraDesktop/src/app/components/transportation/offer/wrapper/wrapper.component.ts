@@ -21,7 +21,7 @@ export class WrapperComponent implements OnInit {
 
   routesToShow: Route[];
   finishedRoutesToShow: Route[];
-  whatIsActive = 0;
+  whatIsActive = 1;
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
       this.routes = routes.filter(oneRoute => oneRoute.finished === false);
@@ -87,7 +87,8 @@ export class WrapperComponent implements OnInit {
   }
 
   allActive(){
-    this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
+    this.finishedRoutesToShow = null;
+      this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
       && oneRoute.createdBy !== this.getDispecerId());
     this.whatIsActive = 0;
   }
