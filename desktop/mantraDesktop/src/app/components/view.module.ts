@@ -78,6 +78,7 @@ import { TimeProblemDialogComponent } from './dialogs/time-problem-dialog/time-p
 import {TranslateModule} from '@ngx-translate/core';
 import { GetNameOfComapnyByMasterIdComponent } from './companies/get-name-of-comapny-by-master-id/get-name-of-comapny-by-master-id.component';
 import { CarsPopUpComponent } from './map/cars-pop-up/cars-pop-up.component';
+import { OffersPopUpComponent } from './map/offers-pop-up/offers-pop-up.component';
 
 
 @NgModule({
@@ -98,7 +99,7 @@ import { CarsPopUpComponent } from './map/cars-pop-up/cars-pop-up.component';
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -119,7 +120,8 @@ import { CarsPopUpComponent } from './map/cars-pop-up/cars-pop-up.component';
         GetNameOfDriverComponent,
         AllDetailAboutRouteDialogComponent,
         PosliPonukuComponent,
-        CarsPopUpComponent
+        CarsPopUpComponent,
+        OffersPopUpComponent
     ],
     imports: [
         CommonModule,

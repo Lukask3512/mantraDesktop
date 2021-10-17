@@ -24,24 +24,24 @@ export class CarsPopUpComponent implements OnInit {
     this.closer = document.getElementById('popup-closer');
   }
 
-  closePopUp(){
-    this.carEmitter.emit(null);
-    this.closer.blur();
-  }
-
-  chooseCar(carid){
-    this.carEmitter.emit(carid);
-    this.closer.blur();
-  }
-
-  setCars(features: any[]){
-    const idAut = [];
-    for (let i = 0; i < features.length; i++) {
-      // console.log(features[i]);
-      console.log(features[i].values_.name);
-      idAut.push(features[i].values_.name);
+    closePopUp(){
+      this.carEmitter.emit(null);
+      this.closer.blur();
     }
-    this.cars = this.carService.getAllCars().filter(car => idAut.includes(car.id));
-  }
+
+    chooseCar(carid){
+      this.carEmitter.emit(carid);
+      this.closer.blur();
+    }
+
+    setCars(features: any[]){
+      const idAut = [];
+      for (let i = 0; i < features.length; i++) {
+        // console.log(features[i]);
+        console.log(features[i].values_.name);
+        idAut.push(features[i].values_.name);
+      }
+      this.cars = this.carService.getAllCars().filter(car => idAut.includes(car.id));
+    }
 
 }

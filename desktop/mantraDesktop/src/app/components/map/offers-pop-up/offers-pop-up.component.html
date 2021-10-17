@@ -1,0 +1,8 @@
+<div id="popup" class="ol-popup">
+  <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>
+  <div id="popup-content">
+    <div class="carsWrapper" *ngFor="let offer of this.offers">
+      <button (click)="chooseOffer(offer.id)">{{offer.id}}</button>
+    </div>
+  </div>
+</div>
