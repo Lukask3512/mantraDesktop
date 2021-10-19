@@ -80,6 +80,15 @@ export class CompanyService {
     }).valueChanges();
   }
 
+  getCompanyByName(name){
+    return this.afs.collection('companies', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+      query = query.where('name', '==', name);
+      return query;
+    }).valueChanges();
+  }
+
   getCompanyByDico(dicIc){
     return this.afs.collection('companies', ref => {
       let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;

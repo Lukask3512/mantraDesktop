@@ -10,6 +10,31 @@
     bottom: 5px;
   };
 }
+
+.allWrapper{
+  display: flex;
+  justify-content: space-between;
+}
+
+.imgAndName{
+  display: flex;
+  align-items: center;
+}
+
+.companyName{
+  color: white;
+  display: inline-block;
+  margin: 0;
+  margin-left: 5px;
+}
+
+.profile{
+  color: white;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+
 .logo{
   width: auto;
   margin: {

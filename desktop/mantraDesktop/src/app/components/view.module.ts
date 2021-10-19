@@ -79,6 +79,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import { GetNameOfComapnyByMasterIdComponent } from './companies/get-name-of-comapny-by-master-id/get-name-of-comapny-by-master-id.component';
 import { CarsPopUpComponent } from './map/cars-pop-up/cars-pop-up.component';
 import { OffersPopUpComponent } from './map/offers-pop-up/offers-pop-up.component';
+import { ChooseCarToMapComponent } from './map/filter/choose-car-to-map/choose-car-to-map.component';
 
 
 @NgModule({
@@ -99,7 +100,7 @@ import { OffersPopUpComponent } from './map/offers-pop-up/offers-pop-up.componen
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent
     ],
     exports: [
         OpenlayerComponent,

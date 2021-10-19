@@ -44,6 +44,9 @@
 
     <button class="okButton" [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
   </div>
+  <div class="chooseCar">
+    <app-choose-car-to-map (carEmitter)="whichCars($event)"></app-choose-car-to-map>
+  </div>
 </div>
 
 

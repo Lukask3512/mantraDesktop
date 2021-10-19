@@ -1,0 +1,8 @@
+<section class="example-section">
+  <h4>Vyberte autá, pre ktoré chcete zobraziť vhodné ponuky</h4>
+  <div >
+    <mat-checkbox [checked]="allCarsChecked" (change)="catchAllCars()" >Všetky vozidlá</mat-checkbox>
+    <mat-checkbox [disabled]="allCarsChecked"  (change)="catchChange(car.id)" *ngFor="let car of cars">{{car.ecv}}</mat-checkbox>
+  </div>
+
+</section>

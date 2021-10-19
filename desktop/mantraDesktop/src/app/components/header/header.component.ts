@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {DataService} from "../../data/data.service";
 import {AccountService} from "../../../login/_services/account.service";
 import {TranslateService} from '@ngx-translate/core';
+import Company from '../../models/Company';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,10 +20,12 @@ export class HeaderComponent implements OnInit {
 
   lang;
 
+  company: Company;
+
   constructor(location: Location,  private element: ElementRef,
               private router: Router, private dataService: DataService,
               private accountService: AccountService,
-              private translateService: TranslateService
+              private translateService: TranslateService,
   ) {
     this.location = location;
   }
@@ -31,6 +34,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'sk';
+    this.company = this.dataService.getLoggedInCompany();
   }
 
   changeLang(lang){

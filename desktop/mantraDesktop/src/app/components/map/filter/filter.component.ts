@@ -29,6 +29,7 @@ export class FilterComponent implements OnInit {
   offers: Route[];
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
+  @Output() carsToShow = new EventEmitter<any[]>();
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -66,6 +67,10 @@ export class FilterComponent implements OnInit {
 
   updateMatLabelForm(){
     this.owhichToShow.emit({vyhovuje: this.vyhovuje, trocha: this.povPre, nie: this.prekrocenie})
+  }
+
+  whichCars(carsId: string[]){
+    this.carsToShow.emit(carsId);
   }
 
 }

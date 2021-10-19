@@ -1,11 +1,11 @@
 <div class="mapComponentWrapper">
   <div #filterElement class="filter">
-    <app-filter (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
+    <app-filter cat (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
   </div>
   <div class="wrapper">
     <div id="map"></div>
     <app-cars-pop-up (carEmitter)="carFromDialog($event)" id="popup"></app-cars-pop-up>
-    <app-offers-pop-up id="offerPopUp"></app-offers-pop-up>
+    <app-offers-pop-up (offerEmitter)="offerFromDialog($event)" id="offerPopUp"></app-offers-pop-up>
 <!--    <div id="popup" class="ol-popup">-->
 <!--      <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>-->
 <!--      <div id="popup-content"></div>-->

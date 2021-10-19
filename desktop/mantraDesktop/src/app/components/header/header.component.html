@@ -1,5 +1,9 @@
-<div class="button_cont" >
-  <img class="logo" src="./assets/logo/Mantra-Horizontal-White.svg">
+<div class="allWrapper" >
+  <div class="imgAndName">
+    <img class="logo" src="./assets/logo/Mantra-Horizontal-White.svg">
+    <h4 class="companyName" *ngIf="this.company">{{this.company.name}}</h4>
+  </div>
+
 
   <div class="logout-btn">
     <div class="flexking">
@@ -8,7 +12,7 @@
         <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
         <option value="cz" [selected]="lang == 'cz'">Czech</option>
       </select>
-
+      <i routerLink="/view/profile" class="material-icons profile">account_circle</i>
       <button routerLink="" (click)="logout()" class="button_c" >{{'HEADER.logout' | translate}}</button>
     </div>
 

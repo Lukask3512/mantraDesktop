@@ -130,29 +130,33 @@ export class AddCompanyComponent implements OnInit {
           return;
         }
         else {
-          this.checkCompanyForIco().then(res => {
-            if (res){
-              this.checkCompaniesForDico().then(async resDico => {
-                if (resDico){
-                  // var password = Math.random().toString(36).slice(-8);
-                  var password = '123456';
-                    await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
-                    if (registrovany){
-                      this.sendMailToRegisteredUser();
-                    }else{
-                      this.sendMail(password);
-                    }
-                  }));
+          this.checkCompanyForName().then(resName => {
+            if (resName){
+            this.checkCompanyForIco().then(res => {
+              if (res){
+                this.checkCompaniesForDico().then(async resDico => {
+                  if (resDico){
+                    // var password = Math.random().toString(36).slice(-8);
+                    // var password = '123456';
+                    //   await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
+                    //   if (registrovany){
+                    //     this.sendMailToRegisteredUser();
+                    //   }else{
+                    //     this.sendMail(password);
+                    //   }
+                    // }));
+                    //
+                    // const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
+                    //
+                    // this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
+                    //
+                    // this.dispecerForm.reset();
+                    // this.dialogRef.close();
 
-                  const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
-
-                  this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
-
-                  this.dispecerForm.reset();
-                  this.dialogRef.close();
-
-                }
-              });
+                  }
+                });
+              }
+            });
             }
           });
 
@@ -203,6 +207,25 @@ export class AddCompanyComponent implements OnInit {
         this.companyService.getCompanyByIco(this.assignToCompany().ico).pipe(take(1)).subscribe(companies => {
           if (companies.length > 0) {
             this.openSnackBar('Spolocnost s takym ico sa už nachádza v databáze', 'Ok');
+            resolve(false);
+            return;
+          }else{
+            resolve(true);
+          }
+        });
+      }else{
+        resolve(true);
+      }
+    });
+
+  }
+
+  checkCompanyForName(){
+    return new Promise((resolve, reject) => {
+      if (!this.company || this.company.name !== this.assignToCompany().name){
+        this.companyService.getCompanyByName(this.assignToCompany().name).pipe(take(1)).subscribe(companies => {
+          if (companies.length > 0) {
+            this.openSnackBar('Spolocnost s takym nazvom sa už nachádza v databáze', 'Ok');
             resolve(false);
             return;
           }else{

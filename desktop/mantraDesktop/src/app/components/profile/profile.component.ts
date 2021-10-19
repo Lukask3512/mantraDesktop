@@ -7,6 +7,7 @@ import Prives from '../../models/Prives';
 import {PrivesService} from '../../services/prives.service';
 import {AccountService} from '../../../login/_services/account.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import Company from '../../models/Company';
 
 @Component({
   selector: 'app-profile',
@@ -21,8 +22,10 @@ export class ProfileComponent implements OnInit {
               private _snackBar: MatSnackBar) { }
 
   dispecer: Dispecer;
+  company: Company;
   ngOnInit(): void {
     this.dispecer = this.dataService.getDispecer();
+    this.company = this.dataService.getLoggedInCompany();
   }
 
   passwordChange(){

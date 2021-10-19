@@ -645,7 +645,7 @@ export class CarItiDetailComponent implements OnInit {
     });
     this.offerService.updateRoute(offer);
     this.uspecnePriradenie.emit(this.car);
-    this.matComponent.reDrawOffers();
+    this.matComponent.reDrawOffers(null);
   }
 
   chooseColor(type){

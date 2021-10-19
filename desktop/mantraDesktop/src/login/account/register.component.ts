@@ -90,6 +90,7 @@ export class RegisterComponent implements OnInit {
         this.user = user[0];
         if (this.user){
           this.companyService.getCompany(this.user.companyId).pipe(take(1)).subscribe(myCompany => {
+            this.dataService.setCompany(myCompany);
             if (new Date(myCompany.licenceUntil) >= new Date()){
               this.dataService.setDispecer(this.user);
               if (user){
@@ -97,6 +98,7 @@ export class RegisterComponent implements OnInit {
                 this.spinner.hide();
               }
             }else{
+              this.dataService.setCompany(null);
               this.spinner.hide();
               this.openSnackBar('Licencia vyprsala.', 'Ok');
             }

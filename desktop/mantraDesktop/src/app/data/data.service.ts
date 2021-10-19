@@ -9,6 +9,7 @@ import Cars from '../models/Cars';
 import DeatilAboutAdresses from '../models/DeatilAboutAdresses';
 import Address from '../models/Address';
 import {getDistance} from 'ol/sphere';
+import Company from '../models/Company';
 @Injectable({
   providedIn: 'root'
 })
@@ -43,6 +44,16 @@ export class DataService {
   // detail v aktualnej adrese ktoru vytvaram
   private actualDetailSource = new BehaviorSubject<any>(null);
   actualDetail = this.actualDetailSource.asObservable();
+
+  loginInCompany: Company;
+
+  setCompany(company: Company){
+    this.loginInCompany = company;
+  }
+
+  getLoggedInCompany(): Company{
+    return this.loginInCompany;
+  }
 
   setDetailSource(detail){
     this.detailSource.next(detail);

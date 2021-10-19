@@ -105,6 +105,8 @@ export class MapComponent implements AfterViewInit {
 
   carsWithItinerar;
 
+  carsToDisplay;
+
   carsFromDatabase: Cars[];
   routesFromDatabase;
   adressesFromDatabase: Address[];
@@ -172,7 +174,7 @@ export class MapComponent implements AfterViewInit {
   @ViewChild(CarsPopUpComponent)
   private chooseCarPopup: CarsPopUpComponent;
 
-  @ViewChild(CarsPopUpComponent)
+  @ViewChild(OffersPopUpComponent)
   private chooseOfferPoUp: OffersPopUpComponent;
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
@@ -192,6 +194,7 @@ export class MapComponent implements AfterViewInit {
     {
 
       this.container = document.getElementById('popup');
+      this.containerOffer = document.getElementById('offerPopUp');
       this.content = document.getElementById('popup-content');
       this.closer = document.getElementById('popup-closer');
 
@@ -204,7 +207,7 @@ export class MapComponent implements AfterViewInit {
       });
 
       this.overlayOffer = new Overlay({
-        element: this.container,
+        element: this.containerOffer,
         autoPan: true,
         autoPanAnimation: {
           duration: 250,
@@ -228,6 +231,7 @@ export class MapComponent implements AfterViewInit {
 
       this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
+          this.carsToDisplay = this.carsFromDatabase;
           this.addCars(this.carsFromDatabase);
 
           setTimeout(() => {
@@ -312,9 +316,17 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
+  offerFromDialog(offerId){
+    this.closePopUp();
+    if (offerId){
+      this.onClickFindInfoOffer(offerId, null);
+    }
+  }
+
   closePopUp(){
     this.overlay.setPosition(undefined);
     this.closer.blur();
+    this.overlayOffer.setPosition(undefined);
   }
 
   scrollToInfo(){
@@ -361,7 +373,9 @@ export class MapComponent implements AfterViewInit {
   // ak kliknem na ponuku
   async onClickFindInfoOffer(id, feature){
     this.offersToShow = this.offersFromDatabase.find(route => route.id === id);
-    this.distanceOfOffer = Math.round(((getLength(feature.getGeometry()) / 100) / 1000) * 100);
+    if (feature){
+      this.distanceOfOffer = Math.round(((getLength(feature.getGeometry()) / 100) / 1000) * 100);
+    }
     this.carToShow = null;
     this.routesToShow = null;
     await this.sleep(200);
@@ -378,15 +392,16 @@ export class MapComponent implements AfterViewInit {
   addRouteNewSystem(){
     this.carService.cars$.subscribe(allCars => {
         allCars.forEach(oneCar => {
+          if (oneCar.itinerar && oneCar.itinerar.length > 0){
           let outputData;
           this.routeCoordinates.getRoute(oneCar.id).subscribe((nasolSom) => {
-            if (nasolSom){
+            if (nasolSom) {
               const ref = this.storage.ref('Routes/' + oneCar.id + '.json');
               setTimeout(() => {
 
 
                 const stahnute = ref.getDownloadURL().pipe(take(1)).subscribe(data => {
-                  if (data){
+                  if (data) {
                     this.http.get(data, {responseType: 'text' as 'json'}).pipe(take(1)).subscribe(text => {
                       outputData = text;
                       // zmena na json
@@ -436,6 +451,7 @@ export class MapComponent implements AfterViewInit {
               }, 1000);
             } //
           });
+        }
         });
     });
   }
@@ -757,9 +773,14 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  public reDrawOffers(){
+  public reDrawOffers(carsId){
+    if (carsId){
+      this.carsToDisplay = carsId;
+    }else{
+      this.carsToDisplay = this.carsFromDatabase;
+    }
     setTimeout(() => {
-      this.drawOffers(this.emitFromFilter);
+      this.drawOffers(this.offersFromDatabase);
     }, 2500);
   }
 
@@ -1142,7 +1163,7 @@ export class MapComponent implements AfterViewInit {
       this.map.removeLayer(this.vectorLayerOffersRed);
       this.map.removeLayer(this.vectorLayerOffersYellow);
     }else if (emitFromFilter != null){
-      this.emitFromFilter = emitFromFilter;
+      this.emitFromFilter = emitFromFilter.offers;
       const offers: Route[] = emitFromFilter.offers;
       const minVzdialenost = emitFromFilter.minDistance;
       const maxVzdialenost = emitFromFilter.maxDistance;
@@ -1671,6 +1692,15 @@ export class MapComponent implements AfterViewInit {
 
     // this.offersToShow = null;
     offers.forEach((route, index) => {
+      const isThereMyCarGreen = route.zelenePrepravy.find(car => this.carsToDisplay.includes(car.id));
+      let isThereMyCarYellow;
+      if (!isThereMyCarGreen){
+        isThereMyCarYellow = route.zltePrepravy.find(car => this.carsToDisplay.includes(car.id));
+      }
+      if (route.adresyVPonuke.length > 3){
+          console.log(route);
+      }
+      console.log(route);
       const coordinatesToArray = [];
       route.adresyVPonuke.forEach((adresa, index) => {
         coordinatesToArray.push([adresa.coordinatesOfTownsLon, adresa.coordinatesOfTownsLat]);
@@ -1734,13 +1764,21 @@ export class MapComponent implements AfterViewInit {
       styles.push(routeStyle);
       routeFeature.setStyle(styles);
 
-      if (route.flag < 2){
-        this.offersRouteRed.push(routeFeature);
-      }else if (route.flag === 2){
-        this.offersRouteYellow.push(routeFeature);
-      }else{
+      if (route.flag >= 3 && isThereMyCarGreen){
         this.offersRouteGreen.push(routeFeature);
       }
+      else if (route.flag === 2 && isThereMyCarYellow){
+        this.offersRouteYellow.push(routeFeature);
+      }else{
+        this.offersRouteRed.push(routeFeature);
+      }
+      // if (route.flag < 2){
+      //   this.offersRouteRed.push(routeFeature);
+      // }else if (route.flag === 2){
+      //   this.offersRouteYellow.push(routeFeature);
+      // }else{
+      //   this.offersRouteGreen.push(routeFeature);
+      // }
 
       if (route.adresyVPonuke.length > 0) {
         // tu vyberiem len 1. a posledny bod - na ikony a tie dam co clusterov
@@ -1759,18 +1797,32 @@ export class MapComponent implements AfterViewInit {
           type: 'offer',
           start: false
         });
-        if (route.flag < 2) { //  cervena
-          this.offersRed.push(iconFeature);
-          this.offersRed.push(iconFeatureLast);
-        }
-        else if (route.flag === 2) { // zlta
-          this.offersYellow.push(iconFeature);
-          this.offersYellow.push(iconFeatureLast);
-        }
-        else {
+
+        if (route.flag >= 3 && isThereMyCarGreen){
           this.offersGreen.push(iconFeature);
           this.offersGreen.push(iconFeatureLast);
         }
+        else if (route.flag === 2 && isThereMyCarYellow){
+          this.offersYellow.push(iconFeature);
+          this.offersYellow.push(iconFeatureLast);
+        }else{
+          this.offersRed.push(iconFeature);
+          this.offersRed.push(iconFeatureLast);
+        }
+
+
+        // if (route.flag < 2) { //  cervena
+        //   this.offersRed.push(iconFeature);
+        //   this.offersRed.push(iconFeatureLast);
+        // }
+        // else if (route.flag === 2) { // zlta
+        //   this.offersYellow.push(iconFeature);
+        //   this.offersYellow.push(iconFeatureLast);
+        // }
+        // else {
+        //   this.offersGreen.push(iconFeature);
+        //   this.offersGreen.push(iconFeatureLast);
+        // }
 
       }
 
