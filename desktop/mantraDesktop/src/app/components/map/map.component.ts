@@ -231,7 +231,7 @@ export class MapComponent implements AfterViewInit {
 
       this.carService.cars$.subscribe(newCars => {
           this.carsFromDatabase = newCars;
-          this.carsToDisplay = this.carsFromDatabase;
+          this.carsToDisplay = this.carsFromDatabase.map(oneCar => oneCar.id);
           this.addCars(this.carsFromDatabase);
 
           setTimeout(() => {
@@ -777,7 +777,7 @@ export class MapComponent implements AfterViewInit {
     if (carsId){
       this.carsToDisplay = carsId;
     }else{
-      this.carsToDisplay = this.carsFromDatabase;
+      this.carsToDisplay = this.carsFromDatabase.map(oneCar => oneCar.id);
     }
     setTimeout(() => {
       this.drawOffers(this.offersFromDatabase);
@@ -1064,6 +1064,27 @@ export class MapComponent implements AfterViewInit {
   });
   }
 
+  fitAllOffers(){
+    let whichFeatruresFit = [];
+    if (this.green){
+      whichFeatruresFit = this.offersGreen;
+    }
+    if (this.yellow){
+      whichFeatruresFit = [...whichFeatruresFit, ...this.offersYellow];
+    }
+    if (this.red){
+      whichFeatruresFit = [...whichFeatruresFit, ...this.offersRed];
+    }
+    setTimeout( () => {
+      const vectorNaZobrazenieAllFeatures = new VectorSource({
+        features: whichFeatruresFit
+      });
+      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
+          duration: 800
+        });
+    }, 2000);
+  }
+
   estimatedTimeToLocal(dateUtc){
     const date = (new Date(dateUtc));
     if (dateUtc == null){
@@ -1162,6 +1183,7 @@ export class MapComponent implements AfterViewInit {
       this.map.removeLayer(this.vectorLayerOffersGreen);
       this.map.removeLayer(this.vectorLayerOffersRed);
       this.map.removeLayer(this.vectorLayerOffersYellow);
+      this.map.removeLayer(this.clustersOfOffers);
     }else if (emitFromFilter != null){
       this.emitFromFilter = emitFromFilter.offers;
       const offers: Route[] = emitFromFilter.offers;
@@ -1587,6 +1609,7 @@ export class MapComponent implements AfterViewInit {
 
     this.clustersOfOffers.setZIndex(4);
     this.map.addLayer(this.clustersOfOffers);
+    this.fitAllOffers();
   }
 
     countClosesPoint(routeString, lonLatMy){
@@ -1671,6 +1694,7 @@ export class MapComponent implements AfterViewInit {
     }
 
   drawOffers(offers){
+    this.fitAllOffers();
     this.offersGreen = [];
     this.offersRed = [];
     this.offersYellow = [];

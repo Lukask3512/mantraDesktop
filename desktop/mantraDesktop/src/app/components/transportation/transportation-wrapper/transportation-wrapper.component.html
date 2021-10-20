@@ -5,11 +5,16 @@
     <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
   </div>
 
+  <section class="activeNonActive">
+    <button class="buttonTab"  (click)="activeRoutes()">Aktívne</button>
+    <button class="buttonTab"  (click)="nonActiveRoutes()">Ukončené</button>
+  </section>
 
 
+
+
+<div *ngIf="active">
   <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
-
-
   <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute" >
     <div *ngIf="allActiveRoutes.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 
@@ -19,45 +24,49 @@
 
     </div>
 
-  <div *ngIf="allActiveRoutes.length" class="vykladka">
-    <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
-    <div *ngIf="route.carId == null">
-      <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
-    </div>
-    <div>
-      <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
-    </div>
+    <div *ngIf="allActiveRoutes.length" class="vykladka">
+      <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      <div *ngIf="route.carId == null">
+        <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
+      </div>
+      <div>
+        <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
+      </div>
 
     </div>
   </div>
+</div>
+
 
 
 
   <!--  ////////////-->
 
-
+<div *ngIf="!active">
   <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>
   <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
-<!--      <h2>Nakládky</h2>-->
+      <!--      <h2>Nakládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
         <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
       </ng-container>
     </div>
 
     <div class="vykladka">
-<!--      <h2>Vykládky</h2>-->
+      <!--      <h2>Vykládky</h2>-->
       <button (click)="openAddDialog(route)" class="buttonB">{{'OFTEN.zopakovat' | translate}}</button>
       <button (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
 
     </div>
-<!--    <div class="repetRoute">-->
-<!--&lt;!&ndash;      <h2>Ukončené</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>&ndash;&gt;-->
+    <!--    <div class="repetRoute">-->
+    <!--&lt;!&ndash;      <h2>Ukončené</h2>&ndash;&gt;-->
+    <!--&lt;!&ndash;      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>&ndash;&gt;-->
 
 
-<!--    </div>-->
+    <!--    </div>-->
   </div>
+</div>
+
 
 </div>
 

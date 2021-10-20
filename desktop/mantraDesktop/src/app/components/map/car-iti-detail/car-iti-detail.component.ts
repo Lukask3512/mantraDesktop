@@ -32,6 +32,7 @@ export class CarItiDetailComponent implements OnInit {
   distanceOfIti: number;
   prekrocenieVelkosti = 1;
   prekrocenieVahy = 1;
+  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
   @Output() sendCarToPredpokad = new EventEmitter<Predpoklad>();
 
@@ -73,9 +74,9 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   setPonuka(offer) {
-    console.log(offer)
+    console.log(offer);
     if (this.offer && this.offer.id === offer.id) {
-      var offerAdresy = JSON.parse(JSON.stringify(offer)); // toto robim aby sa mi pri update nanovo nenacitali adresy v drag and drop
+      const offerAdresy = JSON.parse(JSON.stringify(offer)); // toto robim aby sa mi pri update nanovo nenacitali adresy v drag and drop
       offerAdresy.detailVPonuke = this.offer.detailVPonuke;
       offerAdresy.addresses = this.offer.addresses;
       offerAdresy.adresyVPonuke = this.offer.adresyVPonuke;
@@ -112,7 +113,7 @@ export class CarItiDetailComponent implements OnInit {
   checkRukaAdrTeplota(offer){
     let adr = false;
     let ruka = false;
-    let teplota = [];
+    const teplota = [];
     offer.adresyVPonuke.forEach(oneAdresa => {
       if (oneAdresa.adr){
         adr = true;
@@ -246,7 +247,7 @@ export class CarItiDetailComponent implements OnInit {
 
   // kontroluje to vzdy len pre 1. adresu v ponuke
   putFirstAddressFromOffer(){
-    let prvaAdresaSDetailom = JSON.parse(JSON.stringify(this.offer));
+    const prvaAdresaSDetailom = JSON.parse(JSON.stringify(this.offer));
     prvaAdresaSDetailom.adresyVPonuke = [prvaAdresaSDetailom.adresyVPonuke[0]];
     prvaAdresaSDetailom.detailVPonuke = [prvaAdresaSDetailom.detailVPonuke[0]];
     this.ciSaVopcha = this.countService.countFreeSpace(this.car, prvaAdresaSDetailom, this.prekrocenieVelkosti);
@@ -255,7 +256,7 @@ export class CarItiDetailComponent implements OnInit {
 
   // kontroluje to vzdy len pre 1. adresu v ponuke
   volneMiesta(){
-    let prvaAdresaSDetailom = JSON.parse(JSON.stringify(this.offer));
+    const prvaAdresaSDetailom = JSON.parse(JSON.stringify(this.offer));
     prvaAdresaSDetailom.adresyVPonuke = [prvaAdresaSDetailom.adresyVPonuke[0]];
     prvaAdresaSDetailom.detailVPonuke = [prvaAdresaSDetailom.detailVPonuke[0]];
     this.ciSaVopcha = this.countService.countFreeSpace(this.car, prvaAdresaSDetailom, this.prekrocenieVelkosti);
@@ -370,7 +371,7 @@ export class CarItiDetailComponent implements OnInit {
     if (this.car){
       this.skontrolujEstiALastTime();
       this.ciStihnePrijst = this.dataService.checkEstimatedAndLastTime(this.car.itiAdresy, this.offer.adresyVPonuke[0]);
-      console.log(this.ciStihnePrijst)
+      console.log(this.ciStihnePrijst);
     }
   }
 
@@ -408,7 +409,7 @@ export class CarItiDetailComponent implements OnInit {
     if (dateUtc === '0' && oClock !== '0'){
       return oClock;
     }
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
     if (oClock !== '0'){
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
@@ -419,9 +420,9 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   estimatedTimeToLocal(dateUtc){
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
     if (dateUtc == null){
-      return "Neznámy"
+      return 'Neznámy';
     }
     return date.toLocaleString();
   }
@@ -437,7 +438,7 @@ export class CarItiDetailComponent implements OnInit {
     this.predpokladaneEsty = estiAdresy;
     const ciVychadzajuCasy = this.dataService.porovnajEstiALastTime(estiAdresy, this.car.itiAdresy);
     this.casyPreAuto = ciVychadzajuCasy;
-    console.log(ciVychadzajuCasy)
+    console.log(ciVychadzajuCasy);
   }
 
   getColorForTown(indexOfAddress){
@@ -580,7 +581,7 @@ export class CarItiDetailComponent implements OnInit {
     // tu musim natiahnut auto do this.car
     this.offer = JSON.parse(JSON.stringify(this.realOffer));
 
-    let car = JSON.parse(JSON.stringify(carFromMap));
+    const car = JSON.parse(JSON.stringify(carFromMap));
 
     let neviemUlozit = false;
     // najprv kontrolujem ci sme do itinerara auta pridali nieco nove
@@ -602,21 +603,21 @@ export class CarItiDetailComponent implements OnInit {
       return;
     }
 
-    var order = {};
+    const order = {};
     // tu uz iba ulov sicko do this.car ....
     car.itiAdresy = car.itiAdresy.concat(this.offer.adresyVPonuke);
     car.itinerar = car.itinerar.concat(this.offer.addresses);
     car.detailIti = car.detailIti.concat(this.offer.detailVPonuke);
-    predpoklad.itinerar.forEach(function (a, i) { order[a] = i; });
-    car.itiAdresy.sort(function (a, b) {
+    predpoklad.itinerar.forEach(function(a, i) { order[a] = i; });
+    car.itiAdresy.sort(function(a, b) {
       return order[a.id] - order[b.id];
     });
 
     // TODO tieto 2 ulozenia podla predulozenej sracky nefunguju
-    car.itinerar.sort(function (a, b) {
+    car.itinerar.sort(function(a, b) {
       return order[a.id] - order[b.id];
     });
-    car.detailIti.sort(function (a, b) {
+    car.detailIti.sort(function(a, b) {
       return order[a.id] - order[b.id];
     });
     this.car = car;
@@ -631,14 +632,14 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   priraditVozidlu(){
-    let car = this.carService.getAllCars().find(oneCar => oneCar.id === this.car.id);
+    const car = this.carService.getAllCars().find(oneCar => oneCar.id === this.car.id);
     car.itinerar = this.car.itinerar;
     this.carService.updateCar(car, car.id);
-    var offer: Route = this.offerService.getRoutesNoSub().find(oneOffer => oneOffer.id === this.offer.id);
+    const offer: Route = this.offerService.getRoutesNoSub().find(oneOffer => oneOffer.id === this.offer.id);
     offer.offerInRoute = this.car.id;
-    offer.carId = this.car.id
+    offer.carId = this.car.id;
     const ponuka = this.offerService.getRoutesNoSub().find(oneRoute => oneRoute.id === this.offer.id);
-    let adresy: Address[] = this.addressService.getAddressesFromOffer().filter(oneAdresa => ponuka.addresses.includes(oneAdresa.id));
+    const adresy: Address[] = this.addressService.getAddressesFromOffer().filter(oneAdresa => ponuka.addresses.includes(oneAdresa.id));
     adresy.forEach(oneAdresa => {
       oneAdresa.carId = this.car.id;
       this.addressService.updateAddress(oneAdresa);
@@ -719,6 +720,18 @@ export class CarItiDetailComponent implements OnInit {
       }
     }
     indexBedne += detailIndex + 1;
+    return this.alphabet[indexBedne];
+  }
+
+  // pre nakladky
+  getBednaJustIndex(townIndex, detailIndex){
+    let indexBedne = 0;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.offer.detailVPonuke[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackages(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
     return indexBedne;
   }
 
@@ -736,7 +749,7 @@ export class CarItiDetailComponent implements OnInit {
         }
       }
     }
-    return this.getBednaIndex(mesto, balik);
+    return this.alphabet[this.getBednaJustIndex(mesto, balik)];
   }
 
   getBednaIndexNakladkyAuto(packagaId){
@@ -753,7 +766,7 @@ export class CarItiDetailComponent implements OnInit {
         }
       }
     }
-    return this.getBednaIndexAuto(mesto, balik);
+    return this.alphabet[this.getBednaIndexAuto(mesto, balik)];
   }
 
 

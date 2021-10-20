@@ -45,6 +45,8 @@ export class WrapperComponent implements OnInit {
     }
   }
 
+
+
   vymazatPonuku(route){
     this.offerService.deleteRoute(route.id);
   }

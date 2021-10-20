@@ -22,9 +22,12 @@ import {RepeatRouteDialogComponent} from '../../dialogs/repeat-route-dialog/repe
 export class TransportationWrapperComponent implements OnInit {
   allActiveRoutes: Route[];
   allFinishedRoutes;
+  routesToShow: Route[];
+  active = true;
+
   displayedColumns: string[] = ['naklady', 'vykladky'];
 
-  spans=[];
+  spans = [];
 
   constructor(public routeStatusService: RouteStatusService,private routeService: RouteService,
               private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
@@ -57,17 +60,16 @@ export class TransportationWrapperComponent implements OnInit {
       i += count;
     }
   }
+
+  getClass(){
+
+  }
   getRowSpan(col, index) {
     return this.spans[index] && this.spans[index][col];
   }
 
   ngOnInit(): void {
     let DATA = {};
-    // this.routeService.getAllRoutes().subscribe(routes => {
-    //   this.allActiveRoutes = routes;
-    //   this.dataService.setRoutes(routes);
-    //
-    // });
 
     this.routeService.routes$.subscribe(newRoutes => {
       this.allActiveRoutes = newRoutes;
@@ -77,6 +79,16 @@ export class TransportationWrapperComponent implements OnInit {
     this.routeService.finishedRoutes$.subscribe(routes => {
       this.allFinishedRoutes = routes;
     });
+  }
+
+  activeRoutes(){
+    this.active = true;
+    this.routesToShow = this.allActiveRoutes;
+  }
+
+  nonActiveRoutes(){
+    this.active = false;
+    this.routesToShow = this.allFinishedRoutes;
   }
 
 

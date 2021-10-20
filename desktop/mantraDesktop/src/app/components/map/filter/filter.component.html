@@ -1,5 +1,16 @@
-<div class="filterWrapper">
-  <mat-slide-toggle [disabled]="fewSecDisable" [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
+<mat-accordion>
+  <mat-expansion-panel>
+
+<!--<div class="filterWrapper">-->
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-slide-toggle [disabled]="fewSecDisable" [(ngModel)]="checked" (change)="filterOffers()">Zobraziť ponuky</mat-slide-toggle>
+    </mat-panel-title>
+    <mat-panel-description>
+
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
   <div class="detalWrapper" *ngIf="checked">
     <section class="example-section">
       <label class="distanceType">{{'FILTER.typVzialenosti' | translate}}</label>
@@ -43,11 +54,15 @@
     </div>
 
     <button class="okButton" [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
+    <div class="chooseCar">
+      <app-choose-car-to-map (carEmitter)="whichCars($event)"></app-choose-car-to-map>
+    </div>
   </div>
-  <div class="chooseCar">
-    <app-choose-car-to-map (carEmitter)="whichCars($event)"></app-choose-car-to-map>
-  </div>
-</div>
+
+<!--</div>-->
+  </mat-expansion-panel>
+
+</mat-accordion>
 
 
 

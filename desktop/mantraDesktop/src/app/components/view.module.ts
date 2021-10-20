@@ -80,6 +80,7 @@ import { GetNameOfComapnyByMasterIdComponent } from './companies/get-name-of-com
 import { CarsPopUpComponent } from './map/cars-pop-up/cars-pop-up.component';
 import { OffersPopUpComponent } from './map/offers-pop-up/offers-pop-up.component';
 import { ChooseCarToMapComponent } from './map/filter/choose-car-to-map/choose-car-to-map.component';
+import { MainDetailAboutComponent } from './transportation/main-detail-about/main-detail-about.component';
 
 
 @NgModule({
@@ -100,7 +101,7 @@ import { ChooseCarToMapComponent } from './map/filter/choose-car-to-map/choose-c
       ItinerarDaDComponent, CarNakladComponent, VodiciWrapperComponent,
       TheVodicComponent, NewVodicComponent, NewVodicDialogComponent, LogDialogComponent, CompaniesWrapperComponent,
       AddCompanyComponent, OneCompanyComponent, GetInfoAboutCompanyComponent,
-      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent
+      ShowDetailDialogComponent, GetNameOfDriverComponent, UpdateOfferPriceComponent, AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent, CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent, GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent, MainDetailAboutComponent
     ],
     exports: [
         OpenlayerComponent,
@@ -122,7 +123,8 @@ import { ChooseCarToMapComponent } from './map/filter/choose-car-to-map/choose-c
         AllDetailAboutRouteDialogComponent,
         PosliPonukuComponent,
         CarsPopUpComponent,
-        OffersPopUpComponent
+        OffersPopUpComponent,
+        MainDetailAboutComponent
     ],
     imports: [
         CommonModule,

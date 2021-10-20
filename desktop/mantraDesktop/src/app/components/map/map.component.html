@@ -1,6 +1,6 @@
 <div class="mapComponentWrapper">
   <div #filterElement class="filter">
-    <app-filter cat (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
+    <app-filter (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
   </div>
   <div class="wrapper">
     <div id="map"></div>
@@ -57,6 +57,7 @@
 
       <div *ngIf="this.offersToShow != null" class="offers">
         <app-posli-ponuku [offerId]="this.offersToShow.id" ></app-posli-ponuku>
+        <app-main-detail-about [route]="this.offersToShow"></app-main-detail-about>
         <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
 
         <h2>{{'MAP.vyberVozidlo' | translate}}</h2>
