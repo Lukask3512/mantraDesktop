@@ -58,11 +58,6 @@ export class DispecerService {
     );
   }
 
-  // taketo query sa pouzivaju hlavne na zobrazovanie dat, ked to nechces updatovat atd...bez idcka
-  // getDispecers2(){
-  //   return this.afs.collection<Dispecer>('dispecer').valueChanges();
-  // }
-
   getOneDispecer(email){
       return this.afs.collection<Dispecer>('dispecers', ref => {
         let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;

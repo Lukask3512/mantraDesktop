@@ -1,5 +1,6 @@
 
 <div *ngIf="offer" class="example-container">
+
   <button class="detailBut" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
   <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">
     {{'OFTEN.vyzaduje' | translate}}:

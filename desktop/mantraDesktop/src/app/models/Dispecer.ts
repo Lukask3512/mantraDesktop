@@ -12,4 +12,5 @@ export default class Dispecer {
   myPrives?: string[];
   allPrives: boolean;
   companyId: string;
+  nezobrazovatPonuky?: string[];
 }

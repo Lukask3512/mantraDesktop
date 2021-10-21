@@ -896,4 +896,57 @@ export class CountFreeSpaceService {
     }
     return {maxVyska, minVyska};
   }
+
+  celkovaVahaNakladov(route){
+    let maxVaha = 0;
+    route.adresyVPonuke.forEach((oneAddress, adresaIndex) => {
+      if (oneAddress.type === 'nakladka'){
+        route.detailVPonuke[adresaIndex].forEach(oneDetail => {
+          maxVaha += oneDetail.weight;
+        });
+        // maxVaha += detail
+      }
+    });
+    return maxVaha;
+  }
+
+  celkovaObjemBalikov(route){
+    let objem = 0;
+    route.adresyVPonuke.forEach((oneAddress, adresaIndex) => {
+      if (oneAddress.type === 'nakladka'){
+        route.detailVPonuke[adresaIndex].forEach(oneDetail => {
+          objem += (oneDetail.sizeS * oneDetail.sizeD * oneDetail.sizeV);
+        });
+      }
+    });
+    return objem;
+  }
+
+  najvacsiBalik(route){
+    let najvacsiS = 0;
+    let najvacsiD = 0;
+    let najvacsiV = 0;
+    route.adresyVPonuke.forEach((oneAddress, adresaIndex) => {
+      if (oneAddress.type === 'nakladka'){
+        route.detailVPonuke[adresaIndex].forEach(oneDetail => {
+          if (oneDetail.sizeS > najvacsiS || oneDetail.sizeS > najvacsiD || oneDetail.sizeS > najvacsiV){
+            najvacsiS = oneDetail.sizeS;
+            najvacsiD = oneDetail.sizeD;
+            najvacsiV = oneDetail.sizeV;
+          }
+          if (oneDetail.sizeD > najvacsiS || oneDetail.sizeS > najvacsiD || oneDetail.sizeS > najvacsiV){
+            najvacsiS = oneDetail.sizeS;
+            najvacsiD = oneDetail.sizeD;
+            najvacsiV = oneDetail.sizeV;
+          }
+          if (oneDetail.sizeV > najvacsiS || oneDetail.sizeS > najvacsiD || oneDetail.sizeS > najvacsiV){
+            najvacsiS = oneDetail.sizeS;
+            najvacsiD = oneDetail.sizeD;
+            najvacsiV = oneDetail.sizeV;
+          }
+        });
+      }
+    });
+    return {sizeS: najvacsiS, sizeD: najvacsiD, sizeV: najvacsiV};
+  }
 }

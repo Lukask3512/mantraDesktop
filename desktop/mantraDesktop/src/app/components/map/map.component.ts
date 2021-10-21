@@ -53,6 +53,8 @@ import Overlay from 'ol/Overlay';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {CarsPopUpComponent} from './cars-pop-up/cars-pop-up.component';
 import {OffersPopUpComponent} from './offers-pop-up/offers-pop-up.component';
+import {PosliPonukuComponent} from '../transportation/offer/detail/posli-ponuku/posli-ponuku.component';
+import Dispecer from '../../models/Dispecer';
 
 
 @Component({
@@ -176,6 +178,9 @@ export class MapComponent implements AfterViewInit {
 
   @ViewChild(OffersPopUpComponent)
   private chooseOfferPoUp: OffersPopUpComponent;
+
+  @ViewChild(PosliPonukuComponent)
+  private posliPonuku: PosliPonukuComponent
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
@@ -380,6 +385,7 @@ export class MapComponent implements AfterViewInit {
     this.routesToShow = null;
     await this.sleep(200);
     this.chooseCar.setFarby(this.offersToShow);
+    this.posliPonuku.setOfferId(this.offersToShow.id);
     this.carIti.setPonuka(this.offersToShow);
     this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
     this.scrollToInfo();
@@ -782,6 +788,10 @@ export class MapComponent implements AfterViewInit {
     setTimeout(() => {
       this.drawOffers(this.offersFromDatabase);
     }, 2500);
+  }
+
+  public reDrawOffersNoDelay(){
+      this.drawOffers(this.offersFromDatabase);
   }
 
 
@@ -1713,18 +1723,25 @@ export class MapComponent implements AfterViewInit {
         }
       });
     }
-
+    const dispecer: Dispecer = this.dataService.getDispecer();
     // this.offersToShow = null;
     offers.forEach((route, index) => {
+      let nezobrazovat = false;
+      if (dispecer.nezobrazovatPonuky){
+        if (dispecer.nezobrazovatPonuky.find(oneId => oneId === route.id)){
+          nezobrazovat = true;
+        }else{
+          nezobrazovat = false;
+        }
+      }
+
+
       const isThereMyCarGreen = route.zelenePrepravy.find(car => this.carsToDisplay.includes(car.id));
       let isThereMyCarYellow;
       if (!isThereMyCarGreen){
         isThereMyCarYellow = route.zltePrepravy.find(car => this.carsToDisplay.includes(car.id));
       }
-      if (route.adresyVPonuke.length > 3){
-          console.log(route);
-      }
-      console.log(route);
+
       const coordinatesToArray = [];
       route.adresyVPonuke.forEach((adresa, index) => {
         coordinatesToArray.push([adresa.coordinatesOfTownsLon, adresa.coordinatesOfTownsLat]);
@@ -1740,23 +1757,9 @@ export class MapComponent implements AfterViewInit {
         name: route.id
       });
       let routeStyle;
-      if (route.flag < 2){
-        routeStyle = new Style({
-          stroke: new Stroke({
-            width: 6,
-            color: [207, 0, 15, 0.45]
-          })
-        });
 
-      }else if (route.flag === 2){
-        routeStyle = new Style({
-          stroke: new Stroke({
-            width: 6,
-            color: [247, 202, 24, 0.6]
-          })
-        });
 
-      }else{
+      if (route.flag >= 3 && !nezobrazovat){
         routeStyle = new Style({
           stroke: new Stroke({
             width: 6,
@@ -1764,6 +1767,46 @@ export class MapComponent implements AfterViewInit {
           })
         });
       }
+      else if (route.flag === 2 && !nezobrazovat){
+        routeStyle = new Style({
+          stroke: new Stroke({
+            width: 6,
+            color: [247, 202, 24, 0.6]
+          })
+        });
+      }else{
+        routeStyle = new Style({
+          stroke: new Stroke({
+            width: 6,
+            color: [207, 0, 15, 0.45]
+          })
+        });
+      }
+
+      // if (route.flag < 2){
+      //   routeStyle = new Style({
+      //     stroke: new Stroke({
+      //       width: 6,
+      //       color: [207, 0, 15, 0.45]
+      //     })
+      //   });
+      //
+      // }else if (route.flag === 2){
+      //   routeStyle = new Style({
+      //     stroke: new Stroke({
+      //       width: 6,
+      //       color: [247, 202, 24, 0.6]
+      //     })
+      //   });
+      //
+      // }else{
+      //   routeStyle = new Style({
+      //     stroke: new Stroke({
+      //       width: 6,
+      //       color: [10, 255, 10, 0.45]
+      //     })
+      //   });
+      // }
 
       const styles = [];
 
@@ -1788,10 +1831,10 @@ export class MapComponent implements AfterViewInit {
       styles.push(routeStyle);
       routeFeature.setStyle(styles);
 
-      if (route.flag >= 3 && isThereMyCarGreen){
+      if (route.flag >= 3 && isThereMyCarGreen && !nezobrazovat){
         this.offersRouteGreen.push(routeFeature);
       }
-      else if (route.flag === 2 && isThereMyCarYellow){
+      else if (route.flag === 2 && isThereMyCarYellow && !nezobrazovat){
         this.offersRouteYellow.push(routeFeature);
       }else{
         this.offersRouteRed.push(routeFeature);
@@ -1822,11 +1865,11 @@ export class MapComponent implements AfterViewInit {
           start: false
         });
 
-        if (route.flag >= 3 && isThereMyCarGreen){
+        if (route.flag >= 3 && isThereMyCarGreen && !nezobrazovat){
           this.offersGreen.push(iconFeature);
           this.offersGreen.push(iconFeatureLast);
         }
-        else if (route.flag === 2 && isThereMyCarYellow){
+        else if (route.flag === 2 && isThereMyCarYellow && !nezobrazovat){
           this.offersYellow.push(iconFeature);
           this.offersYellow.push(iconFeatureLast);
         }else{

@@ -1,6 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../../../data/data.service';
 import {OfferRouteService} from '../../../../../services/offer-route.service';
+import Dispecer from '../../../../../models/Dispecer';
+import {DispecerService} from '../../../../../services/dispecer.service';
 
 @Component({
   selector: 'app-posli-ponuku',
@@ -13,10 +15,20 @@ export class PosliPonukuComponent implements OnInit {
   @Input() route; // ponuka
   @Input() price: number;
   @Input() offerId;
-  constructor(private dataService: DataService, private offerService: OfferRouteService) { }
+
+  dispecer: Dispecer;
+  @Output() whichOffersToShow = new EventEmitter<any>();
+  constructor(private dataService: DataService, private offerService: OfferRouteService,
+              private dispecerService: DispecerService) { }
 
   ngOnInit(): void {
     // natiahnem si original offere lebo z mapy mam upravenu
+    this.listenToROute()
+    this.dispecer = this.dataService.getDispecer();
+
+  }
+
+  listenToROute(){
     this.offerService.routes$.subscribe(allRoutes => {
       this.route = allRoutes.find(oneOffer => oneOffer.id === this.offerId);
 
@@ -33,7 +45,7 @@ export class PosliPonukuComponent implements OnInit {
   setOfferId(offerID){
     this.offerId = offerID;
     this.offer = undefined;
-    this.ngOnInit();
+    this.listenToROute();
   }
 
   // setOffer(offer){
@@ -117,6 +129,35 @@ export class PosliPonukuComponent implements OnInit {
     this.route.takenBy = '';
     this.route.offerInRoute = '';
     this.offerService.updateRoute(this.route);
+  }
+
+  doNotShow(){
+    if (!this.dispecer.nezobrazovatPonuky){
+      this.dispecer.nezobrazovatPonuky = [this.route.id];
+    }else{
+      this.dispecer.nezobrazovatPonuky.push(this.route.id);
+    }
+    this.dispecerService.updateDispecer(this.dispecer);
+    this.dataService.setDispecer(this.dispecer);
+    this.whichOffersToShow.emit();
+  }
+
+  showOnMap(){
+    this.dispecer.nezobrazovatPonuky = this.dispecer.nezobrazovatPonuky.filter(oneId => oneId !== this.route.id);
+    this.dispecerService.updateDispecer(this.dispecer);
+    this.dataService.setDispecer(this.dispecer);
+    this.whichOffersToShow.emit();
+  }
+
+  ifNezobrazuje(){
+    if (!this.dispecer.nezobrazovatPonuky){
+      return false;
+    }
+    if (this.dispecer.nezobrazovatPonuky.find(oneId => oneId === this.route.id)){
+      return false;
+    }else{
+      return true;
+    }
   }
 
 }

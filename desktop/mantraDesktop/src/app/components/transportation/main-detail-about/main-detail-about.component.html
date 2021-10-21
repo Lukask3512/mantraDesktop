@@ -1,6 +1,17 @@
 <div class="wrapper">
-  <h3>Prvá adresa {{this.route.adresyVPonuke[0].nameOfTown}} <span>{{this.route.adresyVPonuke[0].datumLastPrijazdy}}</span></h3>
-  <h3>Posledná adresa{{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}
-    <span>{{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].datumLastPrijazdy}}</span>
+  <h3>
+    <img class="imgFlag" src="assets/logo/startPoint.png">
+    {{this.route.adresyVPonuke[0].nameOfTown}}
   </h3>
+  <span>{{this.timeToLocal(this.route.adresyVPonuke[0].datumLastPrijazdy)}}</span>
+  <h3>
+    <img class="imgFlag" src="assets/logo/finishFlag.png">
+    {{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}
+  </h3>
+  <span>{{this.timeToLocal(this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].datumLastPrijazdy)}}</span>
+  <div>
+    <p>Max vaha: {{this.maxVaha()}}</p>
+    <p>Najvacsi balik: {{this.najvacsiBalik().sizeS}} X {{this.najvacsiBalik().sizeD}} X {{this.najvacsiBalik().sizeV}}</p>
+    <p>Celkovy objem balikov: {{this.objemBalikov()}}</p>
+  </div>
 </div>
