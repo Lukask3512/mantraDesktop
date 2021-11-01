@@ -25,8 +25,11 @@
 
 
   <div *ngIf="this.route.takenBy == ''">
-      <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpdate" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
+      <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0 && this.offer != 0 && !this.offer; else elseIf" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
+      <ng-template #elseIf>
+        <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price !== 0 && this.offer != 0 && !this.offer; else elseUpdate" (click)="addPrice()">Mam zaujem</button>
 
+      </ng-template>
     <ng-template #elseUpdate>
       <button class="pridatPonuku" *ngIf="this.offer.ponuknuteTo === ''"  (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
     </ng-template>

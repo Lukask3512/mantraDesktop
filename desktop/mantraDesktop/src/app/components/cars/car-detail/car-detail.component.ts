@@ -74,7 +74,7 @@ export class CarDetailComponent implements AfterViewInit {
       this.carService.cars$.subscribe(cars => {
         // @ts-ignore
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
-        this.child.notifyMe(this.myAddresses, this.car, this.routes);
+        this.child.notifyMe(this.myAddresses, this.car);
       });
 
       var allAddresses: Address[];
@@ -100,7 +100,7 @@ export class CarDetailComponent implements AfterViewInit {
            if (this.nameOfDriver){
              this.nameOfDriver.setCar(this.car);
            }
-           this.child.notifyMe(this.myAddresses, this.car, this.car);
+           this.child.notifyMe(this.myAddresses, this.car);
          },
          800);
       })
@@ -135,7 +135,7 @@ export class CarDetailComponent implements AfterViewInit {
     // this.type = route.type;
     // this.status = route.status;
     // this.aboutRoute = route.aboutRoute;
-    this.child.notifyMe(this.myAddresses, this.car, this.routes);
+    this.child.notifyMe(this.myAddresses, this.car);
     this.notifyChildren(this.routes.id);
 
   }
@@ -200,12 +200,12 @@ export class CarDetailComponent implements AfterViewInit {
   }
   getLat(lat){
     this.routesLat.push(lat);
-    this.child.notifyMe(this.myAddresses,this.car, this.routes);
+    this.child.notifyMe(this.myAddresses, this.car);
   }
   getLon(lon){
     this.routesLon.push(lon);
     console.log(lon);
-    this.child.notifyMe(this.myAddresses,this.car, this.routes);
+    this.child.notifyMe(this.myAddresses, this.car);
   }
   getType(type){
     this.type.push(type);

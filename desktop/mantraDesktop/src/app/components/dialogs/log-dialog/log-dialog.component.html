@@ -23,7 +23,14 @@
       <h3 class="icodico">{{'COMPANIES.dico' | translate}}: {{this.companyPrepravca.dicIc}}</h3>
     </div>
   </header>
-  <h3 *ngIf="this.route.price">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+  <div *ngIf="this.route.price">
+    <h3 >{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+    <h3>Prijaté: {{this.timeToLocal(this.route.finalAcceptDate)}}</h3>
+    <h3>Priradene do auta: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</h3>
+    <h3>Auto sa nachadzalo:</h3>
+    <h3>Z. sirka {{this.route.carAtPositionLat}}</h3>
+    <h3>Z. dlzka {{this.route.carAtPositionLon}}</h3>
+  </div>
 
 <!--  TODO prelozit-->
   <h1>Prepravované palety</h1>

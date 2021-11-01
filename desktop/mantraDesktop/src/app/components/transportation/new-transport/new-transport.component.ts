@@ -34,6 +34,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {CarService} from '../../../services/car.service';
+import {MainDetailAboutComponent} from '../main-detail-about/main-detail-about.component';
 
 
 
@@ -47,7 +48,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
   detail = []
 
 
-  //aby log sledoval zmeny ak zmenim trasu
+  // aby log sledoval zmeny ak zmenim trasu
   parentSubject:Subject<any> = new Subject();
   carId: string;
   car: Cars;
@@ -80,6 +81,8 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
 
   clickedOnIndexDetail: number;
 
+  routeToDetail;
+
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
 
@@ -94,6 +97,9 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
 
   @ViewChild(ShowDetailComponent)
   private detailChild: ShowDetailComponent;
+
+  @ViewChild(MainDetailAboutComponent)
+  private mainDetailAboutComponent: MainDetailAboutComponent;
 
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog,
@@ -139,16 +145,18 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
         this.addressService.address$.subscribe(alAdd => {
 
           var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
-          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
+          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
           this.addresses = adresy;
-          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
+
+
+          // this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
           this.addresses.forEach(oneAddress => {
             var myPackages = [];
-            var detailAr = {detailArray: [], townsArray: [], packageId: []}
+            var detailAr = {detailArray: [], townsArray: [], packageId: []};
             oneAddress.packagesId.forEach( oneId => {
-              if (oneAddress.type == 'nakladka'){
+              if (oneAddress.type === 'nakladka'){
                 var balik = this.packageService.getOnePackage(oneId);
-                myPackages.push(balik)
+                myPackages.push(balik);
               }else{
                 //tu by som mal vlozit len indexy do vykladky
                 this.detail.forEach((oneDetail, townId) => {
@@ -159,13 +167,13 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
                           detailAr.townsArray.push(townId);
                           detailAr.packageId.push(oneDetailId.id);
                       }
-                    })
+                    });
                   }
-                })
+                });
 
               }
-            })
-            if (myPackages.length != 0){
+            });
+            if (myPackages.length !== 0){
               this.detail.push(myPackages);
             }else{
               this.detail.push(detailAr);
@@ -177,26 +185,41 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
             this.childDropList.setDragable(false);
             this.childDropList.setUpdatable(true);
           }
-          this.childDropList.setDetails(this.detail)
+          this.childDropList.setDetails(this.detail);
           this.childDropList.setAddresses(this.addresses);
-        })
-        this.carId = this.route.carId
+
+          this.routeToDetail = {
+            adresyVPonuke: this.addresses,
+            detailVPonuke: this.detail
+          };
+
+          setTimeout(() =>
+            {
+              this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+            },
+            300);
+
+        });
+
+
+        this.carId = this.route.carId;
         if (this.carId){
-          this.car = this.dataService.getOneCarById(this.carId);
+          this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.carId);
           setTimeout(() =>
             {
 
               this.notifyChildren(this.route.id);
-              this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
+              this.child.notifyMe(this.addresses, this.car);
             },
             800);
         }else{
-          // setTimeout(() =>
-          //   {
-          //     this.notifyChildren(this.route.id);
-          //     this.child.notifyMe(this.routesLat, this.routesLon,null);
-          //   },
-          //   800);
+          setTimeout(() =>
+            {
+              this.notifyChildren(this.route.id);
+              this.child.notifyMe(this.addresses,  null);
+
+            },
+            800);
         }
 
 
@@ -332,10 +355,10 @@ else{
     setTimeout(() =>
       {
         if (this.carId !== undefined || this.carId !==  null){
-          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
+          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId));
         }
         else{
-          this.child.notifyMe(this.addresses, undefined , this.car);
+          this.child.notifyMe(this.addresses, this.car);
 
         }
       },
@@ -357,7 +380,7 @@ else{
 
   receiveAddress(address: Address){
     this.addresses.push(address);
-    this.child.notifyMe(this.addresses, undefined, undefined);
+    this.child.notifyMe(this.addresses, undefined);
     // this.dataService.checkAddressesTime(this.addresses);
   }
 

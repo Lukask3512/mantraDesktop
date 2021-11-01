@@ -25,6 +25,7 @@ export class PosliPonukuComponent implements OnInit {
     // natiahnem si original offere lebo z mapy mam upravenu
     this.listenToROute()
     this.dispecer = this.dataService.getDispecer();
+    console.log(this.route);
 
   }
 
@@ -113,8 +114,11 @@ export class PosliPonukuComponent implements OnInit {
       this.route.price = this.offer;
     }
     this.route.forEveryone = false;
+
+    this.route.finalAcceptDate = new Date().toString();
+
     this.offerService.updateRoute(this.route);
-    // this.fakeRoute = JSON.parse(JSON.stringify(this.route));
+
   }
 
   cancelOffer(){
@@ -151,7 +155,7 @@ export class PosliPonukuComponent implements OnInit {
 
   ifNezobrazuje(){
     if (!this.dispecer.nezobrazovatPonuky){
-      return false;
+      return true;
     }
     if (this.dispecer.nezobrazovatPonuky.find(oneId => oneId === this.route.id)){
       return false;

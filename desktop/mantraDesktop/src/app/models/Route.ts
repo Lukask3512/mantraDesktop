@@ -1,20 +1,9 @@
 export default class Route {
   id?: string;
-  createdBy: string
+  createdBy: string;
   carId?: string;
-  // aboutRoute?: string[];
-  // nameOfTowns: any[];
-  // coordinatesOfTownsLat: string[];
-  // coordinatesOfTownsLon: string[];
-  // type: string[];  //N / V
-  // status: number[]; //na ceste/nakladam/problem atd...
-  // datumPrijazdu?: string[];
-  // datumLastPrijazdy?: string[];
-  // casPrijazdu?: string[];
-  // casLastPrijazdu?: string[];
 
   addresses: string[] = [];
-
 
   finished: boolean;
   createdAt: string; // timestamps
@@ -22,10 +11,10 @@ export default class Route {
   estimatedTimeArrival?: string;
   // detailsAboutAdresses: string[]; // tu pojdu informacie - velkost, vaha, stohovatelnost, atd...model DetailedTransport
 
-  //info ked sa vytvara ponuka
+  // info ked sa vytvara ponuka
   price?: number;
   priceFrom?: number[];
-  offerFrom? :string[];
+  offerFrom?: string[];
   forEveryone?: boolean;
 
   takenBy?: string;
@@ -33,5 +22,12 @@ export default class Route {
   offerInRoute?: string;
   cancelByCreator?: boolean;
   cancelByDriver?: boolean;
+
+  // info do logu
+  finalAcceptDate?: string;
+  offerAddedToCarDate?: string;
+  carAtPositionLat?: string;
+  carAtPositionLon?: string;
+
 
 }

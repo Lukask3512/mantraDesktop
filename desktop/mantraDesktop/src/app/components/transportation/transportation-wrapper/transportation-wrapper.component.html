@@ -6,8 +6,8 @@
   </div>
 
   <section class="activeNonActive">
-    <button class="buttonTab"  (click)="activeRoutes()">Aktívne</button>
-    <button class="buttonTab"  (click)="nonActiveRoutes()">Ukončené</button>
+    <button class="buttonTab" [class]="getClass('active')"  (click)="activeRoutes()">Aktívne</button>
+    <button class="buttonTab" [class]="getClass('nonActive')"  (click)="nonActiveRoutes()">Ukončené</button>
   </section>
 
 

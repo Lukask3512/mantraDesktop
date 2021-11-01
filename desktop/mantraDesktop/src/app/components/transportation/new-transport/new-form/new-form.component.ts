@@ -6,6 +6,7 @@ import {AdressesComponent} from '../../../google/adresses/adresses.component';
 import {DetailFormComponent} from '../detail-form/detail-form.component';
 import {DataService} from '../../../../data/data.service';
 import {MatExpansionPanel} from '@angular/material/expansion';
+import {MatVerticalStepper} from '@angular/material/stepper';
 
 
 @Component({
@@ -77,6 +78,10 @@ export class NewFormComponent implements OnInit {
 
   @ViewChild('mepFirst')
   private expansionFirst: MatExpansionPanel;
+
+  @ViewChild('stepper')
+  private matVerticalStepper: MatVerticalStepper;
+
 
   minDate;
 
@@ -230,10 +235,20 @@ export class NewFormComponent implements OnInit {
   checkFinished(){
     return true;
   }
+
+  checkCompletedForDate(){
+    if (this.routeFromGoogle && this.latFromGoogle){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   // expansion panel
   closeAllAndOpenFirst(){
-    this.expansionAll.expanded = false;
-    this.expansionFirst.expanded = true;
+    // this.expansionAll.expanded = false;
+    // this.expansionFirst.expanded = true;
+    this.matVerticalStepper.selectedIndex = 0;
   }
 
   add(){

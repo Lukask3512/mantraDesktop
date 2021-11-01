@@ -1,14 +1,20 @@
-<div class="wrapper">
-  <h3>
-    <img class="imgFlag" src="assets/logo/startPoint.png">
-    {{this.route.adresyVPonuke[0].nameOfTown}}
-  </h3>
-  <span>{{this.timeToLocal(this.route.adresyVPonuke[0].datumLastPrijazdy)}}</span>
-  <h3>
+<div class="wrapper" *ngIf="this.route">
+  <div class="oneAddress">
+    <h3>
+      <img class="imgFlag" src="assets/logo/startPoint.png">
+      {{this.route.adresyVPonuke[0].nameOfTown}}
+    </h3>
+    <span>{{this.timeToLocal(this.route.adresyVPonuke[0].datumLastPrijazdy)}}</span>
+  </div>
+
+  <div class="oneAddress">
     <img class="imgFlag" src="assets/logo/finishFlag.png">
-    {{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}
-  </h3>
-  <span>{{this.timeToLocal(this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].datumLastPrijazdy)}}</span>
+    <h3>
+      {{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}
+    </h3>
+    <span>{{this.timeToLocal(this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].datumLastPrijazdy)}}</span>
+  </div>
+
   <div>
     <p>Max vaha: {{this.maxVaha()}}</p>
     <p>Najvacsi balik: {{this.najvacsiBalik().sizeS}} X {{this.najvacsiBalik().sizeD}} X {{this.najvacsiBalik().sizeV}}</p>

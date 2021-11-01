@@ -24,6 +24,7 @@ import Company from '../../../../models/Company';
 import {CancelRouteFromCarDialogComponent} from '../../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import Cars from '../../../../models/Cars';
 import {RouteService} from '../../../../services/route.service';
+import {DispecerService} from '../../../../services/dispecer.service';
 
 @Component({
   selector: 'app-detail',
@@ -37,7 +38,7 @@ export class DetailComponent implements AfterViewInit {
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
               private packageService: PackageService, private dialog: MatDialog, private router: Router,
-              private _snackBar: MatSnackBar, private routeService: RouteService) { }
+              private _snackBar: MatSnackBar, private routeService: RouteService, private dispecerService: DispecerService) { }
   route: Route;
   fakeRoute: Route;
   price: number;
@@ -123,7 +124,7 @@ export class DetailComponent implements AfterViewInit {
         });
         setTimeout(() => {
             // this.posliPonuku.setRoute(this.route);
-            this.child.notifyMe(this.address, null, null);
+            this.child.notifyMe(this.address, null);
 
             if (this.childDropList) {
               // this.getDetails();
@@ -374,8 +375,15 @@ export class DetailComponent implements AfterViewInit {
         return;
       }else{
         console.log(value);
-        this.route.price = value;
-        this.offerService.updateRoute(this.route);
+        if (value !== this.route.price){
+          this.route.price = value;
+          this.dispecerService.getAllDispecersWithNoShowRoute(this.route.id).pipe(take(1)).subscribe(allDispecers => {
+            allDispecers.forEach(oneDispecer => {
+              oneDispecer.nezobrazovatPonuky = oneDispecer.nezobrazovatPonuky.filter(oneRouteId => oneRouteId !== this.route.id);
+              this.dispecerService.updateDispecer(oneDispecer);
+            });
+          });
+        }
       }
     });
   }

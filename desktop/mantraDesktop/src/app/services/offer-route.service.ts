@@ -20,6 +20,8 @@ export class OfferRouteService {
 
   routesForGet: Route[];
 
+  // neukazovat pri kazdej zmene ten isty dialog
+  dialogForRouteShown = [];
   constructor(private afs: AngularFirestore, private dataService: DataService, private _snackBar: MatSnackBar,
               private router: Router) {
     this.routesCollection = this.afs.collection<any>('route');
@@ -29,11 +31,13 @@ export class OfferRouteService {
       this.routesForGet = allKindTogether;
       this.routesForGet.forEach(oneRoute => {
         if (!oneRoute.cancelByDriver && !oneRoute.cancelByCreator){
-          if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId){
+          if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId && !this.aldreadyThere(oneRoute.id)){
             this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+            this.dialogForRouteShown.push(oneRoute.id);
           }
-          if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === ''){
+          if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === '' && !this.aldreadyThere(oneRoute.id)){
             this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
+            this.dialogForRouteShown.push(oneRoute.id);
           }
         }
 
@@ -48,6 +52,15 @@ export class OfferRouteService {
 
   getRoutesNoSub(){
     return this.routesForGet;
+  }
+
+  // uz sa nachadza v poli, aby dialog stale nevcyskakoval
+  aldreadyThere(routeId){
+    if (this.dialogForRouteShown.find(oneId => oneId === routeId)){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   openSnackBar(message: string, action: string, route: Route) {

@@ -66,6 +66,8 @@ export class HeaderComponent implements OnInit {
   }
   logout(){
     this.router.navigate(['/']);
+    localStorage.removeItem('user');
+    localStorage.removeItem('company');
     this.dataService.setDispecer(null);
     this.accountService.logout();
     setTimeout(() => {

@@ -18,6 +18,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.component';
 import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MapComponent} from '../map.component';
+import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
 
 @Component({
   selector: 'app-car-iti-detail',
@@ -632,7 +633,7 @@ export class CarItiDetailComponent implements OnInit {
   }
 
   priraditVozidlu(){
-    const car = this.carService.getAllCars().find(oneCar => oneCar.id === this.car.id);
+    const car: Cars = this.carService.getAllCars().find(oneCar => oneCar.id === this.car.id);
     car.itinerar = this.car.itinerar;
     this.carService.updateCar(car, car.id);
     const offer: Route = this.offerService.getRoutesNoSub().find(oneOffer => oneOffer.id === this.offer.id);
@@ -644,6 +645,10 @@ export class CarItiDetailComponent implements OnInit {
       oneAdresa.carId = this.car.id;
       this.addressService.updateAddress(oneAdresa);
     });
+    offer.carAtPositionLon = car.longtitude;
+    offer.carAtPositionLat = car.lattitude;
+    offer.offerAddedToCarDate = new Date().toString();
+
     this.offerService.updateRoute(offer);
     this.uspecnePriradenie.emit(this.car);
     this.matComponent.reDrawOffers(null);
@@ -680,14 +685,32 @@ export class CarItiDetailComponent implements OnInit {
     }
   }
 
-  openAllDetailDialog(){
-    const dialogConfig = new MatDialogConfig();
+  // openAllDetailDialog(){
+  //   const dialogConfig = new MatDialogConfig();
+  //
+  //   dialogConfig.data = {
+  //       addresses: this.realOffer.adresyVPonuke,
+  //       detail: this.realOffer.detailVPonuke
+  //     };
+  //   const dialogRef = this.dialog.open(AllDetailAboutRouteDialogComponent, dialogConfig);
+  //   dialogRef.afterClosed().subscribe(value => {
+  //     if (value === undefined){
+  //       return;
+  //     }
+  //   });
+  // }
 
+
+  openAllDetailDialog(){
+    let dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-        addresses: this.realOffer.adresyVPonuke,
-        detail: this.realOffer.detailVPonuke
-      };
-    const dialogRef = this.dialog.open(AllDetailAboutRouteDialogComponent, dialogConfig);
+      addresses: this.realOffer.adresyVPonuke,
+      route: this.realOffer,
+    };
+    dialogConfig.width = '70%';
+
+
+    const dialogRef = this.dialog.open(LogDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;
@@ -713,7 +736,7 @@ export class CarItiDetailComponent implements OnInit {
 
   // pre nakladky
   getBednaIndex(townIndex, detailIndex){
-    let indexBedne = 0;
+    let indexBedne = -1;
     for (let i = 0; i < townIndex; i++) {
       if (!this.offer.detailVPonuke[i].townsArray){ // len nakladky pocitam
         indexBedne += this.getCountOfPackages(i);
@@ -725,7 +748,7 @@ export class CarItiDetailComponent implements OnInit {
 
   // pre nakladky
   getBednaJustIndex(townIndex, detailIndex){
-    let indexBedne = 0;
+    let indexBedne = -1;
     for (let i = 0; i < townIndex; i++) {
       if (!this.offer.detailVPonuke[i].townsArray){ // len nakladky pocitam
         indexBedne += this.getCountOfPackages(i);
@@ -776,7 +799,7 @@ export class CarItiDetailComponent implements OnInit {
 
   // pre nakladky
   getBednaIndexAuto(townIndex, detailIndex){
-    let indexBedne = 0;
+    let indexBedne = -1;
     for (let i = 0; i < townIndex; i++) {
       if (!this.car.detailIti[i].townsArray){ // len nakladky pocitam
         indexBedne += this.getCountOfPackagesAuto(i);

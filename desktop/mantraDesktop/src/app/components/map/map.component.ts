@@ -1240,7 +1240,6 @@ export class MapComponent implements AfterViewInit {
         let maxVaha = 0;
         let sumVaha = 0;
 
-       // TODO: zakomentovane len pre zmenu modelu, dokoncit
         detailVPonuke.forEach((oneDetail, indexTown ) => { // detailom a zistujem max vahu
           oneDetail.forEach((onePackage, indexPackage) => {
             if (onePackage){
@@ -1257,6 +1256,26 @@ export class MapComponent implements AfterViewInit {
         });
 
 
+        // todo tu daco spravit aby to nepocitalo prepravy kde nemam detail, ale aby sa to zopakovalo napr o sekundu...
+        detailVPonuke.forEach(oneAdressDetail => {
+          if (!oneAdressDetail){
+            setTimeout( () => {
+              this.offersUpdate(emitFromFilter);
+              return;
+            }, 1000 );
+          }
+          oneAdressDetail.forEach(oneDetail => {
+            if (!oneDetail){
+              setTimeout( () => {
+                this.offersUpdate(emitFromFilter);
+                return;
+              }, 1000 );
+            }
+          });
+        });
+
+        console.log(detailVPonuke[0]);
+        console.log(detailVPonuke[0][0]);
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
         if (prepravasDetailom.detailVPonuke[0]){
           const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
@@ -1655,8 +1674,11 @@ export class MapComponent implements AfterViewInit {
           let style = styleCache[size];
           if (!style) {
             if (size === 1){
-              // console.log(feature.get('features')[0].get('start'));
-              if (feature.get('features')[0].get('start') === true){
+              console.log(feature.get('features')[0].get('startPoint'));
+              if (feature.get('features')[0].get('startPoint') === true){
+                console.log('nasel som start');
+                console.log(feature.get('features')[0].get('startPoint'));
+
                 style = new Style({
                   image: new Icon({
                     color: '#8959A8',
@@ -1855,14 +1877,14 @@ export class MapComponent implements AfterViewInit {
             geometry: new Point(fromLonLat([route.adresyVPonuke[0].coordinatesOfTownsLon, route.adresyVPonuke[0].coordinatesOfTownsLat])),
             name: route.id,
             type: 'offer',
-            start: true
+            startPoint: true
           });
           const lengthOfAdd = route.adresyVPonuke.length;
           const iconFeatureLast = new Feature({
           geometry: new Point(fromLonLat([route.adresyVPonuke[lengthOfAdd - 1].coordinatesOfTownsLon, route.adresyVPonuke[lengthOfAdd - 1].coordinatesOfTownsLat])),
           name: route.id,
           type: 'offer',
-          start: false
+          startPoint: false
         });
 
         if (route.flag >= 3 && isThereMyCarGreen && !nezobrazovat){

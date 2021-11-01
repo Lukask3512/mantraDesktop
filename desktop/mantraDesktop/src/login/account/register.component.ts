@@ -52,15 +52,15 @@ export class RegisterComponent implements OnInit {
   }
 
   deleteAllCookies() {
-    this.cookieService.deleteAll();
-    let cookies = document.cookie.split(';');
-
-    for (let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i];
-      let eqPos = cookie.indexOf('=');
-      let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    }
+    // this.cookieService.deleteAll();
+    // let cookies = document.cookie.split(';');
+    //
+    // for (let i = 0; i < cookies.length; i++) {
+    //   let cookie = cookies[i];
+    //   let eqPos = cookie.indexOf('=');
+    //   let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    //   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    // }
   }
 
   changeLang(lang){
@@ -81,6 +81,16 @@ export class RegisterComponent implements OnInit {
 
   login() {
     this.spinner.show();
+    const localUser = JSON.parse(localStorage.getItem('user'));
+    const localCompany = JSON.parse(localStorage.getItem('company'));
+    if (localUser && localCompany){
+      // todo tu by som si mal nanovo natiahnut dispecera a company keby sa nieco zmenilo, aby si to zapamatalo
+      this.dataService.setDispecer(localUser);
+      this.dataService.setCompany(localCompany);
+      this.router.navigate(['/view/map']);
+      this.spinner.hide();
+      return;
+    }
 
     this.accountService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(user => {
       if (user){
@@ -91,9 +101,11 @@ export class RegisterComponent implements OnInit {
         if (this.user){
           this.companyService.getCompany(this.user.companyId).pipe(take(1)).subscribe(myCompany => {
             this.dataService.setCompany(myCompany);
+            localStorage.setItem('company', JSON.stringify(myCompany));
             if (new Date(myCompany.licenceUntil) >= new Date()){
               this.dataService.setDispecer(this.user);
               if (user){
+                localStorage.setItem('user', JSON.stringify(this.user));
                 this.router.navigate(['/view/map']);
                 this.spinner.hide();
               }

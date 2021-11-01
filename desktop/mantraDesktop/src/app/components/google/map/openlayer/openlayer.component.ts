@@ -55,14 +55,14 @@ export class OpenlayerComponent implements AfterViewInit{
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
-  notifyMe(addresses: Address[], car, carId){
-    console.log(addresses, car , carId)
+  notifyMe(addresses: Address[], car){
+    console.log(addresses, car , car)
     if (addresses != undefined) {
       this.addMarker(addresses, car);
     }
 
-    if (this.coordinatesFeature == undefined && car !== undefined && carId != undefined) {
-      this.addRoute(carId);
+    if (this.coordinatesFeature == undefined && car !== undefined) {
+      this.addRoute(car);
     }
   }
 
@@ -88,6 +88,7 @@ export class OpenlayerComponent implements AfterViewInit{
 
 
   addRoute(car){
+    if (car && car.id){
     var outputData;
     const ref = this.storage.ref('Routes/' + car.id + '.json');
     var stahnute = ref.getDownloadURL().subscribe(data => {
@@ -144,6 +145,7 @@ export class OpenlayerComponent implements AfterViewInit{
     },error => {
       console.log("trasa nenajdena")
     } );
+    }
 
   }
 

@@ -1,5 +1,7 @@
+@import "./src/sccs/shared/mixins";
+
+
 .oneRoute{
-  //background-image: linear-gradient(to right, rgba(0,0,0,0) ,rgba(128,128,128,0.3), rgba(0,0,0,0));
   border-bottom: 2px solid gray;
   box-shadow: 5px 5px 5px gray;
   margin: 10px;
@@ -113,7 +115,7 @@ table {
 .repetRoute{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .status{
@@ -207,6 +209,16 @@ li{
 
 .buttonG:hover{
   background-color: #4CAF50;
+}
+
+.activeNonActive{
+  display: flex;
+  justify-content: center;
+}
+
+.buttonTab{
+  @include buttonNoColor();
+  margin: 10px;
 }
 
 ol {

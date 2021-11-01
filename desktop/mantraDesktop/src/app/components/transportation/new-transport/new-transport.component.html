@@ -50,11 +50,14 @@
 
     <div class="detailLog">
       <button class="buttonTransport" *ngIf="this.route && this.route.id" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>
-      <button class="buttonTransport" *ngIf="this.route && this.route.id" (click)="openAllDetailDialog()">{{'OFFER.podrobneInfo' | translate}}</button>
+<!--      <button class="buttonTransport" *ngIf="this.route && this.route.id" (click)="openAllDetailDialog()">{{'OFFER.podrobneInfo' | translate}}</button>-->
     </div>
 
 
+  </div>
 
+  <div *ngIf="this.route && this.route.id" class="mainDetailAbout">
+    <app-main-detail-about></app-main-detail-about>
   </div>
 
 

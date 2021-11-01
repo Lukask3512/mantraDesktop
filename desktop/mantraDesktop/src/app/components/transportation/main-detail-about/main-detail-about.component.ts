@@ -9,15 +9,22 @@ import {CountFreeSpaceService} from '../../../data/count-free-space.service';
 export class MainDetailAboutComponent implements OnInit {
 
   @Input() route: any;
+
+
+
   constructor(private countFreeSpace: CountFreeSpaceService) { }
 
   ngOnInit(): void {
     console.log(this.route);
   }
 
+  setRoute(route){
+    this.route = route;
+  }
+
   timeToLocal(dateUtc){
     var date = (new Date(dateUtc));
-    if (dateUtc == null){
+    if (!dateUtc || dateUtc === '0'){
       return 'Neznámy';
     }
     return date.toLocaleDateString();

@@ -18,6 +18,7 @@ export class OneAddressInfoComponent implements OnInit {
   allAddresses: Address[];
   address: Address;
   detail = [];
+  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
   constructor(private addressService: AddressService, public routeStatusService: RouteStatusService,
               private offerService: OfferRouteService, private packageService: PackageService) { }
@@ -103,14 +104,14 @@ export class OneAddressInfoComponent implements OnInit {
 
   // pre nakladky
   getBednaIndex(townIndex, detailIndex){
-    let indexBedne = 0;
+    let indexBedne = -1;
     for (let i = 0; i < townIndex; i++) {
       if (!this.detail[i].townsArray){ // len nakladky pocitam
         indexBedne += this.getCountOfPackages(i);
       }
     }
     indexBedne += detailIndex + 1;
-    return indexBedne;
+    return this.alphabet[indexBedne];
   }
 
 }
