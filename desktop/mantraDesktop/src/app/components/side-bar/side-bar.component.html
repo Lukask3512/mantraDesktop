@@ -9,7 +9,9 @@
       <li><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}}</a></li>
 <!--      <li><a routerLinkActive="active" routerLink="/view/profile" class="nav">{{'HEADER.profile' | translate}}</a></li>-->
       <li *ngIf="getCompany()"><a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}}</a></li>
-
+      <li class="nav-item">
+        <a (click)="routeDetail(null)" routerLinkActive="active" routerLink="/view/newRoute" class="nav">Vytvorit prepravu </a>
+      </li>
     </ul>
 </nav>
 

@@ -51,16 +51,6 @@ export class WrapperComponent implements OnInit {
     this.offerService.deleteRoute(route.id);
   }
 
-  // getDispecerId(){
-  //   var idCreated;
-  //   if (this.dataService.getDispecer().createdBy == 'master'){
-  //     return this.dataService.getDispecer().id
-  //   }else{
-  //     return this.dataService.getDispecer().createdBy
-  //   }
-  // }
-
-
 
   deleteRoute(route: Route){
     const dialogRef = this.dialog.open(DeleteRouteComponent);

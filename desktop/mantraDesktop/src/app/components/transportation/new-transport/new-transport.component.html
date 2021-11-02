@@ -1,6 +1,7 @@
 <header>
   <app-find-car-by-id *ngIf="this.route && this.route.carId != undefined" [carId]="this.carId"></app-find-car-by-id>
 </header>
+<div class="wrapperWithMap">
 
 <div class="allWrapper">
 
@@ -60,16 +61,20 @@
     <app-main-detail-about></app-main-detail-about>
   </div>
 
+</div>
 
-  <div class="map">
-    <app-openlayer #child></app-openlayer>
+
+  <div class="mapAndBox">
+    <div class="mapWrapper">
+      <app-openlayer #child></app-openlayer>
+    </div>
     <div *ngIf="this.route && !this.route.id" class="aframe">
       <app-size-of-box></app-size-of-box>
     </div>
   </div>
 
-
 </div>
+
 <!--<app-route-log *ngIf="route != undefined" [addresses]="this.addresses"></app-route-log>-->
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 

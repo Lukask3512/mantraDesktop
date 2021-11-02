@@ -56,7 +56,6 @@ export class OpenlayerComponent implements AfterViewInit{
 
 
   notifyMe(addresses: Address[], car){
-    console.log(addresses, car , car)
     if (addresses != undefined) {
       this.addMarker(addresses, car);
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../../data/data.service';
+import Route from '../../models/Route';
 
 @Component({
   selector: 'app-side-bar',
@@ -17,4 +18,7 @@ export class SideBarComponent implements OnInit {
     return this.dataService.getDispecer().email === 'mantra@mantra.sk';
   }
 
+  routeDetail(route: Route){
+    this.dataService.changeRealRoute(route);
+  }
 }

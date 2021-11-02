@@ -40,23 +40,24 @@ export class FilterComponent implements OnInit {
       if (!this.offers){
         setTimeout(() => {
           this.offers = routes.filter(oneRoute => oneRoute.finished === false);
-          this.filterOffers();
+          this.filterOffers(false);
         }, 1000);
       }else{
         setTimeout(() => {
           this.offers = routes.filter(oneRoute => oneRoute.finished === false);
-          this.filterOffers();
+          this.filterOffers(false);
         }, 4000);
       }
     });
   }
 
-  filterOffers(){
+  filterOffers(ukazatPonuky: boolean){
     if (!this.checked){
       this.offersToMap.emit(null);
     }else{
       this.offersToMap.emit({offers : this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
-      weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance} );
+      weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance,
+      ukazat: ukazatPonuky} );
     }
   }
 

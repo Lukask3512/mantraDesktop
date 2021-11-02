@@ -35,27 +35,27 @@
     </div>
   </div>
 
-  <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>
+<!--  <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>-->
 
-  <div *ngFor="let route of this.finishedRoutesToShow; let i = index" class="oneRoute">
-      <div *ngIf="route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
-        <!--      <h2>Vykládky</h2>-->
-        <ng-container *ngFor="let town of route.addresses; index as i">
-          <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
-        </ng-container>
-      </div>
-      <div class="status">
-
-
-
-        <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
+<!--  <div *ngFor="let route of this.finishedRoutesToShow; let i = index" class="oneRoute">-->
+<!--      <div *ngIf="route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">-->
+<!--        &lt;!&ndash;      <h2>Vykládky</h2>&ndash;&gt;-->
+<!--        <ng-container *ngFor="let town of route.addresses; index as i">-->
+<!--          <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>-->
+<!--        </ng-container>-->
+<!--      </div>-->
+<!--      <div class="status">-->
 
 
-<!--          <button (click)="vymazatPonuku(route)">Odstranit</button>-->
+
+<!--        <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>-->
 
 
-      </div>
-  </div>
+<!--&lt;!&ndash;          <button (click)="vymazatPonuku(route)">Odstranit</button>&ndash;&gt;-->
+
+
+<!--      </div>-->
+<!--  </div>-->
 
 
 

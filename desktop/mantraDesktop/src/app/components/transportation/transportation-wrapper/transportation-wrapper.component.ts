@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 import {DeleteRouteComponent} from '../../dialogs/delete-route/delete-route.component';
 import {AddressService} from '../../../services/address.service';
 import {RepeatRouteDialogComponent} from '../../dialogs/repeat-route-dialog/repeat-route-dialog.component';
+import {OfferRouteService} from '../../../services/offer-route.service';
 
 @Component({
   selector: 'app-transportation-wrapper',
@@ -18,16 +19,23 @@ import {RepeatRouteDialogComponent} from '../../dialogs/repeat-route-dialog/repe
 export class TransportationWrapperComponent implements OnInit {
   allActiveRoutes: Route[];
   allFinishedRoutes;
+
+  allActiveRoutesOffer: Route[];
+  allFinishedRoutesOffer: Route[];
+
   routesToShow: Route[];
+  routesToShowOffers: Route[];
   active = true;
 
   displayedColumns: string[] = ['naklady', 'vykladky'];
 
   spans = [];
 
+  showMineRoutes = true;
+
   constructor(public routeStatusService: RouteStatusService, private routeService: RouteService,
               private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
-              private addressService: AddressService) {
+              private addressService: AddressService, private offerService: OfferRouteService) {
 
   }
 
@@ -35,12 +43,22 @@ export class TransportationWrapperComponent implements OnInit {
     if (tab === 'active' && this.active){
       return 'green';
     }else if (tab === 'nonActive' && !this.active){
-      return 'green';
+      return 'orangered';
+    }
+    if (tab === 'mine' && this.showMineRoutes){
+      return 'darkorange';
+    }
+    if (tab === 'offers' && !this.showMineRoutes){
+      return 'darkorange';
     }
   }
 
   getRowSpan(col, index) {
     return this.spans[index] && this.spans[index][col];
+  }
+
+  getDispecerId(){
+    return this.dataService.getMyIdOrMaster();
   }
 
   ngOnInit(): void {
@@ -52,17 +70,57 @@ export class TransportationWrapperComponent implements OnInit {
     this.routeService.finishedRoutes$.subscribe(routes => {
       this.allFinishedRoutes = routes;
     });
+
+    this.offerService.routes$.subscribe(routes => {
+
+
+      var moje = routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId());
+
+      var zobrate =  routes.filter(oneRoute => oneRoute.takenBy === this.getDispecerId());
+
+      this.allActiveRoutesOffer = moje.concat(zobrate);
+
+
+    });
+
   }
 
   activeRoutes(){
     this.active = true;
-    this.routesToShow = this.allActiveRoutes;
+    if (this.showMineRoutes){
+      this.routesToShow = this.allActiveRoutes;
+    }else{
+      this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => !oneRoute.finished);
+    }
   }
 
   nonActiveRoutes(){
     this.active = false;
-    this.routesToShow = this.allFinishedRoutes;
+    if (this.showMineRoutes){
+      this.routesToShow = this.allFinishedRoutes;
+    }else{
+      this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => oneRoute.finished);
+    }
   }
+
+  offersRoutes(){
+    this.showMineRoutes = false;
+    if (this.active){
+      this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => !oneRoute.finished);
+    }else{
+      this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => oneRoute.finished);
+    }
+  }
+  mineRoutes(){
+    this.showMineRoutes = true;
+    if (this.active){
+      this.routesToShowOffers = this.allActiveRoutes;
+    }else{
+      this.routesToShowOffers = this.allFinishedRoutes;
+
+    }
+  }
+
 
 
   timestamptToDate(timestamp){

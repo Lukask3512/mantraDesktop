@@ -5,6 +5,7 @@ import {DataService} from "../../data/data.service";
 import {AccountService} from "../../../login/_services/account.service";
 import {TranslateService} from '@ngx-translate/core';
 import Company from '../../models/Company';
+import Route from '../../models/Route';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -73,6 +74,10 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       location.reload();
     }, 400);
+  }
+
+  routeDetail(route: Route){
+    this.dataService.changeRealRoute(route);
   }
 
 }

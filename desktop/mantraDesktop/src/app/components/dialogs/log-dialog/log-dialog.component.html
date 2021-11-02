@@ -91,8 +91,8 @@
       <td>{{jedenAllLog.place[j]}}</td>
       <td>{{this.routeStatusService.getStatus(jedenAllLog.state[j])}}</td>
       <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
-      <td>{{jedenAllLog.lattitude[j]}}</td>
-      <td>{{jedenAllLog.longtitude[j]}}</td>
+      <td>{{roundDecimal(jedenAllLog.lattitude[j])}}</td>
+      <td>{{roundDecimal(jedenAllLog.longtitude[j])}}</td>
     </tr>
     </tbody>
 
@@ -196,8 +196,8 @@
       <td>{{jedenAllLog.place[j]}}</td>
       <td>{{this.routeStatusService.getStatus(jedenAllLog.state[j])}}</td>
       <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
-      <td>{{jedenAllLog.lattitude[j]}}</td>
-      <td>{{jedenAllLog.longtitude[j]}}</td>
+      <td>{{roundDecimal(jedenAllLog.lattitude[j])}}</td>
+      <td>{{roundDecimal(jedenAllLog.longtitude[j])}}</td>
     </tr>
     </tbody>
 

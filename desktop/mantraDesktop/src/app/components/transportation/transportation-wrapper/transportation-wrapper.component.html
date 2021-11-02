@@ -1,9 +1,14 @@
 
 
 <div *ngIf="allActiveRoutes" class="wrapper">
-  <div class="repetRoute">
-    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
-  </div>
+<!--  <div class="repetRoute">-->
+<!--    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>-->
+<!--  </div>-->
+
+  <section class="activeNonActive">
+    <button class="buttonTab" [class]="getClass('mine')"  (click)="mineRoutes()">Vlastne prepravy</button>
+    <button class="buttonTab" [class]="getClass('offers')"  (click)="offersRoutes()">Prepravy z ponuk</button>
+  </section>
 
   <section class="activeNonActive">
     <button class="buttonTab" [class]="getClass('active')"  (click)="activeRoutes()">Aktívne</button>
@@ -15,6 +20,9 @@
 
 <div *ngIf="active">
   <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
+<!--  moje prepravy-->
+  <div *ngIf="showMineRoutes">
+
   <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute" >
     <div *ngIf="allActiveRoutes.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 
@@ -35,15 +43,41 @@
 
     </div>
   </div>
+  </div>
+
+
+  <div *ngIf="!showMineRoutes">
+
+  <div *ngFor="let route of this.routesToShowOffers; let i = index" class="oneRoute">
+    <div *ngIf="!route.finished" class="nakladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
+      <!--      <h2>Vykládky</h2>-->
+      <ng-container *ngFor="let town of route.addresses; index as i">
+        <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+      </ng-container>
+    </div>
+    <div class="vykladka">
+      <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
+
+      <p *ngIf="this.route.price">{{this.route.price}}€</p>
+      <p *ngIf="!this.route.price">{{'OFFER.ponukniteCenu' | translate}}</p>
+
+      <div *ngIf="route.createdBy == this.getDispecerId()">
+        <!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
+<!--        <button (click)="vymazatPonuku(route)">{{'OFTEN.delete' | translate}}</button>-->
+      </div>
+
+
+    </div>
+  </div>
+  </div>
 </div>
-
-
 
 
   <!--  ////////////-->
 
 <div *ngIf="!active">
   <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>
+  <div *ngIf="showMineRoutes">
   <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
       <!--      <h2>Nakládky</h2>-->
@@ -53,18 +87,31 @@
     </div>
 
     <div class="vykladka">
-      <!--      <h2>Vykládky</h2>-->
       <button (click)="openAddDialog(route)" class="buttonB">{{'OFTEN.zopakovat' | translate}}</button>
       <button (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
 
     </div>
-    <!--    <div class="repetRoute">-->
-    <!--&lt;!&ndash;      <h2>Ukončené</h2>&ndash;&gt;-->
-    <!--&lt;!&ndash;      <p *ngIf="route.finishedAt != undefined">{{timestamptToDate(route.finishedAt)}}</p>&ndash;&gt;-->
-
-
-    <!--    </div>-->
   </div>
+  </div>
+
+
+
+  <div *ngIf="!showMineRoutes">
+
+  <div *ngFor="let route of this.routesToShowOffers; let i = index" class="oneRoute">
+    <div *ngIf="route.finished" class="nakladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
+      <!--      <h2>Vykládky</h2>-->
+      <ng-container *ngFor="let town of route.addresses; index as i">
+        <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+      </ng-container>
+    </div>
+    <div class="vykladka">
+      <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
+    </div>
+  </div>
+  </div>
+
+
 </div>
 
 

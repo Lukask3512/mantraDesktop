@@ -204,7 +204,18 @@ li{
 }
 
 .green{
-  background: lime;
+  background: limegreen;
+  color: white;
+}
+
+.orangered{
+  background: orangered;
+  color: white;
+}
+
+.darkorange{
+  background: darkorange;
+  color: white;
 }
 
 .buttonG:hover{
@@ -219,6 +230,7 @@ li{
 .buttonTab{
   @include buttonNoColor();
   margin: 10px;
+
 }
 
 ol {

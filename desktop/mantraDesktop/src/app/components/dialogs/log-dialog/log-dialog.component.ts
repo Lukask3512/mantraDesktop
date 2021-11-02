@@ -74,6 +74,16 @@ export class LogDialogComponent implements OnInit {
     });
   }
 
+  roundDecimal(sameNumber){
+    let numberToRound;
+    if (typeof sameNumber === 'string'){
+      numberToRound = parseFloat(sameNumber);
+    }else{
+      numberToRound = sameNumber;
+    }
+    return parseFloat((numberToRound).toFixed(5)); // ==> 1.005
+  }
+
   getLog(){
     this.routeLog = [];
     this.addresses.forEach(oneAddress => {
@@ -101,35 +111,17 @@ export class LogDialogComponent implements OnInit {
     const doc: jsPDF = new jsPDF('p', 'pt', 'a4');
     doc.setFont('ARIALUNI', 'normal');
     const data2 = document.getElementById('allWrapperToDownload');
-    // data2.style.display = 'initial';
+    data2.style.visibility = 'visible';
 
     doc.html(data2, {
       callback: (docCal) => {
         docCal.output('dataurlnewwindow');
         setTimeout(() => {
-          // data2.style.display = 'none';
+          data2.style.visibility = 'hidden';
           }, 2000);
       }
     });
   }
-
-  // downloadAsPDFImg(){
-  //   // html2
-  //   const data2 = document.getElementById('allWrapperToDownload');
-  //
-  //   // data2.style.display = 'initial';
-  //   // data2.style.width = '200px';
-  //
-  //
-  //   let data = document.getElementById('allWrapper');
-  //   html2canvas(data).then(canvas => {
-  //     const contentDataURL = canvas.toDataURL('image/jpg')
-  //     const pdf = new jsPDF('l', 'cm', 'a4'); //Generates PDF in landscape mode
-  //     // let pdf = new jspdf('p', 'cm', 'a4'); Generates PDF in portrait mode
-  //     pdf.addImage(contentDataURL, 'JPG', 0, 0, 29.7, 21.0);
-  //     pdf.save('Filename.pdf');
-  //   });
-  // }
 
   getCompanyPrepravca(company: Company){
     this.companyPrepravca = company;

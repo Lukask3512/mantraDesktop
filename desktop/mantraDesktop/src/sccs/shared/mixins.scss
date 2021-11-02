@@ -20,6 +20,7 @@
   };
   border-radius: 5px;
   border: none;
+
   //color: white;
 }
 
@@ -69,6 +70,16 @@
     overflow: hidden;
     vertical-align: middle;
   }
+}
+
+@mixin tableBorder(){
+  border-bottom: 2px solid gray;
+  box-shadow: 5px 5px 5px grey;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 10px;
+  display: block;
+  width: 100%;
 }
 
 @mixin tableButton(){

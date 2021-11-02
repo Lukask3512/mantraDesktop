@@ -24,3 +24,13 @@ button{
   display: flex;
   align-items: center;
 }
+
+.doNotShowButt{
+  @include buttonNoColor();
+  background: orangered;
+}
+
+.showButt{
+  @include buttonNoColor();
+  background: limegreen;
+}

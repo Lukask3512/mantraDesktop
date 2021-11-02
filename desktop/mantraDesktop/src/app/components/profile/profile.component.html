@@ -1,34 +1,63 @@
 <div class="wrapper">
   <section class="company">
-    {{this.company.name}}
+    <h1>{{this.company.name}}</h1>
   </section>
 
-  <h2>{{this.dispecer.name}}</h2>
-  <h2>{{this.dispecer.surname}}</h2>
-  <h2>{{this.dispecer.email}}</h2>
-  <h2>{{this.dispecer.phone}}</h2>
-  <h2>{{'VODIC.pristupKVozidlam' | translate}} :</h2>
-  <div *ngIf="!this.dispecer.allCars; else elseCars">
-    <ul *ngFor="let car of this.dispecer.myCars">
-      <li>{{this.getEcv(car).ecv}}</li>
-    </ul>
-  </div>
-  <ng-template #elseCars>
-    <p>{{'DISPATCHER.pristupKuVsetkymVozidlam' | translate}}</p>
-  </ng-template>
+  <section class="profile">
+    <div class="oneSection">
+      <label>Meno</label>
+      <h2>{{this.dispecer.name}}</h2>
+    </div>
+
+    <div class="oneSection">
+      <label>Priezvisko</label>
+      <h2> {{this.dispecer.surname}}</h2>
+    </div>
 
 
-  <h2>{{'DISPATCHER.pristupKuPrivesom' | translate}}:</h2>
-  <div *ngIf="!this.dispecer.allPrives; else elsePrives">
-    <ul *ngFor="let prives of this.dispecer.myPrives">
-      <li>{{this.getEcvPrives(prives).ecv}}</li>
-    </ul>
-  </div>
-  <ng-template #elsePrives>
-    <p>{{'DISPATCHER.pristupKuVsetkymPrivesom' | translate}}</p>
-  </ng-template>
+    <div class="oneSection">
+      <label>Email</label>
+      <h2>{{this.dispecer.email}}</h2>
+    </div>
 
 
-  <button (click)="passwordChange()">{{'LOGIN.zmenaHesla' | translate}}</button>
+    <div class="oneSection">
+      <label>Tel. cislo</label>
+      <h2>{{this.dispecer.phone}}</h2>
+    </div>
+
+
+
+    <div class="oneSection">
+      <label>{{'VODIC.pristupKVozidlam' | translate}}</label>
+      <div *ngIf="!this.dispecer.allCars; else elseCars">
+        <ul *ngFor="let car of this.dispecer.myCars">
+          <li>{{this.getEcv(car).ecv}}</li>
+        </ul>
+      </div>
+      <ng-template #elseCars>
+        <h2>{{'DISPATCHER.pristupKuVsetkymVozidlam' | translate}}</h2>
+      </ng-template>
+    </div>
+
+
+
+    <div class="oneSection">
+      <label>{{'DISPATCHER.pristupKuPrivesom' | translate}}:</label>
+      <div *ngIf="!this.dispecer.allPrives; else elsePrives">
+        <ul *ngFor="let prives of this.dispecer.myPrives">
+          <li>{{this.getEcvPrives(prives).ecv}}</li>
+        </ul>
+      </div>
+      <ng-template #elsePrives>
+        <h2>{{'DISPATCHER.pristupKuVsetkymPrivesom' | translate}}</h2>
+      </ng-template>
+    </div>
+
+
+  </section>
+
+
+  <button class="zmenaHesla" (click)="passwordChange()">{{'LOGIN.zmenaHesla' | translate}}</button>
 
 </div>

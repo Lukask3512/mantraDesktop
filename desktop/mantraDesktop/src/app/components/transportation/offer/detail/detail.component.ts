@@ -25,6 +25,9 @@ import {CancelRouteFromCarDialogComponent} from '../../../dialogs/cancel-route-f
 import Cars from '../../../../models/Cars';
 import {RouteService} from '../../../../services/route.service';
 import {DispecerService} from '../../../../services/dispecer.service';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-detail.component';
 
 @Component({
   selector: 'app-detail',
@@ -43,7 +46,7 @@ export class DetailComponent implements AfterViewInit {
   fakeRoute: Route;
   price: number;
   offer: number;
-  arrayOfDetailsAbRoute: any[] =  [];
+
   address: Address[];
   detail: any[] = [];
 
@@ -54,14 +57,15 @@ export class DetailComponent implements AfterViewInit {
 
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
-  //
-  // @ViewChild(PosliPonukuComponent)
-  // private posliPonuku: PosliPonukuComponent;
 
+  @ViewChild(MatSort) sort: MatSort;
+  dataSource;
   ngAfterViewInit(): void {
+
     setTimeout(() => { // pre exoressionchanged error...
       this.dataService.currentRoute.subscribe(route => {
         this.route = route;
+        console.log(route);
         this.fakeRoute = JSON.parse(JSON.stringify(this.route));
         this.offerService.routes$.subscribe(routes => {
           this.route = routes.find(oneRoute => oneRoute.id == route.id);
@@ -69,7 +73,8 @@ export class DetailComponent implements AfterViewInit {
           if (this.route === undefined) {
             this.route = this.fakeRoute;
           }
-
+          this.dataSource = new MatTableDataSource(this.route.offerFrom);
+          this.dataSource = this.sort;
 
           this.addressesService.offerAddresses$.subscribe(alAdd => {
             var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
@@ -119,22 +124,30 @@ export class DetailComponent implements AfterViewInit {
               if (offer == this.getDispecerId()) {
                 this.offer = this.route.priceFrom[index];
               }
-            })
+            });
           }
         });
         setTimeout(() => {
-            // this.posliPonuku.setRoute(this.route);
             this.child.notifyMe(this.address, null);
-
-            if (this.childDropList) {
-              // this.getDetails();
-            }
-            // this.child.notifyMe(this.route.coordinatesOfTownsLat, this.route.coordinatesOfTownsLon, null, undefined)
+            this.dataSource = new MatTableDataSource(this.route.offerFrom);
+            this.dataSource.sort = this.sort;
           },
           800);
       });
     });
     }
+
+  openCompanyDetail(company: Company){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      company,
+    };
+    const dialogRef = this.dialog.open(CompanyDetailComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+
+    });
+
+  }
 
     createdBy(){
       var idCreated;
