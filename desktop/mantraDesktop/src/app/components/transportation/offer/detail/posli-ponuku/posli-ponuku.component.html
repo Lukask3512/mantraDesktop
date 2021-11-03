@@ -1,8 +1,11 @@
 <div *ngIf="this.route" class="wrapper">
-  <button class="doNotShowButt" *ngIf="ifNezobrazuje(); else elseButton" (click)="doNotShow()">Viac nezobrazovat</button>
-  <ng-template #elseButton>
-    <button class="showButt" (click)="showOnMap()">Ukazat ponuku</button>
-  </ng-template>
+  <section class="showHide">
+    <button class="doNotShowButt" *ngIf="ifNezobrazuje(); else elseButton" (click)="doNotShow()">Viac nezobrazovat</button>
+    <ng-template #elseButton>
+      <button class="showButt" (click)="showOnMap()">Ukazat ponuku</button>
+    </ng-template>
+  </section>
+
 
 
   <div class="priceWrapper" *ngIf="this.offer">

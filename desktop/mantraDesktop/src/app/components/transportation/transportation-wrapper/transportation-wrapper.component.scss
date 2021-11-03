@@ -233,6 +233,11 @@ li{
 
 }
 
+.buttonDelete{
+  @include buttonNoColor();
+  background: orangered;
+}
+
 ol {
   background: #ff9999;
   padding: 20px;

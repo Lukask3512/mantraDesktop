@@ -93,6 +93,11 @@ table {
   }
 }
 
+.buttonDelete{
+  @include buttonNoColor();
+  background: orangered;
+}
+
 .spanR{
   background: rgb(255, 73, 73);
   border-radius: 5px;

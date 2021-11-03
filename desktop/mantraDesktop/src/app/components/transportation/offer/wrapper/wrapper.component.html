@@ -28,7 +28,7 @@
 
             <div *ngIf="route.createdBy == this.getDispecerId()">
 <!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
-              <button (click)="vymazatPonuku(route)">{{'OFTEN.delete' | translate}}</button>
+              <button class="buttonDelete" (click)="vymazatPonuku(route)">{{'OFTEN.delete' | translate}}</button>
             </div>
 
 

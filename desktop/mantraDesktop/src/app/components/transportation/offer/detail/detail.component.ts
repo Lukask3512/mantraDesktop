@@ -28,6 +28,8 @@ import {DispecerService} from '../../../../services/dispecer.service';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-detail.component';
+import {MatPaginator} from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-detail',
@@ -37,7 +39,7 @@ import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-de
 export class DetailComponent implements AfterViewInit {
 
 
-  displayedColumns: string[] = ['spolocnost', 'cena', 'potvrdit', 'zrusit'];
+  displayedColumns: string[] = ['companiesFromChild[i].name', 'route.priceFrom[i]', 'potvrdit', 'zrusit'];
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
               private packageService: PackageService, private dialog: MatDialog, private router: Router,
@@ -52,13 +54,16 @@ export class DetailComponent implements AfterViewInit {
 
   companiesFromChild = [];
 
+  ponuknuteSplocnosti: Company;
+
   @ViewChild('child')
   private child: OpenlayerComponent;
 
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   dataSource;
   ngAfterViewInit(): void {
 
@@ -73,8 +78,15 @@ export class DetailComponent implements AfterViewInit {
           if (this.route === undefined) {
             this.route = this.fakeRoute;
           }
-          this.dataSource = new MatTableDataSource(this.route.offerFrom);
-          this.dataSource = this.sort;
+          setTimeout(() => {
+              this.dataSource = new MatTableDataSource(this.route.offerFrom);
+              this.dataSource.paginator = this.paginator;
+              setTimeout(() => {
+                this.dataSource.sort = this.sort;
+
+              }, 1000);
+            }, 1000);
+
 
           this.addressesService.offerAddresses$.subscribe(alAdd => {
             var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
@@ -172,6 +184,10 @@ export class DetailComponent implements AfterViewInit {
         return this.dataService.getDispecer().createdBy
       }
     }
+
+  getCompanyOffer(company: Company){
+    this.ponuknuteSplocnosti = company;
+  }
 
   getCarById(){
     return this.carService.getAllCars().find(oneCar => oneCar.id === this.route.offerInRoute);

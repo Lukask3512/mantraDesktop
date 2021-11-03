@@ -1,8 +1,9 @@
 <div id="popup" class="ol-popup">
   <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>
   <div id="popup-content">
-    <div class="carsWrapper" *ngFor="let car of this.cars">
-      <button (click)="chooseCar(car.id)">{{car.ecv}}</button>
+    <div class="carsWrapper">
+        <button class="carButton" *ngFor="let car of this.cars" (click)="chooseCar(car.id)">{{car.ecv}}</button>
     </div>
+
   </div>
 </div>

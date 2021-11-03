@@ -1,4 +1,4 @@
-
+@import "./src/sccs/shared/mixins";
 .ol-popup {
   position: absolute;
   background-color: white;
@@ -36,6 +36,16 @@
   position: absolute;
   top: 2px;
   right: 8px;
+  background: red;
+  border-radius: 3px;
+  color: white;
+  //padding: {
+  //  top: 2px;
+  //  bottom: 2px;
+  //  left: 8px;
+  //  right: 8px;
+  //}
+  border: none;
 }
 .ol-popup-closer:after {
   content: "✖";
@@ -43,4 +53,9 @@
 
 .buttonWrapper{
   display: flex;
+}
+
+.offerButton{
+  @include smallButton(#343a40);
+  margin: 2px;
 }

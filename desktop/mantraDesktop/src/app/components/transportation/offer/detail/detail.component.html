@@ -70,14 +70,14 @@
     <button class="deletePrice" *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
     <button class="deletePrice" *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
     <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >{{'OFFER.finalnePrijatie' | translate}}</h2>
-    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>
-    <button *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">{{'OFFER.odmietnutPrepravu' | translate}}</button>
+    <button class="addPriceGreen" *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>
+    <button class="addPrice xButton" *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">{{'OFFER.odmietnutPrepravu' | translate}}</button>
   </div>
 
   <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="ponuky">
     <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h4>
-    <button class="deletePrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
-    <button class="addPrice" (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
+    <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
+    <button class="deletePrice" (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
     <h2>
       {{'HEADER.offers' | translate}}
     </h2>
@@ -85,7 +85,7 @@
 <!--      <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="offer"></app-get-info-about-company>-->
 
       <table mat-table  [dataSource]="this.dataSource" matSort class="tableWrapper">
-        <ng-container matColumnDef="spolocnost">
+        <ng-container matColumnDef="companiesFromChild[i].name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Spolocnost </th>
           <td mat-cell *matCellDef="let element; let i = index">
             <span class="spanClick" (click)="openCompanyDetail(companiesFromChild[i])" *ngIf="companiesFromChild[i]">
@@ -97,9 +97,9 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="cena">
+        <ng-container matColumnDef="route.priceFrom[i]">
           <th mat-header-cell *matHeaderCellDef  mat-sort-header> Cena </th>
-          <td mat-cell *matCellDef="let element; let i = index"> {{this.route.priceFrom[i]}} </td>
+          <td mat-cell *matCellDef="let element; let i = index"> {{route.priceFrom[i]}} </td>
         </ng-container>
 
         <ng-container matColumnDef="potvrdit">
@@ -116,12 +116,15 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" aria-label="Select page of offers"></mat-paginator>
 
     <div *ngIf="this.route.ponuknuteTo != ''">
-      <button  (click)="cancelOffer()"> {{'OFFER.zrusenie' | translate}} </button>
+      <button class="buttonTable xButton" (click)="cancelOffer()"> {{'OFFER.zrusenie' | translate}} </button>
       <span>{{'OFFER.ponukuPreFirmu' | translate}}</span>
       <app-get-info-about-company [masterId]="this.route.ponuknuteTo"></app-get-info-about-company>
-      <span *ngIf="this.route.ponuknuteTo && companiesFromChild">{{getCompanyById(this.route.ponuknuteTo)}}</span>
+      <span *ngIf="this.route.ponuknuteTo && companiesFromChild">
+        <app-get-name-of-comapny-by-master-id class="companyName" [masterId]="this.route.ponuknuteTo"></app-get-name-of-comapny-by-master-id>
+      </span>
     </div>
 
 

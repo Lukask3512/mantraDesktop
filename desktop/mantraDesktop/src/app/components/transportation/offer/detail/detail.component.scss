@@ -61,6 +61,21 @@
   margin: 10px;
 }
 
+.companyName{
+  margin-left: 5px;
+}
+
+.addPriceGreen{
+  @include button(limegreen);
+  margin: 10px;
+}
+
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+}
+
 .marginMid{
   margin-left: 5px;
   margin-right: 5px;

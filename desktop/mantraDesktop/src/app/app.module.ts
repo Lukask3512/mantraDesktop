@@ -56,6 +56,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -87,11 +88,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         BrowserAnimationsModule,
         BrowserModule,
         TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient]
-          }
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
         }),
         AppRoutingModule,
         MatDialogModule,
@@ -129,7 +130,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatIconModule,
         NgxSpinnerModule,
         MatExpansionModule,
-        MatMenuModule
+        MatMenuModule,
+        MatSidenavModule
     ],
     exports: [
         MatFormFieldModule,

@@ -157,6 +157,10 @@ export class MapComponent implements AfterViewInit {
   closer;
   container;
   containerOffer;
+
+
+  snackBarIsOpen: boolean = false;
+
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
@@ -316,9 +320,15 @@ export class MapComponent implements AfterViewInit {
   }
 
   openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 10000
-    });
+    if (!this.snackBarIsOpen){
+      this.snackBarIsOpen = true;
+      const snackBarRef = this._snackBar.open(message, action, {
+        duration: 6000
+      });
+      snackBarRef.afterDismissed().subscribe(info => {
+        this.snackBarIsOpen = false;
+      });
+    }
   }
 
   carFromDialog(carId){
@@ -387,6 +397,14 @@ export class MapComponent implements AfterViewInit {
     this.offersToShow = this.offersFromDatabase.find(route => route.id === id);
     if (feature){
       this.distanceOfOffer = Math.round(((getLength(feature.getGeometry()) / 100) / 1000) * 100);
+    }
+    if (this.distanceOfOffer === 0){
+      const poleKadePojdem = [];
+      this.offersToShow.adresyVPonuke.forEach(jednaAdresa => {
+        poleKadePojdem.push([jednaAdresa.coordinatesOfTownsLon, jednaAdresa.coordinatesOfTownsLat]);
+      });
+      const myItiString = new LineString(poleKadePojdem).transform('EPSG:4326', 'EPSG:3857');
+      this.distanceOfOffer = Math.round(((getLength(myItiString) / 100) / 1000) * 100);
     }
     this.carToShow = null;
     this.routesToShow = null;

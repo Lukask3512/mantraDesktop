@@ -82,6 +82,7 @@ import { OffersPopUpComponent } from './map/offers-pop-up/offers-pop-up.componen
 import { ChooseCarToMapComponent } from './map/filter/choose-car-to-map/choose-car-to-map.component';
 import { MainDetailAboutComponent } from './transportation/main-detail-about/main-detail-about.component';
 import { CompanyDetailComponent } from './dialogs/company-detail/company-detail.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
@@ -151,7 +152,8 @@ import { CompanyDetailComponent } from './dialogs/company-detail/company-detail.
         CommonModule,
         MatDialogModule,
         MatIconModule,
-        TranslateModule
+        TranslateModule,
+        MatPaginatorModule
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

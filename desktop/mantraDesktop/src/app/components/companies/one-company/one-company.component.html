@@ -1,46 +1,51 @@
 <div class="companyWrapper">
   <h2>{{'COMPANIES.comapnies' | translate}}</h2>
+  <mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Comapny name or town..." #input>
+  </mat-form-field>
+
   <table mat-table [dataSource]="dataSource" matSort class="tabulka">
     <!-- Name Column -->
-    <ng-container class="blackHeader" matColumnDef="nazov">
+    <ng-container class="blackHeader" matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.name' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
     <!-- Weight Column -->
-    <ng-container class="tbl-header" matColumnDef="ulica">
+    <ng-container class="tbl-header" matColumnDef="street">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.street' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.street}} </td>
     </ng-container>
 
     <!-- Symbol Column -->
-    <ng-container class="tbl-header" matColumnDef="mesto">
+    <ng-container class="tbl-header" matColumnDef="town">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.town' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.town}} </td>
     </ng-container>
-    r
-    <ng-container class="tbl-header" matColumnDef="stat">
-      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.state' | translate}} </th>
+
+    <ng-container class="tbl-header" matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.state' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.country}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="ico">
-      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.ico' | translate}} </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.ico' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.ico}} </td>
     </ng-container>
 
-    <ng-container class="tbl-header" matColumnDef="dic">
-      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.dico' | translate}} </th>
+    <ng-container class="tbl-header" matColumnDef="dicIc">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.dico' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.dicIc}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="poistenie">
-      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.poistenie' | translate}} </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.poistenie' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.poistenie}} </td>
     </ng-container>
 
-    <ng-container class="tbl-header" matColumnDef="licencia">
-      <th mat-header-cell *matHeaderCellDef> {{'COMPANIES.licenica' | translate}} </th>
+    <ng-container class="tbl-header" matColumnDef="licenceUntil">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.licenica' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.licenceUntil}} </td>
     </ng-container>
 
@@ -58,7 +63,13 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr>
   </table>
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50, 100]" aria-label="Select page of users"></mat-paginator>
   <button (click)="addCompany()" class="buttonG">{{'OFTEN.add' | translate}}</button>
 </div>
 
