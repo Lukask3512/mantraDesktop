@@ -260,9 +260,10 @@ export class MapComponent implements AfterViewInit {
         const type = feature.get('type');
         if (feature.get('features')){
             if (feature.get('features')[0].get('type') === 'car'){
-              this.zoomToAddressOrCar(feature);
               if (feature.get('features').length === 1){ // ak som klikol na 1 auto
                 this.onClickFindInfo(feature.get('features')[0].get('name'));
+                this.zoomToAddressOrCar(feature);
+
               }else{ // ak som klikol na viacero aut
                 const coordinate = evt.coordinate;
                 this.overlay.setPosition(coordinate);
@@ -270,9 +271,10 @@ export class MapComponent implements AfterViewInit {
               }
             }
           if (feature.get('features')[0].get('type') === 'offer'){
-            this.zoomToAddressOrCar(feature);
             if (feature.get('features').length === 1){ // ak som klikol na 1 auto
               this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
+              this.zoomToAddressOrCar(feature);
+
             }else{ // ak som klikol na viacero ponuk
               const coordinate = evt.coordinate;
               this.overlayOffer.setPosition(coordinate);
@@ -333,15 +335,19 @@ export class MapComponent implements AfterViewInit {
 
   carFromDialog(carId){
     this.closePopUp();
+    const feature = this.cars.find(oneFeature => oneFeature.get('name') === carId);
     if (carId){
       this.onClickFindInfo(carId);
+      this.zoomToAddressOrCar(feature);
     }
   }
 
   offerFromDialog(offerId){
     this.closePopUp();
+    const allOffers = this.offersGreen.concat(this.offersYellow).concat(this.offersRed);
+    const feature = allOffers.find(oneFeature => oneFeature.get('name') === offerId);
     if (offerId){
-      this.onClickFindInfoOffer(offerId, null);
+      this.onClickFindInfoOffer(offerId, feature);
     }
   }
 
@@ -1730,55 +1736,54 @@ export class MapComponent implements AfterViewInit {
         style: (feature) => {
           const size = feature.get('features').length;
           let style = styleCache[size];
-          if (!style) {
+          // if (!style) {
             if (size === 1){
-              console.log(feature.get('features')[0].get('startPoint'));
               if (feature.get('features')[0].get('startPoint') === true){
-                console.log('nasel som start');
-                console.log(feature.get('features')[0].get('startPoint'));
 
-                style = new Style({
-                  image: new Icon({
-                    color: '#8959A8',
-                    crossOrigin: 'anonymous',
-                    src: 'assets/logo/startPoint.png',
-                    scale: 0.5
-                  }),
-                });
+                  const stylik = new Style({
+                    image: new Icon({
+                      color: '#ffffff',
+                      crossOrigin: 'anonymous',
+                      src: 'assets/logo/startPoint.png',
+                      scale: 0.5
+                    }),
+                  });
+                return stylik;
 
-              }else{
-                style = new Style({
-                  image: new Icon({
-                    color: '#8959A8',
-                    crossOrigin: 'anonymous',
-                    src: 'assets/logo/finishFlag.png',
-                    scale: 0.5
-                  }),
-                });
+              }
+              else{
+                const stylik = new Style({
+                    image: new Icon({
+                      color: '#8959A8',
+                      crossOrigin: 'anonymous',
+                      src: 'assets/logo/finishFlag.png',
+                      scale: 0.5
+                    }),
+                  });
+
+               return stylik;
               }
             }else{
-              style = new Style({
-                image: new CircleStyle({
-                  radius: 10,
-                  stroke: new Stroke({
-                    color: '#fff',
+                const stylik = new Style({
+                  image: new CircleStyle({
+                    radius: 9,
+                    stroke: new Stroke({
+                      color: '#000000'
+                    }),
+                    fill: new Fill({
+                      color: '#000000'
+                    }),
                   }),
-                  fill: new Fill({
-                    color: '#3399CC',
+                  text: new Text({
+                    text: size.toString(),
+                    scale: 1.3,
+                    fill: new Fill({
+                      color: '#fff',
+                    }),
                   }),
-                }),
-                text: new Text({
-                  text: size.toString(),
-                  fill: new Fill({
-                    color: '#fff',
-                  }),
-                }),
-              });
+                });
+              return stylik;
             }
-
-            styleCache[size] = style;
-          }
-          return style;
         },
       });
     }

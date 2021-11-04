@@ -1,9 +1,21 @@
 <div class="wrapper">
+  <label>Nazov spolocnosti</label>
   <h2>{{company.name}}</h2>
-  <h2>{{company.street}}</h2>
+  <label>Sidlo v meste</label>
   <h2>{{company.town}}</h2>
+  <label>Stat</label>
   <h2>{{company.country}}</h2>
+  <label>ICO</label>
   <h2>{{company.ico}}</h2>
+  <label>DIC</label>
   <h2>{{company.dicIc}}</h2>
-  <h2>{{company.poistenie}}</h2>
+  <label>Vyska poistenia</label>
+  <h2 *ngIf="!company.poistenie; else elsePoistka">
+    Bez poistenia
+  </h2>
+  <ng-template #elsePoistka>
+    <h2>
+      {{company.poistenie}}
+    </h2>
+  </ng-template>
 </div>
