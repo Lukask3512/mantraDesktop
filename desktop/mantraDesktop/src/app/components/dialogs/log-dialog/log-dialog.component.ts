@@ -35,7 +35,6 @@ export class LogDialogComponent implements OnInit {
       this.addresses = this.data.addresses;
       this.getLog();
       this.route = this.data.route;
-      console.log(this.route)
       this.getDetail();
 
     }
@@ -60,17 +59,16 @@ export class LogDialogComponent implements OnInit {
   }
 
   getDetail(){
+    var myPackages = [];
     this.addresses.forEach(oneAddress => {
-      var myPackages = [];
-      var detailAr = {detailArray: [], townsArray: [], packageId: []};
-      oneAddress.packagesId.forEach( oneId => {
-          var balik = this.packageService.getOnePackage(oneId);
-          myPackages.push(balik);
-      });
-
-      this.detail = myPackages;
-      console.log(this.detail);
-
+      if (oneAddress.type === 'nakladka'){
+        var detailAr = {detailArray: [], townsArray: [], packageId: []};
+        oneAddress.packagesId.forEach( oneId => {
+            var balik = this.packageService.getOnePackage(oneId);
+            myPackages.push(balik);
+        });
+        this.detail = myPackages;
+      }
     });
   }
 

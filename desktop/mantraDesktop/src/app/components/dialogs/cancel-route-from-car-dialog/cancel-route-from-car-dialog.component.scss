@@ -1,0 +1,16 @@
+@import "./src/sccs/shared/mixins";
+
+.noButton{
+  @include button(orangered);
+  color: white;
+}
+
+.yesButton{
+  @include buttonNoColor();
+}
+
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

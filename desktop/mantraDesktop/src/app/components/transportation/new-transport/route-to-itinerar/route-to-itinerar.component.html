@@ -65,7 +65,10 @@
 
     </div>
   </div>
-  <button (click)="moveAll()">{{'TRANSPORT.presunutVsetko' | translate}}</button>
+  <div class="buttonMove">
+    <button class="moveAll" (click)="moveAll()">{{'TRANSPORT.presunutVsetko' | translate}}</button>
+
+  </div>
 </div>
 
 <div *ngIf="this.car" class="example-container">
@@ -123,5 +126,6 @@
     </div>
 
 </div>
-
-<button [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">{{'OFTEN.potvrdit' | translate}}</button>
+<div class="potvrditButt">
+  <button class="potvrd" [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">{{'OFTEN.potvrdit' | translate}}</button>
+</div>

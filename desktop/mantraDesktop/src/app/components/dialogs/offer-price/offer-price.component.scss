@@ -1,0 +1,10 @@
+@import "./src/sccs/shared/mixins";
+
+.buttonAdd{
+  @include button(limegreen)
+}
+
+.buttonWrapper{
+  display: flex;
+  justify-content: flex-end;
+}

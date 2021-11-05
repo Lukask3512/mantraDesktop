@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, SimpleChanges} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Polyline from 'ol/format/Polyline';
@@ -20,6 +20,7 @@ import {easeOut} from 'ol/easing';
 import {unByKey} from 'ol/Observable';
 import {getVectorContext} from 'ol/render';
 import Address from "../../../../models/Address";
+import {fromEvent, Observable, Subscription} from 'rxjs';
 
 
 @Component({
@@ -52,6 +53,9 @@ export class OpenlayerComponent implements AfterViewInit{
 
   blikaAuto = false;
 
+  resizeObservable$: Observable<Event>;
+  resizeSubscription$: Subscription;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage) { }
 
 
@@ -64,6 +68,8 @@ export class OpenlayerComponent implements AfterViewInit{
       this.addRoute(car);
     }
   }
+
+
 
   ngAfterViewInit(): void {
     // setTimeout(() =>
@@ -83,7 +89,28 @@ export class OpenlayerComponent implements AfterViewInit{
         // this.map.render();
       // },
       // 100);
+    setTimeout(() =>
+      {
+        this.map.updateSize();
+          },
+          1000);
+
+    setTimeout(() =>
+      {
+          this.resizeObservable$ = fromEvent(window, 'resize');
+          this.resizeSubscription$ = this.resizeObservable$.subscribe( evt => {
+            setTimeout(() =>
+              {
+                this.map.updateSize();
+              },
+              1000);
+          });
+
+      },
+      500);
+
   }
+
 
 
   addRoute(car){

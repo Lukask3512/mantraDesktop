@@ -28,7 +28,7 @@
 </div>
 <!--  <button (click)="buttonForExampleData()">Exapmle</button>-->
   <div class="addresses">
-    <app-drag-and-drop-list #dropList
+    <app-drag-and-drop-list class="dropList" #dropList
                             [address]="this.addresses"
                             [draggable]="true"
                             [updatable]="true"
@@ -65,7 +65,7 @@
 
 
   <div class="mapAndBox">
-    <div class="mapWrapper">
+    <div class="mapWrapper" [ngClass]="{'mapWrapperWithouBox' : this.route && this.route.id}">
       <app-openlayer #child></app-openlayer>
     </div>
     <div *ngIf="this.route && !this.route.id" class="aframe">

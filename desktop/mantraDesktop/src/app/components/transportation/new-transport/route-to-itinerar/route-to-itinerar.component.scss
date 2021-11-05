@@ -1,9 +1,40 @@
+@import "./src/sccs/shared/mixins";
+
 .example-container {
   width: 400px;
   max-width: 100%;
   margin: 0 25px 25px 0;
   display: inline-block;
   vertical-align: top;
+}
+
+.buttonMove{
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.moveAll{
+  @include buttonNoColor();
+}
+
+.potvrd{
+  @include buttonNoColor();
+  background: limegreen;
+  color: white;
+}
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.potvrditButt{
+  margin-top: 2px;
+  display: flex;
+  justify-content: center;
 }
 
 .example-list {

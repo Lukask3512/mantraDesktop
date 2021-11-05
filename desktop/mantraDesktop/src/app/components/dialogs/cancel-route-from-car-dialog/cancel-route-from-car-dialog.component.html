@@ -1,6 +1,9 @@
 <div class="dialogWrapper">
   <h2>{{'HINT.deleteAdresyZVozidla' | translate}}</h2>
   <p>{{'HINT.deleteAdresyHint' | translate}}.</p>
-  <button (click)="yes()">{{'OFTEN.ano' | translate}}</button>
-  <button (click)="close()">{{'OFTEN.nie' | translate}}</button>
+  <section class="buttons">
+    <button class="noButton" (click)="yes()">{{'OFTEN.ano' | translate}}</button>
+    <button class="yesButton" (click)="close()">{{'OFTEN.nie' | translate}}</button>
+  </section>
+
 </div>

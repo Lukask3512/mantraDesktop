@@ -70,7 +70,9 @@
     </tr>
   </table>
   <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50, 100]" aria-label="Select page of users"></mat-paginator>
-  <button (click)="addCompany()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+  <div class="buttonWrapper">
+    <button (click)="addCompany()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+  </div>
 </div>
 
 

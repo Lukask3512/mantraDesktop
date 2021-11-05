@@ -35,9 +35,12 @@
   </div>
 </div>
 
-<div *ngIf="!this.address || this.address.length === 0">
+<div class="buttonWrap" *ngIf="!this.address || this.address.length === 0">
   <h2>{{'CAR.noAdress' | translate}}</h2>
 </div>
+<div *ngIf="this.address && this.address.length > 0" class="buttonWrap">
+  <button class="changeItiButt" [disabled]="!itiChanged" (click)="updateItinerar()">{{'CAR.changeItinerar' | translate}}</button>
+</div>
 
-<button [disabled]="!itiChanged" (click)="updateItinerar()">{{'CAR.changeItinerar' | translate}}</button>
+
 
