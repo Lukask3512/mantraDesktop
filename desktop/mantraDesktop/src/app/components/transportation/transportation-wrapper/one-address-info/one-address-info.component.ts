@@ -4,6 +4,7 @@ import Address from "../../../../models/Address";
 import {RouteStatusService} from "../../../../data/route-status.service";
 import {OfferRouteService} from "../../../../services/offer-route.service";
 import {PackageService} from '../../../../services/package.service';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-one-address-info',
@@ -21,9 +22,11 @@ export class OneAddressInfoComponent implements OnInit {
   alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
   constructor(private addressService: AddressService, public routeStatusService: RouteStatusService,
-              private offerService: OfferRouteService, private packageService: PackageService) { }
+              private offerService: OfferRouteService, private packageService: PackageService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.addressService.address$.subscribe(allAddresses => {
      this.address = allAddresses.find(address => address.id == this.addressaId);
      if (!this.address){
@@ -94,7 +97,7 @@ export class OneAddressInfoComponent implements OnInit {
         }
       }
 
-
+      this.spinner.hide();
     });
   }
 

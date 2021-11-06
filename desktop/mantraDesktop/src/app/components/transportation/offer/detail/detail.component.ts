@@ -29,6 +29,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-detail.component';
 import {MatPaginator} from '@angular/material/paginator';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class DetailComponent implements AfterViewInit {
   constructor(private dataService: DataService, private offerService: OfferRouteService, private carService: CarService,
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
               private packageService: PackageService, private dialog: MatDialog, private router: Router,
-              private _snackBar: MatSnackBar, private routeService: RouteService, private dispecerService: DispecerService) { }
+              private _snackBar: MatSnackBar, private routeService: RouteService, private dispecerService: DispecerService,
+              private spinner: NgxSpinnerService) { }
   route: Route;
   fakeRoute: Route;
   price: number;
@@ -66,9 +68,11 @@ export class DetailComponent implements AfterViewInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   dataSource;
   ngAfterViewInit(): void {
-
+    // this.spinner.show();
     setTimeout(() => { // pre exoressionchanged error...
+
       this.dataService.currentRoute.subscribe(route => {
+        console.log('zacinam')
         this.route = route;
         console.log(route);
         this.fakeRoute = JSON.parse(JSON.stringify(this.route));
@@ -125,9 +129,11 @@ export class DetailComponent implements AfterViewInit {
               }
 
             });
-            if (this.detail)
+            if (this.detail){
               this.childDropList.setDetails(this.detail);
+              // this.spinner.hide();
 
+            }
           })
 
 

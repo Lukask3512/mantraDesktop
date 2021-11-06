@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private accountService: AccountService,
-    private dataService: DataService
+    private dataService: DataService,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -19,6 +19,10 @@ export class AuthGuard implements CanActivate {
       if (user && company){
         this.dataService.setDispecer(user);
         this.dataService.setCompany(company);
+        if (this.router.url === 'view/offerDetail' || this.router.url === 'view/newRoute'){
+          this.router.navigate(['/view/map']);
+        }
+        console.log(this.router.url);
         return true;
       }else{
         return false;

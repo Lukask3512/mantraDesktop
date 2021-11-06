@@ -212,7 +212,7 @@ export class DataService {
           var hrs = parseInt(String(Number(casOdAutaKAdrese.toString(10))));
           var min = Math.round((Number(casOdAutaKAdrese) - hrs) * 60);
           var clocktime = hrs+':'+min;
-          console.log(clocktime)
+
           var casPrichoduAuta = new Date();
           casPrichoduAuta.setHours(casPrichoduAuta.getHours() + hrs, casPrichoduAuta.getMinutes() + min);
           casPrichodovPreAdresy.push(casPrichoduAuta.toISOString());
@@ -330,7 +330,6 @@ export class DataService {
   }
 
   najdiNajskorsiLastTimeArrival(offer: Address[], itiAddresses: Address[], car: Cars){
-    console.log(itiAddresses.length);
     let najskorsiLastTimeArrival;
     let indexMesta; // s najmensim last time arrival z ponuky
     offer.forEach((oneAddress, indexM) => {

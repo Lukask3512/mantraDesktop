@@ -52,12 +52,15 @@ export class FilterComponent implements OnInit {
   }
 
   filterOffers(ukazatPonuky: boolean){
-    if (!this.checked){
-      this.offersToMap.emit(null);
-    }else{
-      this.offersToMap.emit({offers : this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
-      weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance,
-      ukazat: ukazatPonuky} );
+    console.log("odosielam", this.offers.length);
+    if (this.offers.length > 0){
+      if (!this.checked){
+        this.offersToMap.emit(null);
+      }else{
+        this.offersToMap.emit({offers : this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
+          weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance,
+          ukazat: ukazatPonuky} );
+      }
     }
   }
 

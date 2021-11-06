@@ -86,14 +86,11 @@ export class WrapperComponent implements OnInit {
   }
   mine(){
     this.routesToShow = this.routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished);
-    this.finishedRoutesToShow = this.finishedRoutes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && oneRoute.finished);
     this.whatIsActive = 1;
   }
 
   assigned(){
-    this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished)
-        || oneRoute.takenBy === this.getDispecerId() && !oneRoute.finished);
-    this.finishedRoutesToShow = this.finishedRoutes.filter(oneRoute => oneRoute.takenBy === this.getDispecerId() && oneRoute.finished);
+    this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished));
     this.whatIsActive = 2;
   }
 }

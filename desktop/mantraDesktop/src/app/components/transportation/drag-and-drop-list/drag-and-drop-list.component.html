@@ -1,8 +1,8 @@
 <h3 *ngIf="!this.address || this.address.length === 0">Itinerar je prazdny</h3>
-<div  cdkDropList class="example-list"
+<div *ngIf="this.address"  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
   <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
-    <div *ngIf="this.detailArray && this.detailArray[i] != undefined" class="bednaWrapper">
+    <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapper">
 <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
         <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
@@ -20,7 +20,7 @@
       </mat-icon>
     </div>
 
-    <div class="routeTown" (click)="sendTown(i)">
+    <div *ngIf="this.address[i] && this.address[i].type" class="routeTown" (click)="sendTown(i)">
       <p>
         <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
         <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
@@ -40,3 +40,4 @@
     </div>
   </div>
 </div>
+<ngx-spinner></ngx-spinner>

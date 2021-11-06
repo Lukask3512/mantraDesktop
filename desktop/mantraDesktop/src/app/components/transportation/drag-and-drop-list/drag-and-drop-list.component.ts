@@ -10,6 +10,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {AddressService} from '../../../services/address.service';
 import {ShowDetailDialogComponent} from '../../dialogs/show-detail-dialog/show-detail-dialog.component';
 import {TimeProblemDialogComponent} from '../../dialogs/time-problem-dialog/time-problem-dialog.component';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -39,12 +41,13 @@ export class DragAndDropListComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
-              private _snackBar: MatSnackBar, private addressService: AddressService) { }
+              private _snackBar: MatSnackBar, private addressService: AddressService, ) { }
 
 
   setAddresses(addresses: Address[]){
     this.address = addresses;
     this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
+    // this.spinner.hide();
   }
 
   // kontrola ci mozem prehodit mesta - podla detailu
@@ -320,6 +323,8 @@ export class DragAndDropListComponent implements OnInit {
 
 
   getColorForTime(townIndex){
+    if (this.address && this.address[0]){
+
     if (this.dniKtoreSaPrelinaju){
       this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
       const denPrelinajuciSa = this.dniKtoreSaPrelinaju.filter(oneDen => oneDen.adresa1 === townIndex);
@@ -350,6 +355,7 @@ export class DragAndDropListComponent implements OnInit {
         return 'redColor';
       }
     }
+    }
 
   }
 
@@ -359,6 +365,8 @@ export class DragAndDropListComponent implements OnInit {
 
   setDetails(arrayOfDetails){
     this.detailArray = arrayOfDetails;
+    // this.spinner.hide();
+
   }
 
   sendTown(index){
@@ -402,6 +410,7 @@ export class DragAndDropListComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    // this.spinner.show();
     console.log(this.address)
   }
 

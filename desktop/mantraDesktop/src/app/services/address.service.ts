@@ -139,6 +139,7 @@ export class AddressService {
 
         this.addressesOfferGet.push(adresa);
         this._offerAddresses.next(this.addressesOfferGet);
+        this.checkFinishedAddresAndUpdateRouteOffer();
         resolve(adresa)
       })
     })

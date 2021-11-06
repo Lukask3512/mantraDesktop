@@ -566,7 +566,18 @@ export class CarItiDetailComponent implements OnInit {
 
   sendCarToPredpoklad(predpoklad: Predpoklad){
     this.sendCarToPredpokad.emit(predpoklad);
-    this.putFirstAddressFromOffer();
+    const volneMiesta = this.volneMiesta();
+    this.checkEstiAndLastTime();
+    this.skontrolujVahu();
+
+    let prepravaIndex = this.offer.zelenePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id);
+    if (prepravaIndex > -1){
+      this.offer.zelenePrepravy[prepravaIndex].vopchaSa = volneMiesta;
+    }
+    else if (this.offer.zltePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id) !== -1){
+      prepravaIndex = this.offer.zltePrepravy.findIndex(oneOffer => oneOffer.id === this.car.id);
+      this.offer.zltePrepravy[prepravaIndex].vopchaSa = volneMiesta;
+    }
   }
 
   openSnackBar(message: string, action: string) {
@@ -609,18 +620,30 @@ export class CarItiDetailComponent implements OnInit {
     car.itiAdresy = car.itiAdresy.concat(this.offer.adresyVPonuke);
     car.itinerar = car.itinerar.concat(this.offer.addresses);
     car.detailIti = car.detailIti.concat(this.offer.detailVPonuke);
-    predpoklad.itinerar.forEach(function(a, i) { order[a] = i; });
-    car.itiAdresy.sort(function(a, b) {
-      return order[a.id] - order[b.id];
-    });
+    predpoklad.itinerar.forEach((oneId, indexId) => {
+      const element = car.itiAdresy.find(jednaAdresa => jednaAdresa.id === oneId);
+      const elementIndex = car.itiAdresy.findIndex(jednaAdresa => jednaAdresa.id === oneId);
+      car.itiAdresy.splice(elementIndex, 1);
+      car.itiAdresy.splice(indexId, 0, element);
 
-    // TODO tieto 2 ulozenia podla predulozenej sracky nefunguju
-    car.itinerar.sort(function(a, b) {
-      return order[a.id] - order[b.id];
+      const elementDetail = car.detailIti[elementIndex];
+      car.detailIti.splice(elementIndex, 1);
+      car.detailIti.splice(indexId, 0, elementDetail);
+
+
     });
-    car.detailIti.sort(function(a, b) {
-      return order[a.id] - order[b.id];
-    });
+    // car.itiAdresy.sort(function(a, b) {
+    //   return order[a.id] - order[b.id];
+    // });
+    //
+
+    // car.itinerar.sort(function(a, b) {
+    //   return order[a.id] - order[b.id];
+    // });
+    // car.detailIti.sort(function(a, b) {
+    //   return order[a.id] - order[b.id];
+    // });
+
     this.car = car;
 
     // docasne riesenie

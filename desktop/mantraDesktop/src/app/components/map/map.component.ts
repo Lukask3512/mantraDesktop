@@ -1312,36 +1312,18 @@ export class MapComponent implements AfterViewInit {
                     return;
                   }, 2000);
                 }
-                if (k === oneAdressDetail.length-1 && j === detailVPonuke.length-1){
-                  resolve();
+                if (k === oneAdressDetail.length - 1 && j === detailVPonuke.length - 1){
+                  setTimeout(() => {
+                    resolve();
+                  }, 500);
                 }
               }
             }
           });
 
 
-        // detailVPonuke.forEach(oneAdressDetail => {
-        //   if (!oneAdressDetail) {
-        //     setTimeout(() => {
-        //       this.offersUpdate(emitFromFilter);
-        //       return;
-        //     }, 1000);
-        //   }
-        //   oneAdressDetail.forEach(oneDetail => {
-        //     if (!oneDetail) {
-        //       setTimeout(() => {
-        //         this.offersUpdate(emitFromFilter);
-        //         return;
-        //       }, 1000);
-        //     }
-        //   });
-        // });
-
           myPromise.then(value => {
 
-          // })
-        console.log(detailVPonuke[0]);
-        console.log(detailVPonuke[0][0]);
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
         if (prepravasDetailom.detailVPonuke[0]) {
           const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);

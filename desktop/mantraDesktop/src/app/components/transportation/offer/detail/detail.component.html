@@ -6,12 +6,12 @@
     <div *ngIf="!isCancel() && !this.route.finished">
       <h2 *ngIf="this.route.cancelByDriver">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyPotvrdenie' | translate}}</h2>
-      <button *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+      <button class="cancelOffer" *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
       <ng-template #elseCancel>
-        <button (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
+        <button class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
     </div>
-    <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!!</h2>
+    <h2  *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!!</h2>
 
   </div>
 </header>
@@ -41,8 +41,8 @@
                         *ngIf="this.route.takenBy == getDispecerId() && !isCancel() && this.route.offerInRoute == ''"></app-offer-to-route>
 
   <h2  *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute != ''">
-    {{'OFFER.ponukaVoVozidle' | translate}}: <button (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
-    <button *ngIf="!this.route.finished" class="buttonTransport" (click)="cancelFromCarDialog()">{{'NEWADDRESSFORM.odstranitZVoziudla' | translate}}</button>
+    {{'OFFER.ponukaVoVozidle' | translate}}: <button class="detailLog" (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
+    <button *ngIf="!this.route.finished" class="cancelOffer" (click)="cancelFromCarDialog()">{{'NEWADDRESSFORM.odstranitZVoziudla' | translate}}</button>
 
   </h2>
 
@@ -140,9 +140,9 @@
     <div *ngIf="!isCancel() && !this.route.finished">
       <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}:</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
-      <button (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+      <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
       <ng-template #elseCancelCompany>
-        <button (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
+        <button  class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
     </div>
     <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!</h2>
