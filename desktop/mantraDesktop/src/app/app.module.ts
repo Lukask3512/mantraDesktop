@@ -33,8 +33,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 
-import { JwtInterceptor } from 'src/login/_helpers/jwt.interceptor';
-import { ErrorInterceptor } from 'src/login/_helpers/error.interceptor';
+
 import { ViewComponent } from './components/view.component';
 import { RegisterComponent} from '../login/account/register.component';
 import {ViewModule} from './components/view.module';
@@ -141,8 +140,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     HttpClient
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

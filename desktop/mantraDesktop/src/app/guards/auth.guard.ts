@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AccountService } from 'src/login/_services/account.service';
-import {DataService} from '../../app/data/data.service';
+import {DataService} from '../data/data.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -19,10 +19,12 @@ export class AuthGuard implements CanActivate {
       if (user && company){
         this.dataService.setDispecer(user);
         this.dataService.setCompany(company);
-        if (this.router.url === 'view/offerDetail' || this.router.url === 'view/newRoute'){
-          this.router.navigate(['/view/map']);
-        }
-        console.log(this.router.url);
+        setTimeout(() => {
+            if (this.router.url === '/view/offerDetail' || this.router.url === '/view/newRoute'){
+              this.router.navigate(['/view/map']);
+            }
+        }, 500);
+
         return true;
       }else{
         return false;

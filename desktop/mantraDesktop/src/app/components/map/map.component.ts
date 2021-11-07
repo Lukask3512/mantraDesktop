@@ -159,7 +159,7 @@ export class MapComponent implements AfterViewInit {
   containerOffer;
 
 
-  snackBarIsOpen: boolean = false;
+  snackBarIsOpen = false;
 
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
@@ -185,7 +185,7 @@ export class MapComponent implements AfterViewInit {
   private chooseOfferPoUp: OffersPopUpComponent;
 
   @ViewChild(PosliPonukuComponent)
-  private posliPonuku: PosliPonukuComponent
+  private posliPonuku: PosliPonukuComponent;
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
@@ -270,7 +270,7 @@ export class MapComponent implements AfterViewInit {
                 this.chooseCarPopup.setCars(feature.get('features'));
               }
             }
-          if (feature.get('features')[0].get('type') === 'offer'){
+            if (feature.get('features')[0].get('type') === 'offer'){
             if (feature.get('features').length === 1){ // ak som klikol na 1 auto
               this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
               this.zoomToAddressOrCar(feature);
@@ -816,9 +816,9 @@ export class MapComponent implements AfterViewInit {
     }else{
       this.carsToDisplay = this.carsFromDatabase.map(oneCar => oneCar.id);
     }
-    setTimeout(() => {
-      this.drawOffers(this.offersFromDatabase, true);
-    }, 2500);
+    // setTimeout(() => {
+    this.drawOffers(this.offersFromDatabase, true);
+    // }, 2500);
   }
 
   public reDrawOffersNoDelay(){
@@ -1116,14 +1116,13 @@ export class MapComponent implements AfterViewInit {
     if (this.red){
       whichFeatruresFit = [...whichFeatruresFit, ...this.offersRed];
     }
-    setTimeout( () => {
-      const vectorNaZobrazenieAllFeatures = new VectorSource({
+
+    const vectorNaZobrazenieAllFeatures = new VectorSource({
         features: whichFeatruresFit
       });
-      this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
-          duration: 800
+    this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
+          duration: 500
         });
-    }, 2000);
   }
 
   estimatedTimeToLocal(dateUtc){
@@ -1238,16 +1237,16 @@ export class MapComponent implements AfterViewInit {
 
       setTimeout( () => {
       const poleSMinVzdialenostamiOdAdries = [];
-        for (let i = 0; i < offers.length; i++) {
-          let oneRouteOffer = offers[i];
+      for (let i = 0; i < offers.length; i++) {
+          const oneRouteOffer = offers[i];
 
         // }
       // offers.forEach((oneRouteOffer, indexOffer) => { // prechaedzam ponukami
 
-        const adresyVPonuke: Address[] = [];
-        const detailVPonuke: any[] = [];
+          const adresyVPonuke: Address[] = [];
+          const detailVPonuke: any[] = [];
 
-        oneRouteOffer.addresses.forEach((addId, indexAdresa) => {
+          oneRouteOffer.addresses.forEach((addId, indexAdresa) => {
           const adresa: Address = this.adressesFromDatabase.find(oneAdd => oneAdd.id === addId);
           adresyVPonuke.push(adresa);
 
@@ -1272,12 +1271,12 @@ export class MapComponent implements AfterViewInit {
           detailVPonuke.push(packageVPoradiPreAdresu);
         });
         // tot si priradujem detail a maxVahu ponuky
-        const detailArray = [];
-        let prepravasDetailom;
-        let maxVaha = 0;
-        let sumVaha = 0;
+          const detailArray = [];
+          let prepravasDetailom;
+          let maxVaha = 0;
+          let sumVaha = 0;
 
-        detailVPonuke.forEach((oneDetail, indexTown) => { // detailom a zistujem max vahu
+          detailVPonuke.forEach((oneDetail, indexTown) => { // detailom a zistujem max vahu
           oneDetail.forEach((onePackage, indexPackage) => {
             if (onePackage) {
               if (adresyVPonuke[indexTown].type === 'nakladka') {
@@ -1295,7 +1294,7 @@ export class MapComponent implements AfterViewInit {
           const myPromise = new Promise((resolve, reject) => {
             // todo tu daco spravit aby to nepocitalo prepravy kde nemam detail, ale aby sa to zopakovalo napr o sekundu...
             for (let j = 0; j < detailVPonuke.length; j++) {
-              let oneAdressDetail = detailVPonuke[j];
+              const oneAdressDetail = detailVPonuke[j];
               if (!oneAdressDetail) {
                 setTimeout(() => {
                   this.openSnackBar('Ponuky sa načitavajú', 'Ok');
@@ -1637,7 +1636,7 @@ export class MapComponent implements AfterViewInit {
 
         }
         // });
-        })
+        });
       }
       setTimeout( () => {
         this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
@@ -1717,9 +1716,9 @@ export class MapComponent implements AfterViewInit {
         source: clusterSource,
         style: (feature) => {
           const size = feature.get('features').length;
-          let style = styleCache[size];
+          const style = styleCache[size];
           // if (!style) {
-            if (size === 1){
+          if (size === 1){
               if (feature.get('features')[0].get('startPoint') === true){
 
                   const stylik = new Style({
@@ -1730,7 +1729,7 @@ export class MapComponent implements AfterViewInit {
                       scale: 0.5
                     }),
                   });
-                return stylik;
+                  return stylik;
 
               }
               else{
@@ -1743,7 +1742,7 @@ export class MapComponent implements AfterViewInit {
                     }),
                   });
 
-               return stylik;
+                return stylik;
               }
             }else{
                 const stylik = new Style({
@@ -1764,16 +1763,14 @@ export class MapComponent implements AfterViewInit {
                     }),
                   }),
                 });
-              return stylik;
+                return stylik;
             }
         },
       });
     }
 
   drawOffers(offers, fitOffers: boolean){
-    if (fitOffers){
-      this.fitAllOffers();
-    }
+
     this.offersGreen = [];
     this.offersRed = [];
     this.offersYellow = [];
@@ -1852,31 +1849,6 @@ export class MapComponent implements AfterViewInit {
         });
       }
 
-      // if (route.flag < 2){
-      //   routeStyle = new Style({
-      //     stroke: new Stroke({
-      //       width: 6,
-      //       color: [207, 0, 15, 0.45]
-      //     })
-      //   });
-      //
-      // }else if (route.flag === 2){
-      //   routeStyle = new Style({
-      //     stroke: new Stroke({
-      //       width: 6,
-      //       color: [247, 202, 24, 0.6]
-      //     })
-      //   });
-      //
-      // }else{
-      //   routeStyle = new Style({
-      //     stroke: new Stroke({
-      //       width: 6,
-      //       color: [10, 255, 10, 0.45]
-      //     })
-      //   });
-      // }
-
       const styles = [];
 
       routeFeature.getGeometry().forEachSegment((start, end) => {
@@ -1908,13 +1880,7 @@ export class MapComponent implements AfterViewInit {
       }else{
         this.offersRouteRed.push(routeFeature);
       }
-      // if (route.flag < 2){
-      //   this.offersRouteRed.push(routeFeature);
-      // }else if (route.flag === 2){
-      //   this.offersRouteYellow.push(routeFeature);
-      // }else{
-      //   this.offersRouteGreen.push(routeFeature);
-      // }
+
 
       if (route.adresyVPonuke.length > 0) {
         // tu vyberiem len 1. a posledny bod - na ikony a tie dam co clusterov
@@ -1934,7 +1900,7 @@ export class MapComponent implements AfterViewInit {
           startPoint: false
         });
 
-        if (route.flag >= 3 && isThereMyCarGreen && !nezobrazovat){
+          if (route.flag >= 3 && isThereMyCarGreen && !nezobrazovat){
           this.offersGreen.push(iconFeature);
           this.offersGreen.push(iconFeatureLast);
         }
@@ -1945,20 +1911,6 @@ export class MapComponent implements AfterViewInit {
           this.offersRed.push(iconFeature);
           this.offersRed.push(iconFeatureLast);
         }
-
-
-        // if (route.flag < 2) { //  cervena
-        //   this.offersRed.push(iconFeature);
-        //   this.offersRed.push(iconFeatureLast);
-        // }
-        // else if (route.flag === 2) { // zlta
-        //   this.offersYellow.push(iconFeature);
-        //   this.offersYellow.push(iconFeatureLast);
-        // }
-        // else {
-        //   this.offersGreen.push(iconFeature);
-        //   this.offersGreen.push(iconFeatureLast);
-        // }
 
       }
 
@@ -2046,26 +1998,9 @@ export class MapComponent implements AfterViewInit {
     this.map.addLayer(this.vectorLayerOffersRed);
 
 
-    // if (vectorSource.getFeatures()[0] != undefined) {
-    //
-    //
-    //   var feature = vectorSource.getFeatures()[0];
-    //   var polygon = feature.getGeometry();
-    //
-    //   setTimeout( () => {
-    //     var vectorNaZobrazenieAllFeatures = new VectorSource({
-    //       features: this.places.concat(this.cars).concat(this.routes)
-    //     });
-    //
-    //     if (this.firstZoomAddress == false){
-    //       this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100,100,100,100],minResolution: 50,
-    //         duration: 800} )
-    //       this.firstZoomAddress = true;
-    //     }
-    //   }, 1500 );
-    //
-    //
-    // }
+    if (fitOffers){
+      this.fitAllOffers();
+    }
   }
 
   vypocitajVahuPreMesto(infoMesto){

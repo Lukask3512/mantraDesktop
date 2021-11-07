@@ -96,6 +96,7 @@ export class DetailComponent implements AfterViewInit {
             var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
             adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
             this.address = adresy;
+            // this.childDropList.setAddresses(this.address);
             this.address.forEach(oneAddress => {
               var myPackages = [];
               var detailAr = {detailArray: [], townsArray: [], packageId: []};

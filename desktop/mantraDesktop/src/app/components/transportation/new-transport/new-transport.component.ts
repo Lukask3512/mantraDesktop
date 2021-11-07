@@ -141,6 +141,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
     this.dataService.currentRoute.pipe(take(1)).subscribe(route => {
       console.log(route);
       if (route != null){
+        this.spinner.show()
         this.route = route;
         this.addressService.address$.subscribe(alAdd => {
 
@@ -185,6 +186,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
             this.childDropList.setDragable(false);
             this.childDropList.setUpdatable(true);
           }
+          this.spinner.hide();
           this.childDropList.setDetails(this.detail);
           this.childDropList.setAddresses(this.addresses);
 
@@ -223,6 +225,8 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
         }
 
 
+      }else{
+        this.childDropList.setAddresses(null);
       }
     });
     });

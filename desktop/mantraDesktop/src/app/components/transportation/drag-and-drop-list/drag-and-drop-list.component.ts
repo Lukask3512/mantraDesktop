@@ -12,6 +12,7 @@ import {ShowDetailDialogComponent} from '../../dialogs/show-detail-dialog/show-d
 import {TimeProblemDialogComponent} from '../../dialogs/time-problem-dialog/time-problem-dialog.component';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Router} from '@angular/router';
+import {Spinner} from 'ngx-spinner/lib/ngx-spinner.enum';
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -41,13 +42,17 @@ export class DragAndDropListComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
-              private _snackBar: MatSnackBar, private addressService: AddressService, ) { }
+              private _snackBar: MatSnackBar, private addressService: AddressService, private spinner: NgxSpinnerService) { }
 
 
   setAddresses(addresses: Address[]){
-    this.address = addresses;
-    this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
-    // this.spinner.hide();
+    if (addresses[0]){
+      this.address = addresses;
+      this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
+      this.spinner.hide();
+    }else{
+      this.spinner.hide();
+    }
   }
 
   // kontrola ci mozem prehodit mesta - podla detailu
@@ -365,7 +370,10 @@ export class DragAndDropListComponent implements OnInit {
 
   setDetails(arrayOfDetails){
     this.detailArray = arrayOfDetails;
-    // this.spinner.hide();
+    if (this.detailArray[0].detailArray.length > 0){
+
+    }
+    // this.spinner.hide('initialize');
 
   }
 
@@ -411,7 +419,7 @@ export class DragAndDropListComponent implements OnInit {
   }
   ngOnInit(): void {
     // this.spinner.show();
-    console.log(this.address)
+    // console.log(this.address)
   }
 
   getCountOfPackages(townIndex){

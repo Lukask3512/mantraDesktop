@@ -8,7 +8,7 @@ import {CarDetailComponent} from './components/cars/car-detail/car-detail.compon
 
 import {ViewComponent} from './components/view.component';
 import {RegisterComponent} from '../login/account/register.component';
-import {AuthGuard} from '../login/_helpers/auth.guard';
+import {AuthGuard} from './guards/auth.guard';
 import {TransportationWrapperComponent} from './components/transportation/transportation-wrapper/transportation-wrapper.component';
 import {NewTransportComponent} from './components/transportation/new-transport/new-transport.component';
 import {WrapperComponent} from './components/transportation/offer/wrapper/wrapper.component';
