@@ -13,11 +13,10 @@ export class DispecerService {
   private dispecerCollection: AngularFirestoreCollection<Dispecer>;
   private dispecers: Dispecer[];
 
-  dispecerCollectionRef: AngularFirestoreCollection<Dispecer>;
-  todo$: Observable<Dispecer[]>;
-
   private allDispecersSource = new BehaviorSubject<Dispecer[]>(null);
   allDispecers = this.allDispecersSource.asObservable();
+
+  dispecerFromOtherCompanies: Dispecer[] = [];
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.dispecerCollection = this.afs.collection<any>('dispecers');
@@ -29,6 +28,16 @@ export class DispecerService {
       this.allDispecersSource.next(allDispecers);
       this.dispecers = allDispecers;
     });
+  }
+
+  setDispecersFromAnotherompanies(dispecer: Dispecer){
+    if (!this.dispecerFromOtherCompanies.find(dispec => dispec.id === dispecer.id)){
+      this.dispecerFromOtherCompanies.push(dispecer);
+    }
+  }
+
+  getDispecerFromAnotherCompanies(dispecerID){
+    return this.dispecerFromOtherCompanies.find(dispec => dispec.id === dispecerID);
   }
 
   getDispecers(){

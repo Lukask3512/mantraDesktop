@@ -30,6 +30,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-detail.component';
 import {MatPaginator} from '@angular/material/paginator';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {MainDetailAboutComponent} from '../../main-detail-about/main-detail-about.component';
 
 
 @Component({
@@ -63,6 +64,9 @@ export class DetailComponent implements AfterViewInit {
 
   @ViewChild('dropList')
   private childDropList: DragAndDropListComponent;
+
+  @ViewChild('detailAboutComponent')
+  private mainDetailAbout: MainDetailAboutComponent;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
@@ -102,40 +106,53 @@ export class DetailComponent implements AfterViewInit {
               var detailAr = {detailArray: [], townsArray: [], packageId: []};
               if (oneAddress){
                 oneAddress.packagesId.forEach(oneId => {
-                  if (oneAddress.type == 'nakladka') {
+                  if (oneAddress.type === 'nakladka') {
                     var balik = this.packageService.getOnePackage(oneId);
-                    myPackages.push(balik)
+                    myPackages.push(balik);
                   } else {
                     //tu by som mal vlozit len indexy do vykladky
                     this.detail.forEach((oneDetail, townId) => {
-                      if (oneDetail.townsArray == undefined) {
+                      if (oneDetail.townsArray === undefined) {
                         oneDetail.forEach((oneDetailId, packageId) => {
                           if (oneDetailId && oneDetailId.id === oneId) {
                             detailAr.detailArray.push(packageId);
                             detailAr.townsArray.push(townId);
                             detailAr.packageId.push(oneDetailId.id);
                           }
-                        })
+                        });
                       }
-                    })
+                    });
 
                   }
-                })
+                });
               }
 
-              if (myPackages.length != 0) {
+              if (myPackages.length !== 0) {
                 this.detail.push(myPackages);
               } else {
                 this.detail.push(detailAr);
               }
 
             });
-            if (this.detail){
+
+            const routeToDetail = {
+              adresyVPonuke: this.address,
+              detailVPonuke: this.detail
+            };
+
+            setTimeout(() =>
+              {
+                this.mainDetailAbout.setRoute(routeToDetail);
+              },
+              300);
+
+
+            if (this.detail[0]){
               this.childDropList.setDetails(this.detail);
-              // this.spinner.hide();
+              // this.setDetailInDetail();
 
             }
-          })
+          });
 
 
           if (this.route.offerFrom != undefined) {
@@ -156,6 +173,14 @@ export class DetailComponent implements AfterViewInit {
     });
     }
 
+
+    nechcemZrusitPonuku(){
+      this.route.dontWannaCancel = true;
+      this.routeService.updateRoute(this.route);
+    }
+
+
+
   openCompanyDetail(company: Company){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -166,6 +191,19 @@ export class DetailComponent implements AfterViewInit {
 
     });
 
+  }
+
+  setDetailInDetail(){
+    // console.log(this.detail[0].detailArray.length > 0);
+    if (this.detail[0].detailArray && this.detail[0].detailArray.length > 0){
+      const detailTo = {
+        adresyVPonuke: this.address,
+        detailVPonuke: this.detail
+      };
+      if (this.mainDetailAbout){
+        this.mainDetailAbout.setRoute(detailTo);
+      }
+    }
   }
 
     createdBy(){

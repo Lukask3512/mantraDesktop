@@ -28,7 +28,7 @@ export class OneAddressInfoComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     this.addressService.address$.subscribe(allAddresses => {
-     this.address = allAddresses.find(address => address.id == this.addressaId);
+     this.address = allAddresses.find(address => address.id === this.addressaId);
      if (!this.address){
        this.getOffersAdd();
      }else{

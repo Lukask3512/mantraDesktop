@@ -16,6 +16,8 @@ export class CompanyService {
   companiesCollectionRef: AngularFirestoreCollection<Dispecer>;
   allCompanies;
 
+  anotherCompanies: Company[] = [];
+
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.companiesCollection = this.afs.collection<any>('companies');
 
@@ -69,6 +71,16 @@ export class CompanyService {
 
   getCompany(companyId) {
     return this.companiesCollection.doc(companyId).valueChanges();
+  }
+
+  setAnotherCompany(company: Company){
+    if (!this.anotherCompanies.find(compa => compa.id === company.id)){
+      this.anotherCompanies.push(company);
+    }
+  }
+
+  getAnotherCompanies(companyid){
+    return this.anotherCompanies.find(company => company.id === companyid);
   }
 
   getCompanyByIco(ico){

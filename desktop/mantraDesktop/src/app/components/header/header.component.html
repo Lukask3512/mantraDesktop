@@ -7,7 +7,7 @@
 
   <div class="logout-btn">
     <div class="flexking">
-      <select (change)="changeLang($event.target.value)">
+      <select class="selectLanguage" (change)="changeLang($event.target.value)">
         <option value="en" [selected]="lang == 'en'">English</option>
         <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
         <option value="cz" [selected]="lang == 'cz'">Czech</option>

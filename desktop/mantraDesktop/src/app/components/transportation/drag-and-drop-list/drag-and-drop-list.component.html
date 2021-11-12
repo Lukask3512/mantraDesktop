@@ -2,7 +2,7 @@
 <div *ngIf="this.address"  cdkDropList class="example-list"
      (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
   <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
-    <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapper">
+    <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapperAndTime">
 <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
         <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
@@ -14,10 +14,13 @@
           <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
         </div>
       </div>
-      <mat-icon (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
-                matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">
-        info
-      </mat-icon>
+
+      <i (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
+         matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">date_range</i>
+
+<!--      <mat-icon >-->
+<!--        info-->
+<!--      </mat-icon>-->
     </div>
 
     <div *ngIf="this.address[i] && this.address[i].type" class="routeTown" (click)="sendTown(i)">

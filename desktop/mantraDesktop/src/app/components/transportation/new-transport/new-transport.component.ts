@@ -161,9 +161,9 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
               }else{
                 //tu by som mal vlozit len indexy do vykladky
                 this.detail.forEach((oneDetail, townId) => {
-                  if (oneDetail.townsArray == undefined){
+                  if (oneDetail.townsArray === undefined){
                     oneDetail.forEach((oneDetailId, packageId) => {
-                      if (oneDetailId && oneDetailId.id == oneId){
+                      if (oneDetailId && oneDetailId.id === oneId){
                           detailAr.detailArray.push(packageId);
                           detailAr.townsArray.push(townId);
                           detailAr.packageId.push(oneDetailId.id);

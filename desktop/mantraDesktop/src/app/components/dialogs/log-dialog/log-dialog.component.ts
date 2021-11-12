@@ -72,6 +72,18 @@ export class LogDialogComponent implements OnInit {
     });
   }
 
+  getIndexAdresy(balikId){
+    return this.addresses.findIndex(oneAddress => oneAddress.packagesId.includes(balikId.id)) + 1;
+  }
+
+  getIndexAdresyVykladka(balik){
+    for (let i = this.addresses.length - 1; i >= 0 ; i--) {
+      if (this.addresses[i].packagesId.find(oneId => oneId === balik.id)){
+        return i + 1;
+      }
+    }
+  }
+
   roundDecimal(sameNumber){
     let numberToRound;
     if (typeof sameNumber === 'string'){

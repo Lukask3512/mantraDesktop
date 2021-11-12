@@ -185,7 +185,7 @@ export class AddressService {
     );
   }
 
-  getOneAddresByIdGet(id){
+  getOneAddresByIdGet(id): Address{
     let myPackage = this.addressesGet.find(oneAddress => oneAddress.id === id);
     if (!myPackage){
       myPackage = this.addressesOfferGet.find(onePackage => onePackage.id === id);

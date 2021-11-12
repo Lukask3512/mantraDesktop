@@ -36,6 +36,8 @@
   <h1>Prepravované palety</h1>
   <table *ngIf="this.detail">
     <tr>
+      <th>Nakladka index</th>
+      <th>Vykladka index</th>
       <th>Sirka</th>
       <th>Vyska</th>
       <th>Dlzka</th>
@@ -45,6 +47,8 @@
 <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
 
     <tr *ngFor="let jedenLog of this.detail; let j = index;">
+      <td>{{getIndexAdresy(jedenLog)}}</td>
+      <td>{{getIndexAdresyVykladka(jedenLog)}}</td>
       <td>{{jedenLog.sizeS}}</td>
       <td>{{jedenLog.sizeV}}</td>
       <td>{{jedenLog.sizeD}}</td>
@@ -56,6 +60,7 @@
   <h1>Časy a datumy možných príchodov na adresy</h1>
   <table *ngIf="this.addresses">
     <tr>
+      <th>Id.</th>
       <th>Adresa</th>
       <th>Datum od</th>
       <th>Datum do</th>
@@ -66,6 +71,7 @@
     <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
 
     <tr *ngFor="let adresa of this.addresses; let j = index;">
+      <td>{{j + 1}}</td>
       <td>{{adresa.nameOfTown}}</td>
       <td>{{timeToLocal(adresa.datumPrijazdu)}}</td>
       <td>{{timeToLocal(adresa.datumLastPrijazdy)}}</td>

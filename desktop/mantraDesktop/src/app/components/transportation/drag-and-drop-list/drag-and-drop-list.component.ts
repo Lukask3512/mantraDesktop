@@ -370,11 +370,6 @@ export class DragAndDropListComponent implements OnInit {
 
   setDetails(arrayOfDetails){
     this.detailArray = arrayOfDetails;
-    if (this.detailArray[0].detailArray.length > 0){
-
-    }
-    // this.spinner.hide('initialize');
-
   }
 
   sendTown(index){
@@ -385,7 +380,6 @@ export class DragAndDropListComponent implements OnInit {
     const dialogRef = this.dialog.open(EditInfoComponent, {
       data: {routeInfo: routeInfo }
     });
-    console.log(routeInfo)
     dialogRef.afterClosed().subscribe(value => {
 
       if (value && value.routeInfo !== undefined){

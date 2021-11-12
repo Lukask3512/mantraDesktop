@@ -22,6 +22,7 @@ export default class Route {
   offerInRoute?: string;
   cancelByCreator?: boolean;
   cancelByDriver?: boolean;
+  dontWannaCancel?: boolean;
 
   // info do logu
   finalAcceptDate?: string;

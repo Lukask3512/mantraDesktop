@@ -7,6 +7,10 @@
       <h2 *ngIf="this.route.cancelByDriver">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyPotvrdenie' | translate}}</h2>
       <button class="cancelOffer" *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+      <button *ngIf="this.route.cancelByCreator && !this.route.dontWannaCancel" class="cancelOffer" (click)="nechcemZrusitPonuku()">
+        Nechcem zrusit
+      </button>
+      <h3 *ngIf="this.route.dontWannaCancel">Zrusenie ponuky bolo odmietnute</h3>
       <ng-template #elseCancel>
         <button class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
@@ -28,6 +32,8 @@
 <!--      <button class="detailLog" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>-->
 
     </footer>
+    <app-main-detail-about #detailAboutComponent></app-main-detail-about>
+
   </section>
 
 
@@ -141,11 +147,19 @@
       <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}:</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
       <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+      <button *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" (click)="nechcemZrusitPonuku()" class="cancelOffer">
+        Nechcem zrusit
+      </button>
+      <h3 *ngIf="this.route.dontWannaCancel">Zrusenie ponuky bolo odmietnute</h3>
       <ng-template #elseCancelCompany>
         <button  class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
     </div>
     <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!</h2>
+
+  </div>
+
+  <div>
 
   </div>
 

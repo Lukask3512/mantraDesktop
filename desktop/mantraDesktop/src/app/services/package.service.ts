@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
-import Address from "../models/Address";
-import {BehaviorSubject, Observable} from "rxjs";
-import Dispecer from "../models/Dispecer";
-import {DataService} from "../data/data.service";
-import {OfferRouteService} from "./offer-route.service";
-import {map} from "rxjs/operators";
-import DeatilAboutAdresses from "../models/DeatilAboutAdresses";
-import {AddressService} from "./address.service";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import Address from '../models/Address';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {DataService} from '../data/data.service';
+import {OfferRouteService} from './offer-route.service';
+import {map} from 'rxjs/operators';
+import DeatilAboutAdresses from '../models/DeatilAboutAdresses';
+import {AddressService} from './address.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +35,7 @@ export class PackageService {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
-              var detail: DeatilAboutAdresses = balik;
+              let detail: DeatilAboutAdresses = balik;
               detail.id = onePackageId;
               if (this.myPackages.find(onePack => onePack.id === detail.id)){
                 const idPackagu = this.myPackages.findIndex(onePack => onePack.id === detail.id);
@@ -45,10 +44,10 @@ export class PackageService {
                 this.myPackages.push(detail);
               }
               this._packages.next(this.myPackages.concat(this.myPackagesOffer));
-            })
+            });
           }
         }
-      })
+      });
     });
 
     this.addressService.offerAddresses$.subscribe(allAddresses => {
@@ -57,7 +56,7 @@ export class PackageService {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
-              var detail: DeatilAboutAdresses = balik;
+              let detail: DeatilAboutAdresses = balik;
               detail.id = onePackageId;
               if (this.myPackagesOffer.find(onePack => onePack.id === detail.id)){
                 const idPackagu = this.myPackagesOffer.findIndex(onePack => onePack.id === detail.id);
@@ -66,11 +65,11 @@ export class PackageService {
                 this.myPackagesOffer.push(detail);
               }
               this._packages.next(this.myPackages.concat(this.myPackagesOffer));
-            })
+            });
           }
         }
-      })
-    })
+      });
+    });
     // this.getRoutes().subscribe(res => {
     //   this.addressesGet = res
     //   this._address.next(res);
@@ -110,7 +109,7 @@ export class PackageService {
 
 
 
-  //toto i treba dorobit
+  // toto i treba dorobit
   // createRoute(route: Route){
   //   const id = this.afs.createId();
   //   this.afs.collection('route').doc(id).set(route);

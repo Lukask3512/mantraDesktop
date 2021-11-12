@@ -1,5 +1,3 @@
-
-
 <div *ngIf="allActiveRoutes" class="wrapper">
 <!--  <div class="repetRoute">-->
 <!--    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>-->
@@ -15,6 +13,13 @@
     <button class="buttonTab" [class]="getClass('nonActive')"  (click)="nonActiveRoutes()">Ukončené</button>
   </section>
 
+  <section class="filter">
+    <mat-form-field  appearance="standard" class="gridItem">
+      <mat-label>Filter</mat-label>
+      <input #inputFilter (input)="filterTowns($event)" matInput placeholder="Mesto, odavatel...">
+      <mat-hint>Zadaj mesto/spolocnost</mat-hint>
+    </mat-form-field>
+  </section>
 
 
 
@@ -23,8 +28,8 @@
 <!--  moje prepravy-->
   <div *ngIf="showMineRoutes">
 
-  <div *ngFor="let route of allActiveRoutes; let i = index" class="oneRoute" >
-    <div *ngIf="allActiveRoutes.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
+  <div *ngFor="let route of routesToShow; let i = index" class="oneRoute" >
+    <div *ngIf="routesToShow.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 
       <ng-container *ngFor="let town of route.addresses; index as i">
         <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
@@ -32,7 +37,7 @@
 
     </div>
 
-    <div *ngIf="allActiveRoutes.length" class="vykladka">
+    <div *ngIf="routesToShow.length" class="vykladka">
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
       <div *ngIf="route.carId == null">
         <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
@@ -56,10 +61,14 @@
       </ng-container>
     </div>
     <div class="vykladka">
-      <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
-
+      <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
+      <h2 *ngIf="route.createdBy === this.getDispecerId()">Vaša ponuka</h2>
       <p *ngIf="this.route.price">{{this.route.price}}€</p>
       <p *ngIf="!this.route.price">{{'OFFER.ponukniteCenu' | translate}}</p>
+      <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      <div *ngIf="route.carId == null">
+        <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
+      </div>
 
       <div *ngIf="route.createdBy == this.getDispecerId()">
         <!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
@@ -78,7 +87,7 @@
 <div *ngIf="!active">
   <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>
   <div *ngIf="showMineRoutes">
-  <div *ngFor="let route of allFinishedRoutes" class="oneRoute">
+  <div *ngFor="let route of routesToShow" class="oneRoute">
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
       <!--      <h2>Nakládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
@@ -106,7 +115,8 @@
       </ng-container>
     </div>
     <div class="vykladka">
-      <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
+      <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
+      <h2 *ngIf="route.createdBy === this.getDispecerId()">Vaša ponuka</h2>
     </div>
   </div>
   </div>

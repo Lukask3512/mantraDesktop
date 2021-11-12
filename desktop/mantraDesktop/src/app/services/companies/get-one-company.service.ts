@@ -7,6 +7,9 @@ import Company from '../../models/Company';
 })
 export class GetOneCompanyService {
   private companiesCollection: AngularFirestoreCollection<Company>;
+
+  savedCompanies: Company[];
+
   constructor(private afs: AngularFirestore) {
     this.companiesCollection = this.afs.collection<any>('companies');
   }
@@ -14,4 +17,8 @@ export class GetOneCompanyService {
   getCompany(companyId) {
     return this.companiesCollection.doc(companyId).valueChanges();
   }
+  setSavedCompanies(){
+
+  }
+
 }

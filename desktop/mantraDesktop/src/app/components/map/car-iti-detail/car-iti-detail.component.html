@@ -133,17 +133,27 @@
         </div>
         <p class="distance">
           <span class="oversize" *ngIf="checkDate(i); else time">{{'OFFER.mimoMoznehoDatumu' | translate}}
-              <mat-icon class="material-icons" matSuffix
-                    matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
-                info
-              </mat-icon>
+<!--              <mat-icon class="material-icons" matSuffix-->
+<!--                    matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">-->
+<!--                info-->
+<!--              </mat-icon>-->
+<!--            -->
+
+             <i class="material-icons" matSuffix
+                matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">date_range</i>
+
+
           </span>
           <ng-template #time>
             <span class="oversize" *ngIf="checkTime(i)">{{'OFFER.mimoMoznehoPrichodu' | translate}}
-              <mat-icon class="material-icons" matSuffix
-                        matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">
-                info
-              </mat-icon>
+<!--              <mat-icon class="material-icons" matSuffix-->
+<!--                        matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">-->
+<!--                info-->
+<!--              </mat-icon>-->
+
+               <i class="material-icons" matSuffix
+                  matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">date_range</i>
+
           </span>
           </ng-template>
 
