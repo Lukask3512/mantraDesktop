@@ -14,6 +14,10 @@
   transform: scale(1.02);
 }
 
+.infoIcon{
+  margin-left: 15px;
+}
+
 .green{
   background: limegreen;
   color: white;
@@ -96,6 +100,7 @@ table {
 .buttonDelete{
   @include buttonNoColor();
   background: orangered;
+  color: white;
 }
 
 .spanR{

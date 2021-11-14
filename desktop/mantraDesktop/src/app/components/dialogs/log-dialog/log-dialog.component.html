@@ -25,26 +25,26 @@
   </header>
   <div *ngIf="this.route.price">
     <h3 >{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
-    <h3>Prijaté: {{this.timeToLocal(this.route.finalAcceptDate)}}</h3>
-    <h3>Priradene do auta: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</h3>
-    <h3>Auto sa nachadzalo:</h3>
-    <h3>Z. sirka {{this.route.carAtPositionLat}}</h3>
-    <h3>Z. dlzka {{this.route.carAtPositionLon}}</h3>
+    <h3>{{'LOG.prijate' | translate}}: {{this.timeToLocal(this.route.finalAcceptDate)}}</h3>
+    <h3>{{'LOG.priradene' | translate}}: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</h3>
+    <h3>{{'LOG.autoSaNachadzalo' | translate}}:</h3>
+    <h3>{{'OFFER.zSirka' | translate}} {{this.route.carAtPositionLat}}</h3>
+    <h3>{{'OFFER.zDlzka' | translate}} {{this.route.carAtPositionLon}}</h3>
   </div>
 
-<!--  TODO prelozit-->
-  <h1>Prepravované palety</h1>
+
+  <h1>{{'LOG.prepravovanePalety' | translate}}</h1>
   <table *ngIf="this.detail">
     <tr>
-      <th>Nakladka index</th>
-      <th>Vykladka index</th>
-      <th>Sirka</th>
-      <th>Vyska</th>
-      <th>Dlzka</th>
-      <th>Vaha</th>
+      <th>{{'LOG.nakladkaIndex' | translate}}</th>
+      <th>{{'LOG.vykladkaIndex' | translate}}</th>
+      <th>{{'PACKAGES.sirka' | translate}}</th>
+      <th>{{'PACKAGES.vyska' | translate}}</th>
+      <th>{{'PACKAGES.dlzka' | translate}}</th>
+      <th>{{'PACKAGES.vaha' | translate}}</th>
 
     </tr>
-<!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
+
 
     <tr *ngFor="let jedenLog of this.detail; let j = index;">
       <td>{{getIndexAdresy(jedenLog)}}</td>
@@ -57,15 +57,15 @@
 <!--    </tbody>-->
   </table>
 
-  <h1>Časy a datumy možných príchodov na adresy</h1>
+  <h1>{{'LOG.casyADatumy' | translate}}</h1>
   <table *ngIf="this.addresses">
     <tr>
       <th>Id.</th>
-      <th>Adresa</th>
-      <th>Datum od</th>
-      <th>Datum do</th>
-      <th>Cas od</th>
-      <th>Cas do</th>
+      <th>{{'LOG.adresa' | translate}}</th>
+      <th>{{'TRANSPORT.dateFrom' | translate}}</th>
+      <th>{{'TRANSPORT.dateTo' | translate}}</th>
+      <th>{{'TRANSPORT.timeFrom' | translate}}</th>
+      <th>{{'TRANSPORT.timeTo' | translate}}</th>
 
     </tr>
     <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
@@ -136,20 +136,23 @@
     </header>
   </div>
 
-  <!--  TODO prelozit-->
-  <h2>Prepravované palety</h2>
-  <table class="routeLogSmall" *ngIf="this.detail">
+
+  <h1>{{'LOG.prepravovanePalety' | translate}}</h1>
+  <table *ngIf="this.detail">
     <tr>
-      <th>Sirka</th>
-      <th>Vyska</th>
-      <th>Dlzka</th>
-      <th>Vaha</th>
-      <th>Stohovatelnost</th>
+      <th>{{'LOG.nakladkaIndex' | translate}}</th>
+      <th>{{'LOG.vykladkaIndex' | translate}}</th>
+      <th>{{'PACKAGES.sirka' | translate}}</th>
+      <th>{{'PACKAGES.vyska' | translate}}</th>
+      <th>{{'PACKAGES.dlzka' | translate}}</th>
+      <th>{{'PACKAGES.vaha' | translate}}</th>
 
     </tr>
     <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
 
     <tr *ngFor="let jedenLog of this.detail; let j = index;">
+      <td>{{getIndexAdresy(jedenLog)}}</td>
+      <td>{{getIndexAdresyVykladka(jedenLog)}}</td>
       <td>{{jedenLog.sizeS}}</td>
       <td>{{jedenLog.sizeV}}</td>
       <td>{{jedenLog.sizeD}}</td>
@@ -159,19 +162,21 @@
     <!--    </tbody>-->
   </table>
 
-  <h2>Časy a datumy možných príchodov na adresy</h2>
-  <table class="routeLogSmall" *ngIf="this.addresses">
+  <h1>{{'LOG.casyADatumy' | translate}}</h1>
+  <table *ngIf="this.addresses">
     <tr>
-      <th>Adresa</th>
-      <th>Datum od</th>
-      <th>Datum do</th>
-      <th>Cas od</th>
-      <th>Cas do</th>
+      <th>Id.</th>
+      <th>{{'LOG.adresa' | translate}}</th>
+      <th>{{'TRANSPORT.dateFrom' | translate}}</th>
+      <th>{{'TRANSPORT.dateTo' | translate}}</th>
+      <th>{{'TRANSPORT.timeFrom' | translate}}</th>
+      <th>{{'TRANSPORT.timeTo' | translate}}</th>
 
     </tr>
     <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
 
     <tr *ngFor="let adresa of this.addresses; let j = index;">
+      <td>{{j + 1}}</td>
       <td>{{adresa.nameOfTown}}</td>
       <td>{{timeToLocal(adresa.datumPrijazdu)}}</td>
       <td>{{timeToLocal(adresa.datumLastPrijazdy)}}</td>
@@ -184,7 +189,7 @@
 
   <h3 class="icodicoSmall" *ngIf="this.route.price; else elseInterna">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
   <ng-template #elseInterna>
-    <h3>Interná preprava</h3>
+    <h3>{{'LOG.internaPraprava' | translate}}</h3>
   </ng-template>
   <h1  class="companyNameSmall">{{'OFFER.log' | translate}}</h1>
   <table class="routeLogSmall" #routeLog1 *ngIf="this.routeLog != undefined">

@@ -1,6 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import Dispecer from '../../../models/Dispecer';
 import Address from '../../../models/Address';
 
 @Component({
@@ -13,7 +12,6 @@ export class DeleteFromItiComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {adresa: Address}, public dialogRef: MatDialogRef<DeleteFromItiComponent>) { }
 
   ngOnInit(): void {
-    console.log(this.data)
   }
 
   close(){

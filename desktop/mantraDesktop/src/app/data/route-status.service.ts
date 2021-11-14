@@ -1,41 +1,37 @@
 import { Injectable } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteStatusService {
 
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   getStatus(id){
     switch (id){
       case -2: {
-        return 'Offline';
+        return this.translate.instant('OFTEN.offline');
       }
       case 0: {
-        return 'Čakám';
+        return this.translate.instant('OFTEN.cakam');
       }
       case 1: {
-        return 'Na ceste';
+        return this.translate.instant('OFTEN.naCeste');
       }
       case 2: {
-        return 'Nakladám / Vykladám';
+        return this.translate.instant('OFTEN.naklVykl');
       }
       case 3: {
-        return 'Naložené / Vyložené';
+        return this.translate.instant('OFTEN.nalVyl');
       }
       case 4: {
-        return 'Problém';
+        return this.translate.instant('OFTEN.problem');
       }
       case 5: {
-        return 'Preskocene';
+        return this.translate.instant('OFTEN.preskocene');
       }
-      // case 5: {
-      //   return 'Vyložené'
-      // }
-      // case 6: {
-      //   return 'Problém'
-      // }
+
     }
   }
 }

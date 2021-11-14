@@ -203,32 +203,6 @@ export class OpenlayerComponent implements AfterViewInit{
       if (car.status == 4 && this.blikaAuto == false){
         this.flashCar(carFeature1, 2000, car)
       }
-
-      // for (let i = 0; i<car.length; i++){
-      //   console.log(car[i].lattitude)
-      //
-      //   if (car[i].lattitude != undefined){
-      //
-      //     var carFeature = new Feature({
-      //       geometry: new Point(fromLonLat([car[i].longtitude, car[i].lattitude])),
-      //       name: 'car'
-      //     });
-      //
-      //
-      //     var carStyle = new Style({
-      //       image: new Icon({
-      //         color: '#8959A8',
-      //         crossOrigin: 'anonymous',
-      //         src: 'assets/logo/truck.png',
-      //         scale: 0.03
-      //
-      //       })
-      //     });
-      //
-      //     carFeature.setStyle(carStyle);
-      //     this.places.push(carFeature);
-      //   }
-      // }
     }
 
 
@@ -252,7 +226,7 @@ export class OpenlayerComponent implements AfterViewInit{
             }),
           }),
           text: new Text({
-            text: (i+1).toString(),
+            text: (i+ 1).toString(),
             fill: new Fill({
               color: '#fff',
             }),
@@ -286,23 +260,7 @@ export class OpenlayerComponent implements AfterViewInit{
     });
     this.map.addLayer(this.vectorLayer);
 
-    this.view.fit(vectorSource.getExtent(), {padding: [100,100,100,100],minResolution: 50} )
-
-
-    // if (lon.length === 1) {
-    //   this.map.getView().setCenter(fromLonLat([lon, lat]))
-    //   this.map.getView().setZoom(8)
-    //
-    // } else {
-    //   // console.log(lon.length - 1)
-    //   // this.map.getView().animate({
-    //   //   center: fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])),
-    //   //   zoom: 8,
-    //   //   duration: 800
-    //   // })
-    //   this.map.getView().setCenter(fromLonLat(([lon[lon.length - 1], lat[lat.length - 1]])));
-    //   this.map.getView().setZoom(8);
-    // }
+    this.view.fit(vectorSource.getExtent(), {padding: [100,100,100,100],minResolution: 50} );
 
   }
 

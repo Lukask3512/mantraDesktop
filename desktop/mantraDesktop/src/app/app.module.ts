@@ -56,7 +56,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {MatSidenavModule} from '@angular/material/sidenav';
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -140,7 +140,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     ],
   providers: [
-    HttpClient
+    HttpClient,
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

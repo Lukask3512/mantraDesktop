@@ -10,5 +10,5 @@ export const environment = {
     appId: '1:362332404336:web:9f09c665ffda3339c112b5',
     measurementId: 'G-B2HEF7BWSE',
   },
-  apiUrl: 'http://prototyp.mantra-online.eu'
+  apiUrl: 'https://prototyp.mantra-online.eu'
 };

@@ -17,7 +17,27 @@
     "priradit": "Přiřadit",
     "typ": "Typ",
     "cas": "Čas",
-    "zopakovat": "Opakovat"
+    "zopakovat": "Opakovat",
+    "neznamy": "Neznámy",
+
+    "skratkaN": "N",
+    "skratkaV": "V",
+    "offline": "Nepripojený",
+    "cakam": "Čakám",
+    "naCeste": "Na ceste",
+    "naklVykl": "Nakladám / vykládám",
+    "nalVyl": "Naložené / vyložené",
+    "problem": "Problém",
+    "preskocene": "Preskočené",
+    "nepriradene": "Nepriradené",
+    "cakajuce": "Čakajúce"
+  },
+
+  "EMAIL": {
+    "welcome": "Vitajte v aplikacii Mantra",
+    "prihlasovacieMeno": "Vaše prihlasovacie meno: ",
+    "heslo": ", heslo: ",
+    "neboloZmenene": "vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte , môžete si ho zmeniť na stránke http://prototyp.mantra-online.eu. "
   },
 
   "LOGIN": {
@@ -36,7 +56,9 @@
     "transport": "Přepravy",
     "offers": "Ponuky",
     "companies": "Společnosti",
-    "profile": "Profil"
+    "profile": "Profil",
+    "trhovisko": "Trhovisko",
+    "mojePonuky": "Moje ponuky"
   },
   "DISPATCHER": {
     "dispatcher": "Dispečer",
@@ -113,7 +135,8 @@
     "pristupKVozidlu": "Přístup k vozidlu",
     "pristupVsetkym": "Udelit přístup všem",
     "pravaPreVodica": "Práva",
-    "neznamaPolohaAuta": "Upozornění! Vozidlo nemá známou polohu a nedokážeme určit vzdálenost k nabídce. Pro určení polohy se přihlašte do vozidla přes mobilní aplikaci."
+    "neznamaPolohaAuta": "Upozornění! Vozidlo nemá známou polohu a nedokážeme určit vzdálenost k nabídce. Pro určení polohy se přihlašte do vozidla přes mobilní aplikaci.",
+    "zmeneneAdresy": "V aute sa zmenili adresy. Ponuku musíte uložiť nanovo."
 
   },
   "VODIC": {
@@ -137,6 +160,7 @@
   },
   "COMPANIES": {
     "comapnies": "Společnosti",
+    "oneCompany": "Spoločnosť",
     "name": "Název",
     "street": "Ulice",
     "town": "Město",
@@ -151,7 +175,8 @@
     "updateCompany": "Upravit společnost",
     "aboutCompany": "Údaje o společnosti",
     "companyName": "Názov společnosti",
-    "masterAccount": "Master konto"
+    "masterAccount": "Master konto",
+    "bezpoistenia": "Bez poistenia"
   },
 
   "HINT": {
@@ -180,7 +205,8 @@
     "min": "min",
     "teplota": "Teplota",
     "prevozRizikovehoTovaru": "Převoz rizikového tovaru",
-    "skratkaKs": "ks"
+    "skratkaKs": "ks",
+    "prijateSuVPrepravach": "Prijate ponuky sa nachádzajú v prepravách>ponuky"
 
   },
 
@@ -197,7 +223,10 @@
     "tuVyber": "Tady vyber",
     "vyska": "Výška",
     "sirka": "Šířka",
-    "Délka": "Dĺžka"
+    "Délka": "Dĺžka",
+    "maxVaha": "Maximálna váha",
+    "najvacsiBalik": "Najväčší balík",
+    "celkovyObjem": "Celkový objem balíkov"
 
   },
 
@@ -228,7 +257,9 @@
     "prilizTazky": "Tovar je příliš těžký",
     "prilizVelky": "Tovar je příliš veliký",
     "moznyDatumPrichodu": "Možný datum příjezdu",
-    "predpokladanyCasPrijazdu": "Předpokládaný čas příjezdu"
+    "predpokladanyCasPrijazdu": "Předpokládaný čas příjezdu",
+    "vlastnePrepravy": "Vlastné prepravy",
+    "prepravyZPonuk": "Prepravy z ponúk"
   },
 
   "OFFER": {
@@ -277,7 +308,9 @@
     "aktivne": "Aktivní",
     "moje": "Moje",
     "prihlaseny": "Přihlášen",
-    "pdfNepodporuje": "PDF generátor nepodporuje interpunkci."
+    "pdfNepodporuje": "PDF generátor nepodporuje interpunkci.",
+    "skontrolujteCas": "Skontrolujte čas",
+    "odoslatPonuku": "Odoslať ponuku"
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdálenosti",
@@ -288,7 +321,14 @@
     "maxPrekrocenieVelkosti": "Maximální překročení velikosti",
     "vyhovujuce": "Vyhovující",
     "povolenePrekrocenie": "Povolené překročení",
-    "ostatne": "Ostatní"
+    "ostatne": "Ostatní",
+    "filter": "Filter",
+    "companyOrTown": "Mesto alebo spoločnosť",
+    "noData": "Žiadne dáta sa nenašli",
+    "vyberAuta": "Vyberte autá, pre ktoré chcete zobraziť vhodné ponuky",
+    "vsetkyvozidla": "Všetky vozidlá",
+    "mestoSpolocnost": "Mesto, spoločnosť",
+    "zadajMestoSpolocnost": "Zadaj mesto/spoločnosť"
   },
   "MAP": {
     "informacie": "Informace",
@@ -297,7 +337,12 @@
     "nepriradenaTrasa": "Nepřiřazená trasa",
     "celkovaVzdialenost": "Celková vzdálenost",
     "vyberVozidlo": "Vyberte vozidlo",
-    "ulozeneUlozenieVoVozidlach": "Předběžně uložené přepravy"
+    "ulozeneUlozenieVoVozidlach": "Předběžně uložené přepravy",
+    "viacNezobrazovat": "Viac nezobrazovať",
+    "ukazatPonuku": "Ukázať ponuku",
+    "mamZaujem": "Mám zaujem",
+    "nechcemZrusit": "Nechcem zrušit",
+    "zrusenieBoloOdmientute": "Zrušenie ponuky bolo odmietnuté"
   },
 
   "AUTOCOMPLETE": {
@@ -329,6 +374,18 @@
     "odstranitZVoziudla": "Odstranit z vozidla",
     "vylozitVsetko": "Je nutné vyložit všechny balíky / palety",
     "logPrepravy": "Log přepravy"
+  },
+  "LOG": {
+    "prijate": "Prijate",
+    "priradene": "Priradene do auta",
+    "autoSaNachadzalo": "Auto sa nachadzalo",
+    "prepravovanePalety": "Prepravované palety",
+    "nakladkaIndex": "Nakládka index",
+    "vykladkaIndex": "Vykládka index",
+    "casyADatumy": "Časy a dátumy možných príchodov na adresy",
+    "adresa": "Adresa",
+    "internaPraprava": "Interná preprava",
+    "nezverejneny": "Nezverejnený"
   }
 
 }

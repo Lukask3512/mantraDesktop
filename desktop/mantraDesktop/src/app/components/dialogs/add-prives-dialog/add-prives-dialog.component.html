@@ -16,45 +16,52 @@
         <ng-template matStepLabel>{{'PRIVES.size' | translate}}</ng-template>
 
         <h3>{{'PRIVES.sizeOfPrives' | translate}}</h3>
-        <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>{{'CAR.vyskaVozidla' | translate}}</mat-label>
-          <input formControlName="autoVyska" matInput type="number" min="0" class="example-right-align" required>
-          <span matSuffix>cm</span>
-        </mat-form-field>
+        <section class="inputWrapper">
+          <mat-form-field appearance="standard" class="gridItem">
+            <mat-label>{{'CAR.vyskaVozidla' | translate}}</mat-label>
+            <input formControlName="autoVyska" matInput type="number" min="0" class="example-right-align" required>
+            <span matSuffix>cm</span>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="gridItem">
+            <mat-label>{{'CAR.dlzkaVozidla' | translate}}</mat-label>
+            <input formControlName="autoDlzka" matInput type="number" min="0" class="example-right-align" required>
+            <span matSuffix>cm</span>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="gridItem">
+            <mat-label>{{'CAR.sirkaVozidla' | translate}}</mat-label>
+            <input formControlName="autoSirka" matInput type="number" min="0" class="example-right-align" required>
+            <span matSuffix>cm</span>
+          </mat-form-field>
+        </section>
+          <br>
+          <h3>{{'CAR.priestorNaTovar' | translate}}</h3>
+        <section class="inputWrapper">
 
         <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>{{'CAR.dlzkaVozidla' | translate}}</mat-label>
-          <input formControlName="autoDlzka" matInput type="number" min="0" class="example-right-align" required>
-          <span matSuffix>cm</span>
-        </mat-form-field>
+            <mat-label>{{'CAR.vyskaPriestoru' | translate}}</mat-label>
+            <input formControlName="priestorVyska" matInput type="number" min="0" class="example-right-align" required>
+            <span matSuffix>cm</span>
+          </mat-form-field>
 
-        <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>{{'CAR.sirkaVozidla' | translate}}</mat-label>
-          <input formControlName="autoSirka" matInput type="number" min="0" class="example-right-align" required>
-          <span matSuffix>cm</span>
-        </mat-form-field>
-        <br>
-        <h3>{{'CAR.priestorNaTovar' | translate}}</h3>
-        <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>{{'CAR.vyskaPriestoru' | translate}}</mat-label>
-          <input formControlName="priestorVyska" matInput type="number" min="0" class="example-right-align" required>
-          <span matSuffix>cm</span>
-        </mat-form-field>
+          <mat-form-field appearance="standard" class="gridItem">
+            <mat-label>{{'CAR.dlzkaPriestoru' | translate}}</mat-label>
+            <input formControlName="priestorDlzka" matInput type="number" min="0" class="example-right-align" required>
+            <span matSuffix>cm</span>
+          </mat-form-field>
 
-        <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>{{'CAR.dlzkaPriestoru' | translate}}</mat-label>
-          <input formControlName="priestorDlzka" matInput type="number" min="0" class="example-right-align" required>
-          <span matSuffix>cm</span>
-        </mat-form-field>
-
-        <mat-form-field appearance="standard" class="gridItem">
-          <mat-label>{{'CAR.sirkaPriestoru' | translate}}</mat-label>
-          <input formControlName="priestorSirka" matInput type="number" min="0" class="example-right-align" required>
-          <span matSuffix>cm</span>
-        </mat-form-field>
+          <mat-form-field appearance="standard" class="gridItem">
+            <mat-label>{{'CAR.sirkaPriestoru' | translate}}</mat-label>
+            <input formControlName="priestorSirka" matInput type="number" min="0" class="example-right-align" required>
+            <span matSuffix>cm</span>
+          </mat-form-field>
+        </section>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>{{'CAR.nakladaciaHrana' | translate}}</ng-template>
+        <section class="inputWrapper">
+
         <mat-slide-toggle formControlName="pohyblivaNakHrana"  class="gridItem gridItemStart">
           {{'CAR.pohybliva' | translate}}
         </mat-slide-toggle>
@@ -83,6 +90,7 @@
 
 
 
+        </section>
 
 
       </mat-step>
@@ -91,6 +99,7 @@
 
       <mat-step>
         <ng-template matStepLabel>{{'CAR.vahaANosnost' | translate}}</ng-template>
+        <section class="inputWrapper">
 
         <mat-form-field appearance="standard" class="gridItem">
           <mat-label>{{'PRIVES.vahaPrivesu' | translate}}</mat-label>
@@ -108,6 +117,8 @@
         <div class="gridItem">
 
         </div>
+
+        </section>
       </mat-step>
 
       <mat-step>
@@ -116,8 +127,7 @@
 
         <div class="gridContainer">
           <mat-slide-toggle formControlName="fromBack"  class="gridItem gridItemStart">{{'CAR.nalozenieZoZadu' | translate}}</mat-slide-toggle>
-
-          <div class="DSV" *ngIf="this.privesForm.get('fromBack').value">
+          <div class="DSV inputWrapper" *ngIf="this.privesForm.get('fromBack').value">
             <mat-form-field  appearance="standard" class="gridItem">
               <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
               <input formControlName="zoZaduVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
@@ -134,7 +144,7 @@
 
 
           <mat-slide-toggle formControlName="fromRight" class="gridItem gridItemStart">{{'CAR.nalozenieZPrava' | translate}}</mat-slide-toggle>
-          <div class="DSV" *ngIf="this.privesForm.get('fromRight').value">
+          <div class="DSV inputWrapper" *ngIf="this.privesForm.get('fromRight').value">
             <mat-form-field  appearance="standard" class="gridItem">
               <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
               <input formControlName="zPravaVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
@@ -151,7 +161,7 @@
           </div>
 
           <mat-slide-toggle formControlName="fromLeft" class="gridItem gridItemStart">{{'CAR.nalozenieZLava' | translate}}</mat-slide-toggle>
-          <div class="DSV" *ngIf="this.privesForm.get('fromLeft').value">
+          <div class="DSV inputWrapper" *ngIf="this.privesForm.get('fromLeft').value">
             <mat-form-field  appearance="standard" class="gridItem">
               <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
               <input formControlName="zLavaVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">
@@ -168,7 +178,7 @@
           </div>
 
           <mat-slide-toggle formControlName="fromUp" class="gridItem gridItemStart">{{'CAR.nalozenieZVrchu' | translate}}</mat-slide-toggle>
-          <div class="DSV" *ngIf="this.privesForm.get('fromUp').value">
+          <div class="DSV inputWrapper" *ngIf="this.privesForm.get('fromUp').value">
             <mat-form-field  appearance="standard" class="gridItem">
               <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
               <input formControlName="zHoraVyska" matInput placeholder="{{'CAR.vyskaVozidla' | translate}}...">

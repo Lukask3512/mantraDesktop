@@ -1,15 +1,19 @@
+<div class="wrapper">
+
+
 <section class="infoPresun">
-  <h2 *ngIf="routeToDragList != undefined && this.fakeOffer.offerInRoute == ''">
+  <h2 *ngIf="this.fakeOffer.offerInRoute == ''">
     {{'OFFER.presuntePonukuDoIti' | translate}} ->
   </h2>
 </section>
 <div *ngIf="routes" class="wrapper">
 
 
-<div *ngIf="!routeToDragList">
+<div class="maxWidth">
   <app-choos-car-to-move (carOutput)="getChoosenCar($event)"></app-choos-car-to-move>
   <app-route-to-itinerar (carId)="updateOffer($event)" (offerInCar)="offerIrRoute($event)" [newRoute]="offerAddresses"></app-route-to-itinerar>
 </div>
 
 <!--  <app-drag-drop-offer *ngIf="routeToDragList" [route]="routeToDragList"></app-drag-drop-offer>-->
+</div>
 </div>

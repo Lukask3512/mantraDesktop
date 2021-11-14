@@ -10,6 +10,7 @@ import '../../../../assets/fonts/arial/ARIALUNI-normal';
 import Company from '../../../models/Company';
 import html2canvas from 'html2canvas';
 import {PackageService} from '../../../services/package.service';
+import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-log-dialog',
   templateUrl: './log-dialog.component.html',
@@ -20,7 +21,7 @@ export class LogDialogComponent implements OnInit {
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private routeLogService: RouteLogService, public routeStatusService: RouteStatusService,
               @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<LogDialogComponent>,
-              private packageService: PackageService) { }
+              private packageService: PackageService, private translation: TranslateService) { }
   dataSource;
   displayedColumns: string[] = ['town', 'status', 'time'];
 
@@ -42,7 +43,7 @@ export class LogDialogComponent implements OnInit {
 
   thoursLocal(time){
     if (time == null || time === '0'){
-      return 'Neuverejneny';
+      return this.translation.instant('LOG.nezverejneny');
     }else{
       return time;
     }
@@ -53,7 +54,7 @@ export class LogDialogComponent implements OnInit {
     var date = (new Date(dateUtc));
 
     if (dateUtc == null || dateUtc === '0'){
-      return 'Neuverejneny';
+      return this.translation.instant('LOG.nezverejneny');
     }
     return date.toLocaleString();
   }

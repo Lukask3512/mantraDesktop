@@ -32,11 +32,15 @@ export class OfferRouteService {
       this.routesForGet.forEach(oneRoute => {
         if (!oneRoute.cancelByDriver && !oneRoute.cancelByCreator){
           if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId && !this.aldreadyThere(oneRoute.id)){
-            this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+            setTimeout(() => {
+              this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+            }, 7000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
           if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === '' && !this.aldreadyThere(oneRoute.id)){
-            this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
+            setTimeout(() => {
+              this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
+            }, 7000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
         }

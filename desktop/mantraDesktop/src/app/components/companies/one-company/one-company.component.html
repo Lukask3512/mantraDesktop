@@ -1,8 +1,8 @@
 <div class="companyWrapper">
   <h2>{{'COMPANIES.comapnies' | translate}}</h2>
   <mat-form-field appearance="standard">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Comapny name or town..." #input>
+    <mat-label>{{'FILTER.filter' | translate}} </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="{{'FILTER.companyOrTown' | translate}}" #input>
   </mat-form-field>
 
   <table mat-table [dataSource]="dataSource" matSort class="tabulka">
@@ -66,7 +66,7 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      <td class="mat-cell" colspan="4">{{'FILTER.noData' | translate}} "{{input.value}}"</td>
     </tr>
   </table>
   <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50, 100]" aria-label="Select page of users"></mat-paginator>

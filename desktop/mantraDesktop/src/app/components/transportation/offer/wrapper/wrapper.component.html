@@ -2,11 +2,11 @@
 <div class="wrapper">
   <div class="buttonChoose">
 <!--    <button class="buttonTab" [class]="getClass('all')" (click)="allActive()"> Trhovisko</button>-->
-    <button class="buttonTab" [class]="getClass('mine')" (click)="mine()">Moje ponuky</button>
-    <button class="buttonTab" [class]="getClass('assigned')" (click)="assigned()">Čakajúce</button>
+    <button class="buttonTab" [class]="getClass('mine')" (click)="mine()">{{'HEADER.mojePonuky' | translate}}</button>
+    <button class="buttonTab" [class]="getClass('assigned')" (click)="assigned()">{{'OFTEN.cakajuce' | translate}}</button>
   </div>
 
-  <mat-icon  matTooltip="Prijate ponuky sa nachadzaju v prepravach>ponuky">
+  <mat-icon class="infoIcon"  matTooltip="{{'HINT.prijateSuVPrepravach' | translate}}">
     info
   </mat-icon>
   <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
@@ -22,8 +22,8 @@
     <div class="status">
 
 
+      <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
 
-      <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>
 
       <p *ngIf="this.route.price">{{this.route.price}}€</p>
       <p *ngIf="!this.route.price">{{'OFFER.ponukniteCenu' | translate}}</p>
@@ -36,29 +36,5 @@
 
     </div>
   </div>
-
-<!--  <h1 class="actFinHead">{{'OFFER.ukoncene' | translate}}</h1>-->
-
-<!--  <div *ngFor="let route of this.finishedRoutesToShow; let i = index" class="oneRoute">-->
-<!--      <div *ngIf="route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">-->
-<!--        &lt;!&ndash;      <h2>Vykládky</h2>&ndash;&gt;-->
-<!--        <ng-container *ngFor="let town of route.addresses; index as i">-->
-<!--          <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>-->
-<!--        </ng-container>-->
-<!--      </div>-->
-<!--      <div class="status">-->
-
-
-
-<!--        <app-get-info-about-company *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-info-about-company>-->
-
-
-<!--&lt;!&ndash;          <button (click)="vymazatPonuku(route)">Odstranit</button>&ndash;&gt;-->
-
-
-<!--      </div>-->
-<!--  </div>-->
-
-
 
 </div>

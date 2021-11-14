@@ -22,6 +22,9 @@ export class PackageService {
   private _packages = new BehaviorSubject<any>([]);
   readonly packages$ = this._packages.asObservable();
 
+  private isDone = new BehaviorSubject<boolean>(false);
+  readonly isDone$ = this.isDone.asObservable();
+
   myPackages: DeatilAboutAdresses[] = [];
   myPackagesOffer: DeatilAboutAdresses[] = [];
 
@@ -52,7 +55,7 @@ export class PackageService {
 
     this.addressService.offerAddresses$.subscribe(allAddresses => {
       // this.myPackagesOffer = []
-      allAddresses.forEach(jednaAdresa => {
+      allAddresses.forEach((jednaAdresa, indexAdresy) => {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
@@ -67,6 +70,9 @@ export class PackageService {
               this._packages.next(this.myPackages.concat(this.myPackagesOffer));
             });
           }
+        }
+        if (indexAdresy === allAddresses.length - 1 && allAddresses.length > 0){
+          // this.isDone.next(true);
         }
       });
     });

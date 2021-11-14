@@ -19,12 +19,19 @@
 
     <div *ngIf="this.address[i]" class="routeTown" (click)="sendTown(i)">
       <p>{{this.address[i].nameOfTown}}
-        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">N</span>
-        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">V</span>
+        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
       </p>
       <span  class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 
-      <span *ngIf="this.address[i].estimatedTimeArrival">ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
+      <span *ngIf="this.address[i].estimatedTimeArrival">ETA
+        <span *ngIf="this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival !== 'Neznámy'); else elseNezname">
+          {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
+          <ng-template #elseNezname>
+            <span>{{'OFTEN.neznamy' | translate}}</span>
+          </ng-template>
+
+      </span>
 
       <img (click)="openAddDialogToDelete(this.address[i])" class="delete" src="assets/logo/delete.svg">
     </div>

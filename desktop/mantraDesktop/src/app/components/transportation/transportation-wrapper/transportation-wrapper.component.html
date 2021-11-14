@@ -1,23 +1,23 @@
 <div *ngIf="allActiveRoutes" class="wrapper">
-<!--  <div class="repetRoute">-->
-<!--    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>-->
-<!--  </div>-->
+  <div class="repetRoute">
+    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
+  </div>
 
   <section class="activeNonActive">
-    <button class="buttonTab" [class]="getClass('mine')"  (click)="mineRoutes()">Vlastne prepravy</button>
-    <button class="buttonTab" [class]="getClass('offers')"  (click)="offersRoutes()">Prepravy z ponuk</button>
+    <button class="buttonTab" [class]="getClass('mine')"  (click)="mineRoutes()">{{'TRANSPORT.vlastnePrepravy' | translate}}</button>
+    <button class="buttonTab" [class]="getClass('offers')"  (click)="offersRoutes()">{{'TRANSPORT.prepravyZPonuk' | translate}}</button>
   </section>
 
   <section class="activeNonActive">
-    <button class="buttonTab" [class]="getClass('active')"  (click)="activeRoutes()">Aktívne</button>
-    <button class="buttonTab" [class]="getClass('nonActive')"  (click)="nonActiveRoutes()">Ukončené</button>
+    <button class="buttonTab" [class]="getClass('active')"  (click)="activeRoutes()">{{'OFFER.aktivne' | translate}}</button>
+    <button class="buttonTab" [class]="getClass('nonActive')"  (click)="nonActiveRoutes()">{{'OFFER.ukoncene' | translate}}</button>
   </section>
 
   <section class="filter">
     <mat-form-field  appearance="standard" class="gridItem">
-      <mat-label>Filter</mat-label>
-      <input #inputFilter (input)="filterTowns($event)" matInput placeholder="Mesto, odavatel...">
-      <mat-hint>Zadaj mesto/spolocnost</mat-hint>
+      <mat-label>{{'FILTER.filter' | translate}}</mat-label>
+      <input #inputFilter (input)="filterTowns($event)" matInput placeholder="{{'FILTER.mestoSpolocnost' | translate}}...">
+      <mat-hint>{{'FILTER.zadajMestoSpolocnost' | translate}}</mat-hint>
     </mat-form-field>
   </section>
 
@@ -62,7 +62,7 @@
     </div>
     <div class="vykladka">
       <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
-      <h2 *ngIf="route.createdBy === this.getDispecerId()">Vaša ponuka</h2>
+      <h2 *ngIf="route.createdBy === this.getDispecerId()">{{'OFFER.vasaPonuka' | translate}}</h2>
       <p *ngIf="this.route.price">{{this.route.price}}€</p>
       <p *ngIf="!this.route.price">{{'OFFER.ponukniteCenu' | translate}}</p>
       <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
@@ -116,7 +116,7 @@
     </div>
     <div class="vykladka">
       <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
-      <h2 *ngIf="route.createdBy === this.getDispecerId()">Vaša ponuka</h2>
+      <h2 *ngIf="route.createdBy === this.getDispecerId()">{{'OFFER.vasaPonuka' | translate}}</h2>
     </div>
   </div>
   </div>

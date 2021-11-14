@@ -1,5 +1,11 @@
 @import "./src/sccs/shared/mixins";
 
+.allWrapper{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .chooseCar{
   overflow: auto;
   white-space: nowrap;

@@ -13,6 +13,7 @@ import {TimeProblemDialogComponent} from '../../dialogs/time-problem-dialog/time
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Router} from '@angular/router';
 import {Spinner} from 'ngx-spinner/lib/ngx-spinner.enum';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-drag-and-drop-list',
@@ -42,7 +43,8 @@ export class DragAndDropListComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
-              private _snackBar: MatSnackBar, private addressService: AddressService, private spinner: NgxSpinnerService) { }
+              private _snackBar: MatSnackBar, private addressService: AddressService, private spinner: NgxSpinnerService,
+              private translation: TranslateService) { }
 
 
   setAddresses(addresses: Address[]){
@@ -292,7 +294,7 @@ export class DragAndDropListComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return "Neznámy"
+      return this.translation.instant('OFTEN.neznamy');
     }
     return date.toLocaleString();
   }
@@ -306,7 +308,7 @@ export class DragAndDropListComponent implements OnInit {
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
     if (dateUtc == null || dateUtc === '0'){
-      return 'Neznámy';
+      return this.translation.instant('OFTEN.neznamy');
     }
     return date.toLocaleString();
   }

@@ -22,7 +22,7 @@
   </h3>
 </ng-template>
 
-
+<section class="dragDropTAbles">
 <div class="example-container">
   <h2>{{'TRANSPORT.novaPreprava' | translate}}</h2>
   <div
@@ -39,24 +39,24 @@
       [cdkDragData]="oneAddress"
       [cdkDragDisabled]="checkIndex(i)"
       cdkDrag>
-      <div *ngIf="this.newRoute.length == this.newRouteCopy.length" class="bednaWrapper">
+      <div *ngIf="oneAddress && this.newRoute.length == this.newRouteCopy.length" class="bednaWrapper">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
-        <div class="bednaWrapper" *ngIf="this.oneAddress.type == 'vykladka'" >
+        <div class="bednaWrapper" *ngIf="oneAddress && this.oneAddress.type == 'vykladka'" >
           <div class="bedna" *ngFor="let detail of this.oneAddress.packagesId; let indexik = index">
             <span class="numberOfBedna">{{getBednaIndexVykladka(detail, true)}}</span>
           </div>
         </div>
-        <div class="bednaWrapper" *ngIf="this.oneAddress.type == 'nakladka'">
+        <div class="bednaWrapper" *ngIf="oneAddress && this.oneAddress.type == 'nakladka'">
           <div class="bedna" *ngFor="let detail of this.oneAddress.packagesId; let indexik = index">
             <span class="numberOfBedna">{{getBednaIndex(i, indexik, true)}}</span>
           </div>
         </div>
       </div>
 
-    <div class="routeTown">
+    <div *ngIf="oneAddress && oneAddress.type" class="routeTown">
       <p>
-        <span *ngIf="oneAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-        <span *ngIf="oneAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        <span *ngIf="oneAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+        <span *ngIf="oneAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
         {{oneAddress.nameOfTown}}
       </p>
     </div>
@@ -110,7 +110,7 @@
               {{itiAddress.nameOfTown}}
               <span class="oversize" matTooltip="{{'TRANSPORT.prilizVelky' | translate}}" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
               <span class="oversize" matTooltip="{{'TRANSPORT.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
-              <span class="oversize" matTooltip="{{'TRANSPORT.moznyDatumPrichodu' | translate}} {{timeToLocal(itiAddress.datumPrijazdu, itiAddress.casPrijazdu)}} - {{timeToLocal(itiAddress.datumLastPrijazdy, itiAddress.casLastPrijazdu)}}" matTooltipPosition="right" *ngIf="casyPreAuto[i].sediCas == false">Skontrolujte cas</span>
+              <span class="oversize" matTooltip="{{'TRANSPORT.moznyDatumPrichodu' | translate}} {{timeToLocal(itiAddress.datumPrijazdu, itiAddress.casPrijazdu)}} - {{timeToLocal(itiAddress.datumLastPrijazdy, itiAddress.casLastPrijazdu)}}" matTooltipPosition="right" *ngIf="casyPreAuto[i].sediCas == false">{{'OFFER.skontrolujteCas' | translate}}</span>
 
 
               <i class="material-icons" matSuffix
@@ -125,8 +125,9 @@
         </div>
         </div>
     </div>
-
 </div>
+</section>
+
 <div class="potvrditButt">
   <button class="potvrd" [disabled]="newRouteCopy.length > 0" (click)="addToItinerar()">{{'OFTEN.potvrdit' | translate}}</button>
 </div>

@@ -56,6 +56,8 @@ import {OffersPopUpComponent} from './offers-pop-up/offers-pop-up.component';
 import {PosliPonukuComponent} from '../transportation/offer/detail/posli-ponuku/posli-ponuku.component';
 import Dispecer from '../../models/Dispecer';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {LogDialogComponent} from '../dialogs/log-dialog/log-dialog.component';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -193,7 +195,8 @@ export class MapComponent implements AfterViewInit {
               private routeDetailService: DetailAboutRouteService, private countFreeSpaceService: CountFreeSpaceService,
               private addressService: AddressService, private packageService: PackageService,
               private drawOffer: DrawOfferService, private vodicService: VodicService,
-              private routeCoordinates: RouteCoordinatesService, private _snackBar: MatSnackBar) { }
+              private routeCoordinates: RouteCoordinatesService, private _snackBar: MatSnackBar,
+              private translation: TranslateService) { }
 
               routeDetail(route){
               this.dataService.changeRealRoute(route);
@@ -240,9 +243,12 @@ export class MapComponent implements AfterViewInit {
     });
 
       this.carService.cars$.subscribe(newCars => {
+        setTimeout(() => {
           this.carsFromDatabase = newCars;
           this.carsToDisplay = this.carsFromDatabase.map(oneCar => oneCar.id);
           this.addCars(this.carsFromDatabase);
+        }, 2000);
+
 
           setTimeout(() => {
             this.addRouteNewSystem();
@@ -359,13 +365,13 @@ export class MapComponent implements AfterViewInit {
 
   scrollToInfo(){
     setTimeout(() => {
-      this.infoDivElement.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+      this.infoDivElement.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     }, 150);
   }
 
   scrollToUp(){
     setTimeout(() => {
-      this.filterElement.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+      this.filterElement.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     }, 100);
   }
 
@@ -379,6 +385,7 @@ export class MapComponent implements AfterViewInit {
       this.dragComponent.setAddresses(this.carToShow.itiAdresy);
     }, 100);
     this.scrollToInfo();
+    this.resizeMap();
   }
 
   // ak kliknem na adresu
@@ -396,6 +403,7 @@ export class MapComponent implements AfterViewInit {
       this.dragComponent.setAddresses(this.routesToShow);
     }, 100);
     this.scrollToInfo();
+    this.resizeMap();
   }
 
   // ak kliknem na ponuku
@@ -420,7 +428,13 @@ export class MapComponent implements AfterViewInit {
     this.carIti.setPonuka(this.offersToShow);
     this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
     this.scrollToInfo();
+    this.resizeMap();
+  }
 
+  resizeMap(){
+    setTimeout( () => {
+      this.map.updateSize();
+      }, 200);
   }
   sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -1128,7 +1142,7 @@ export class MapComponent implements AfterViewInit {
   estimatedTimeToLocal(dateUtc){
     const date = (new Date(dateUtc));
     if (dateUtc == null){
-      return 'Neznámy';
+      return this.translation.instant('OFTEN.neznamy');
     }
     return date.toLocaleString();
   }
@@ -1143,6 +1157,8 @@ export class MapComponent implements AfterViewInit {
     this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
       duration: 800} );
     this.scrollToUp();
+    this.resizeMap();
+
   }
 
   zoomToAddressOrCar(address){
@@ -1311,7 +1327,7 @@ export class MapComponent implements AfterViewInit {
                     return;
                   }, 2000);
                 }
-                if (k === oneAdressDetail.length - 1 && j === detailVPonuke.length - 1){
+                else if (k === oneAdressDetail.length - 1 && j === detailVPonuke.length - 1){
                   setTimeout(() => {
                     resolve();
                   }, 500);
@@ -1322,11 +1338,15 @@ export class MapComponent implements AfterViewInit {
 
 
           myPromise.then(value => {
+            // console.log(offers.length)
+
 
         prepravasDetailom = {...oneRouteOffer, adresyVPonuke, maxVaha, detailVPonuke};
         if (prepravasDetailom.detailVPonuke[0]) {
           const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
           const pocetTonVPonuke = this.countFreeSpaceService.pocetTonVKazdomMeste(ponukaPreMesta);
+        }else{
+          console.log('daco mi chyba')
         }
 
         // tu konci priradovanie detialov a max vah
@@ -2040,6 +2060,23 @@ export class MapComponent implements AfterViewInit {
     setTimeout(() => {
       this.carToShow = this.carsWithItinerar.find(oneCar => oneCar.id === car.id);
     }, 300);
+  }
+
+  openAllDetailDialog(){
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      addresses: this.offersToShow.adresyVPonuke,
+      route: this.offersToShow,
+    };
+    dialogConfig.width = '70%';
+
+
+    const dialogRef = this.dialog.open(LogDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }
+    });
   }
 
 }

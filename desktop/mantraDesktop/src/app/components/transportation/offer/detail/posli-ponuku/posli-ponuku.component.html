@@ -1,8 +1,8 @@
 <div *ngIf="this.route" class="wrapper">
   <section class="showHide">
-    <button class="doNotShowButt" *ngIf="ifNezobrazuje(); else elseButton" (click)="doNotShow()">Viac nezobrazovat</button>
+    <button class="doNotShowButt" *ngIf="ifNezobrazuje(); else elseButton" (click)="doNotShow()">{{'MAP.viacNezobrazovat' | translate}}</button>
     <ng-template #elseButton>
-      <button class="showButt" (click)="showOnMap()">Ukazat ponuku</button>
+      <button class="showButt" (click)="showOnMap()">{{'MAP.ukazatPonuku' | translate}}</button>
     </ng-template>
   </section>
 
@@ -30,7 +30,7 @@
   <div *ngIf="this.route.takenBy == ''">
       <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0 && this.offer != 0 && !this.offer; else elseIf" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
       <ng-template #elseIf>
-        <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price !== 0 && this.offer != 0 && !this.offer; else elseUpdate" (click)="addPrice()">Mam zaujem</button>
+        <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price !== 0 && this.offer != 0 && !this.offer; else elseUpdate" (click)="addPrice()">{{'MAP.mamZaujem' | translate}}</button>
 
       </ng-template>
     <ng-template #elseUpdate>

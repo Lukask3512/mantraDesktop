@@ -12,7 +12,16 @@
   transform: scale(1.02);
 }
 
+.maxWidth{
+  width: 100%;
+}
 
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 
 .oneRoute:hover{
   transform: scale(1.02);

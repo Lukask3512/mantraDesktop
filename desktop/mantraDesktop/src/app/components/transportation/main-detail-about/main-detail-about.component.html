@@ -1,5 +1,5 @@
 <div class="wrapper" *ngIf="this.route && this.route.adresyVPonuke[0]">
-  <div class="oneAddress">
+  <div class="oneAddress" *ngIf="this.route.adresyVPonuke[0]">
     <h3>
       <img class="imgFlag" src="assets/logo/startPoint.png">
       {{this.route.adresyVPonuke[0].nameOfTown}}
@@ -9,7 +9,7 @@
       {{this.timeToLocal(this.route.adresyVPonuke[0].datumLastPrijazdy)}}</span>
   </div>
 
-  <div class="oneAddress">
+  <div *ngIf="this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1]" class="oneAddress">
     <img class="imgFlag" src="assets/logo/finishFlag.png">
     <h3>
       {{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}
@@ -20,8 +20,8 @@
   </div>
 
   <div>
-    <p>Max vaha: {{this.maxVaha()}}</p>
-    <p>Najvacsi balik: {{this.najvacsiBalik().sizeS}} X {{this.najvacsiBalik().sizeD}} X {{this.najvacsiBalik().sizeV}}</p>
-    <p>Celkovy objem balikov: {{this.objemBalikov()}}</p>
+    <p>{{'PACKAGES.maxVaha' | translate}}: {{this.maxVaha()}}</p>
+    <p>{{'PACKAGES.najvacsiBalik' | translate}}: {{this.najvacsiBalik().sizeS}} X {{this.najvacsiBalik().sizeD}} X {{this.najvacsiBalik().sizeV}}</p>
+    <p>{{'PACKAGES.celkovyObjem' | translate}}: {{this.objemBalikov()}}</p>
   </div>
 </div>

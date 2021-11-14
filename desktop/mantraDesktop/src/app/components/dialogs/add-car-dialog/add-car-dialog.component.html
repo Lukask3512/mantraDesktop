@@ -13,12 +13,10 @@
           <mat-hint>{{'HINT.ecv' | translate}}</mat-hint>
         </mat-form-field>
 
-        <!--    <label>EČV</label>-->
-        <!--    <input type="text" matInput formControlName="ecv" >-->
 
         <mat-form-field appearance="standard" class="gridItem">
           <mat-label>{{'OFTEN.phone' | translate}}</mat-label>
-          <input formControlName="phone" matInput placeholder="Tel. číslo...">
+          <input formControlName="phone" matInput placeholder="{{'OFTEN.phone' | translate}}...">
           <mat-icon class="material-icons" matSuffix
                     matTooltip="{{'HINT.mobileNumber' | translate}}">
             info
@@ -35,7 +33,7 @@
       </mat-step>
 
 
-<mat-step errorMessage="Chybajuce udaje!" >
+<mat-step>
   <ng-template matStepLabel>{{'CAR.size' | translate}}</ng-template>
 
   <h3>{{'CAR.size' | translate}}</h3>
@@ -77,7 +75,7 @@
   </mat-form-field>
   <h4 *ngIf="checkBiggetSize()">{{'HINT.sizeWarning' | translate}}</h4>
 </mat-step>
-      <mat-step errorMessage="Chybajuce udaje!" >
+      <mat-step>
         <ng-template matStepLabel>{{'CAR.nakladaciaHrana' | translate}}</ng-template>
         <mat-slide-toggle (change)="this.updateFormNakHrana()" formControlName="pohyblivaNakHrana"  class="gridItem gridItemStart">
           {{'CAR.pohybliva' | translate}}
@@ -110,10 +108,9 @@
 
 
       </mat-step>
-<!--    <label>Tel. číslo</label>-->
-<!--    <input  type="text" matInput formControlName="phone" >-->
 
-      <mat-step errorMessage="Chybajuce udaje!">
+
+      <mat-step>
         <ng-template matStepLabel>{{'CAR.vahaANosnost' | translate}}</ng-template>
 
         <mat-form-field appearance="standard" class="gridItem">
@@ -134,7 +131,7 @@
     </div>
       </mat-step>
 
-      <mat-step errorMessage="Chybajuce udaje!">
+      <mat-step>
         <ng-template matStepLabel>{{'CAR.moznostiNalozenia' | translate}}</ng-template>
 
 
@@ -197,7 +194,7 @@
       <mat-label>{{'CAR.vyskaNakPriestoru' | translate}}</mat-label>
       <input formControlName="zHoraVyska" step="0.1" matInput placeholder="{{'CAR.vyskaNakPriestoru' | translate}}...">
       <span matSuffix> m </span>
-      <mat-hint>V metroch</mat-hint>
+      <mat-hint>{{'HINT.vMetroch' | translate}}</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="standard" class="gridItem">
       <mat-label>{{'CAR.sirkaNakPriestoru' | translate}}</mat-label>

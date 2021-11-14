@@ -19,6 +19,7 @@ import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.compo
 import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MapComponent} from '../map.component';
 import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-car-iti-detail',
@@ -56,7 +57,7 @@ export class CarItiDetailComponent implements OnInit {
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
               private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,
-              private matComponent: MapComponent) { }
+              private matComponent: MapComponent, private translation: TranslateService) { }
 
   ngOnInit(): void {
   }
@@ -396,7 +397,7 @@ export class CarItiDetailComponent implements OnInit {
       if (this.casyPreAuto[townIndex].rozdielVHodinach == null){
         return false;
       }
-      if (this.casyPreAuto[townIndex].rozdielVHodinach < 3){
+      if (this.casyPreAuto[townIndex].rozdielVHodinach < 0){
         return true;
       }else{
         return false;
@@ -415,7 +416,7 @@ export class CarItiDetailComponent implements OnInit {
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
     if (dateUtc == null || dateUtc === '0'){
-      return 'Neznámy';
+      return this.translation.instant('OFTEN.nepriradene');
     }
     return date.toLocaleString();
   }
@@ -423,7 +424,7 @@ export class CarItiDetailComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     const date = (new Date(dateUtc));
     if (dateUtc == null){
-      return 'Neznámy';
+      return this.translation.instant('OFTEN.nepriradene');
     }
     return date.toLocaleString();
   }
@@ -632,19 +633,11 @@ export class CarItiDetailComponent implements OnInit {
 
 
     });
-    // car.itiAdresy.sort(function(a, b) {
-    //   return order[a.id] - order[b.id];
-    // });
-    //
-
-    // car.itinerar.sort(function(a, b) {
-    //   return order[a.id] - order[b.id];
-    // });
-    // car.detailIti.sort(function(a, b) {
-    //   return order[a.id] - order[b.id];
-    // });
 
     this.car = car;
+
+    console.log(this.car)
+
 
     // docasne riesenie
     this.car.itinerar = predpoklad.itinerar;

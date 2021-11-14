@@ -53,9 +53,9 @@ export class OfferToRouteComponent implements OnInit {
     this.routeService.routes$.subscribe(allRoutes => {
       this.routes = allRoutes;
       this.fakeRoutes = JSON.parse(JSON.stringify(this.routes));
-      if (this.fakeOffer.offerInRoute !== ""){
+      // if (this.fakeOffer.offerInRoute !== ""){
         this.routeToDragList = this.routes.find(route => route.id == this.fakeOffer.offerInRoute)
-      }
+      // }
     })
   }
 

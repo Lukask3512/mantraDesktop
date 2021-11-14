@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CountFreeSpaceService} from '../../../data/count-free-space.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-detail-about',
@@ -12,7 +13,7 @@ export class MainDetailAboutComponent implements OnInit {
 
 
 
-  constructor(private countFreeSpace: CountFreeSpaceService) { }
+  constructor(private countFreeSpace: CountFreeSpaceService, private translation: TranslateService) { }
 
   ngOnInit(): void {
     console.log(this.route);
@@ -23,9 +24,9 @@ export class MainDetailAboutComponent implements OnInit {
   }
 
   timeToLocal(dateUtc){
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
     if (!dateUtc || dateUtc === '0'){
-      return 'Neznámy';
+      return (this.translation.instant('OFTEN.nepriradene')).toString();
     }
     return date.toLocaleDateString();
   }
@@ -35,7 +36,7 @@ export class MainDetailAboutComponent implements OnInit {
   }
 
   objemBalikov() {
-    return this.countFreeSpace.celkovaObjemBalikov(this.route);
+    return this.countFreeSpace.celkovaObjemBalikov(this.route).toFixed(2);
   }
 
   najvacsiBalik() {

@@ -1,16 +1,37 @@
 @import "./src/sccs/shared/mixins";
 
+.header{
+  display: flex;
+  justify-content: center;
+}
+
+.price{
+  font-weight: 500;
+}
+
 .wrapper{
   display: flex;
   width: 100%;
   min-height: 90%;
 }
 
-.wrapperMid{
+.headerFlexer{
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.maxWidth{
+  width: 100%;
+}
+
+.wrapperMid{
   width: 100%;
   @include tableBorder();
   height: fit-content;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
 }
 
 .ponukaWrapper{
@@ -27,8 +48,13 @@
 }
 
 .addressList{
-  @include tableBorder();
   height: fit-content;
+  margin-right: 7px;
+}
+
+.tableArountAddresses{
+  @include tableBorder();
+
 }
 
 .deletePrice{
@@ -46,6 +72,8 @@
   padding-top: 8px;
   padding-left: 10px;
   padding-right: 10px;
+  color: white;
+  margin-right: 7px;
 }
 .spanClick{
   cursor: pointer;
@@ -116,6 +144,12 @@ td{
   .map{
     height: 500px;
     width: 100%;
+  }
+
+  .tableArountAddresses{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 

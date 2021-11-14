@@ -5,7 +5,7 @@
 }
 
 .pridatPonuku{
-  @include button(lime)
+  @include button(limegreen)
 }
 
 button{
@@ -28,6 +28,7 @@ button{
 .doNotShowButt{
   @include buttonNoColor();
   background: orangered;
+  color: white;
 }
 
 .showButt{

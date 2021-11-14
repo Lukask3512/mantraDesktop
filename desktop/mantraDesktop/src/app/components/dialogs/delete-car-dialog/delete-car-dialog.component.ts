@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {CarService} from "../../../services/car.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {CarService} from '../../../services/car.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-car-dialog',
@@ -26,7 +26,7 @@ export class DeleteCarDialogComponent implements OnInit {
   }
 
   deleteRoute(){
-    this.dialogRef.close({event: true})
+    this.dialogRef.close({event: true});
   }
 
 }

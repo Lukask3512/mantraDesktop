@@ -2,7 +2,7 @@
   <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>
   <div id="popup-content">
     <div class="carsWrapper" >
-      <button class="offerButton" *ngFor="let offer of this.offers; let i = index" (click)="chooseOffer(offer.id)">Ponuka {{i + 1}}</button>
+      <button class="offerButton" *ngFor="let offer of this.offers; let i = index" (click)="chooseOffer(offer.id)">{{'OFFER.ponuka' | translate}} {{i + 1}}</button>
     </div>
   </div>
 </div>

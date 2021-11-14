@@ -56,7 +56,7 @@ export class AddressService {
         var adresy = [];
         let vsetkyDokoncene = true;
         for (const idAddress of route.addresses) {
-          var adresa = await this.promiseForDownAdd(idAddress);
+          this.promiseForDownAdd(idAddress);
           if (justFirstTime) {
             setTimeout(() => {
               this.checkFinishedAddresAndUpdateRouteOffer();
@@ -112,14 +112,13 @@ export class AddressService {
           routeSFinish.finished = true;
           routeSFinish.finishedAt = new Date().toString();
           this.routeService.updateRoute(routeSFinish);
-          console.log('Updatol som routu cislo: ',  routeSFinish);
         }
       }
     });
   }
 
   promiseForDownAdd(idAddress){
-    return new Promise(resolve => {
+    // return new Promise(resolve => {
       this.getOneAddresFromDatabase(idAddress).subscribe(oneAdress => {
 
         //tu budem vkladat adresy do globalnej premennej a ak pride taka ista, len ju vymenim, bodka a na konci vzdy to pole
@@ -140,9 +139,9 @@ export class AddressService {
         this.addressesOfferGet.push(adresa);
         this._offerAddresses.next(this.addressesOfferGet);
         this.checkFinishedAddresAndUpdateRouteOffer();
-        resolve(adresa)
+        // resolve(adresa)
       })
-    })
+    // })
   }
 
   getAddressesFromOffer(){

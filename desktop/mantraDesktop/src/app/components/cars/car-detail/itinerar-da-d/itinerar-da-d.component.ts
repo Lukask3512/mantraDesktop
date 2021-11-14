@@ -12,6 +12,7 @@ import {AddCarDialogComponent} from '../../../dialogs/add-car-dialog/add-car-dia
 import {DeleteFromItiComponent} from '../../../dialogs/delete-from-iti/delete-from-iti.component';
 import {EditInfoComponent} from '../../../dialogs/edit-info/edit-info.component';
 import {AddressService} from '../../../../services/address.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-itinerar-da-d',
@@ -26,7 +27,8 @@ export class ItinerarDaDComponent implements OnInit {
   itiChanged = false;
   constructor(private _snackBar: MatSnackBar,  public routeStatus: RouteStatusService,
               private packageService: PackageService, private carService: CarService,
-              private dialog: MatDialog, private addressService: AddressService) { }
+              private dialog: MatDialog, private addressService: AddressService,
+              private translation: TranslateService) { }
 
   ngOnInit(): void {
   }
@@ -231,7 +233,7 @@ export class ItinerarDaDComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return 'Neznámy';
+      return this.translation.instant('OFTEN.neznamy');
     }
     return date.toLocaleString();
   }

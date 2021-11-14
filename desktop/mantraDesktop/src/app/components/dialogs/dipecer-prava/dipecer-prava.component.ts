@@ -12,6 +12,7 @@ import {AccountService} from '../../../../login/_services/account.service';
 import {take} from 'rxjs/operators';
 import {NewCarComponent} from '../../cars/new-car/new-car.component';
 import {EmailService} from '../../../services/email/email.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dipecer-prava',
@@ -24,7 +25,7 @@ export class DipecerPravaComponent implements OnInit {
               private dataService: DataService, @Inject(MAT_DIALOG_DATA) public data: any,
               private dispecerService: DispecerService,  private fb: FormBuilder,
               private accountService: AccountService, public dialogRef: MatDialogRef<DipecerPravaComponent>,
-              private emailService: EmailService) { }
+              private emailService: EmailService, private translation: TranslateService) { }
   cars: Cars[];
   prives: Prives[];
   displayedColumns: string[] = ['ecv', 'prava'];
@@ -124,8 +125,8 @@ export class DipecerPravaComponent implements OnInit {
 
   sendMail(password){
     const email  = this.dispecerForm.get('email').value;
-    const header  = 'Vitajte v aplikacii Mantra';
-    const text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo: ' + password;
+    const header  = this.translation.instant('EMAIL.welcome');
+    const text  = this.translation.instant('EMAIL.prihlasovacieMeno')  + this.dispecerForm.get('email').value + this.translation.instant('EMAIL.heslo') + password;
 
     const reqObj = {
       email,
@@ -139,9 +140,8 @@ export class DipecerPravaComponent implements OnInit {
 
   sendMailToRegisteredUser(){
     const email  = this.dispecerForm.get('email').value;
-    const header  = 'Vitajte v aplikacii Mantra';
-    const text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo nebolo zmenene. Pokial si heslo nepamatate' +
-      'mozete ho zmenit na stranke http://prototyp.mantra-online.eu. ' ;
+    const header  = this.translation.instant('EMAIL.welcome');
+    const text  = this.translation.instant('EMAIL.prihlasovacieMeno') + this.dispecerForm.get('email').value + this.translation.instant('EMAIL.neboloZmenene') ;
 
     const reqObj = {
       email,

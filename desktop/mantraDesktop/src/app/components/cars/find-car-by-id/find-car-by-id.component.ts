@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CarService} from "../../../services/car.service";
 import {RouteStatusService} from "../../../data/route-status.service";
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-find-car-by-id',
@@ -12,7 +13,7 @@ export class FindCarByIdComponent implements OnInit {
   @Input() carId: string;
   carName;
   carUndefined;
-  constructor(public routeStatusService: RouteStatusService, private carService: CarService) { }
+  constructor(public routeStatusService: RouteStatusService, private carService: CarService, private translation: TranslateService) { }
 
   ngOnInit(): void {
     if (this.carId != null){
@@ -21,7 +22,7 @@ export class FindCarByIdComponent implements OnInit {
         this.carUndefined = null;
       });
     }else{
-      this.carUndefined = "Nepriradene"
+      this.carUndefined = this.translation.instant('OFTEN.nepriradene');
     }
 
   }

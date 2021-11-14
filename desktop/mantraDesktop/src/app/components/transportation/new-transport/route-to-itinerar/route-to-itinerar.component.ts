@@ -9,6 +9,7 @@ import {PackageService} from "../../../../services/package.service";
 import {RouteService} from '../../../../services/route.service';
 import DeatilAboutAdresses from '../../../../models/DeatilAboutAdresses';
 import {CountFreeSpaceService} from '../../../../data/count-free-space.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-route-to-itinerar',
@@ -35,7 +36,7 @@ export class RouteToItinerarComponent implements OnInit {
   vyskaNaklHrany;
   constructor(private addressService: AddressService, private dataService: DataService,
               private carService: CarService, private addressesService: AddressService, private packageService: PackageService,
-              private countFreeSpaceService: CountFreeSpaceService,) { }
+              private countFreeSpaceService: CountFreeSpaceService, private translation: TranslateService) { }
 
   ngOnInit(): void {
     var adresy = this.addressService.getAddresses();// TODO toto treba majk check
@@ -105,7 +106,7 @@ export class RouteToItinerarComponent implements OnInit {
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
     if (dateUtc == null || dateUtc === '0'){
-      return 'Neznámy';
+      return this.translation.instant('OFTEN.neznamy');
     }
     return date.toLocaleString();
   }
@@ -113,7 +114,7 @@ export class RouteToItinerarComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return "Neznámy"
+      return this.translation.instant('OFTEN.neznamy');
     }
     return date.toLocaleString();
   }

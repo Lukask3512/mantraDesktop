@@ -8,6 +8,13 @@ td{
   margin-left: 5px;
 }
 
+.inputWrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
 .addButton{
   @include tableAddButton();
 }

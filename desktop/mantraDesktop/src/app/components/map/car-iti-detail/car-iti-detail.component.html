@@ -1,7 +1,7 @@
 
 <div *ngIf="offer" class="example-container">
 
-  <button class="detailBut" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
+<!--  <button class="detailBut" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>-->
   <h2 *ngIf="checkRukaAdrTeplota(realOffer).adr || checkRukaAdrTeplota(realOffer).ruka || checkRukaAdrTeplota(realOffer).teplota.length > 0">
     {{'OFTEN.vyzaduje' | translate}}:
     <h3 [class]="chooseColor('adr')" *ngIf="checkRukaAdrTeplota(realOffer).adr">{{'CAR.adr' | translate}}</h3>
@@ -70,8 +70,8 @@
 <!--        </mat-icon>-->
       </div>
       <p>
-        <span *ngIf="ponuka.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-        <span *ngIf="ponuka.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        <span *ngIf="ponuka.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+        <span *ngIf="ponuka.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
         {{ponuka.nameOfTown}}
       </p>
     </div>
@@ -118,8 +118,8 @@
 
       <div class="mainInfo">
         <p class="nameOfTown">
-          <span *ngIf="address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-          <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+          <span *ngIf="address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+          <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
           {{address.nameOfTown}}
         </p>
         <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
@@ -146,11 +146,6 @@
           </span>
           <ng-template #time>
             <span class="oversize" *ngIf="checkTime(i)">{{'OFFER.mimoMoznehoPrichodu' | translate}}
-<!--              <mat-icon class="material-icons" matSuffix-->
-<!--                        matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">-->
-<!--                info-->
-<!--              </mat-icon>-->
-
                <i class="material-icons" matSuffix
                   matTooltip="ETA {{estimatedTimeToLocal(this.predpokladaneEsty[i])}}">date_range</i>
 

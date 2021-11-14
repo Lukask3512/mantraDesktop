@@ -1,7 +1,7 @@
 
 <div *ngIf="address">
-  <span *ngIf="this.address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-  <span *ngIf="this.address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+  <span *ngIf="this.address.type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+  <span *ngIf="this.address.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
   <p class="nameOfTown">{{this.address.nameOfTown}}
     <span *ngIf="this.address.status === 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
     <span *ngIf="this.address.status > 0" class="spanG">{{this.routeStatusService.getStatus(this.address.status)}}</span>
@@ -9,7 +9,7 @@
 
 
   <div *ngIf="this.detail && this.detail[addressIndex] != undefined" class="bednaWrapper">
-    <div class="bednaWrapper" *ngIf="this.detail[addressIndex].townsArray">
+    <div class="bednaWrapper" *ngIf="this.detail[addressIndex].detailArray">
       <div class="bedna" *ngFor="let detailPrvok of this.detail[addressIndex].detailArray; let indexik = index">
         <span class="numberOfBedna">{{getBednaIndex(this.detail[addressIndex].townsArray[indexik], this.detail[addressIndex].detailArray[indexik])}}</span>
       </div>
@@ -23,10 +23,4 @@
   </div>
 
 </div>
-<!--  <ng-template  #loading>-->
-<!--    <div class="relavite">-->
-<!--     <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "false"></ngx-spinner>-->
-<!--    </div>-->
-
-<!--  </ng-template>-->
 

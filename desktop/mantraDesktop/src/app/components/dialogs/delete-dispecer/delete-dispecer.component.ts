@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import Dispecer from "../../../models/Dispecer";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import Dispecer from '../../../models/Dispecer';
 
 @Component({
   selector: 'app-delete-dispecer',
@@ -19,7 +19,7 @@ export class DeleteDispecerComponent implements OnInit {
   }
 
   deleteDispecer(){
-    this.dialogRef.close({event: true})
+    this.dialogRef.close({event: true});
   }
 
 }

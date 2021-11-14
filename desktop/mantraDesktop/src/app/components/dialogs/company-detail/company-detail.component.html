@@ -1,17 +1,17 @@
 <div class="wrapper">
-  <label>Nazov spolocnosti</label>
+  <label>{{'COMPANIES.companyName' | translate}}</label>
   <h2>{{company.name}}</h2>
-  <label>Sidlo v meste</label>
+  <label>{{'COMPANIES.town' | translate}}</label>
   <h2>{{company.town}}</h2>
-  <label>Stat</label>
+  <label>{{'COMPANIES.state' | translate}}</label>
   <h2>{{company.country}}</h2>
-  <label>ICO</label>
+  <label>{{'COMPANIES.ico' | translate}}</label>
   <h2>{{company.ico}}</h2>
-  <label>DIC</label>
+  <label>{{'COMPANIES.dico' | translate}}</label>
   <h2>{{company.dicIc}}</h2>
-  <label>Vyska poistenia</label>
+  <label>{{'COMPANIES.vyskaPoistky' | translate}}</label>
   <h2 *ngIf="!company.poistenie; else elsePoistka">
-    Bez poistenia
+    <label>{{'COMPANIES.bezpoistenia' | translate}}</label>
   </h2>
   <ng-template #elsePoistka>
     <h2>

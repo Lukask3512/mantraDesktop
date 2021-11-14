@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NewCarComponent} from '../../cars/new-car/new-car.component';
 import Address from '../../../models/Address';
 import {DataService} from '../../../data/data.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-time-problem-dialog',
@@ -16,7 +17,7 @@ export class TimeProblemDialogComponent implements OnInit {
   offer: Address[];
   constructor(public dialogRef: MatDialogRef<TimeProblemDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private dataService: DataService) { }
+              private dataService: DataService, private translation: TranslateService) { }
 
   ngOnInit(): void {
     if (this.data){
@@ -27,7 +28,7 @@ export class TimeProblemDialogComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return 'Neznámy';
+      return this.translation.instant('LOG.Nezverejnený');
     }
     return date.toLocaleString();
   }
@@ -38,7 +39,7 @@ export class TimeProblemDialogComponent implements OnInit {
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
     if (dateUtc == null || dateUtc === '0'){
-      return 'Neznámy';
+      return this.translation.instant('LOG.Nezverejnený');
     }
     return date.toLocaleString();
   }

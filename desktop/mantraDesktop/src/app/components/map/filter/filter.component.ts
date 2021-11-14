@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {OfferRouteService} from "../../../services/offer-route.service";
 import Route from "../../../models/Route";
+import {PackageService} from '../../../services/package.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class FilterComponent implements OnInit {
 
   fewSecDisable = true;
 
-  constructor(private offerService: OfferRouteService) { }
+  constructor(private offerService: OfferRouteService, private packageService: PackageService) { }
   offers: Route[];
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
@@ -33,8 +34,13 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
+      // this.packageService.isDone$.subscribe(isdone => {
+      //   if (isdone){
+      //     this.fewSecDisable = false;
+      //   }
+      // });
       this.fewSecDisable = false;
-    }, 3000);
+    }, 5000);
 
     this.offerService.routes$.subscribe(routes => {
       if (!this.offers){

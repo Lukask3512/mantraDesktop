@@ -25,8 +25,8 @@
 
     <div *ngIf="this.address[i] && this.address[i].type" class="routeTown" (click)="sendTown(i)">
       <p>
-        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
         {{this.address[i].nameOfTown}}
       </p>
       <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
