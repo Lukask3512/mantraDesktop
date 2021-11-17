@@ -310,7 +310,8 @@
     "prihlaseny": "Logged in",
     "pdfNepodporuje": "PDF generator does not support special characters",
     "skontrolujteCas": "Skontrolujte čas",
-    "odoslatPonuku": "Odoslať ponuku"
+    "odoslatPonuku": "Odoslať ponuku",
+    "vasePonuky": "Vaše ponuky"
   },
   "FILTER": {
     "typVzialenosti": "Type of distance",

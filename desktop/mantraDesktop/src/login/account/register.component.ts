@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.lang = localStorage.getItem('lang') || 'en';
+    this.lang = localStorage.getItem('lang') || 'sk';
     this.deleteAllCookies();
   }
 

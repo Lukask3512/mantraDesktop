@@ -25,19 +25,19 @@
     "offline": "Nepripojený",
     "cakam": "Čakám",
     "naCeste": "Na ceste",
-    "naklVykl": "Nakladám / vykládám",
+    "naklVykl": "Nakladám / vykladám",
     "nalVyl": "Naložené / vyložené",
     "problem": "Problém",
     "preskocene": "Preskočené",
     "nepriradene": "Nepriradené",
-    "cakajuce": "Čakajúce"
+    "cakajuce": "Vaše reakcie"
   },
 
   "EMAIL": {
-    "welcome": "Vitajte v aplikacii Mantra",
+    "welcome": "Vitajte v aplikácii Mantra",
     "prihlasovacieMeno": "Vaše prihlasovacie meno: ",
     "heslo": ", heslo: ",
-    "neboloZmenene": "vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte , môžete si ho zmeniť na stránke http://prototyp.mantra-online.eu. "
+    "neboloZmenene": "Vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte, môžete si ho zmeniť na stránke http://prototyp.mantra-online.eu."
   },
 
   "LOGIN": {
@@ -58,7 +58,7 @@
     "companies": "Spoločnosti",
     "profile": "Profil",
     "trhovisko": "Trhovisko",
-    "mojePonuky": "Moje ponuky"
+    "mojePonuky": "Čakajúce objednávky"
   },
   "DISPATCHER": {
     "dispatcher": "Dispečer",
@@ -71,7 +71,7 @@
     "infoAboutAdd": "Nemáte povolenie pridať dispečera.",
     "add": "Pridať",
     "udajeODisp": "Údaje o dispečerovi",
-    "pristupKuVozidlam": "Prístup ku vozidlám",
+    "pristupKuVozidlam": "Prístup k vozidlám",
     "pristupKuVsetkymVozidlam": "Prístup ku všetkým vozidlám",
     "pristupKuPrivesom": "Prístup k prívesom",
     "pristupKuVsetkymPrivesom": "Prístup ku všetkým prívesom"
@@ -132,7 +132,7 @@
     "adr": "ADR",
     "teplota": "Teplota",
 
-    "pristupKVozidlu": "Prístup ku vozidlu",
+    "pristupKVozidlu": "Prístup k vozidlu",
     "pristupVsetkym": "Udeliť prístup všetkým",
     "pravaPreVodica": "Práva",
     "neznamaPolohaAuta": "Upozornenie! Vozidlo nemá známu polohu a nedokážeme určiť vzdialenosť k ponuke. Pre určenie polohy sa prihláste do vozidla cez mobilnú aplikáciu.",
@@ -206,7 +206,7 @@
     "teplota": "Teplota",
     "prevozRizikovehoTovaru": "Prevoz rizikového tovaru",
     "skratkaKs": "ks",
-    "prijateSuVPrepravach": "Prijate ponuky sa nachádzajú v prepravách>ponuky"
+    "prijateSuVPrepravach": "Prijaté ponuky sa nachádzajú v sekcii Prepravy -> Ponuky."
 
   },
 
@@ -224,7 +224,7 @@
     "vyska": "Výška",
     "sirka": "Šírka",
     "dlzka": "Dĺžka",
-    "maxVaha": "Maximálna váha",
+    "maxVaha": "Maximálna hmotnosť",
     "najvacsiBalik": "Najväčší balík",
     "celkovyObjem": "Celkový objem balíkov"
 
@@ -245,7 +245,7 @@
     "dateFrom": "Dátum od",
     "dateTo": "Dátum do",
     "vyberAuta": "Výber vozidla",
-    "presunPrepravy": "Presun prepravy do itinerára",
+    "presunPrepravy": "Presuň prepravy do itinerára",
     "casoveKonflikty": "Časové konflikty",
     "itinerarVozidla": "Itinerár vozidla",
     "potrebnaVyskaNakHrany": "Potrebná výška nakladacej hrany",
@@ -258,16 +258,16 @@
     "prilizVelky": "Tovar je príliš veľký",
     "moznyDatumPrichodu": "Možný dátum príjazdu",
     "predpokladanyCasPrijazdu": "Predpokladaný čas príjazdu",
-    "vlastnePrepravy": "Vlastné prepravy",
-    "prepravyZPonuk": "Prepravy z ponúk"
+    "vlastnePrepravy": "Vaše vlastné prepravy",
+    "prepravyZPonuk": "Prepravy z trhoviska"
   },
 
   "OFFER": {
     "ponuka": "Ponuka",
     "cenaPrepravy": "Cena prepravy",
-    "praznePoleCeny": "Ak pole necháte prázdne, spoločnosti Vám budú môcť posielať ponuky.",
+    "praznePoleCeny": "Ak pole necháte prázdne, záujemcovia budú môcť navrhnúť vlastnú cenu.",
     "zadavatel": "Zadávateľ",
-    "prepravca": "Prepravca",
+    "prepravca": "Dopravca",
     "log": "Log",
     "mesto": "Mesto",
     "cas": "Čas",
@@ -284,33 +284,34 @@
     "novaVzdialenost": "Nová vzdialenosť",
     "rozdiel": "Rozdiel",
     "vasaPonuka": "Vaša ponuka",
-    "zrusitPonuku": "Zrušiť ponuku",
+    "zrusitPonuku": "Zrušiť reakciu",
     "ponukniteCenu": "Ponúknite cenu",
-    "pridatPonuku": "Pridať ponuku",
+    "pridatPonuku": "Zareagovať na prepravu",
     "upravitCenu": "Upraviť cenu",
     "finalnePrijatie": "Finálne prijatie",
     "prijatPrepravu": "Prijať prepravu",
     "odmietnutPrepravu": "Odmietnuť prepravu",
-    "ziskaliStePonuku": "Získali ste ponuku",
-    "presuntePonukuDoIti": "Presuňte ponuku do itinerára vozidla",
-    "ponukaPriradenaZa": "Ponuka priradená za",
+    "ziskaliStePonuku": "Získali ste prepravu",
+    "presuntePonukuDoIti": "Presuňte prepravu do itinerára vozidla",
+    "ponukaPriradenaZa": "Preprava priradená za",
     "zruseniePrepravyOznam": "Zrušenie prepravy musí potvrdiť zadávateľ",
-    "zruseniePrepravyPotvrdenie": "Zadávateľ chce zrušiť ponuku. Chcete potvrdiť zrušenie?",
-    "zruseniePrepravca": "Prepravca chce zrušiť ponuku. Chcete potvrdiť zrušenie?",
+    "zruseniePrepravyPotvrdenie": "Zadávateľ chce zrušiť prepravu. Chcete potvrdiť zrušenie?",
+    "zruseniePrepravca": "Dopravca chce zrušiť prepravu. Chcete potvrdiť zrušenie?",
     "zrusenie": "Zrušiť",
     "ponukuPreFirmu": "ponuku pre firmu",
-    "bolaZrusena": "Ponuka bola zrušená",
-    "ponukaVoVozidle": "Ponuka priradená vozidlu",
+    "bolaZrusena": "Preprava bola zrušená",
+    "ponukaVoVozidle": "Preprava priradená vozidlu",
     "upravitPonuku": "Upraviť ponuku",
     "vymazatPonuku": "Vymazať ponuku",
-    "ponukuPrijalaFrima": "Ponuku prijala spoločnosť",
+    "ponukuPrijalaFrima": "Prepravu prijala spoločnosť",
     "ukoncene": "Ukončené",
     "aktivne": "Aktívne",
     "moje": "Moje",
     "prihlaseny": "Prihlásený",
     "pdfNepodporuje": "PDF generátor nepodporuje mäkčene.",
     "skontrolujteCas": "Skontrolujte čas",
-    "odoslatPonuku": "Odoslať ponuku"
+    "odoslatPonuku": "Odoslať reakciu",
+    "vasePonuky": "Vaše ponuky"
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdialenosti",
@@ -325,7 +326,7 @@
     "filter": "Filter",
     "companyOrTown": "Mesto alebo spoločnosť",
     "noData": "Žiadne dáta sa nenašli",
-    "vyberAuta": "Vyberte autá, pre ktoré chcete zobraziť vhodné ponuky",
+    "vyberAuta": "Vyberte vozidlá, pre ktoré chcete zobraziť vhodné ponuky",
     "vsetkyvozidla": "Všetky vozidlá",
     "mestoSpolocnost": "Mesto, spoločnosť",
     "zadajMestoSpolocnost": "Zadaj mesto/spoločnosť"
@@ -340,9 +341,9 @@
     "ulozeneUlozenieVoVozidlach": "Predbežne uložené prepravy",
     "viacNezobrazovat": "Viac nezobrazovať",
     "ukazatPonuku": "Ukázať ponuku",
-    "mamZaujem": "Mám zaujem",
-    "nechcemZrusit": "Nechcem zrušit",
-    "zrusenieBoloOdmientute": "Zrušenie ponuky bolo odmietnuté"
+    "mamZaujem": "Mám záujem",
+    "nechcemZrusit": "Nechcem zrušiť",
+    "zrusenieBoloOdmientute": "Zrušenie prepravy bolo odmietnuté"
   },
 
   "AUTOCOMPLETE": {
@@ -376,10 +377,10 @@
     "logPrepravy": "Log prepravy"
   },
   "LOG": {
-    "prijate": "Prijate",
-    "priradene": "Priradene do auta",
-    "autoSaNachadzalo": "Auto sa nachadzalo",
-    "prepravovanePalety": "Prepravované palety",
+    "prijate": "Prijaté",
+    "priradene": "Priradené do auta",
+    "autoSaNachadzalo": "Auto sa nachádzalo",
+    "prepravovanePalety": "Prepravované balíky / palety",
     "nakladkaIndex": "Nakládka index",
     "vykladkaIndex": "Vykládka index",
     "casyADatumy": "Časy a dátumy možných príchodov na adresy",

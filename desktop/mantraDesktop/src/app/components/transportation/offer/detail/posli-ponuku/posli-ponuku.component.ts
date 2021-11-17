@@ -16,6 +16,8 @@ export class PosliPonukuComponent implements OnInit {
   @Input() price: number;
   @Input() offerId;
 
+  disableButtonAfterAdd = false;
+
   dispecer: Dispecer;
   @Output() whichOffersToShow = new EventEmitter<any>();
   constructor(private dataService: DataService, private offerService: OfferRouteService,
@@ -83,6 +85,9 @@ export class PosliPonukuComponent implements OnInit {
     this.price = undefined;
     this.offer = undefined;
     this.offerService.updateRoute(this.route);
+    setTimeout(() => {
+      this.disableButtonAfterAdd = false;
+    }, 5000);
   }
 
   addPrice(){
@@ -93,19 +98,33 @@ export class PosliPonukuComponent implements OnInit {
       idCreated = this.dataService.getDispecer().createdBy;
     }
 
+    if (this.route.price > 0){
+      if (this.price === undefined){
+        this.price = 0;
+      }
+    }else{
+      if (this.price === undefined){
+        return;
+      }
+    }
+
     this.route.offerFrom.forEach((offer, index) => {
       if (offer === this.getDispecerId()){
         this.route.offerFrom.splice(index, 1);
         this.route.priceFrom.splice(index, 1);
       }
     });
-    if (this.price === undefined){
-      this.price = 0;
-    }
+
+
     this.route.offerFrom.push(idCreated);
     this.route.priceFrom.push(this.price);
+    this.offer = JSON.parse(JSON.stringify(this.price));
     this.price = undefined;
     this.offerService.updateRoute(this.route);
+    this.disableButtonAfterAdd = true;
+    setTimeout(() => {
+      this.disableButtonAfterAdd = false;
+    }, 5000);
   }
 
   confirm(){

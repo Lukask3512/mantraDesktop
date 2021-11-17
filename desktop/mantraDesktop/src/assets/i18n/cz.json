@@ -310,7 +310,8 @@
     "prihlaseny": "Přihlášen",
     "pdfNepodporuje": "PDF generátor nepodporuje interpunkci.",
     "skontrolujteCas": "Skontrolujte čas",
-    "odoslatPonuku": "Odoslať ponuku"
+    "odoslatPonuku": "Odoslať ponuku",
+    "vasePonuky": "Vaše ponuky"
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdálenosti",

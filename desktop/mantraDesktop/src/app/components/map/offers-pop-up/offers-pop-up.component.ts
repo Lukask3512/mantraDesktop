@@ -36,7 +36,6 @@ export class OffersPopUpComponent implements OnInit {
   setOffers(features: any[]){
     const idPonuk = [];
     for (let i = 0; i < features.length; i++) {
-      console.log(features[i].values_.name);
       idPonuk.push(features[i].values_.name);
     }
     this.offers = this.offerService.getRoutesNoSub().filter(car => idPonuk.includes(car.id));

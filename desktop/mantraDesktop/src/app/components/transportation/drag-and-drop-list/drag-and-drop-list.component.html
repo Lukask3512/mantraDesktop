@@ -1,48 +1,51 @@
-<h3 *ngIf="!this.address || this.address.length === 0">Itinerar je prazdny</h3>
-<div *ngIf="this.address"  cdkDropList class="example-list"
-     (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
-  <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
-    <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapperAndTime">
-<!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
-      <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
-        <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
-          <span class="numberOfBedna">{{getBednaIndex(this.detailArray[i].townsArray[indexik], this.detailArray[i].detailArray[indexik])}}</span>
+<div class="wrapper">
+  <h3 *ngIf="!this.address || this.address.length === 0">{{'CAR.noAdress' | translate}}</h3>
+  <div *ngIf="this.address"  cdkDropList class="example-list"
+       (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
+    <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
+      <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapperAndTime">
+        <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
+        <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
+          <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndex(this.detailArray[i].townsArray[indexik], this.detailArray[i].detailArray[indexik])}}</span>
+          </div>
         </div>
-      </div>
-      <div class="bednaWrapper" *ngIf="!this.detailArray[i].townsArray">
-        <div (click)="openDialog(this.detailArray[i][indexik].id)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
-          <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
+        <div class="bednaWrapper" *ngIf="!this.detailArray[i].townsArray">
+          <div (click)="openDialog(this.detailArray[i][indexik].id)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
+            <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
+          </div>
         </div>
+
+        <i (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
+           matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">date_range</i>
+
+        <!--      <mat-icon >-->
+        <!--        info-->
+        <!--      </mat-icon>-->
       </div>
 
-      <i (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
-         matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">date_range</i>
+      <div *ngIf="this.address[i] && this.address[i].type" class="routeTown" (click)="sendTown(i)">
+        <p>
+          <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+          <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
+          {{this.address[i].nameOfTown}}
+        </p>
+        <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 
-<!--      <mat-icon >-->
-<!--        info-->
-<!--      </mat-icon>-->
-    </div>
-
-    <div *ngIf="this.address[i] && this.address[i].type" class="routeTown" (click)="sendTown(i)">
-      <p>
-        <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
-        <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
-        {{this.address[i].nameOfTown}}
-      </p>
-      <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
-
-      <span  *ngIf="this.address[i].estimatedTimeArrival && this.address[i].status !== 3">
+        <span  *ngIf="this.address[i].estimatedTimeArrival && this.address[i].status !== 3">
         ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}
       </span>
 
-      <img *ngIf="draggable" (click)="deleteTownFromIti(this.address[i])" class="delete" src="assets/logo/delete.svg">
-    </div>
-    <div *ngIf="updatable" class="routeTown routeInfo">
-      <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
-      <img *ngIf="this.address[i].status !== 3" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">
+        <img *ngIf="draggable" (click)="deleteTownFromIti(this.address[i])" class="delete" src="assets/logo/delete.svg">
+      </div>
+      <div *ngIf="updatable" class="routeTown routeInfo">
+        <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
+        <img *ngIf="this.address[i].status !== 3" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">
+      </div>
     </div>
   </div>
 </div>
+
 
 <ngx-spinner [fullScreen]="true"></ngx-spinner>
 

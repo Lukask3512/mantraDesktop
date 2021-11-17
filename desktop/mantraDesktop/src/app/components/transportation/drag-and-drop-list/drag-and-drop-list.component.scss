@@ -9,6 +9,12 @@
   border-radius: 2px;
 }
 
+.wrapper{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .nakaldkaVykladka{
   background: darkgray;
   padding: 2px 4px;

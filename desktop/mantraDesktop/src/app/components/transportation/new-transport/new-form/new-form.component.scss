@@ -7,11 +7,16 @@
 .oneGroup{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  //align-items: center;
 }
 
 .redTitle{
   color: red;
+}
+
+.starfFlex{
+  display: flex;
+  justify-content: flex-start;
 }
 
 .bedna{
@@ -23,8 +28,6 @@
 .lastAdded{
   display: flex;
   align-items: center;
-  position: absolute;
-  right: 0;
   flex-direction: column;
 }
 

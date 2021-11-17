@@ -34,11 +34,9 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      // this.packageService.isDone$.subscribe(isdone => {
-      //   if (isdone){
-      //     this.fewSecDisable = false;
-      //   }
-      // });
+      const boloSpustene = localStorage.getItem('showOffers') || 'false';
+      this.checked = boloSpustene === 'true';
+
       this.fewSecDisable = false;
     }, 5000);
 
@@ -58,14 +56,16 @@ export class FilterComponent implements OnInit {
   }
 
   filterOffers(ukazatPonuky: boolean){
-    console.log("odosielam", this.offers.length);
+
     if (this.offers.length > 0){
       if (!this.checked){
         this.offersToMap.emit(null);
+        localStorage.setItem('showOffers', 'false');
       }else{
         this.offersToMap.emit({offers : this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
           weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance,
           ukazat: ukazatPonuky} );
+        localStorage.setItem('showOffers', 'true');
       }
     }
   }

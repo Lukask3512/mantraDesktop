@@ -56,7 +56,7 @@ export class LogDialogComponent implements OnInit {
     if (dateUtc == null || dateUtc === '0'){
       return this.translation.instant('LOG.nezverejneny');
     }
-    return date.toLocaleString();
+    return date.toDateString();
   }
 
   getDetail(){

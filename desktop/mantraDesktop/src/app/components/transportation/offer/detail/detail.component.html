@@ -108,7 +108,7 @@
 
         <ng-container matColumnDef="route.priceFrom[i]">
           <th mat-header-cell *matHeaderCellDef  mat-sort-header> {{'OFTEN.cena' | translate}} </th>
-          <td mat-cell *matCellDef="let element; let i = index"> {{route.priceFrom[i]}} </td>
+          <td mat-cell *matCellDef="let element; let i = index"> <p *ngIf="this.route.price === 0">{{route.priceFrom[i]}}</p> </td>
         </ng-container>
 
         <ng-container matColumnDef="potvrdit">

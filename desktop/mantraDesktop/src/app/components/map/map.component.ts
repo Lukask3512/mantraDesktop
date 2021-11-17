@@ -262,7 +262,13 @@ export class MapComponent implements AfterViewInit {
       const feature = this.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
         return feature;
       });
+
+
+
       if (feature) {
+        this.chooseCarPopup.closePopUp();
+        this.chooseOfferPoUp.closePopUp();
+
         const type = feature.get('type');
         if (feature.get('features')){
             if (feature.get('features')[0].get('type') === 'car'){
@@ -315,10 +321,12 @@ export class MapComponent implements AfterViewInit {
           this.onClickFindInfoOffer(feature.get('name'), feature);
         }
         // $(element).popover('show');
-      } else {
-        // $(element).popover('dispose');
+      }else{
+        this.chooseCarPopup.closePopUp();
+        this.chooseOfferPoUp.closePopUp();
       }
     });
+
 
       this.checkFeatureUnderMouse(); // pointer
     },
@@ -429,6 +437,26 @@ export class MapComponent implements AfterViewInit {
     this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
     this.scrollToInfo();
     this.resizeMap();
+
+    // var routeStyle = feature.getStyle();
+    // var anotherStyle = feature.getStyleFunction();
+    //
+    // console.log(routeStyle[1])
+    // console.log(routeStyle[1].getStroke());
+    // console.log(routeStyle[1].getStroke().getColor());
+    //
+    // const rgba = routeStyle[1].getStroke().getColor();
+    // rgba[3] = 1;
+    // routeStyle[1].getStroke().setColor(rgba);
+    // feature.setStyle(routeStyle);
+    // console.log(rgba);
+
+    // routeStyle = new Style({
+    //   stroke: new Stroke({
+    //     width: 6,
+    //     color: rgba
+    //   })
+    // });
   }
 
   resizeMap(){
@@ -805,10 +833,6 @@ export class MapComponent implements AfterViewInit {
           })
         });
 
-         const styledelete = new Style({
-         });
-
-         vectorContext.setStyle(styledelete);
          vectorContext.setStyle(style);
          vectorContext.drawGeometry(flashGeom);
 
