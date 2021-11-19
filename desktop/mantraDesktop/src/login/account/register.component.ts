@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import {TranslateService} from '@ngx-translate/core';
 import {CookieService} from 'ngx-cookie-service';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -49,6 +50,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'sk';
     this.deleteAllCookies();
+
   }
 
   deleteAllCookies() {

@@ -3,8 +3,10 @@
     <div class="bednaWapper" *ngFor="let details of this.detailsArray; let index = index">
       <div *ngIf="isArray(details)">
         <div class="jedenBalik" *ngFor="let oneDetail of details; let indexik = index">
+
           <img #nevylozene *ngIf="!vylozene(index, indexik)" (click)="clickedOn(oneDetail, index, indexik)" class="bedna nevylozene" src="./assets/logo/cube.png">
           <img *ngIf="vylozene(index, indexik)" class="bedna transparent" src="./assets/logo/cube.png">
+          <span class="index">{{this.getBednaIndex(index, indexik)}}</span>
           <span class="vyska">{{oneDetail.sizeV}}</span>
           <span class="sirka">{{oneDetail.sizeS}}</span>
           <span class="dlzka">{{oneDetail.sizeD}}</span>

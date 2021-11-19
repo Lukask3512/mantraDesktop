@@ -15,6 +15,7 @@ export class ShowDetailComponent implements OnInit {
 
   @ViewChild('nevylozene') nevylozeneElmenty: ElementRef;
   constructor(private dataService: DataService) { }
+  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
   ngOnInit(): void {
   }
@@ -33,6 +34,22 @@ export class ShowDetailComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  getCountOfPackages(townIndex){
+    return this.detailsArray[townIndex].length;
+  }
+
+  // pre nakladky
+  getBednaIndex(townIndex, detailIndex){
+    let indexBedne = -1;
+    for (let i = 0; i < townIndex; i++) {
+      if (!this.detailsArray[i].townsArray){ // len nakladky pocitam
+        indexBedne += this.getCountOfPackages(i);
+      }
+    }
+    indexBedne += detailIndex + 1;
+    return this.alphabet[indexBedne];
   }
 
   vylozene(mesto, pozicia){

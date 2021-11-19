@@ -48,8 +48,8 @@ export class NewFormComponent implements OnInit {
   dateRange = new FormGroup({
     startDate: new FormControl([null, Validators.required]),
     endDate: new FormControl([null, Validators.required]),
-    timeFrom: new FormControl([null, Validators.required]),
-    timeTo: new FormControl([null, Validators.required]),
+    timeFrom: new FormControl(['', Validators.required]),
+    timeTo: new FormControl(['', Validators.required]),
     obsluznyCas: new FormControl(1, Validators.required),
   });
 
@@ -99,6 +99,8 @@ export class NewFormComponent implements OnInit {
   ngOnInit(): void {
     this.transportForm.disable();
     this.minDate = new Date();
+    this.dateRange.controls.timeFrom.setValue('06:00');
+    this.dateRange.controls.timeTo.setValue('18:00');
   }
 
   upravBednu(){
@@ -326,7 +328,8 @@ export class NewFormComponent implements OnInit {
     this.resetFormToDefault(true);
     this.dateRange.reset();
     this.specForm.reset();
-
+    this.dateRange.controls.timeFrom.setValue('06:00');
+    this.dateRange.controls.timeTo.setValue('18:00');
 
     this.routeFromGoogle = null;
     this.latFromGoogle = null;

@@ -105,8 +105,7 @@ export class MapComponent implements AfterViewInit {
   routes = [];
   indexiMiestKdeNalozit = [];
 
-  pointsFeature;
-  coordinatesFeature;
+ lastClickedOnRoute;
 
   carsWithItinerar;
 
@@ -266,6 +265,7 @@ export class MapComponent implements AfterViewInit {
 
 
       if (feature) {
+        this.vratitZvyraznenuRoutu();
         this.chooseCarPopup.closePopUp();
         this.chooseOfferPoUp.closePopUp();
 
@@ -437,26 +437,31 @@ export class MapComponent implements AfterViewInit {
     this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
     this.scrollToInfo();
     this.resizeMap();
+    this.zvyraznitRoutu(feature);
 
-    // var routeStyle = feature.getStyle();
-    // var anotherStyle = feature.getStyleFunction();
-    //
-    // console.log(routeStyle[1])
-    // console.log(routeStyle[1].getStroke());
-    // console.log(routeStyle[1].getStroke().getColor());
-    //
-    // const rgba = routeStyle[1].getStroke().getColor();
-    // rgba[3] = 1;
-    // routeStyle[1].getStroke().setColor(rgba);
-    // feature.setStyle(routeStyle);
-    // console.log(rgba);
+  }
 
-    // routeStyle = new Style({
-    //   stroke: new Stroke({
-    //     width: 6,
-    //     color: rgba
-    //   })
-    // });
+  vratitZvyraznenuRoutu(){
+    if (this.lastClickedOnRoute){
+      var routeStyle = this.lastClickedOnRoute.getStyle();
+      const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
+      rgba[3] = 0.45;
+      routeStyle[routeStyle.length - 1].getStroke().setColor(rgba);
+      this.lastClickedOnRoute.setStyle(routeStyle);
+      this.lastClickedOnRoute = null;
+    }else{
+      this.lastClickedOnRoute = null;
+    }
+  }
+
+  zvyraznitRoutu(feature){
+    this.lastClickedOnRoute = feature;
+    var routeStyle = feature.getStyle();
+
+    const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
+    rgba[3] = 1;
+    routeStyle[routeStyle.length - 1].getStroke().setColor(rgba);
+    feature.setStyle(routeStyle);
   }
 
   resizeMap(){
@@ -1182,6 +1187,7 @@ export class MapComponent implements AfterViewInit {
       duration: 800} );
     this.scrollToUp();
     this.resizeMap();
+    this.vratitZvyraznenuRoutu();
 
   }
 

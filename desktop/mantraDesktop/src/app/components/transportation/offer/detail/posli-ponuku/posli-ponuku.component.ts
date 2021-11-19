@@ -85,6 +85,7 @@ export class PosliPonukuComponent implements OnInit {
     this.price = undefined;
     this.offer = undefined;
     this.offerService.updateRoute(this.route);
+    this.disableButtonAfterAdd = true;
     setTimeout(() => {
       this.disableButtonAfterAdd = false;
     }, 5000);

@@ -57,10 +57,12 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-// AoT requires an exported function for factories
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
+
 
 
 @NgModule({
@@ -111,6 +113,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
+        NgxMaterialTimepickerModule,
         AppRoutingModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyA9VpVbePUEGyvZrxcxfJSunQB5w8dmTV8',

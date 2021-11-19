@@ -53,13 +53,16 @@
         <div [formGroup]="dateRange" *ngIf="casPrichodu == 'rozhoduje'">
           <mat-form-field >
             <mat-label>{{'TRANSPORT.timeFrom' | translate}}</mat-label>
-            <input  formControlName="timeFrom" matInput type="time">
+            <input [ngxTimepicker]="picker" formControlName="timeFrom" [format]="24" matInput readonly>
+
           </mat-form-field>
 
           <mat-form-field >
             <mat-label>{{'TRANSPORT.timeTo' | translate}}</mat-label>
-            <input  matInput type="time" formControlName="timeTo">
+            <input [ngxTimepicker]="pickerTo" [format]="24"  matInput  formControlName="timeTo" readonly>
           </mat-form-field>
+          <ngx-material-timepicker [defaultTime]="'06:00 am'" #picker></ngx-material-timepicker>
+          <ngx-material-timepicker [defaultTime]="'06:00 pm'" #pickerTo></ngx-material-timepicker>
         </div>
       </div>
 
