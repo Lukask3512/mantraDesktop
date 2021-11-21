@@ -34,7 +34,8 @@
                             [updatable]="true"
                             (outputRoute)="onDropListChange($event)"
                             (outputDetails)="onDropListDetailChange($event)"
-                            (deleteFromIti)="deleteAddress($event)">
+                            (deleteFromIti)="deleteAddress($event)"
+                            (clickedOnRoute)="getAddressFromDragAndSend($event)">
 
     </app-drag-and-drop-list>
 

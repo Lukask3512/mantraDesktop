@@ -112,5 +112,9 @@ export class AdressesComponent implements OnInit {
     });
   }
 
+  setNameOfTown(name){
+    this.addTaskValue = name;
+  }
+
 }
 

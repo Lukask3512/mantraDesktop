@@ -16,6 +16,8 @@
           </div>
         </div>
 
+        <button *ngIf="draggable" (click)="sendTown(i)">Update</button>
+
         <i (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
            matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">date_range</i>
 

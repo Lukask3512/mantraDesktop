@@ -232,6 +232,14 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
     });
   }
 
+  getAddressFromDragAndSend(townIndex){
+    const adresa = this.addresses[townIndex];
+    const detail = this.detail[townIndex];
+    this.newFormChild.setAddress(adresa, townIndex);
+    this.newFormChild.setDetail(detail);
+    this.clickedOnIndexDetail = townIndex;
+  }
+
   receiveAddressUpdate(adreesIndex){
     console.log(adreesIndex);
     this.addresses[adreesIndex.index] = adreesIndex.adresa;
@@ -251,101 +259,7 @@ else{
   }
 
   setDetailForm(detail){
-    this.newFormChild.setDetail(detail);
-  }
-
-  buttonForExampleData(){
-    // var address: Address = {
-    //   nameOfTown: 'Ruzomberok',
-    //   coordinatesOfTownsLat: '21',
-    //   coordinatesOfTownsLon: '10',
-    //   aboutRoute: 'Kontakt',
-    //   type: 'nakladka',
-    // };
-    // var address2: Address = {
-    //   nameOfTown: 'NItra',
-    //   coordinatesOfTownsLat: '21',
-    //   coordinatesOfTownsLon: '10',
-    //   aboutRoute: 'Kontakt',
-    //   type: 'nakladka',
-    // };
-    // var address3: Address = {
-    //   nameOfTown: 'Blava',
-    //   coordinatesOfTownsLat: '21',
-    //   coordinatesOfTownsLon: '10',
-    //   aboutRoute: 'Kontakt',
-    //   type: 'nakladka',
-    // };
-    // var address4: Address = {
-    //   nameOfTown: 'Kosice',
-    //   coordinatesOfTownsLat: '21',
-    //   coordinatesOfTownsLon: '10',
-    //   aboutRoute: 'Kontakt',
-    //   type: 'vykladka',
-    // };
-    // var address5: Address = {
-    //   nameOfTown: 'Michalovce',
-    //   coordinatesOfTownsLat: '21',
-    //   coordinatesOfTownsLon: '10',
-    //   aboutRoute: 'Kontakt',
-    //   type: 'vykladka',
-    // };
-    // this.addresses = [];
-    //
-    // this.addresses.push(address);
-    // this.addresses.push(address2);
-    // this.addresses.push(address3);
-    // this.addresses.push(address4);
-    // this.addresses.push(address5);
-    //
-    // const detail =  {
-    //   sizeV: 2,
-    //   sizeS: 3,
-    //   sizeD: 2,
-    //   weight: 2,
-    //   stohovatelnost: 0, //ak ano kolko unesie
-    //   vyskaNaklHrany: 0,
-    //   polohaNakladania: '000',
-    // };
-    // const detail2 =  {
-    //   sizeV: 2,
-    //   sizeS: 3,
-    //   sizeD: 2,
-    //   weight: 2,
-    //   stohovatelnost: 0, //ak ano kolko unesie
-    //   vyskaNaklHrany: 0,
-    //   polohaNakladania: '000',
-    // };
-    // const detail3 =  {
-    //   sizeV: 2,
-    //   sizeS: 3,
-    //   sizeD: 2,
-    //   weight: 2,
-    //   stohovatelnost: 0, //ak ano kolko unesie
-    //   vyskaNaklHrany: 0,
-    //   polohaNakladania: '000',
-    // };
-    // const detail4 =  {
-    //   townsArray: [0, 1],
-    //   detailArray: [0, 0]
-    // };
-    // const detail5 =  {
-    //   townsArray: [0, 1],
-    //   detailArray: [0, 0]
-    // };
-    //
-    // this.detail = [];
-    // this.detail.push([detail]);
-    // this.detail.push([detail2, detail3]);
-    // this.detail.push([detail2, detail3]);
-    // this.detail.push({townsArray: [0, 1], detailArray: [0, 0]});
-    // this.detail.push({townsArray: [2, 1, 2], detailArray: [0, 1, 1]});
-    // console.log(this.detail);
-    //
-    // this.childDropList.setAddresses(this.addresses);
-    // this.childDropList.setDetails(this.detail);
-    // this.detailChild.setDetails(this.detail);
-
+    this.newFormChild.setDetailFromBaliky(detail);
   }
 
 
@@ -374,25 +288,51 @@ else{
     this.addresses = changedRoute;
     // this.dataService.checkAddressesTime(this.addresses);
     this.setMapPoints();
-
+    this.clickedOnIndexDetail = undefined;
     this.change = true;
-  }
-  setForm(mestoIndex, bednaIndex){
-
   }
 
 
   receiveAddress(address: Address){
-    this.addresses.push(address);
+    if (this.clickedOnIndexDetail !== undefined && this.clickedOnIndexDetail !== null){
+      this.addresses[this.clickedOnIndexDetail] = address;
+    }else{
+      this.addresses.push(address);
+    }
     this.child.notifyMe(this.addresses, undefined);
-    // this.dataService.checkAddressesTime(this.addresses);
+    this.clickedOnIndexDetail = undefined;
+    this.checkAllDetails();
+
   }
 
   receiveDetail(detail){
-    this.detail.push(detail);
+    if (this.clickedOnIndexDetail !== undefined && this.clickedOnIndexDetail !== null){
+      this.detail[this.clickedOnIndexDetail] = detail;
+    }else{
+      this.detail.push(detail);
+    }
     this.detailChild.setDetails(this.detail);
     this.dataService.setDetailSource(this.detail);
     this.childDropList.setDetails(this.detail);
+  }
+
+  // tu si kontrolujem, ci som nahodou nezmenil baliky, a ci nevykladam taky ktory uz nemam
+  checkAllDetails(){
+    for (let i = 0; i < this.detail.length; i++) {
+      if (this.addresses[i].type === 'vykladka'){ // tak hladam jej baliky
+        for (let j = 0; j < this.detail[i].townsArray.length; j++) {
+          console.log(this.detail[this.detail[i].townsArray[i]]);
+          // console.log(this.detail[this.detail[i].townsArray[this.detail[i].detailArray]]);
+          if (this.detail[this.detail[i].townsArray[j]][this.detail[i].detailArray[j]]){
+
+          }else{
+            console.log("som nanasiel a mal by tom to vyrantat");
+            this.detail[i].townsArray.splice(j, 1);
+            this.detail[i].detailArray.splice(j, 1);
+          }
+        }
+      }
+    }
   }
 
   receiveDetailPosition(detailPositions){
