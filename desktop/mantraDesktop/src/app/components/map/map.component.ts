@@ -1171,7 +1171,7 @@ export class MapComponent implements AfterViewInit {
   estimatedTimeToLocal(dateUtc){
     const date = (new Date(dateUtc));
     if (dateUtc == null){
-      return this.translation.instant('OFTEN.neznamy');
+      return this.translation.instant('OFTEN.nerozhoduje');
     }
     return date.toLocaleString();
   }

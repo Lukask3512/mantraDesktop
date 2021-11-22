@@ -28,7 +28,7 @@
         <span *ngIf="this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival !== 'Neznámy'); else elseNezname">
           {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}</span>
           <ng-template #elseNezname>
-            <span>{{'OFTEN.neznamy' | translate}}</span>
+            <span>{{'OFTEN.nerozhoduje' | translate}}</span>
           </ng-template>
 
       </span>

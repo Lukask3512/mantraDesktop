@@ -34,7 +34,6 @@ export class CarItiDetailComponent implements OnInit {
   distanceOfIti: number;
   prekrocenieVelkosti = 1;
   prekrocenieVahy = 1;
-  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
   @Output() sendCarToPredpokad = new EventEmitter<Predpoklad>();
 
@@ -759,7 +758,7 @@ export class CarItiDetailComponent implements OnInit {
       }
     }
     indexBedne += detailIndex + 1;
-    return this.alphabet[indexBedne];
+    return this.dataService.getLetter(indexBedne);
   }
 
   // pre nakladky
@@ -788,7 +787,7 @@ export class CarItiDetailComponent implements OnInit {
         }
       }
     }
-    return this.alphabet[this.getBednaJustIndex(mesto, balik)];
+    return this.dataService.getLetter(this.getBednaJustIndex(mesto, balik));
   }
 
   getBednaIndexNakladkyAuto(packagaId){
@@ -805,7 +804,7 @@ export class CarItiDetailComponent implements OnInit {
         }
       }
     }
-    return this.alphabet[this.getBednaIndexAuto(mesto, balik)];
+    return this.dataService.getLetter(this.getBednaJustIndex(mesto, balik));
   }
 
 

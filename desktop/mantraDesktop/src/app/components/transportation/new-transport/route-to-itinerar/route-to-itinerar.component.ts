@@ -106,7 +106,7 @@ export class RouteToItinerarComponent implements OnInit {
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
     if (dateUtc == null || dateUtc === '0'){
-      return this.translation.instant('OFTEN.neznamy');
+      return this.translation.instant('OFTEN.nerozhoduje');
     }
     return date.toLocaleString();
   }
@@ -114,7 +114,7 @@ export class RouteToItinerarComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return this.translation.instant('OFTEN.neznamy');
+      return this.translation.instant('OFTEN.nerozhoduje');
     }
     return date.toLocaleString();
   }

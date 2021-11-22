@@ -386,7 +386,8 @@
     "casyADatumy": "Časy a dátumy možných príchodov na adresy",
     "adresa": "Adresa",
     "internaPraprava": "Interná preprava",
-    "nezverejneny": "Nezverejnený"
+    "nezverejneny": "Nezverejnený",
+    "logInfo": "Tento log predstavuje objednávku a dodací list. Podľa zmluvných strán sa môžu vyžadovať ďaľšie dokumenty(napr. CMR, faktúra a pod.).\n  Preprava sa riadi príslušnými predpismi. Ide o obchodný vzťah. Môžu sa aplikovať zákonné podmienky a/alebo všeobecné obchodné podmienky\n  zmluvných strán, vrátane prepravných a iných poriadkov. Log bol vygenerovaný automaticky a zodpovedá záznamom prevádzkovateľa\n  aplikáie. Prístup k logu majú obe zmluvné strany vo svojej aplikácií. Pre viac informácií navštívte ...."
   }
 
 }

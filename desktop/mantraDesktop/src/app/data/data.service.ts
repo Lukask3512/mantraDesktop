@@ -47,6 +47,23 @@ export class DataService {
 
   loginInCompany: Company;
 
+  alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+
+  getLetter(index){
+    let predpona;
+    let cislo = index;
+    while (cislo >= this.alphabet.length){
+      predpona += 'A';
+      cislo = cislo / 2;
+    }
+    if (predpona){
+      return predpona + this.alphabet[cislo];
+    }else{
+      return this.alphabet[index];
+    }
+  }
+
   setCompany(company: Company){
     this.loginInCompany = company;
   }

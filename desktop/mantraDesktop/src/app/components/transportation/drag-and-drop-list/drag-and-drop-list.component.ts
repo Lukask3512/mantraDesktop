@@ -39,8 +39,6 @@ export class DragAndDropListComponent implements OnInit {
 
   dniKtoreSaPrelinaju;
 
-  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
 
   constructor(private dialog: MatDialog, public routeStatus: RouteStatusService, private dataService: DataService,
               private _snackBar: MatSnackBar, private addressService: AddressService, private spinner: NgxSpinnerService,
@@ -294,7 +292,7 @@ export class DragAndDropListComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return this.translation.instant('OFTEN.neznamy');
+      return this.translation.instant('OFTEN.nerozhoduje');
     }
     return date.toLocaleString();
   }
@@ -308,7 +306,7 @@ export class DragAndDropListComponent implements OnInit {
       date.setHours(oClock.substring(0, 2), oClock.substring(3, 5));
     }
     if (dateUtc == null || dateUtc === '0'){
-      return this.translation.instant('OFTEN.neznamy');
+      return this.translation.instant('OFTEN.nerozhoduje');
     }
     return date.toLocaleString();
   }
@@ -431,7 +429,7 @@ export class DragAndDropListComponent implements OnInit {
       }
     }
     indexBedne += detailIndex + 1;
-    return this.alphabet[indexBedne];
+    return this.dataService.getLetter(indexBedne);
   }
 
   openDialogAboutTimeProblems(){

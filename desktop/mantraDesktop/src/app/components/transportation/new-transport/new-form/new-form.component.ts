@@ -97,10 +97,11 @@ export class NewFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.transportForm.disable();
     this.minDate = new Date();
     this.dateRange.controls.timeFrom.setValue('06:00');
     this.dateRange.controls.timeTo.setValue('18:00');
+    this.labelPosition = 'nakladka';
+    this.transportForm.enable();
   }
 
   upravBednu(){

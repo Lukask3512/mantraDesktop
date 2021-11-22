@@ -26,7 +26,7 @@ export class MainDetailAboutComponent implements OnInit {
   timeToLocal(dateUtc){
     const date = (new Date(dateUtc));
     if (!dateUtc || dateUtc === '0'){
-      return (this.translation.instant('OFTEN.nepriradene')).toString();
+      return (this.translation.instant('OFTEN.nerozhoduje')).toString();
     }
     return date.toLocaleDateString();
   }

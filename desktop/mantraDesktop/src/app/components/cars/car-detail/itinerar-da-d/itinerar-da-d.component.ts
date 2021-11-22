@@ -233,7 +233,7 @@ export class ItinerarDaDComponent implements OnInit {
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){
-      return this.translation.instant('OFTEN.neznamy');
+      return this.translation.instant('OFTEN.nerozhoduje');
     }
     return date.toLocaleString();
   }

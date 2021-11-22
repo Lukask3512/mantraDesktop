@@ -15,7 +15,6 @@ export class ShowDetailComponent implements OnInit {
 
   @ViewChild('nevylozene') nevylozeneElmenty: ElementRef;
   constructor(private dataService: DataService) { }
-  alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
   ngOnInit(): void {
   }
@@ -49,7 +48,7 @@ export class ShowDetailComponent implements OnInit {
       }
     }
     indexBedne += detailIndex + 1;
-    return this.alphabet[indexBedne];
+    return this.dataService.getLetter(indexBedne);
   }
 
   vylozene(mesto, pozicia){

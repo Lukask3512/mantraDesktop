@@ -10,7 +10,7 @@
 .greenMat{
   display: inline-block;
   padding: 2px;
-  border-bottom: 2px solid lime;
+  border-bottom: 2px solid limegreen;
   border-radius: 4px;
   margin-left: 6px;
 }
@@ -32,7 +32,7 @@
 }
 
 .okButton{
-  @include smallButton(lime);
+  @include smallButton(limegreen);
 }
 
 mat-checkbox {
