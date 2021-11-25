@@ -51,11 +51,14 @@ export class AddressService {
   async getOfferAddresses(){
     let justFirstTime = true;
     this.offerService.routes$.subscribe(async routes => {
+      routes.forEach((route, routeIndex) => {
 
-      for (const route of routes) {
+      // for (const route of routes) {
         var adresy = [];
         let vsetkyDokoncene = true;
-        for (const idAddress of route.addresses) {
+        route.addresses.forEach(idAddress => {
+
+        // for (const idAddress of route.addresses) {
           this.promiseForDownAdd(idAddress);
           if (justFirstTime) {
             setTimeout(() => {
@@ -63,11 +66,12 @@ export class AddressService {
               justFirstTime = false;
             }, 2000);
           }
-        }
-      }
+        });
+        });
 
 
-    });
+
+      });
   }
   // ked budu vsetky adresy finishnute, upravim routu na finished
   checkFinishedAddresAndUpdateRoute(){
@@ -121,8 +125,8 @@ export class AddressService {
     // return new Promise(resolve => {
       this.getOneAddresFromDatabase(idAddress).subscribe(oneAdress => {
 
-        //tu budem vkladat adresy do globalnej premennej a ak pride taka ista, len ju vymenim, bodka a na konci vzdy to pole
-        //dam .next - behavior subject. bodka 2
+        // tu budem vkladat adresy do globalnej premennej a ak pride taka ista, len ju vymenim, bodka a na konci vzdy to pole
+        // dam .next - behavior subject. bodka 2
 
         var adresa = oneAdress;
         // @ts-ignore
@@ -139,9 +143,7 @@ export class AddressService {
         this.addressesOfferGet.push(adresa);
         this._offerAddresses.next(this.addressesOfferGet);
         this.checkFinishedAddresAndUpdateRouteOffer();
-        // resolve(adresa)
-      })
-    // })
+      });
   }
 
   getAddressesFromOffer(){

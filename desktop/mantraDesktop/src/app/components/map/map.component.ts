@@ -444,11 +444,14 @@ export class MapComponent implements AfterViewInit {
   vratitZvyraznenuRoutu(){
     if (this.lastClickedOnRoute){
       var routeStyle = this.lastClickedOnRoute.getStyle();
-      const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
-      rgba[3] = 0.45;
-      routeStyle[routeStyle.length - 1].getStroke().setColor(rgba);
-      this.lastClickedOnRoute.setStyle(routeStyle);
+      if (routeStyle){
+        const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
+        rgba[3] = 0.45;
+        routeStyle[routeStyle.length - 1].getStroke().setColor(rgba);
+        this.lastClickedOnRoute.setStyle(routeStyle);
+      }
       this.lastClickedOnRoute = null;
+
     }else{
       this.lastClickedOnRoute = null;
     }
@@ -457,11 +460,13 @@ export class MapComponent implements AfterViewInit {
   zvyraznitRoutu(feature){
     this.lastClickedOnRoute = feature;
     var routeStyle = feature.getStyle();
-
+    if (routeStyle){
     const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
     rgba[3] = 1;
     routeStyle[routeStyle.length - 1].getStroke().setColor(rgba);
     feature.setStyle(routeStyle);
+    }
+
   }
 
   resizeMap(){
@@ -659,16 +664,6 @@ export class MapComponent implements AfterViewInit {
 
 
 
-
-            // const carStyle = new Style({
-            //   image: new Icon({
-            //     color: '#8959A8',
-            //     crossOrigin: 'anonymous',
-            //     src: 'assets/logo/truck.png',
-            //     scale: 0.05
-            //   })
-            // });
-            // carFeature.setStyle(carStyle);
             this.cars.push(carFeature);
             if (car[i].status === 4) {
               this.pulseCar = true;
@@ -695,9 +690,8 @@ export class MapComponent implements AfterViewInit {
               {
 
                 this.onClickFindInfo(car[i].id);
-                console.log('som nasiel same');
               },
-              500);
+              200);
           }
 
         }
@@ -712,9 +706,6 @@ export class MapComponent implements AfterViewInit {
         features: this.cars
       });
 
-      // this.vectorLayerCars = new VectorLayer({
-      //   source: clusterSource,
-      // });
 
       if (this.cars && this.cars.length > 0){
 
@@ -871,9 +862,9 @@ export class MapComponent implements AfterViewInit {
 
   addAddresses(){
     let mojeAdresy: Address[];
-
-    this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
-        this.addressService.offerAddresses$.subscribe(allOffers => {
+    let mamVsetkyBaliky = true;
+    let subAdresy = this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
+      let subPonuky =  this.addressService.offerAddresses$.subscribe(allOffers => {
 
         this.places = [];
         this.adressesFromDatabase = allAddresses.concat(allOffers);
@@ -896,15 +887,28 @@ export class MapComponent implements AfterViewInit {
                 }
                 const allPackages = this.packageService.getAllPackages().concat(this.packageService.getAllOfferPackages());
                 oneAdd.packagesId.forEach(onePackId => {
-                  detailVMeste.push(allPackages.find(onePackage => onePackage.id === onePackId));
+                  const balik = allPackages.find(onePackage => onePackage.id === onePackId)
+                  detailVMeste.push(balik);
+                  if (!balik){
+                    mamVsetkyBaliky = false;
+                  }
                 });
               }
+
               detailAuta.push(detailVMeste);
             });
             carsWithIti.push({...oneCar, itiAdresy: itinerarAuta, detailIti: detailAuta});
           }
 
         });
+        if (!mamVsetkyBaliky){
+          setTimeout(() => {
+            subAdresy.unsubscribe();
+            subPonuky.unsubscribe();
+            this.addAddresses();
+          }, 500);
+          return;
+        }
         this.carsWithItinerar = carsWithIti;
 
         if (this.carToShow && this.carsWithItinerar && !this.routesToShow){
@@ -1281,7 +1285,7 @@ export class MapComponent implements AfterViewInit {
       const fitnutPonuky = emitFromFilter.ukazat;
       this.maxPrekrocenieRozmerov = maxPrekrocenieRozmerov;
 
-      setTimeout( () => {
+      // setTimeout( () => {
       const poleSMinVzdialenostamiOdAdries = [];
       for (let i = 0; i < offers.length; i++) {
           const oneRouteOffer = offers[i];
@@ -1338,7 +1342,6 @@ export class MapComponent implements AfterViewInit {
         });
 
           const myPromise = new Promise((resolve, reject) => {
-            // todo tu daco spravit aby to nepocitalo prepravy kde nemam detail, ale aby sa to zopakovalo napr o sekundu...
             for (let j = 0; j < detailVPonuke.length; j++) {
               const oneAdressDetail = detailVPonuke[j];
               if (!oneAdressDetail) {
@@ -1376,7 +1379,6 @@ export class MapComponent implements AfterViewInit {
           const ponukaPreMesta = this.countFreeSpaceService.vypocitajPocetPalietVPonuke(prepravasDetailom);
           const pocetTonVPonuke = this.countFreeSpaceService.pocetTonVKazdomMeste(ponukaPreMesta);
         }else{
-          console.log('daco mi chyba')
         }
 
         // tu konci priradovanie detialov a max vah
@@ -1685,14 +1687,14 @@ export class MapComponent implements AfterViewInit {
           });
 
         }
-        // });
+            this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
+            this.drawOffers(poleSMinVzdialenostamiOdAdries, fitnutPonuky);
         });
       }
-      setTimeout( () => {
-        this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
-        this.drawOffers(poleSMinVzdialenostamiOdAdries, fitnutPonuky);
-      }, 500 );
-    }, 500 );
+      // setTimeout( () => {
+
+      // }, 500 );
+    // }, 500 );
     }
 
   }
@@ -2107,6 +2109,11 @@ export class MapComponent implements AfterViewInit {
         return;
       }
     });
+  }
+
+  offerConfirm(confirmId: string){
+    this.offersToShow.takenBy = confirmId;
+    this.carIti.setPonuka(this.offersToShow);
   }
 
 }

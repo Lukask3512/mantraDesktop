@@ -448,7 +448,6 @@ export class DetailComponent implements AfterViewInit {
       if (value === undefined){
         return;
       }else{
-        console.log(value);
         if (value !== this.route.price){
           this.route.price = value;
           this.dispecerService.getAllDispecersWithNoShowRoute(this.route.id).pipe(take(1)).subscribe(allDispecers => {
@@ -457,6 +456,7 @@ export class DetailComponent implements AfterViewInit {
               this.dispecerService.updateDispecer(oneDispecer);
             });
           });
+          this.routeService.updateRoute(this.route);
         }
       }
     });

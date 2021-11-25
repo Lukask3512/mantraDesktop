@@ -6,17 +6,17 @@
       <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapperAndTime">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
         <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">
-          <div (click)="openDialog(this.detailArray[i].packageId[indexik])" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
+          <div (click)="openDialog(this.detailArray[i].packageId[indexik], getBednaIndex(this.detailArray[i].townsArray[indexik], this.detailArray[i].detailArray[indexik]))" class="bedna" *ngFor="let detail of this.detailArray[i].detailArray; let indexik = index">
             <span class="numberOfBedna">{{getBednaIndex(this.detailArray[i].townsArray[indexik], this.detailArray[i].detailArray[indexik])}}</span>
           </div>
         </div>
         <div class="bednaWrapper" *ngIf="!this.detailArray[i].townsArray">
-          <div (click)="openDialog(this.detailArray[i][indexik].id)" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
+          <div (click)="openDialog(this.detailArray[i][indexik].id, getBednaIndex(i, indexik))" class="bedna" *ngFor="let detail of this.detailArray[i]; let indexik = index">
             <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
           </div>
         </div>
 
-        <button *ngIf="draggable" (click)="sendTown(i)">Update</button>
+        <button *ngIf="draggable" class="updateButton" (click)="sendTown(i)">Update</button>
 
         <i (click)="openDialogAboutTimeProblems()" class="material-icons" matSuffix [class]="getColorForTime(i)"
            matTooltip="{{timeToLocal(routeTown.datumPrijazdu, routeTown.casPrijazdu)}} - {{timeToLocal(routeTown.datumLastPrijazdy, routeTown.casLastPrijazdu)}}">date_range</i>
@@ -32,9 +32,9 @@
           <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
           {{this.address[i].nameOfTown}}
         </p>
-        <span class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
+        <span class="nakaldkaVykladka noWrap">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 
-        <span  *ngIf="this.address[i].estimatedTimeArrival && this.address[i].status !== 3">
+        <span class="noWrap"  *ngIf="this.address[i].estimatedTimeArrival && this.address[i].status !== 3">
         ETA {{this.estimatedTimeToLocal(this.address[i].estimatedTimeArrival)}}
       </span>
 

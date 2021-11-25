@@ -1,8 +1,9 @@
 <section *ngIf="this.detail">
-  <h2 *ngIf="this.car">{{this.car.ecv}}</h2>
-  <p>{{'CAR.sirkaVozidla' | translate}}: {{this.detail.sizeS}}</p>
-  <p>{{'CAR.vyskaVozidla' | translate}}: {{this.detail.sizeV}}</p>
-  <p>{{'CAR.dlzkaVozidla' | translate}}: {{this.detail.sizeD}}</p>
+  <h2 *ngIf="this.balikIndex">Id. {{this.balikIndex}}</h2>
+
+  <p>{{'PACKAGES.sirka' | translate}}: {{this.detail.sizeS}}</p>
+  <p>{{'PACKAGES.vyska' | translate}}: {{this.detail.sizeV}}</p>
+  <p>{{'PACKAGES.dlzka' | translate}}: {{this.detail.sizeD}}</p>
   <p>{{'PACKAGES.vaha' | translate}}: {{this.detail.weight}}</p>
   <p>{{'PACKAGES.stohovatelnost' | translate}}: {{this.detail.stohovatelnost}}</p>
 

@@ -56,7 +56,7 @@
 
 
       <div *ngIf="this.offersToShow != null" class="offers">
-        <app-posli-ponuku (whichOffersToShow)="reDrawOffersNoDelay()" [offerId]="this.offersToShow.id" ></app-posli-ponuku>
+        <app-posli-ponuku (offerConfirm)="offerConfirm($event)" (whichOffersToShow)="reDrawOffersNoDelay()" [offerId]="this.offersToShow.id" ></app-posli-ponuku>
         <app-main-detail-about [route]="this.offersToShow"></app-main-detail-about>
         <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
         <button class="detailBut" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>

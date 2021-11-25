@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import Cars from '../../../models/Cars';
 import DeatilAboutAdresses from '../../../models/DeatilAboutAdresses';
 import {CarService} from '../../../services/car.service';
-import {DetailAboutRouteService} from '../../../services/detail-about-route.service';
 import {PackageService} from '../../../services/package.service';
 
 @Component({
@@ -15,6 +14,7 @@ export class ShowDetailDialogComponent implements OnInit {
 
   car: Cars;
   detail: DeatilAboutAdresses;
+  balikIndex: string;
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any,
                public dialogRef: MatDialogRef<ShowDetailDialogComponent>,
@@ -22,9 +22,7 @@ export class ShowDetailDialogComponent implements OnInit {
                private packageService: PackageService) { }
 
   ngOnInit(): void {
-    this.carService.cars$.subscribe(allCars => {
-      this.car = allCars.find(oneCar => oneCar.id === this.data.carId);
-    });
+    this.balikIndex = this.data.balikId;
     this.detail = this.packageService.myPackages.find(onePackage => onePackage.id === this.data.detailId);
     if (!this.detail){
       this.detail = this.packageService.myPackagesOffer.find(onePackage => onePackage.id === this.data.detailId);

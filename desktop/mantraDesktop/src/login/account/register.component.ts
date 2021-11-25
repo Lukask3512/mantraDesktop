@@ -83,17 +83,6 @@ export class RegisterComponent implements OnInit {
 
   login() {
     this.spinner.show();
-    const localUser = JSON.parse(localStorage.getItem('user'));
-    const localCompany = JSON.parse(localStorage.getItem('company'));
-    if (localUser && localCompany){
-      // todo tu by som si mal nanovo natiahnut dispecera a company keby sa nieco zmenilo, aby si to zapamatalo
-      this.dataService.setDispecer(localUser);
-      this.dataService.setCompany(localCompany);
-      this.router.navigate(['/view/map']);
-      this.spinner.hide();
-      return;
-    }
-
     this.accountService.login(this.loginForm.get('email').value, this.loginForm.get('password').value).subscribe(user => {
       if (user){
 

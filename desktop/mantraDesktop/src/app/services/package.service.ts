@@ -34,7 +34,7 @@ export class PackageService {
 
     this.addressService.address$.subscribe(allAddresses => {
       // this.myPackages = []
-      allAddresses.forEach(jednaAdresa => {
+      allAddresses.forEach((jednaAdresa, indexAdresy) => {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
@@ -54,10 +54,10 @@ export class PackageService {
     });
 
     this.addressService.offerAddresses$.subscribe(allAddresses => {
-      // this.myPackagesOffer = []
       allAddresses.forEach((jednaAdresa, indexAdresy) => {
-        if (jednaAdresa.type == 'nakladka'){
-          for (const onePackageId of jednaAdresa.packagesId) {
+        if (jednaAdresa.type === 'nakladka'){
+          // for (const onePackageId of jednaAdresa.packagesId) {
+            jednaAdresa.packagesId.forEach((onePackageId, indexBalika) => {
             this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
               let detail: DeatilAboutAdresses = balik;
               detail.id = onePackageId;
@@ -69,7 +69,7 @@ export class PackageService {
               }
               this._packages.next(this.myPackages.concat(this.myPackagesOffer));
             });
-          }
+          });
         }
         if (indexAdresy === allAddresses.length - 1 && allAddresses.length > 0){
           // this.isDone.next(true);

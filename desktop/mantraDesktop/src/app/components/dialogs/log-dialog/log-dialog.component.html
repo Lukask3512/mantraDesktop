@@ -137,8 +137,8 @@
   </div>
 
 
-  <h1>{{'LOG.prepravovanePalety' | translate}}</h1>
-  <table *ngIf="this.detail">
+  <h1 class="companyNameSmall">{{'LOG.prepravovanePalety' | translate}}</h1>
+  <table class="routeLogSmall" *ngIf="this.detail">
     <tr>
       <th>{{'LOG.nakladkaIndex' | translate}}</th>
       <th>{{'LOG.vykladkaIndex' | translate}}</th>
@@ -146,7 +146,7 @@
       <th>{{'PACKAGES.vyska' | translate}}</th>
       <th>{{'PACKAGES.dlzka' | translate}}</th>
       <th>{{'PACKAGES.vaha' | translate}}</th>
-
+      <th>{{'PACKAGES.stohovatelnost' | translate}}</th>
     </tr>
     <!--    <tbody *ngFor="let jedenAllLog of this.detail; let i = index;">-->
 
@@ -162,8 +162,8 @@
     <!--    </tbody>-->
   </table>
 
-  <h1>{{'LOG.casyADatumy' | translate}}</h1>
-  <table *ngIf="this.addresses">
+  <h1 class="companyNameSmall">{{'LOG.casyADatumy' | translate}}</h1>
+  <table class="routeLogSmall" *ngIf="this.addresses">
     <tr>
       <th>Id.</th>
       <th>{{'LOG.adresa' | translate}}</th>

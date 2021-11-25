@@ -45,12 +45,12 @@ export class FilterComponent implements OnInit {
         setTimeout(() => {
           this.offers = routes.filter(oneRoute => oneRoute.finished === false);
           this.filterOffers(false);
-        }, 1000);
+        }, 3000);
       }else{
         setTimeout(() => {
           this.offers = routes.filter(oneRoute => oneRoute.finished === false);
           this.filterOffers(false);
-        }, 4000);
+        }, 1000);
       }
     });
   }

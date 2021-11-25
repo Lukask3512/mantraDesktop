@@ -20,14 +20,15 @@ export class PosliPonukuComponent implements OnInit {
 
   dispecer: Dispecer;
   @Output() whichOffersToShow = new EventEmitter<any>();
+  @Output() offerConfirm = new EventEmitter<string>();
+
   constructor(private dataService: DataService, private offerService: OfferRouteService,
               private dispecerService: DispecerService) { }
 
   ngOnInit(): void {
     // natiahnem si original offere lebo z mapy mam upravenu
-    this.listenToROute()
+    this.listenToROute();
     this.dispecer = this.dataService.getDispecer();
-    console.log(this.route);
 
   }
 
@@ -138,6 +139,7 @@ export class PosliPonukuComponent implements OnInit {
     this.route.finalAcceptDate = new Date().toString();
 
     this.offerService.updateRoute(this.route);
+    this.offerConfirm.emit(this.route.takenBy);
 
   }
 

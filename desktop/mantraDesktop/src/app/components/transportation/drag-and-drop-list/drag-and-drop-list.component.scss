@@ -1,3 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
 .routeTown{
   display: flex;
   justify-content: space-between;
@@ -7,6 +9,14 @@
 .routeInfo{
   background: #cccccc;
   border-radius: 2px;
+}
+
+.updateButton{
+  @include button(darkorange);
+}
+
+.noWrap{
+  white-space: nowrap;
 }
 
 .wrapper{

@@ -393,13 +393,14 @@ export class DragAndDropListComponent implements OnInit {
     });
   }
 
-  openDialog(detailId){
+  openDialog(detailId, balikIndex){
     console.log(detailId);
     console.log(this.detailArray);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       detailId: detailId,
       carId: null,
+      balikId: balikIndex
     };
     dialogConfig.width = '70%';
     dialogConfig.height = '70%';

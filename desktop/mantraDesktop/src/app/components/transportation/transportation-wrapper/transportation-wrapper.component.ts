@@ -143,8 +143,11 @@ export class TransportationWrapperComponent implements OnInit {
     this.active = true;
     if (this.showMineRoutes){
       this.routesToShow = this.allActiveRoutes;
+      this.routesToShow = this.sortByFinished(this.routesToShow, false);
+
     }else{
       this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => !oneRoute.finished);
+      this.routesToShowOffers = this.sortByFinished(this.routesToShowOffers, false);
     }
     this.inputFilter.nativeElement.value = '';
   }
@@ -153,8 +156,10 @@ export class TransportationWrapperComponent implements OnInit {
     this.active = false;
     if (this.showMineRoutes){
       this.routesToShow = this.allFinishedRoutes;
+      this.routesToShow = this.sortByFinished(this.routesToShow, true);
     }else{
       this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => oneRoute.finished);
+      this.routesToShowOffers = this.sortByFinished(this.routesToShowOffers, true);
     }
     this.inputFilter.nativeElement.value = '';
   }
@@ -172,15 +177,23 @@ export class TransportationWrapperComponent implements OnInit {
     this.showMineRoutes = true;
     if (this.active){
       this.routesToShow = this.allActiveRoutes;
+      this.routesToShow = this.sortByFinished(this.routesToShow, false);
     }else{
       this.routesToShow = this.allFinishedRoutes;
+      this.routesToShow = this.sortByFinished(this.routesToShow, true);
     }
     if (this.inputFilter){
       this.inputFilter.nativeElement.value = '';
     }
   }
 
-
+  sortByFinished(arrayOfRoutes: Route[], finished: boolean){
+    if (finished){
+      return arrayOfRoutes.sort((a, b) => (a.finishedAt > b.finishedAt) ? 1 : ((b.finishedAt > a.finishedAt) ? -1 : 0));
+    }else{
+      return arrayOfRoutes.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
+    }
+  }
 
   timestamptToDate(timestamp){
     let date = new Date(timestamp * 1000);
