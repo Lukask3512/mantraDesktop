@@ -1,6 +1,6 @@
 <div class="carDetailWrapper">
   <div *ngIf="this.car" class="header">
-    <h1>{{'CAR.car' | translate}}: {{this.car.ecv}}</h1>
+    <h1>{{this.car.ecv}}</h1>
     <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
     <app-car-naklad [car]="this.car"></app-car-naklad>
   </div>

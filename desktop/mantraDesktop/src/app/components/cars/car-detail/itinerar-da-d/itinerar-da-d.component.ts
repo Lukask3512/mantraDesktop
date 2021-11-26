@@ -13,6 +13,7 @@ import {DeleteFromItiComponent} from '../../../dialogs/delete-from-iti/delete-fr
 import {EditInfoComponent} from '../../../dialogs/edit-info/edit-info.component';
 import {AddressService} from '../../../../services/address.service';
 import {TranslateService} from '@ngx-translate/core';
+import {DataService} from '../../../../data/data.service';
 
 @Component({
   selector: 'app-itinerar-da-d',
@@ -28,15 +29,29 @@ export class ItinerarDaDComponent implements OnInit {
   constructor(private _snackBar: MatSnackBar,  public routeStatus: RouteStatusService,
               private packageService: PackageService, private carService: CarService,
               private dialog: MatDialog, private addressService: AddressService,
-              private translation: TranslateService) { }
+              private translation: TranslateService, private dataService: DataService) { }
 
   ngOnInit(): void {
   }
 
   setAddress(address: Address[], car: Cars){
-    this.address = address;
+    if (!this.address){
+      this.address = address;
+    }else{
+      for (let i = 0; i < address.length; i++) {
+        const adresaVItinerari = this.address.find(oneAdress => oneAdress.id === address[i].id);
+        const indexAdresyVIti = this.address.findIndex(oneAdress => oneAdress.id === address[i].id);
+        if (!adresaVItinerari){
+          this.address = address;
+          return;
+        }else{
+          this.address[indexAdresyVIti] = address[i];
+        }
+      }
+    }
     this.car = car;
     this.stiahniDetail();
+
   }
 
   drop(event: CdkDragDrop<Address[]>) {
@@ -59,15 +74,18 @@ export class ItinerarDaDComponent implements OnInit {
   }
 
   // pre nakladky
-  getBednaIndex(townIndex, detailIndex){
-    let indexBedne = 0;
+  getBednaIndex(townIndex, detailIndex, carArray: boolean){
+    if (carArray){
+      return townIndex + 1;
+    }
+    let indexBedne = -1;
     for (let i = 0; i < townIndex; i++) {
       if (!this.detail[i].townsArray){ // len nakladky pocitam
         indexBedne += this.getCountOfPackages(i);
       }
     }
     indexBedne += detailIndex + 1;
-    return indexBedne;
+    return this.dataService.getLetter(indexBedne);
   }
 
   // kontrola ci mozem prehodit mesta - podla detailu
@@ -126,25 +144,33 @@ export class ItinerarDaDComponent implements OnInit {
     this.address.forEach(oneAddress => {
       if (oneAddress){
         var myPackages = [];
-        var detailAr = {detailArray: [], townsArray: [], packageId: []}
+        var detailAr = {detailArray: [], townsArray: [], packageId: [], carArray: []};
         oneAddress.packagesId.forEach( oneId => {
           if (oneAddress.type === 'nakladka'){
             var balik = this.packageService.getOnePackage(oneId);
             myPackages.push(balik);
           }else{
+            const indexVAute = this.car.aktualnyNaklad.findIndex(oneId2 => oneId2 === oneId);
+            if (indexVAute > -1){ // ak ho najdem  v aute, nehladam to medzi ostatnymi
+              detailAr.detailArray.push(0);
+              detailAr.townsArray.push(indexVAute);
+              detailAr.packageId.push(oneId);
+              detailAr.carArray.push(true);
+            }else{
             // u by som mal vlozit len indexy do vykladky
-            this.detail.forEach((oneDetail, townId) => {
-              if (oneDetail.townsArray === undefined){
-                oneDetail.forEach((oneDetailId, packageId) => {
-                  if (oneDetailId && oneDetailId.id === oneId){
-                    detailAr.detailArray.push(packageId);
+              this.detail.forEach((oneDetail, townId) => {
+                if (oneDetail.townsArray === undefined){
+                  const packageIdd = oneDetail.findIndex(oneDetailId => oneDetailId.id === oneId);
+                  const packagee = oneDetail.find(oneDetailId => oneDetailId.id === oneId);
+                  if (packageIdd > -1){
+                    detailAr.detailArray.push(packageIdd);
                     detailAr.townsArray.push(townId);
-                    detailAr.packageId.push(oneDetailId.id);
+                    detailAr.packageId.push(packagee.id);
+                    detailAr.carArray.push(false);
                   }
-                });
-              }
-            });
-
+                }
+              });
+            }
           }
         });
         if (myPackages.length !== 0){
@@ -155,6 +181,12 @@ export class ItinerarDaDComponent implements OnInit {
       }
     });
   }
+
+  // // return id
+  // findDetail(oneDetail, deilId){
+  //   const detail = oneDetail.find(oneDetail2 => oneDetail2.id === deilId);
+  //   return detail.id;
+  // }
 
   deleteTownFromIti(address: Address){
     this.address = this.address.filter(adresa => adresa.id !== address.id);

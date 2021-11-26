@@ -483,6 +483,8 @@ export class MapComponent implements AfterViewInit {
         allCars.forEach(oneCar => {
           if (oneCar.itinerar && oneCar.itinerar.length > 0){
           let outputData;
+          // TODO tu by som mal kontrolovat ci sa mi len nahodou nezenil pocet aut,
+            //  inak to sem nepustat..zbytocne sa to bude natahovat stale
           this.routeCoordinates.getRoute(oneCar.id).subscribe((nasolSom) => {
             if (nasolSom) {
               const ref = this.storage.ref('Routes/' + oneCar.id + '.json');

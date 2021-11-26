@@ -5,12 +5,14 @@
       <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
       <div class="bednaWrapper" *ngIf="this.detail[i].townsArray">
         <div class="bedna" *ngFor="let detailil of this.detail[i].townsArray; let indexik = index">
-          <span class="numberOfBedna">{{getBednaIndex(this.detail[i].townsArray[indexik], this.detail[i].detailArray[indexik])}}</span>
+          <span class="numberOfBedna">{{getBednaIndex(this.detail[i].townsArray[indexik],
+                                                      this.detail[i].detailArray[indexik],
+                                                      this.detail[i].carArray[indexik])}}</span>
         </div>
       </div>
       <div class="bednaWrapper" *ngIf="!this.detail[i].townsArray">
         <div class="bedna" *ngFor="let detail of this.detail[i]; let indexik = index">
-          <span class="numberOfBedna">{{getBednaIndex(i, indexik)}}</span>
+          <span class="numberOfBedna">{{getBednaIndex(i, indexik, false)}}</span>
         </div>
       </div>
 
@@ -18,9 +20,11 @@
 
 
     <div *ngIf="this.address[i]" class="routeTown" (click)="sendTown(i)">
-      <p>{{this.address[i].nameOfTown}}
+      <p>
         <span *ngIf="this.address[i].type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
         <span *ngIf="this.address[i].type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
+        {{this.address[i].nameOfTown}}
+
       </p>
       <span  class="nakaldkaVykladka">{{this.routeStatus.getStatus(this.address[i].status)}}</span>
 

@@ -55,6 +55,10 @@ export class FilterComponent implements OnInit {
     });
   }
 
+  zmensiHeightCelkovejVysky(){
+
+  }
+
   filterOffers(ukazatPonuky: boolean){
 
     if (this.offers.length > 0){

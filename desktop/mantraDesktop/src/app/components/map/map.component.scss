@@ -55,7 +55,11 @@
 .mapComponentWrapper{
   //height: 100%;
   width: 100%;
-  //display: grid;
+  position: relative;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .headerName{
@@ -177,25 +181,31 @@
 #map{
   //height: 100%;
   width: 70%;
-  min-height: 700px;
+  height: 100%;
   border-bottom: 2px solid gray;
   box-shadow: 5px 5px 5px grey;
 }
+
+.appcarIti{
+  display: flex;
+  flex-direction: column;
+}
+
 .info{
   @include table();
   //height: auto;
   width: max-content;
-  overflow: initial;
-  height: min-content;
-  display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 10px;
   flex-grow: 2;
+  height: 84vh;
+  overflow: auto;
 }
 
 .dragDropList{
   margin: 10px;
+  width: 100%;
 }
 
 .detailMargin{
@@ -333,7 +343,7 @@ tr:nth-child(even) {
     height: 600px;
   }
   .info{
-    margin: 0;
+    margin-top: 10px;
     width: 100%;
   }
 }

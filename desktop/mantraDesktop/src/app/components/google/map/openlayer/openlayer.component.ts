@@ -21,6 +21,7 @@ import {unByKey} from 'ol/Observable';
 import {getVectorContext} from 'ol/render';
 import Address from "../../../../models/Address";
 import {fromEvent, Observable, Subscription} from 'rxjs';
+import {RouteCoordinatesService} from '../../../../services/route/route-coordinates.service';
 
 
 @Component({
@@ -56,7 +57,8 @@ export class OpenlayerComponent implements AfterViewInit{
   resizeObservable$: Observable<Event>;
   resizeSubscription$: Subscription;
 
-  constructor(private http: HttpClient, private storage: AngularFireStorage) { }
+  constructor(private http: HttpClient, private storage: AngularFireStorage,
+              private routeCoordinates: RouteCoordinatesService) { }
 
 
   notifyMe(addresses: Address[], car){
@@ -115,62 +117,66 @@ export class OpenlayerComponent implements AfterViewInit{
 
   addRoute(car){
     if (car && car.id){
-    var outputData;
-    const ref = this.storage.ref('Routes/' + car.id + '.json');
-    var stahnute = ref.getDownloadURL().subscribe(data => {
-      // console.log(data);
+      this.routeCoordinates.getRoute(car.id).subscribe((nasolSom) => {
+        if (nasolSom){
+        var outputData;
+        const ref = this.storage.ref('Routes/' + car.id + '.json');
+        var stahnute = ref.getDownloadURL().subscribe(data => {
+          // console.log(data);
 
-      this.http.get(data, { responseType: 'text' as 'json' }).pipe(take(1)).subscribe(text =>{
-        outputData = text;
+          this.http.get(data, {responseType: 'text' as 'json'}).pipe(take(1)).subscribe(text => {
+            outputData = text;
 
-        //zmena na json
-        outputData = JSON.parse(outputData);
-        //zmena na pole
-        outputData = outputData.map(Object.values);
+            //zmena na json
+            outputData = JSON.parse(outputData);
+            //zmena na pole
+            outputData = outputData.map(Object.values);
 
-        // zo sygicu mi pridu hodnoty * 100000 - mapy podporuju len normalny format preto to delim 100000
-        var finishArray = outputData.map(prvePole =>
-          prvePole.map(prvok => prvok / 100000));
-        this.points = finishArray;
+            // zo sygicu mi pridu hodnoty * 100000 - mapy podporuju len normalny format preto to delim 100000
+            var finishArray = outputData.map(prvePole =>
+              prvePole.map(prvok => prvok / 100000));
+            this.points = finishArray;
 
-        var route = new LineString(this.points)
-          .transform('EPSG:4326', 'EPSG:3857');
+            var route = new LineString(this.points)
+              .transform('EPSG:4326', 'EPSG:3857');
 
-        var routeCoords = route.getCoordinates();
-        var routeLength = routeCoords.length;
+            var routeCoords = route.getCoordinates();
+            var routeLength = routeCoords.length;
 
-        var routeFeature = new Feature({
-          type: 'route',
-          geometry: route
+            var routeFeature = new Feature({
+              type: 'route',
+              geometry: route
+            });
+            var routeStyle = new Style({
+              stroke: new Stroke({
+                width: 6,
+                color: [246, 36, 89, 0.8]
+              })
+            });
+            routeFeature.setStyle(routeStyle);
+
+
+            this.places.push(routeFeature);
+            this.coordinatesFeature = routeFeature;
+
+            var vectorSource = new VectorSource({
+              features: this.places,
+            });
+
+            this.map.removeLayer(this.vectorLayer)
+            this.vectorLayer = new VectorLayer({
+              source: vectorSource,
+            });
+            this.map.addLayer(this.vectorLayer);
+
+          }, (error) => {
+            console.log("trasa nenajdena")
+          });
+        }, error => {
+          console.log("trasa nenajdena")
         });
-        var routeStyle = new Style({
-          stroke: new Stroke({
-            width: 6,
-            color: [246, 36, 89, 0.8]
-          })
-        });
-        routeFeature.setStyle(routeStyle);
-
-
-        this.places.push(routeFeature);
-        this.coordinatesFeature = routeFeature;
-
-        var vectorSource = new VectorSource({
-          features: this.places,
-        });
-
-        this.map.removeLayer(this.vectorLayer)
-        this.vectorLayer = new VectorLayer({
-          source: vectorSource,
-        });
-        this.map.addLayer(this.vectorLayer);
-
-      }, (error) => {
-        console.log("trasa nenajdena")
-      })
-    },error => {
-      console.log("trasa nenajdena")
-    } );
+        }
+      });
     }
 
   }

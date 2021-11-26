@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {OfferRouteService} from "../../../../services/offer-route.service";
 import Route from "../../../../models/Route";
 import {RouteStatusService} from "../../../../data/route-status.service";
 import {DataService} from "../../../../data/data.service";
 import {DeleteRouteComponent} from "../../../dialogs/delete-route/delete-route.component";
 import {MatDialog} from "@angular/material/dialog";
+import Dispecer from '../../../../models/Dispecer';
+import {AddressService} from '../../../../services/address.service';
+import {DispecerService} from '../../../../services/dispecer.service';
+import {CompanyService} from '../../../../services/company.service';
 
 @Component({
   selector: 'app-wrapper',
@@ -14,7 +18,10 @@ import {MatDialog} from "@angular/material/dialog";
 export class WrapperComponent implements OnInit {
 
   constructor(private offerService: OfferRouteService, public routeStatusService: RouteStatusService,
-              private dataService: DataService,  private dialog: MatDialog) { }
+              private dataService: DataService,  private dialog: MatDialog, private addressService: AddressService,
+              private dispecerService: DispecerService, private companyService: CompanyService) { }
+
+  @ViewChild('inputFilter') inputFilter;
 
   routes: Route[];
   finishedRoutes: Route[];
@@ -29,6 +36,45 @@ export class WrapperComponent implements OnInit {
       this.finishedRoutes = routes.filter(oneRoute => oneRoute.finished === true);
       this.reClickOnTab();
     });
+  }
+
+  filterTowns(text){
+    const zFiltra = text.target.value.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    const routyNaZombrazenie = [];
+    let adresy;
+
+
+    // kontrola nazvu miest
+    for (let i = 0; i < this.routes.length; i++) {
+      for (let j = 0; j < this.routes[i].addresses.length; j++) {
+        const adresa = this.addressService.getOneAddresByIdGet(this.routes[i].addresses[j]);
+        if (adresa.nameOfTown.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(zFiltra)){
+          routyNaZombrazenie.push(this.routes[i]);
+          break;
+        }
+      }
+    }
+
+    // kontrola spolocnosti
+    for (let i = 0; i < this.routes.length; i++) {
+      const dispecer: Dispecer = this.dispecerService.getDispecerFromAnotherCompanies(this.routes[i].createdBy);
+      if (dispecer){
+        const company = this.companyService.getAnotherCompanies(dispecer.companyId);
+        if (company.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(zFiltra)){
+          if (!routyNaZombrazenie.find(oneRoute => oneRoute.id === this.routes[i].id)){
+            routyNaZombrazenie.push(this.routes[i]);
+          }
+        }
+      }
+    }
+
+    if (this.whatIsActive === 1){
+      this.routesToShow = this.routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished);
+      this.routesToShow = this.routesToShow.filter(oneRoute => routyNaZombrazenie.find(oneRouteToShow => oneRouteToShow.id === oneRoute.id));
+    }else{
+      this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished));
+      this.routesToShow = this.routesToShow.filter(oneRoute => routyNaZombrazenie.find(oneRouteToShow => oneRouteToShow.id === oneRoute.id));
+    }
   }
 
   routeDetail(route){
@@ -87,10 +133,16 @@ export class WrapperComponent implements OnInit {
   mine(){
     this.routesToShow = this.routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished);
     this.whatIsActive = 1;
+    if (this.inputFilter){
+      this.inputFilter.nativeElement.value = '';
+    }
   }
 
   assigned(){
     this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished));
     this.whatIsActive = 2;
+    if (this.inputFilter){
+      this.inputFilter.nativeElement.value = '';
+    }
   }
 }

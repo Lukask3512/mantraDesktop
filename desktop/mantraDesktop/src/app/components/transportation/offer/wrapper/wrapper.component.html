@@ -6,6 +6,15 @@
     <button class="buttonTab" [class]="getClass('assigned')" (click)="assigned()">{{'OFTEN.cakajuce' | translate}}</button>
   </div>
 
+  <section class="filter">
+    <mat-form-field  appearance="standard" class="gridItem">
+      <mat-label>{{'FILTER.filter' | translate}}</mat-label>
+      <input #inputFilter (input)="filterTowns($event)" matInput placeholder="{{'FILTER.mestoSpolocnost' | translate}}...">
+      <mat-hint>{{'FILTER.zadajMestoSpolocnost' | translate}}</mat-hint>
+    </mat-form-field>
+  </section>
+
+
   <mat-icon class="infoIcon"  matTooltip="{{'HINT.prijateSuVPrepravach' | translate}}">
     info
   </mat-icon>

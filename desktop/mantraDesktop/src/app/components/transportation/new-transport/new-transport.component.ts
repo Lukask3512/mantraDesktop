@@ -605,12 +605,25 @@ else{
           return;
         }, 200);
         }
+      this.route.id = idRouty;
       this.carId = this.route.carId;
       this.addressService.address$.subscribe(alAdd => {
 
         var adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
         adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
         this.addresses = adresy;
+
+        this.routeToDetail = {
+          adresyVPonuke: this.addresses,
+          detailVPonuke: this.detail
+        };
+
+        setTimeout(() =>
+          {
+            this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+          },
+          300);
+
         this.spinner.hide();
       });
     }, 100);

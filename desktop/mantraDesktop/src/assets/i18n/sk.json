@@ -37,7 +37,7 @@
     "welcome": "Vitajte v aplikácii Mantra",
     "prihlasovacieMeno": "Vaše prihlasovacie meno: ",
     "heslo": ", heslo: ",
-    "neboloZmenene": "Vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte, môžete si ho zmeniť na stránke http://prototyp.mantra-online.eu."
+    "neboloZmenene": "Vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte, môžete si ho zmeniť na stránke https://prototyp.mantra-online.eu."
   },
 
   "LOGIN": {
@@ -87,7 +87,7 @@
     "itinerar": "Itinerár",
     "nakladka": "Nakládka",
     "vykladka": "Vykládka",
-    "actualPackages": "Aktuálny náklad v aute",
+    "actualPackages": "Aktuálny náklad vo vozidle",
     "noAdress": "Prázdny itinerár",
     "changeItinerar": "Zmeň itinerár",
     "add": "Pridať",
@@ -106,7 +106,7 @@
     "nakladaciaHrana": "Nakladacia hrana",
     "pohybliva": "Pohyblivá nakladacia hrana",
     "vyskaHrany": "Výška nakladacej hrany",
-    "vyskaHranyVAute": "Výška nakladacej hrany v aute",
+    "vyskaHranyVAute": "Výška nakladacej hrany vo vozidle",
     "minVyskaHrany": "Minimálna výška hrany",
     "maxVyskahrany": "Maximálna výška hrany",
 
@@ -119,7 +119,7 @@
     "nalozenieZPrava": "Sprava",
     "nalozenieZLava": "Zľava",
     "nalozenieZVrchu": "Zvrchu",
-    "nalozenieZBoku": "Zboku",
+    "nalozenieZBoku": "Z boku",
     "vyskaNakPriestoru": "Výška nák. priestoru",
     "sirkaNakPriestoru": "Šírka nák. priestoru",
 
@@ -136,7 +136,7 @@
     "pristupVsetkym": "Udeliť prístup všetkým",
     "pravaPreVodica": "Práva",
     "neznamaPolohaAuta": "Upozornenie! Vozidlo nemá známu polohu a nedokážeme určiť vzdialenosť k ponuke. Pre určenie polohy sa prihláste do vozidla cez mobilnú aplikáciu.",
-    "zmeneneAdresy": "V aute sa zmenili adresy. Ponuku musíte uložiť nanovo."
+    "zmeneneAdresy": "Vo vozidle sa zmenili adresy. Ponuku musíte uložiť nanovo."
 
   },
   "VODIC": {
@@ -298,7 +298,7 @@
     "zruseniePrepravyPotvrdenie": "Zadávateľ chce zrušiť prepravu. Chcete potvrdiť zrušenie?",
     "zruseniePrepravca": "Dopravca chce zrušiť prepravu. Chcete potvrdiť zrušenie?",
     "zrusenie": "Zrušiť",
-    "ponukuPreFirmu": "ponuku pre firmu",
+    "ponukuPreFirmu": "ponuku pre spoločnosť",
     "bolaZrusena": "Preprava bola zrušená",
     "ponukaVoVozidle": "Preprava priradená vozidlu",
     "upravitPonuku": "Upraviť ponuku",
@@ -378,8 +378,8 @@
   },
   "LOG": {
     "prijate": "Prijaté",
-    "priradene": "Priradené do auta",
-    "autoSaNachadzalo": "Auto sa nachádzalo",
+    "priradene": "Priradené do vozidla",
+    "autoSaNachadzalo": "Poloha vozidla",
     "prepravovanePalety": "Prepravované balíky / palety",
     "nakladkaIndex": "Nakládka index",
     "vykladkaIndex": "Vykládka index",
@@ -387,7 +387,7 @@
     "adresa": "Adresa",
     "internaPraprava": "Interná preprava",
     "nezverejneny": "Nezverejnený",
-    "logInfo": "Tento log predstavuje objednávku a dodací list. Podľa zmluvných strán sa môžu vyžadovať ďaľšie dokumenty(napr. CMR, faktúra a pod.).\n  Preprava sa riadi príslušnými predpismi. Ide o obchodný vzťah. Môžu sa aplikovať zákonné podmienky a/alebo všeobecné obchodné podmienky\n  zmluvných strán, vrátane prepravných a iných poriadkov. Log bol vygenerovaný automaticky a zodpovedá záznamom prevádzkovateľa\n  aplikáie. Prístup k logu majú obe zmluvné strany vo svojej aplikácií. Pre viac informácií navštívte ...."
+    "logInfo": "Tento log predstavuje objednávku a dodací list. Podľa dohody zmluvných strán sa môžu vyžadovať ďalšie dokumenty (napr. CMR, faktúra, a pod.).\n  Preprava sa riadi príslušnými právnymi predpismi. Ide o obchodný vzťah, môžu sa aplikovať zákonné podmienky a/alebo všeobecné obchodné podmienky\n  zmluvných strán, vrátane prepravných a iných poriadkov. Log bol vygenerovaný automaticky a zodpovedá záznamom prevádzkovateľa\n  aplikácie. Prístup k logu majú obe zmluvné strany vo svojej aplikácii. Pre viac informácií navštívte www.mantra-online.eu."
   }
 
 }

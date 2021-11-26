@@ -42,7 +42,7 @@
     <div class="changeButtons" *ngIf="checkFinished()" (click)="vylozeneBaliky()" >
 <!--      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.updateDetails()">Odoslať vodičovi</button>-->
       <button class="buttonTransport orangered"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="createMyRoute()">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
-      <button class="buttonTransport darkorange"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="openOfferDialog()">{{'NEWADDRESSFORM.ponuknutSpolocnostiam' | translate}}</button>
+<!--      <button class="buttonTransport darkorange"  *ngIf="this.route && !this.route.id" [disabled]="vylozeneVsetko()" (click)="openOfferDialog()">{{'NEWADDRESSFORM.ponuknutSpolocnostiam' | translate}}</button>-->
       <button class="buttonTransport orangered"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openAddDialog()">{{'NEWADDRESSFORM.vybraťVozidlo' | translate}}</button>
       <button class="buttonTransport darkorange"  *ngIf="carId == null && this.route != undefined && this.route.id" [disabled]="this.addresses.length <= 0 || this.addresses == null" (click)="openOfferDialog()">{{'NEWADDRESSFORM.ponuknutSpolocnostiam' | translate}}</button>
       <button class="buttonTransport redBack"  *ngIf="this.route && this.route.carId" (click)="cancelFromCarDialog()">{{'NEWADDRESSFORM.odstranitZVoziudla' | translate}}</button>
