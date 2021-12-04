@@ -41,8 +41,15 @@ export class ItinerarDaDComponent implements OnInit {
       for (let i = 0; i < address.length; i++) {
         const adresaVItinerari = this.address.find(oneAdress => oneAdress.id === address[i].id);
         const indexAdresyVIti = this.address.findIndex(oneAdress => oneAdress.id === address[i].id);
-        if (!adresaVItinerari){
+        const adresaVAute = this.car.itinerar.find(oneId => oneId === address[i].id);
+        if (this.address.length !== car.itinerar.length){
           this.address = address;
+          this.itiChanged = false;
+          return;
+        }
+        if (!adresaVItinerari || !adresaVAute){
+          this.address = address;
+          this.itiChanged = false;
           return;
         }else{
           this.address[indexAdresyVIti] = address[i];

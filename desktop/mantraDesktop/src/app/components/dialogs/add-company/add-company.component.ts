@@ -12,6 +12,7 @@ import {AccountService} from '../../../../login/_services/account.service';
 import {EmailService} from '../../../services/email/email.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import Route from '../../../models/Route';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-company',
@@ -45,7 +46,8 @@ export class AddCompanyComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AddCompanyComponent>,
               private fb: FormBuilder, private companyService: CompanyService, private dispecerService: DispecerService,
-              private accountService: AccountService, private emailService: EmailService, private snackBar: MatSnackBar) { }
+              private accountService: AccountService, private emailService: EmailService, private snackBar: MatSnackBar,
+              private translate: TranslateService) { }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -86,15 +88,15 @@ export class AddCompanyComponent implements OnInit {
   }
 
   sendMailToRegisteredUser(){
-    let email  = this.dispecerForm.get('email').value;
-    let header  = 'Vitajte v aplikacii Mantra';
-    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo nebolo zmenene. Pokial si heslo nepamatate' +
-      'mozete ho zmenit na stranke http://prototyp.mantra-online.eu. ' ;
+    const email  = this.dispecerForm.get('email').value;
+    const header  = this.translate.instant('EMAIL.welcome');
+    const text  = this.translate.instant('EMAIL.prihlasovacieMeno') + this.dispecerForm.get('email').value +
+      this.translate.instant('EMAIL.neboloZmenene') ;
 
-    let reqObj = {
-      email: email,
-      header: header,
-      text: text
+    const reqObj = {
+      email,
+      header,
+      text
     };
     this.emailService.sendMessage(reqObj).subscribe(data => {
       console.log(data);
@@ -103,20 +105,21 @@ export class AddCompanyComponent implements OnInit {
 
   sendMail(password){
 
-    let email  = this.dispecerForm.get('email').value;
-    let header  = 'Vitajte v aplikacii Mantra';
-    let text  = 'Vase prihlasovacie meno:' + this.dispecerForm.get('email').value + ', vase heslo: ' + password +
-      ' http://prototyp.mantra-online.eu';
+    const email  = this.dispecerForm.get('email').value;
+    const header  = this.translate.instant('EMAIL.welcome');
+    const text  = this.translate.instant('EMAIL.prihlasovacieMeno') + ' ' + this.dispecerForm.get('email').value + ' ' +
+      this.translate.instant('EMAIL.heslo') + password +
+      ' https://prototyp.mantra-online.eu';
 
-    let reqObj = {
-      email: email,
-      header: header,
-      text: text
-    }
-    console.log(reqObj)
+    const reqObj = {
+      email,
+      header,
+      text
+    };
+    console.log(reqObj);
     this.emailService.sendMessage(reqObj).subscribe(data => {
       console.log(data);
-    })
+    });
   }
 
   async saveCompany(){
@@ -125,8 +128,7 @@ export class AddCompanyComponent implements OnInit {
     }else{
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(async user => {
         if (user.length > 0){
-          // tento pouzivatel uz je v databaze
-          // TODO vypis ze pouzivatel sa uz nachadza v databaze
+          this.openSnackBar('Email sa už v aplikácií nachádza.', 'Ok');
           return;
         }
         else {
@@ -136,23 +138,23 @@ export class AddCompanyComponent implements OnInit {
               if (res){
                 this.checkCompaniesForDico().then(async resDico => {
                   if (resDico){
-                    // var password = Math.random().toString(36).slice(-8);
-                    // var password = '123456';
-                    //   await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
-                    //   if (registrovany){
-                    //     this.sendMailToRegisteredUser();
-                    //   }else{
-                    //     this.sendMail(password);
-                    //   }
-                    // }));
-                    //
-                    // const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
-                    //
-                    // this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
-                    //
-                    // this.dispecerForm.reset();
-                    // this.dialogRef.close();
+                    var password = Math.random().toString(36).slice(-8);
+                    // password = '123456';
+                      await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
+                      if (registrovany){
+                        this.sendMailToRegisteredUser();
+                      }else{
+                        this.sendMail(password);
+                      }
+                    }));
 
+                    const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
+
+                    this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
+
+                    this.dispecerForm.reset();
+                    this.dialogRef.close();
+                    this.openSnackBar('Spločnosť bola vytvorená.', 'Ok');
                   }
                 });
               }
@@ -165,6 +167,7 @@ export class AddCompanyComponent implements OnInit {
       });
     }
   }
+
 
   checkFormsValid(){
     if (this.data){ // ked upravujem tak nekontrolujem ci je dispecer validny, lebo sa neda upravcovat
@@ -240,7 +243,7 @@ export class AddCompanyComponent implements OnInit {
   }
 
   updateCompany(){
-    var dispecer = this.assignToDispecer(this.company.id);
+    const dispecer = this.assignToDispecer(this.company.id);
     dispecer.id = this.dispecer.id;
     this.checkCompanyForIco().then(res => {
       if (res){

@@ -32,6 +32,8 @@ import {RouteCoordinatesService} from '../../../../services/route/route-coordina
 export class OpenlayerComponent implements AfterViewInit{
   map;
   vectorLayer = new VectorLayer();
+  vectorLayerRoute = new VectorLayer();
+
   // vectorLayer;
   coordinatesSkuska = [[2.173403, 40.385064], [2.273403,41.385064]];
   //skusam vytvorit trasu
@@ -118,7 +120,9 @@ export class OpenlayerComponent implements AfterViewInit{
   addRoute(car){
     if (car && car.id){
       this.routeCoordinates.getRoute(car.id).subscribe((nasolSom) => {
-        if (nasolSom){
+        if (nasolSom !== undefined || nasolSom !== null){
+          setTimeout(() => {
+
         var outputData;
         const ref = this.storage.ref('Routes/' + car.id + '.json');
         var stahnute = ref.getDownloadURL().subscribe(data => {
@@ -156,25 +160,29 @@ export class OpenlayerComponent implements AfterViewInit{
             routeFeature.setStyle(routeStyle);
 
 
-            this.places.push(routeFeature);
-            this.coordinatesFeature = routeFeature;
+            // this.places.push(routeFeature);
 
-            var vectorSource = new VectorSource({
-              features: this.places,
+            const trasa = [routeFeature];
+            // this.coordinatesFeature = routeFeature;
+
+            const vectorSource = new VectorSource({
+              features: trasa,
             });
 
-            this.map.removeLayer(this.vectorLayer)
-            this.vectorLayer = new VectorLayer({
+            this.map.removeLayer(this.vectorLayerRoute)
+            this.vectorLayerRoute = new VectorLayer({
               source: vectorSource,
             });
-            this.map.addLayer(this.vectorLayer);
+            this.vectorLayerRoute.setZIndex(1);
+            this.map.addLayer(this.vectorLayerRoute);
 
           }, (error) => {
-            console.log("trasa nenajdena")
+            console.log("trasa nenajdena");
           });
         }, error => {
-          console.log("trasa nenajdena")
+          console.log("trasa nenajdena");
         });
+          }, 3000);
         }
       });
     }
@@ -264,6 +272,7 @@ export class OpenlayerComponent implements AfterViewInit{
     this.vectorLayer = new VectorLayer({
       source: vectorSource,
     });
+    this.vectorLayer.setZIndex(2);
     this.map.addLayer(this.vectorLayer);
 
     this.view.fit(vectorSource.getExtent(), {padding: [100,100,100,100],minResolution: 50} );
