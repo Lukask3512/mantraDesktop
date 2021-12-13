@@ -1,5 +1,5 @@
 <mat-dialog-content class="wrapper">
-  <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addCompany' | translate}}</h1>
+  <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addComapny' | translate}}</h1>
   <h1 *ngIf="this.data" class="header">{{'COMPANIES.updateCompany' | translate}}</h1>
   <form class="gridContainer" [formGroup]="companyForm">
     <mat-vertical-stepper>
@@ -104,3 +104,4 @@
   <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="buttonG" [disabled]="checkFormsValid()">{{'OFTEN.update' | translate}}</button>
 
 </mat-dialog-content>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

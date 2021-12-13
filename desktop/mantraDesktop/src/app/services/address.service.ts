@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
-import Dispecer from "../models/Dispecer";
-import {BehaviorSubject, Observable} from "rxjs";
-import {DataService} from "../data/data.service";
-import {map, take} from "rxjs/operators";
-import Route from "../models/Route";
-import Address from "../models/Address";
-import {OfferRouteService} from "./offer-route.service";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import Dispecer from '../models/Dispecer';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {DataService} from '../data/data.service';
+import {map, take} from 'rxjs/operators';
+import Route from '../models/Route';
+import Address from '../models/Address';
+import {OfferRouteService} from './offer-route.service';
 import {RouteService} from './route.service';
 
 @Injectable({
@@ -54,12 +54,14 @@ export class AddressService {
       routes.forEach((route, routeIndex) => {
 
       // for (const route of routes) {
-        var adresy = [];
-        let vsetkyDokoncene = true;
+        const adresy = [];
+        const vsetkyDokoncene = true;
         route.addresses.forEach(idAddress => {
 
-        // for (const idAddress of route.addresses) {
-          this.promiseForDownAdd(idAddress);
+          const mamJuStiahnutu = this.addressesOfferGet.find(jednaAdresa => jednaAdresa.id === idAddress);
+          if (!mamJuStiahnutu){
+            this.promiseForDownAdd(idAddress);
+          }
           if (justFirstTime) {
             setTimeout(() => {
               this.checkFinishedAddresAndUpdateRouteOffer();
@@ -77,7 +79,7 @@ export class AddressService {
   checkFinishedAddresAndUpdateRoute(){
     this.routeService.getRoutesNoSub().forEach(oneRoute => {
       if (!oneRoute.finished){
-      let adresyZRouty: Address[] = this.addressesGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
+      const adresyZRouty: Address[] = this.addressesGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
       let finishIt = true;
       adresyZRouty.forEach(jednaAdresa => {
         if (jednaAdresa.status !== 3){
@@ -86,7 +88,7 @@ export class AddressService {
       });
       // ak je finishIt stale true, route upravim na finished
       if (finishIt){
-        var routeSFinish = oneRoute;
+        const routeSFinish = oneRoute;
         routeSFinish.finished = true;
         routeSFinish.finishedAt = new Date().toString();
         this.routeService.updateRoute(routeSFinish);
@@ -100,7 +102,7 @@ export class AddressService {
   checkFinishedAddresAndUpdateRouteOffer(){
     this.offerService.getRoutesNoSub().forEach(oneRoute => {
       if (!oneRoute.finished){
-        let adresyZRouty: Address[] = this.addressesOfferGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
+        const adresyZRouty: Address[] = this.addressesOfferGet.filter(oneAdd => oneRoute.addresses.includes(oneAdd.id));
         let finishIt;
         if (adresyZRouty.length === oneRoute.addresses.length){
           finishIt = true;
@@ -112,7 +114,7 @@ export class AddressService {
         });
         // ak je finishIt stale true, route upravim na finished
         if (finishIt){
-          var routeSFinish = oneRoute;
+          const routeSFinish = oneRoute;
           routeSFinish.finished = true;
           routeSFinish.finishedAt = new Date().toString();
           this.routeService.updateRoute(routeSFinish);
@@ -128,12 +130,12 @@ export class AddressService {
         // tu budem vkladat adresy do globalnej premennej a ak pride taka ista, len ju vymenim, bodka a na konci vzdy to pole
         // dam .next - behavior subject. bodka 2
 
-        var adresa = oneAdress;
+        const adresa = oneAdress;
         // @ts-ignore
         adresa.id = idAddress;
         if (this.addressesOfferGet){
         // @ts-ignore
-        var jetam = this.addressesOfferGet.find(jednaAdresa => jednaAdresa.id == adresa.id);
+        const jetam = this.addressesOfferGet.find(jednaAdresa => jednaAdresa.id == adresa.id);
         if (jetam){
           // @ts-ignore
           this.addressesOfferGet = this.addressesOfferGet.filter(jednaAdresa => jednaAdresa.id != adresa.id);
@@ -155,16 +157,16 @@ export class AddressService {
   }
 
   getRoutes(){
-    var createdId = this.dataService.getMyIdOrMaster();
+    const createdId = this.dataService.getMyIdOrMaster();
     return this.afs.collection<Address>('address', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', createdId);
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -218,7 +220,7 @@ export class AddressService {
   //
   // }
 
-  //toto i treba dorobit
+  // toto i treba dorobit
   // createRoute(route: Route){
   //   const id = this.afs.createId();
   //   this.afs.collection('route').doc(id).set(route);

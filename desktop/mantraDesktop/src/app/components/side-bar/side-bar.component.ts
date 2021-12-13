@@ -15,7 +15,13 @@ export class SideBarComponent implements OnInit {
   }
 
   getCompany(){
-    return this.dataService.getDispecer().email === 'mantra@mantra.sk';
+    if (this.dataService.getDispecer().email === 'mantra@mantra.sk' ||
+      this.dataService.getDispecer().email === 'manage.transport.repeat@gmail.com' ||
+      this.dataService.getDispecer().email === 'michal.rancak@truck-alliance.cz'){
+        return true;
+    }else{
+         return false;
+    }
   }
 
   routeDetail(route: Route){

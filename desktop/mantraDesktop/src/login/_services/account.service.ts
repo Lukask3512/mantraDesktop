@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/login/_models/user';
 import Route from '../../app/models/Route';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -18,7 +19,8 @@ export class AccountService {
     private router: Router,
     private http: HttpClient,
     private firebaseAuth: AngularFireAuth,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private translate: TranslateService
   ) {
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
@@ -55,7 +57,7 @@ export class AccountService {
       })
       .catch(err => {
         // console.log('Something went wrong:',err.message);
-        this.openSnackBar('Nespravne heslo', 'Ok');
+        this.openSnackBar(this.translate.instant('POPUPS.nespravneHeslo'), 'Ok');
         user.next(false);
       });
     return user;

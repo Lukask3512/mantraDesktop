@@ -17,6 +17,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "raf",
+              "firebase",
+              "@firebase/auth",
+              "@firebase/component",
+              "core-js",
+              "pbf"
+            ],
             "outputPath": "dist/mantraDesktop",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -46,7 +54,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": { "scripts": false, "styles": false, "hidden": true, "vendor": true },
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
@@ -55,8 +63,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "35mb",
+                  "maximumError": "35mb"
                 },
                 {
                   "type": "anyComponentStyle",

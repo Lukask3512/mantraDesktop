@@ -4,3 +4,7 @@
 .buttonG {
   @include tableAddButton();
 }
+
+.gridItem{
+  margin: 5px;
+}

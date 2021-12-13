@@ -394,7 +394,7 @@ export class RouteToItinerarComponent implements OnInit {
     if (isNew){
       classString = 'newAddress ';
     }
-    if (indexMesta > -1 && this.najdiIndexNakladky() <= indexAdresy && this.volnaVahaPreAuto[indexAdresy] > 0){
+    if (indexMesta > -1 && this.najdiIndexNakladky() <= indexAdresy && this.volnaVahaPreAuto[indexAdresy] >= 0){
       classString = classString + 'greenBack';
     }else{
       classString = classString + 'redBack';

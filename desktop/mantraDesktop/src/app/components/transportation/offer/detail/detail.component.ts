@@ -31,6 +31,7 @@ import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-de
 import {MatPaginator} from '@angular/material/paginator';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {MainDetailAboutComponent} from '../../main-detail-about/main-detail-about.component';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class DetailComponent implements AfterViewInit {
               private detailService: DetailAboutRouteService, private addressesService: AddressService,
               private packageService: PackageService, private dialog: MatDialog, private router: Router,
               private _snackBar: MatSnackBar, private routeService: RouteService, private dispecerService: DispecerService,
-              private spinner: NgxSpinnerService) { }
+              private spinner: NgxSpinnerService, private translate: TranslateService) { }
   route: Route;
   fakeRoute: Route;
   price: number;
@@ -271,7 +272,7 @@ export class DetailComponent implements AfterViewInit {
         return;
       }else{
         this.offerService.deleteRoute(this.route.id);
-        this.openSnackBar('Ponuka bola vymazana', 'Ok');
+        this.openSnackBar(this.translate.instant('POPUPS.ponukaBolaVymazana'), 'Ok');
         this.router.navigate(['/view/offerRoute']);
       }
     });

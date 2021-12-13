@@ -13,6 +13,7 @@ import {EmailService} from '../../../services/email/email.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import Route from '../../../models/Route';
 import {TranslateService} from '@ngx-translate/core';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-add-company',
@@ -47,7 +48,7 @@ export class AddCompanyComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AddCompanyComponent>,
               private fb: FormBuilder, private companyService: CompanyService, private dispecerService: DispecerService,
               private accountService: AccountService, private emailService: EmailService, private snackBar: MatSnackBar,
-              private translate: TranslateService) { }
+              private translate: TranslateService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -123,12 +124,14 @@ export class AddCompanyComponent implements OnInit {
   }
 
   async saveCompany(){
+    this.spinner.show();
     if (this.data){
-
+      this.spinner.hide();
     }else{
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(async user => {
         if (user.length > 0){
-          this.openSnackBar('Email sa už v aplikácií nachádza.', 'Ok');
+          this.openSnackBar(this.translate.instant('POPUPS.emailSaUzNachadza'), 'Ok');
+          this.spinner.hide();
           return;
         }
         else {
@@ -151,10 +154,10 @@ export class AddCompanyComponent implements OnInit {
                     const idOfCompany = await this.companyService.createCompany(this.assignToCompany());
 
                     this.dispecerService.createDispecer(this.assignToDispecer(idOfCompany));
-
+                    this.spinner.hide();
                     this.dispecerForm.reset();
                     this.dialogRef.close();
-                    this.openSnackBar('Spločnosť bola vytvorená.', 'Ok');
+                    this.openSnackBar(this.translate.instant('POPUPS.bolaVytvorena'), 'Ok');
                   }
                 });
               }
@@ -190,7 +193,8 @@ export class AddCompanyComponent implements OnInit {
         if (!this.company || this.company.dicIc !== this.assignToCompany().dicIc){
           this.companyService.getCompanyByDico(this.assignToCompany().dicIc).pipe(take(1)).subscribe(companiesDic => {
           if (companiesDic.length > 0) {
-            this.openSnackBar('Spolocnost s takym dic sa už nachádza v databáze', 'Ok');
+            this.openSnackBar(this.translate.instant('POPUPS.dicNachadza'), 'Ok');
+            this.spinner.hide();
             resolve(false);
             return;
           }else{
@@ -209,7 +213,8 @@ export class AddCompanyComponent implements OnInit {
       if (!this.company || this.company.ico !== this.assignToCompany().ico){
         this.companyService.getCompanyByIco(this.assignToCompany().ico).pipe(take(1)).subscribe(companies => {
           if (companies.length > 0) {
-            this.openSnackBar('Spolocnost s takym ico sa už nachádza v databáze', 'Ok');
+            this.openSnackBar(this.translate.instant('POPUPS.icoNachadza'), 'Ok');
+            this.spinner.hide();
             resolve(false);
             return;
           }else{
@@ -228,7 +233,8 @@ export class AddCompanyComponent implements OnInit {
       if (!this.company || this.company.name !== this.assignToCompany().name){
         this.companyService.getCompanyByName(this.assignToCompany().name).pipe(take(1)).subscribe(companies => {
           if (companies.length > 0) {
-            this.openSnackBar('Spolocnost s takym nazvom sa už nachádza v databáze', 'Ok');
+            this.openSnackBar(this.translate.instant('POPUPS.nazovNachadza'), 'Ok');
+            this.spinner.hide();
             resolve(false);
             return;
           }else{
@@ -251,6 +257,7 @@ export class AddCompanyComponent implements OnInit {
           if (resDico){
             this.dispecerService.updateDispecer(dispecer);
             this.companyService.updateCompany(this.assignToCompany(), this.company.id);
+            this.spinner.hide();
             this.dialogRef.close();
           }
         });

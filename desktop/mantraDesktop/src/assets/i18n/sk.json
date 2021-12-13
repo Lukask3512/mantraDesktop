@@ -30,7 +30,8 @@
     "problem": "Problém",
     "preskocene": "Preskočené",
     "nepriradene": "Nepriradené",
-    "cakajuce": "Vaše reakcie"
+    "cakajuce": "Vaše reakcie",
+    "skontrolovat": "Skontrolovať"
   },
 
   "EMAIL": {
@@ -45,7 +46,10 @@
     "password": "Heslo",
     "login": "Prihlásiť sa",
     "forgotPassword": "Zabudnuté heslo",
-    "zmenaHesla": "Zmena hesla"
+    "zmenaHesla": "Zmena hesla",
+    "enterEmail": "Tu vložte e-mail",
+    "enterPass": "Tu vložte heslo",
+    "mobileApp": "Mobilná aplikácia"
   },
   "HEADER": {
     "logout": "Odhlásenie",
@@ -388,6 +392,26 @@
     "internaPraprava": "Interná preprava",
     "nezverejneny": "Nezverejnený",
     "logInfo": "Tento log predstavuje objednávku a dodací list. Podľa dohody zmluvných strán sa môžu vyžadovať ďalšie dokumenty (napr. CMR, faktúra, a pod.).\n  Preprava sa riadi príslušnými právnymi predpismi. Ide o obchodný vzťah, môžu sa aplikovať zákonné podmienky a/alebo všeobecné obchodné podmienky\n  zmluvných strán, vrátane prepravných a iných poriadkov. Log bol vygenerovaný automaticky a zodpovedá záznamom prevádzkovateľa\n  aplikácie. Prístup k logu majú obe zmluvné strany vo svojej aplikácii. Pre viac informácií navštívte www.mantra-online.eu."
+  },
+  "POPUPS": {
+    "nolicence": "Licencia vypršala",
+    "nouser": "Používateľ nenájdený",
+    "zadajteEmaili": "Zadajte e-mail",
+    "emailodoslany": "Na e-mailovú adresu bol zaslaný e-mail",
+    "ziskaliStePonuku": "Získali ste ponuku, priraďte ju do vozidla",
+    "niektoMaZaujem": "Niekto má záujem o vašu ponuku",
+    "tutoZmenuNejdeVykonat": "Túto zmenu nemôžete vykonať",
+    "emailSaUzNachadza": "E-mail sa už v aplikácii nachádza",
+    "bolaVytvorena": "Spoločnosť bola vytvorená",
+    "dicNachadza": "Spoločnosť s takýmto DIČ sa už v aplikácii nachádza",
+    "icoNachadza": "Spoločnosť s takýmto IČO sa už v aplikácii nachádza",
+    "nazovNachadza": "Spoločnosť s takýmto názvom sa už v aplikácii nachádza",
+    "vAuteSaZmenili": "Vo vozidle sa zmenili adresy. Ponuku musíte uložiť nanovo.",
+    "ponukySaNacitavaju": "Ponuky sa načítavajú",
+    "ponukaBolaVymazana": "Ponuka bola vymazaná",
+    "nespravneHeslo": "Nesprávne heslo",
+    "prilizTazky": "Tovar je príliš ťažký",
+    "prilizVelky": "Tovar je príliš veľký"
   }
 
 }

@@ -30,7 +30,8 @@
     "problem": "Problém",
     "preskocene": "Přeskočeno",
     "nepriradene": "Nepřiřazeno",
-    "cakajuce": "Vaše reakce"
+    "cakajuce": "Vaše reakce",
+    "skontrolovat": "Zkontrolovat"
   },
 
   "EMAIL": {
@@ -45,7 +46,10 @@
     "password": "Heslo",
     "login": "Přihlásit se",
     "forgotPassword": "Zapomenuté heslo",
-    "zmenaHesla": "Změna hesla"
+    "zmenaHesla": "Změna hesla",
+    "enterEmail": "Tady zadejte e-mail",
+    "enterPass": "Tady zadejte heslo",
+    "mobileApp": "Mobilní aplikace"
   },
   "HEADER": {
     "logout": "Odhlášení",
@@ -388,6 +392,26 @@
     "internaPraprava": "Interní přeprava",
     "nezverejneny": "Nezveřejneno",
     "logInfo": "Tento log představuje objednávku a dodací list. Dle dohody smluvních stran se můžou vyžadovat další dokumenty (např. CMR, faktura, a pod.).\n  Přeprava se řídí příslušnými právními předpisy. Jde o obchodní vztah, můžou se aplikovat zákonní a/nebo všeobecné obchodní podmínky\n  smluvních stran, včetně přepravních a jiných řádů. Log byl vygenerován automaticky a odpovídá záznamům provozovatele\n  aplikace. Přístup k logu mají obě smluvní strany ve své aplikaci. Pro více informací navštivte www.mantra-online.eu."
+  },
+  "POPUPS": {
+    "nolicence": "Licence vypršela",
+    "nouser": "Uživatel nenalezen",
+    "zadajteEmaili": "Zadejte e-mail",
+    "emailodoslany": "Na e-mailovou adresu byl zaslán e-mail",
+    "ziskaliStePonuku": "Získali jste nabídku, přiřaďte ji do vozidla",
+    "niektoMaZaujem": "Někdo má zájem o vaši nabídku",
+    "tutoZmenuNejdeVykonat": "Tuto změnu nemůžete vykonat",
+    "emailSaUzNachadza": "E-mail se už v aplikaci vyskytuje",
+    "bolaVytvorena": "Společnost byla vytvořena",
+    "dicNachadza": "Společnost s takovým DIČ se už v aplikaci vyskytuje",
+    "icoNachadza": "Společnost s takovým IČO se už v aplikaci vyskytuje",
+    "nazovNachadza": "Společnost s takovým názvem se už v aplikaci vyskytuje",
+    "vAuteSaZmenili": "Ve vozidle se změnili adresy. Nabídku musíte uložit znovu.",
+    "ponukySaNacitavaju": "Nabídky se načítají",
+    "ponukaBolaVymazana": "Nabídka byla vymazána",
+    "nespravneHeslo": "Nesprávné heslo",
+    "prilizTazky": "Zboží je příliš ťěžké",
+    "prilizVelky": "Zboží je příliš veliké"
   }
 
 }

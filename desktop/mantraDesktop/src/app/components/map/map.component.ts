@@ -1355,7 +1355,7 @@ export class MapComponent implements AfterViewInit {
               const oneAdressDetail = detailVPonuke[j];
               if (!oneAdressDetail) {
                 setTimeout(() => {
-                  this.openSnackBar('Ponuky sa načitavajú', 'Ok');
+                  this.openSnackBar(this.translation.instant('POPUPS.ponukySaNacitavaju'), 'Ok');
                   this.offersUpdate(emitFromFilter);
                   return;
                 }, 2000);
@@ -1364,7 +1364,7 @@ export class MapComponent implements AfterViewInit {
                 const oneDetail = oneAdressDetail[k];
                 if (!oneDetail) {
                   setTimeout(() => {
-                    this.openSnackBar('Ponuky sa načitavajú', 'Ok');
+                    this.openSnackBar(this.translation.instant('POPUPS.ponukySaNacitavaju'), 'Ok');
                     this.offersUpdate(emitFromFilter);
                     return;
                   }, 2000);

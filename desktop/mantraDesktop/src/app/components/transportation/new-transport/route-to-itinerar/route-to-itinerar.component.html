@@ -55,8 +55,8 @@
 
     <div *ngIf="oneAddress && oneAddress.type" class="routeTown">
       <p>
-        <span *ngIf="oneAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
-        <span *ngIf="oneAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
+        <span *ngIf="oneAddress.type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+        <span *ngIf="oneAddress.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
         {{oneAddress.nameOfTown}}
       </p>
     </div>
@@ -105,8 +105,8 @@
           </div>
           <div class="routeTown">
             <p>
-              <span *ngIf="itiAddress.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">N</span>
-              <span *ngIf="itiAddress.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">V</span>
+              <span *ngIf="itiAddress.type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+              <span *ngIf="itiAddress.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
               {{itiAddress.nameOfTown}}
               <span class="oversize" matTooltip="{{'TRANSPORT.prilizVelky' | translate}}" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
               <span class="oversize" matTooltip="{{'TRANSPORT.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>

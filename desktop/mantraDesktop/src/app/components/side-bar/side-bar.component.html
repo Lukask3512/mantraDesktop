@@ -1,18 +1,14 @@
 
 <nav class="main-nav" role="navigation">
     <ul class="unstyled list-hover-slide">
-      <li><a routerLinkActive="active"  routerLink="/view/transport" class="nav">{{'HEADER.transport' | translate}}</a></li>
-      <li><a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.trhovisko' | translate}}</a></li>
-      <li><a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}}</a></li>
-      <li><a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}}</a></li>
-      <li><a routerLinkActive="active" routerLink="/view/vodici" class="nav">{{'HEADER.drivers' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active"  routerLink="/view/transport" class="nav">{{'HEADER.transport' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.trhovisko' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/vodici" class="nav">{{'HEADER.drivers' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}}</a></li>
 
-      <li><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}}</a></li>
-<!--      <li><a routerLinkActive="active" routerLink="/view/profile" class="nav">{{'HEADER.profile' | translate}}</a></li>-->
       <li *ngIf="getCompany()"><a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}}</a></li>
-<!--      <li class="nav-item">-->
-<!--        <a (click)="routeDetail(null)" routerLinkActive="active" routerLink="/view/newRoute" class="nav">Vytvorit prepravu </a>-->
-<!--      </li>-->
     </ul>
 </nav>
 

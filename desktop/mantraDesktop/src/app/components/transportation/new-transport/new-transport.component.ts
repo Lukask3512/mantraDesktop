@@ -586,8 +586,8 @@ else{
       route.offerFrom = [];
       route.priceFrom = [];
       this.routeService.createRoute(route).then(resolve => {
-        console.log(resolve)
         this.getNewRoute(resolve);
+        this.childDropList.setDragable(false);
       });
     });
   }

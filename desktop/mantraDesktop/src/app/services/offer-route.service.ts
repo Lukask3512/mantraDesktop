@@ -7,6 +7,7 @@ import {map, take} from 'rxjs/operators';
 import Route from '../models/Route';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class OfferRouteService {
   // neukazovat pri kazdej zmene ten isty dialog
   dialogForRouteShown = [];
   constructor(private afs: AngularFirestore, private dataService: DataService, private _snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router,  private translate: TranslateService) {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.readAllQueries().subscribe(res => {
@@ -33,13 +34,13 @@ export class OfferRouteService {
         if (!oneRoute.cancelByDriver && !oneRoute.cancelByCreator){
           if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId && !this.aldreadyThere(oneRoute.id)){
             setTimeout(() => {
-              this.openSnackBar('Ziskali ste ponuku, priradte ju do auta', 'Priradit', oneRoute);
+              this.openSnackBar(this.translate.instant('POPUPS.ziskaliStePonuku'), this.translate.instant('OFTEN.priradit'), oneRoute);
             }, 7000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
           if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === '' && !this.aldreadyThere(oneRoute.id)){
             setTimeout(() => {
-              this.openSnackBar('Niekto ma zaujem o vasu ponuku', 'Skontrolovat', oneRoute);
+              this.openSnackBar(this.translate.instant('POPUPS.niektoMaZaujem'), this.translate.instant('OFTEN.skontrolovat'), oneRoute);
             }, 7000);
             this.dialogForRouteShown.push(oneRoute.id);
           }

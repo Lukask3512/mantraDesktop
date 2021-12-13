@@ -12,6 +12,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return true;
     let user = this.dataService.getDispecer();
     if (!user) {
       user = JSON.parse(localStorage.getItem('user'));
@@ -20,20 +21,33 @@ export class AuthGuard implements CanActivate {
         this.dataService.setDispecer(user);
         this.dataService.setCompany(company);
         setTimeout(() => {
-            if (this.router.url === '/view/offerDetail' || this.router.url === '/view/newRoute'){
+            if (state.url === '/view/offerDetail' || state.url === '/view/newRoute' || state.url === '/view/companies'){
+              const comapnyBool =  this.getCompany(state);
+              if (comapnyBool === true || comapnyBool === false){
+                return comapnyBool;
+              }
               this.router.navigate(['/view/map']);
+              return true;
             }
         }, 500);
 
-        return true;
       }else{
         return false;
       }
 
     }
     if (user) {
-      // authorised so return true
-      return true;
+      const comapnyBool =  this.getCompany(state);
+      if (comapnyBool === true || comapnyBool === false){
+        return comapnyBool;
+      }
+      if (state.url === '/view/companies') {
+        this.router.navigate(['/view/map']);
+        return true;
+      }else{
+        return true;
+      }
+      // }, 100);
     }
     else {
       this.router.navigate([''], { queryParams: { returnUrl: state.url }});
@@ -41,5 +55,20 @@ export class AuthGuard implements CanActivate {
     }
 
     // not logged in so redirect to login page with the return url
+  }
+
+  getCompany(state: RouterStateSnapshot){
+
+    if (this.dataService.getDispecer().email === 'mantra@mantra.sk' ||
+      this.dataService.getDispecer().email === 'manage.transport.repeat@gmail.com' ||
+      this.dataService.getDispecer().email === 'michal.rancak@truck-alliance.cz'){
+        if (state.url === '/view/companies' || state.url === '/view/profile'){
+          return true;
+        }else{
+          this.router.navigate(['/view/companies']);
+          return true;
+        }
+    }
+
   }
 }

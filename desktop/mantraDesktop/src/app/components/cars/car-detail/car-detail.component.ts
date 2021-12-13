@@ -1,21 +1,21 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {RouteService} from "../../../services/route.service";
-import Route from "../../../models/Route";
-import {DataService} from "../../../data/data.service";
-import {Subject} from "rxjs";
-import {OpenlayerComponent} from "../../google/map/openlayer/openlayer.component";
-import {DeleteCarDialogComponent} from "../../dialogs/delete-car-dialog/delete-car-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {RouteStatusService} from "../../../data/route-status.service";
-import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
+import {RouteService} from '../../../services/route.service';
+import Route from '../../../models/Route';
+import {DataService} from '../../../data/data.service';
+import {Subject} from 'rxjs';
+import {OpenlayerComponent} from '../../google/map/openlayer/openlayer.component';
+import {DeleteCarDialogComponent} from '../../dialogs/delete-car-dialog/delete-car-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {RouteStatusService} from '../../../data/route-status.service';
+import {EditInfoComponent} from '../../dialogs/edit-info/edit-info.component';
 import { AngularFireStorage } from '@angular/fire/storage';
 import {HttpClient} from '@angular/common/http';
-import {CarService} from "../../../services/car.service";
-import Cars from "../../../models/Cars";
-import {AddressService} from "../../../services/address.service";
-import Address from "../../../models/Address";
-import {DragAndDropListComponent} from "../../transportation/drag-and-drop-list/drag-and-drop-list.component";
+import {CarService} from '../../../services/car.service';
+import Cars from '../../../models/Cars';
+import {AddressService} from '../../../services/address.service';
+import Address from '../../../models/Address';
+import {DragAndDropListComponent} from '../../transportation/drag-and-drop-list/drag-and-drop-list.component';
 import {DeleteFromItiComponent} from '../../dialogs/delete-from-iti/delete-from-iti.component';
 import {ItinerarDaDComponent} from './itinerar-da-d/itinerar-da-d.component';
 import {GetNameOfDriverComponent} from '../../vodici/get-name-of-driver/get-name-of-driver.component';
@@ -26,8 +26,8 @@ import {GetNameOfDriverComponent} from '../../vodici/get-name-of-driver/get-name
   styleUrls: ['./car-detail.component.scss']
 })
 export class CarDetailComponent implements AfterViewInit {
-  //aby log sledoval zmeny ak zmenim trasu
-  parentSubject:Subject<any> = new Subject();
+  // aby log sledoval zmeny ak zmenim trasu
+  parentSubject: Subject<any> = new Subject();
 
   routes;
   allActiveRoutes: Route[];
@@ -38,7 +38,7 @@ export class CarDetailComponent implements AfterViewInit {
    aboutRoute: string[] = [];
   type: string[] = [];
     car: Cars;
-  change:boolean;
+  change: boolean;
 
   createdById;
 
@@ -74,24 +74,32 @@ export class CarDetailComponent implements AfterViewInit {
       this.carService.cars$.subscribe(cars => {
         // @ts-ignore
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
-        this.child.notifyMe(this.myAddresses, this.car);
+        setTimeout(() =>
+          {
+            this.child.notifyMe(this.myAddresses, this.car);
+
+          },
+          800);
       });
 
-      var allAddresses: Address[];
-       new Promise((resolve, reject) => {
+      let allAddresses: Address[];
+      new Promise((resolve, reject) => {
         this.addressService.address$.subscribe(vsetkyAdress => {
           this.addressService.offerAddresses$.subscribe(vsetkyPonuky => {
             allAddresses = vsetkyAdress.concat(vsetkyPonuky);
             this.findMyAdresses(allAddresses);
             if (this.dragComponent){
               this.dragComponent.setAddress(this.myAddresses, this.car);
+              this.child.notifyMe(this.myAddresses, this.car);
             }
             resolve();
           });
         });
       }).then(() => {
      new Promise((resolve, reject) => {
-       this.findMyAdresses(allAddresses);
+       if (this.myAddresses.length === 0){
+         this.findMyAdresses(allAddresses);
+       }
        resolve();
      }).then(resolve => {
        this.dragComponent.setAddress(this.myAddresses, this.car);
@@ -103,14 +111,14 @@ export class CarDetailComponent implements AfterViewInit {
            this.child.notifyMe(this.myAddresses, this.car);
          },
          800);
-      })
-      })
+      });
+      });
 
     });
 
-    var loggedDispecer = this.dataService.getDispecer();
-    if (loggedDispecer.createdBy == 'master'){
-      this.createdById = loggedDispecer.id
+    const loggedDispecer = this.dataService.getDispecer();
+    if (loggedDispecer.createdBy === 'master'){
+      this.createdById = loggedDispecer.id;
     }else {
       this.createdById = loggedDispecer.createdBy;
     }
@@ -141,14 +149,14 @@ export class CarDetailComponent implements AfterViewInit {
   }
 
   timestamptToDate(timestamp){
-    var date = new Date(timestamp * 1000)
+    const date = new Date(timestamp * 1000);
     return date.toDateString();
   }
 
 
   sendToDriver(){
-    var emptyStatus:number[] = [];
-    this.routesTowns.forEach(function (value) {
+    const emptyStatus: number[] = [];
+    this.routesTowns.forEach((value) => {
       emptyStatus.push(-1);
     });
 
@@ -221,7 +229,7 @@ export class CarDetailComponent implements AfterViewInit {
 
   editInfo(routeInfo, id){
     const dialogRef = this.dialog.open(EditInfoComponent, {
-      data: {routeInfo: routeInfo }
+      data: {routeInfo }
     });
     dialogRef.afterClosed().subscribe(value => {
 
@@ -258,15 +266,15 @@ export class CarDetailComponent implements AfterViewInit {
       });
       dialogRef.afterClosed().subscribe(value => {
 
-        if (value.event == true){
+        if (value.event === true){
           for (let i = 0; i < this.routesTowns.length; i++){
-            if (this.routesTowns[i] == routeToDelete){
-              this.routesTowns.splice(i,1);
-              this.routesLon.splice(i,1);
-              this.routesLat.splice(i,1);
-              this.type.splice(i,1);
+            if (this.routesTowns[i] === routeToDelete){
+              this.routesTowns.splice(i, 1);
+              this.routesLon.splice(i, 1);
+              this.routesLat.splice(i, 1);
+              this.type.splice(i, 1);
               this.status.splice(i, 1);
-              this.aboutRoute.splice(i,1);
+              this.aboutRoute.splice(i, 1);
               // const route: Route = {
               //   detailsAboutAdresses: [],
               //   carId: this.car.id,
@@ -292,7 +300,7 @@ export class CarDetailComponent implements AfterViewInit {
   }
 
   estimatedTimeToLocal(dateUtc){
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
     return date.toLocaleString();
   }
 

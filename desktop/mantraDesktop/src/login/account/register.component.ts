@@ -45,11 +45,12 @@ export class RegisterComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private translateService: TranslateService,
     private cookieService: CookieService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'sk';
-    this.deleteAllCookies();
+    // this.deleteAllCookies();
 
   }
 
@@ -93,7 +94,7 @@ export class RegisterComponent implements OnInit {
           this.companyService.getCompany(this.user.companyId).pipe(take(1)).subscribe(myCompany => {
             this.dataService.setCompany(myCompany);
             localStorage.setItem('company', JSON.stringify(myCompany));
-            if (new Date(myCompany.licenceUntil) >= new Date()){
+            if (new Date(myCompany.licenceUntil) >= new Date() || this.user.email === 'michal.rancak@truck-alliance.cz' || this.user.email === 'manage.transport.repeat@gmail.com'){
               this.dataService.setDispecer(this.user);
               if (user){
                 localStorage.setItem('user', JSON.stringify(this.user));
@@ -103,12 +104,12 @@ export class RegisterComponent implements OnInit {
             }else{
               this.dataService.setCompany(null);
               this.spinner.hide();
-              this.openSnackBar('Licencia vyprsala.', 'Ok');
+              this.openSnackBar(this.translate.instant('POPUPS.nolicence'), 'Ok');
             }
           });
         }else{
           this.spinner.hide();
-          this.openSnackBar('Pouzivatel nenajdeny', 'Ok');
+          this.openSnackBar(this.translate.instant('POPUPS.nouser'), 'Ok');
         }
       });
       }else{
@@ -124,10 +125,10 @@ export class RegisterComponent implements OnInit {
   resetPass(){
     const emailAddress: string = this.loginForm.get('email').value;
     if (emailAddress === '' || !emailAddress){
-      this.openSnackBar('Zadajte email', 'Ok');
+      this.openSnackBar(this.translate.instant('POPUPS.zadajteEmaili'), 'Ok');
     }else{
       this.accountService.passwordReset(emailAddress);
-      this.openSnackBar('Na emailovu adresu bol zaslany email', 'Ok');
+      this.openSnackBar(this.translate.instant('POPUPS.emailodoslany'), 'Ok');
 
     }
   }

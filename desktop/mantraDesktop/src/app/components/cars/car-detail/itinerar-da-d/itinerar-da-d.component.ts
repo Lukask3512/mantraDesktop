@@ -38,6 +38,7 @@ export class ItinerarDaDComponent implements OnInit {
     if (!this.address){
       this.address = address;
     }else{
+      // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < address.length; i++) {
         const adresaVItinerari = this.address.find(oneAdress => oneAdress.id === address[i].id);
         const indexAdresyVIti = this.address.findIndex(oneAdress => oneAdress.id === address[i].id);
@@ -62,15 +63,15 @@ export class ItinerarDaDComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Address[]>) {
-    var presuvaciDetail = this.detail[event.previousIndex];
-    var mozemPresunut = this.najdiCiMozemPresunut(presuvaciDetail, event.previousIndex, event.currentIndex);
+    const presuvaciDetail = this.detail[event.previousIndex];
+    const mozemPresunut = this.najdiCiMozemPresunut(presuvaciDetail, event.previousIndex, event.currentIndex);
     if (mozemPresunut){
       moveItemInArray(this.detail, event.previousIndex, event.currentIndex);
       moveItemInArray(this.address, event.previousIndex, event.currentIndex);
       moveItemInArray(this.car.itinerar, event.previousIndex, event.currentIndex);
       this.itiChanged = true;
     }else{
-      this.openSnackBar('Túto zmenu nemôžete vykonať.', 'OK');
+      this.openSnackBar(this.translation.instant('POPUPS.tutoZmenuNejdeVykonat'), 'OK');
     }
 
     // this.arrayOfDetailEvent.emit(this.arrayOfDetail);
@@ -150,11 +151,11 @@ export class ItinerarDaDComponent implements OnInit {
     this.detail = [];
     this.address.forEach(oneAddress => {
       if (oneAddress){
-        var myPackages = [];
-        var detailAr = {detailArray: [], townsArray: [], packageId: [], carArray: []};
+        const myPackages = [];
+        const detailAr = {detailArray: [], townsArray: [], packageId: [], carArray: []};
         oneAddress.packagesId.forEach( oneId => {
           if (oneAddress.type === 'nakladka'){
-            var balik = this.packageService.getOnePackage(oneId);
+            const balik = this.packageService.getOnePackage(oneId);
             myPackages.push(balik);
           }else{
             const indexVAute = this.car.aktualnyNaklad.findIndex(oneId2 => oneId2 === oneId);
@@ -203,7 +204,6 @@ export class ItinerarDaDComponent implements OnInit {
   }
 
   openAddDialogToDelete(adresa: Address) {
-    console.log(adresa)
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '23em';
     dialogConfig.data = {
@@ -214,7 +214,7 @@ export class ItinerarDaDComponent implements OnInit {
       if (value === undefined){
         return;
       }else {
-        let indexAdries = [];
+        const indexAdries = [];
         indexAdries.push(adresa.id);
         this.address.forEach((jednaAdresa, indexik) => {
           if (jednaAdresa.id !== adresa.id){
@@ -225,7 +225,7 @@ export class ItinerarDaDComponent implements OnInit {
           }
         });
         this.car.itinerar = this.car.itinerar.filter(oneId => !indexAdries.includes(oneId));
-        var adresyKtoreMazem = this.address.filter(oneAddress => indexAdries.includes(oneAddress.id));
+        const adresyKtoreMazem = this.address.filter(oneAddress => indexAdries.includes(oneAddress.id));
         adresyKtoreMazem.forEach(oneAddress => {
           oneAddress.packagesId.forEach(oneDetailId => {
             const detail = this.car.aktualnyNaklad.find(oneId => oneId === oneDetailId);
@@ -270,7 +270,7 @@ export class ItinerarDaDComponent implements OnInit {
   }
 
   estimatedTimeToLocal(dateUtc){
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
     if (dateUtc == null){
       return this.translation.instant('OFTEN.nerozhoduje');
     }

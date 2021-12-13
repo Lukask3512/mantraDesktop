@@ -8,6 +8,7 @@ import {PrivesService} from '../../services/prives.service';
 import {AccountService} from '../../../login/_services/account.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import Company from '../../models/Company';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit {
   constructor(private dataService: DataService, private carService: CarService,
               private privesService: PrivesService,
               private accountService: AccountService,
-              private _snackBar: MatSnackBar) { }
+              private _snackBar: MatSnackBar,
+              private translate: TranslateService) { }
 
   dispecer: Dispecer;
   company: Company;
@@ -30,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
   passwordChange(){
     this.accountService.passwordReset(this.dispecer.email);
-    this.openSnackBar('Na emailovu adresu bol zaslany email', 'Ok');
+    this.openSnackBar(this.translate.instant('POPUPS.emailodoslany'), 'Ok');
   }
 
   openSnackBar(message: string, action: string) {

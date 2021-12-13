@@ -37,17 +37,21 @@ export class PackageService {
       allAddresses.forEach((jednaAdresa, indexAdresy) => {
         if (jednaAdresa.type == 'nakladka'){
           for (const onePackageId of jednaAdresa.packagesId) {
-            this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
-              let detail: DeatilAboutAdresses = balik;
-              detail.id = onePackageId;
-              if (this.myPackages.find(onePack => onePack.id === detail.id)){
-                const idPackagu = this.myPackages.findIndex(onePack => onePack.id === detail.id);
-                this.myPackages[idPackagu] = detail;
-              }else{
-                this.myPackages.push(detail);
-              }
-              this._packages.next(this.myPackages.concat(this.myPackagesOffer));
-            });
+            const balik = this.myPackages.find(onePack => onePack.id === onePackageId);
+            if (!balik){ // ak balik mam, nestahujem ho znovu
+              this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
+                let detail: DeatilAboutAdresses = balik;
+                detail.id = onePackageId;
+                if (this.myPackages.find(onePack => onePack.id === detail.id)){
+                  const idPackagu = this.myPackages.findIndex(onePack => onePack.id === detail.id);
+                  this.myPackages[idPackagu] = detail;
+                }else{
+                  this.myPackages.push(detail);
+                }
+                this._packages.next(this.myPackages.concat(this.myPackagesOffer));
+              });
+            }
+
           }
         }
       });
@@ -56,20 +60,22 @@ export class PackageService {
     this.addressService.offerAddresses$.subscribe(allAddresses => {
       allAddresses.forEach((jednaAdresa, indexAdresy) => {
         if (jednaAdresa.type === 'nakladka'){
-          // for (const onePackageId of jednaAdresa.packagesId) {
             jednaAdresa.packagesId.forEach((onePackageId, indexBalika) => {
-            this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
-              let detail: DeatilAboutAdresses = balik;
-              detail.id = onePackageId;
-              if (this.myPackagesOffer.find(onePack => onePack.id === detail.id)){
-                const idPackagu = this.myPackagesOffer.findIndex(onePack => onePack.id === detail.id);
-                this.myPackagesOffer[idPackagu] = detail;
-              }else{
-                this.myPackagesOffer.push(detail);
+              const balik = this.myPackages.find(onePack => onePack.id === onePackageId);
+              if (!balik){
+                this.getOnePackageFromDatabase(onePackageId).subscribe(balik => {
+                  let detail: DeatilAboutAdresses = balik;
+                  detail.id = onePackageId;
+                  if (this.myPackagesOffer.find(onePack => onePack.id === detail.id)){
+                    const idPackagu = this.myPackagesOffer.findIndex(onePack => onePack.id === detail.id);
+                    this.myPackagesOffer[idPackagu] = detail;
+                  }else{
+                    this.myPackagesOffer.push(detail);
+                  }
+                  this._packages.next(this.myPackages.concat(this.myPackagesOffer));
+                });
               }
-              this._packages.next(this.myPackages.concat(this.myPackagesOffer));
             });
-          });
         }
         if (indexAdresy === allAddresses.length - 1 && allAddresses.length > 0){
           // this.isDone.next(true);

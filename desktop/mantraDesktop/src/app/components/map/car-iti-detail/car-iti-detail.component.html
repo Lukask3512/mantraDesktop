@@ -70,8 +70,8 @@
 <!--        </mat-icon>-->
       </div>
       <p>
-        <span *ngIf="ponuka.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
-        <span *ngIf="ponuka.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
+        <span *ngIf="ponuka.type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+        <span *ngIf="ponuka.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
         {{ponuka.nameOfTown}}
       </p>
     </div>
@@ -118,12 +118,12 @@
 
       <div class="mainInfo">
         <p class="nameOfTown">
-          <span *ngIf="address.type == 'nakladka'" matTooltip="Nakládka" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
-          <span *ngIf="address.type == 'vykladka'" matTooltip="Vykládka" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
+          <span *ngIf="address.type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
+          <span *ngIf="address.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
           {{address.nameOfTown}}
         </p>
-        <span class="oversize" matTooltip="Tovar je priliz tazky" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
-        <span class="oversize" matTooltip="Tovar je priliz velky" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
+        <span class="oversize" matTooltip="{{'POPUPS.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
+        <span class="oversize" matTooltip="{{'POPUPS.prilizVelky' | translate}}" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
       </div>
       <div class="bottom">
         <div *ngIf="i !== this.car.itiAdresy.length -1 " class="bottomLine">

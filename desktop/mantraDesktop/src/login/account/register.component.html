@@ -37,11 +37,11 @@
 
                   <div class="form-group">
                     <label class="small mb-1" for="inputEmailAddress">{{'LOGIN.email' | translate}}</label>
-                    <input type="text"  formControlName="email"  class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Tu vložte e-mail" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <input type="text"  formControlName="email"  class="form-control py-4" id="inputEmailAddress" type="email" placeholder="{{'LOGIN.enterEmail' | translate}}" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                   </div>
                   <div class="form-group">
                     <label class="small mb-1" for="inputPassword">{{'LOGIN.password' | translate}}</label>
-                    <input type="password" formControlName="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Tu vložte heslo" />
+                    <input type="password" formControlName="password" class="form-control py-4" id="inputPassword" type="password" placeholder="{{'LOGIN.enterPass' | translate}}" />
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
@@ -62,7 +62,7 @@
               <div class="card-footer text-center">
                 <div class="small">
                     <a href="https://drive.google.com/drive/folders/1liSbpq4mCDKfUwR7no8c68LZ86jZZKlO?usp=sharing" target="_blank" rel="noopener noreferrer">
-                    Mobilná aplikácia
+                      {{'LOGIN.mobileApp' | translate}}
                     </a>
                 </div>
 

@@ -15,9 +15,6 @@ import {AddressService} from '../../../services/address.service';
 import Address from '../../../models/Address';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.component';
-import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
-import {MapComponent} from '../map.component';
 import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -46,6 +43,8 @@ export class CarItiDetailComponent implements OnInit {
 
   @Output() uspecnePriradenie = new EventEmitter<any>();
 
+  @Output() reDrawEmitter = new EventEmitter<any>();
+
   ciSaVopcha;
   ciStihnePrijst;
   ciSaVopchaCezOtvor = true;
@@ -57,7 +56,7 @@ export class CarItiDetailComponent implements OnInit {
   constructor(private countService: CountFreeSpaceService, private predpokladService: PredpokladaneUlozenieService,
               public dataService: DataService, private carService: CarService, private offerService: OfferRouteService,
               private addressService: AddressService,  private _snackBar: MatSnackBar, private dialog: MatDialog,
-              private matComponent: MapComponent, private translation: TranslateService) { }
+              private translation: TranslateService) { }
 
   ngOnInit(): void {
   }
@@ -600,14 +599,14 @@ export class CarItiDetailComponent implements OnInit {
     car.itinerar.forEach(oneId => {
       if (!predpoklad.itinerar.includes(oneId)){
         neviemUlozit = true;
-        this.openSnackBar('V aute sa zmenili adresy ponuku musite uloziy nanovo', 'Ok');
+        this.openSnackBar(this.translation.instant('POPUPS.vAuteSaZmenili'), 'Ok');
       }
     });
     // tu konrolujem ci auto medzicasom nahodou nieco nedokoncilo
     predpoklad.itinerar.forEach(oneId => {
       if (!car.itinerar.includes(oneId) && !this.offer.addresses.includes(oneId)){
         neviemUlozit = true;
-        this.openSnackBar('V aute sa zmenili adresy ponuku musite uloziy nanovo', 'Ok');
+        this.openSnackBar(this.translation.instant('POPUPS.vAuteSaZmenili'), 'Ok');
       }
     });
 
@@ -666,7 +665,9 @@ export class CarItiDetailComponent implements OnInit {
 
     this.offerService.updateRoute(offer);
     this.uspecnePriradenie.emit(this.car);
-    this.matComponent.reDrawOffers(null);
+    // TOTO toto zmenit na emit...
+    // this.matComponent.reDrawOffers(null);
+    this.reDrawEmitter.emit(null);
   }
 
   chooseColor(type){

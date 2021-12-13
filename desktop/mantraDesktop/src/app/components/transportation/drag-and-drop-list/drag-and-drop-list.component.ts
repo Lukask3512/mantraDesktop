@@ -277,7 +277,7 @@ export class DragAndDropListComponent implements OnInit {
       this.outputDetails.emit(this.detailArray);
       this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
     }else{
-      this.openSnackBar("Túto zmenu nemôžete vykonať.", "OK")
+      this.openSnackBar(this.translation.instant('POPUPS.tutoZmenuNejdeVykonat'), "OK");
     }
 
     // this.arrayOfDetailEvent.emit(this.arrayOfDetail);
