@@ -59,7 +59,33 @@
         <mat-label>{{'COMPANIES.licendiaPlatnaDo' | translate}}</mat-label>
         <input formControlName="licence" type="date" step="1" matInput placeholder="{{'HINT.datum' | translate}}...">
       </mat-form-field>
+
+
+
     </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Pocet pristupov</ng-template>
+        <form class="wrap" [formGroup]="numberOfAccessForm">
+
+          <div>
+            <mat-form-field appearance="standard" class="gridItem">
+              <mat-label>Max pocet vozidiel</mat-label>
+              <input formControlName="numberOfCars" type="number" min="1" step="1" matInput placeholder="...">
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" class="gridItem">
+              <mat-label>Max pocet vodicov</mat-label>
+              <input formControlName="numberOfDrivers" type="number" min="1" step="1" matInput placeholder="...">
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" class="gridItem">
+              <mat-label>Max pocet dispecerov</mat-label>
+              <input formControlName="numberOfDispatchers" min="0" type="number" step="1" matInput placeholder="...">
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>{{'COMPANIES.masterAccount' | translate}}</ng-template>

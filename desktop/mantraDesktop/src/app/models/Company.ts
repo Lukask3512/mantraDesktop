@@ -9,4 +9,9 @@ export default class Company {
   town: string;
   country: string;
   licenceUntil: string;
+
+  numberOfCars: number;
+  numberOfDrivers: number;
+  numberOfDispetchers: number;
+
 }

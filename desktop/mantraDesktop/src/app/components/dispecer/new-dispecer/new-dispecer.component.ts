@@ -5,6 +5,7 @@ import {DataService} from '../../../data/data.service';
 import {AccountService} from '../../../../login/_services/account.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DipecerPravaComponent} from '../../dialogs/dipecer-prava/dipecer-prava.component';
+import Company from '../../../models/Company';
 
 @Component({
   selector: 'app-new-dispecer',
@@ -18,10 +19,15 @@ export class NewDispecerComponent implements OnInit {
               private dispecerService: DispecerService, private fb: FormBuilder,
               private dataService: DataService) { }
 
+  company: Company;
   ngOnInit(): void {
+    this.company = this.dataService.getLoggedInCompany();
 
   }
   openDialog(){
+    if (!this.canAddNewDispecer()){
+      return false;
+    }
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '23em';
     // dialogConfig.data = {
@@ -36,6 +42,15 @@ export class NewDispecerComponent implements OnInit {
 
       }
     });
+  }
+
+  canAddNewDispecer(){
+    const numberOfCars = this.dispecerService.getNoSub().length;
+    if (numberOfCars < this.company.numberOfDispetchers){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }

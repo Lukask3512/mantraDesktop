@@ -19,7 +19,8 @@ export class OneCompanyComponent implements OnChanges, AfterViewInit {
 
   @Input() companies: Company[];
   dataSource;
-  displayedColumns: string[] = ['name', 'street', 'town', 'country', 'ico', 'dicIc',  'poistenie', 'licenceUntil', 'update'];
+  displayedColumns: string[] = ['name', 'street', 'town', 'country', 'ico', 'dicIc',
+                              'poistenie', 'licenceUntil', 'cars', 'drivers', 'dispecers', 'update'];
   constructor(private dialog: MatDialog) { }
 
   ngOnChanges(changes: SimpleChanges){

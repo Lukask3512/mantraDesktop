@@ -27,6 +27,10 @@ export class VodicService {
     });
   }
 
+  getNoSub(): Vodic[]{
+    return this.justGetVodici;
+  }
+
   // taketo query sa pouzivaju ked chces dostat aj idcko..ked s tym budes dalej manipulovat updatovat atd..
   getVodici() {
     var createdBy;

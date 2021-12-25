@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return true;
+    // return true;
     let user = this.dataService.getDispecer();
     if (!user) {
       user = JSON.parse(localStorage.getItem('user'));

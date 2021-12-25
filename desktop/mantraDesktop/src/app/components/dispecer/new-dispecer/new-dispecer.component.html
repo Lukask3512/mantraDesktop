@@ -1,3 +1,6 @@
 <div class="allWrap" >
-  <button (click)="openDialog()" class="buttonG">{{'DISPATCHER.add' | translate}}</button>
+  <h2 *ngIf="!canAddNewDispecer()">
+    Nemate povolenie pridat dalsieho dispecera.
+  </h2>
+  <button [disabled]="!canAddNewDispecer()" (click)="openDialog()" class="buttonG">{{'DISPATCHER.add' | translate}}</button>
 </div>

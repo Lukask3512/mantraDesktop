@@ -44,6 +44,10 @@ export class DispecerService {
     return this.allDispecers;
   }
 
+  getNoSub(): Dispecer[]{
+    return this.dispecers;
+  }
+
   // taketo query sa pouzivaju ked chces dostat aj idcko..ked s tym budes dalej manipulovat updatovat atd..
   getDispecersFire(): Observable<Dispecer[]>{
     var createdBy;

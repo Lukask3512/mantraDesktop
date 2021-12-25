@@ -33,6 +33,13 @@ export class AddCompanyComponent implements OnInit {
     licence: ['', Validators.required],
 
     poistkaToggle: false,
+
+  });
+
+  numberOfAccessForm = this.fb.group({
+    numberOfCars: [1, Validators.required],
+    numberOfDrivers: [1, Validators.required],
+    numberOfDispatchers: [1, Validators.required]
   });
 
   dispecerForm = this.fb.group({
@@ -65,8 +72,11 @@ export class AddCompanyComponent implements OnInit {
         this.companyForm.controls.poistenie.setValue(this.data.poistenie);
         this.companyForm.controls.poistkaToggle.setValue(true);
       }
-      // this.dispecerForm.disable();
-      // this.dispecerForm.set = true;
+
+      this.numberOfAccessForm.controls.numberOfCars.setValue(this.data.numberOfCars);
+      this.numberOfAccessForm.controls.numberOfDrivers.setValue(this.data.numberOfDrivers);
+      this.numberOfAccessForm.controls.numberOfDispatchers.setValue(this.data.numberOfDispetchers);
+
       this.dispecerForm.get('email').disable();
       this.getDispecer();
     }
@@ -282,6 +292,10 @@ export class AddCompanyComponent implements OnInit {
       town: this.companyForm.get('town').value,
       country: this.companyForm.get('country').value,
       licenceUntil: this.companyForm.get('licence').value,
+
+      numberOfCars: this.numberOfAccessForm.get('numberOfCars').value,
+      numberOfDispetchers: this.numberOfAccessForm.get('numberOfDispatchers').value,
+      numberOfDrivers: this.numberOfAccessForm.get('numberOfDrivers').value,
     };
   }
 

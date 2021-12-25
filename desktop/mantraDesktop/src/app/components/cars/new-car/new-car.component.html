@@ -1,5 +1,9 @@
 
 
 <div class="button_cont" align="center">
-  <button (click)="openAddDialog()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+  <h2 *ngIf="!canAddNewCar()">
+      Nemate povolenie pridat dalsie auto.
+  </h2>
+  <button [disabled]="!canAddNewCar()" (click)="openAddDialog()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+
 </div>

@@ -49,6 +49,21 @@
       <td mat-cell *matCellDef="let element"> {{element.licenceUntil}} </td>
     </ng-container>
 
+    <ng-container class="tbl-header" matColumnDef="cars">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pocety aut </th>
+      <td mat-cell *matCellDef="let element"> {{element.numberOfCars}} </td>
+    </ng-container>
+
+    <ng-container class="tbl-header" matColumnDef="drivers">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pocet drivesr </th>
+      <td mat-cell *matCellDef="let element"> {{element.numberOfDrivers}} </td>
+    </ng-container>
+
+    <ng-container class="tbl-header" matColumnDef="dispecers">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pocet dispec </th>
+      <td mat-cell *matCellDef="let element"> {{element.numberOfDispetchers}} </td>
+    </ng-container>
+
 
 
     <ng-container class="tbl-header" matColumnDef="update">
