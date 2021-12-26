@@ -45,12 +45,15 @@ export class NewDispecerComponent implements OnInit {
   }
 
   canAddNewDispecer(){
-    const numberOfCars = this.dispecerService.getNoSub().length;
-    if (numberOfCars < this.company.numberOfDispetchers){
-      return true;
+    if (this.dispecerService.getNoSub()){
+      const numberOfCars = this.dispecerService.getNoSub().length;
+      if (numberOfCars < this.company.numberOfDispetchers){
+        return true;
+      }else{
+        return false;
+      }
     }else{
       return false;
     }
   }
-
 }

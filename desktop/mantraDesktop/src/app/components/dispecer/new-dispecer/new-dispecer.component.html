@@ -1,6 +1,9 @@
 <div class="allWrap" >
-  <h2 *ngIf="!canAddNewDispecer()">
-    Nemate povolenie pridat dalsieho dispecera.
+  <h2 *ngIf="!canAddNewDispecer(); else showButton">
+    {{'NOACCESS.maxDispecer' | translate}}
   </h2>
-  <button [disabled]="!canAddNewDispecer()" (click)="openDialog()" class="buttonG">{{'DISPATCHER.add' | translate}}</button>
+
+  <ng-template #showButton>
+    <button  (click)="openDialog()" class="buttonG">{{'DISPATCHER.add' | translate}}</button>
+  </ng-template>
 </div>

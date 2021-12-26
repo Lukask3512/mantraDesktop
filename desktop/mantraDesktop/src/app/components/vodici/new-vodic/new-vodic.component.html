@@ -1,6 +1,9 @@
 <div class="allWrap" >
-  <h2 *ngIf="!canAddNewDriver()">
-    Nemate povolenie pridat dalsieho vodica.
+  <h2 *ngIf="!canAddNewDriver(); else showButton">
+    {{'NOACCESS.maxDrivers' | translate}}
   </h2>
-  <button [disabled]="!canAddNewDriver()" (click)="openDialog()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+
+  <ng-template #showButton>
+    <button (click)="openDialog()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+  </ng-template>
 </div>

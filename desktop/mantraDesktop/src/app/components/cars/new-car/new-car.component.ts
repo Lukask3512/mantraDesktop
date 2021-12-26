@@ -36,9 +36,13 @@ export class NewCarComponent implements OnInit {
   }
 
   canAddNewCar(){
-    const numberOfCars = this.carService.getAllCars().length;
-    if (numberOfCars < this.company.numberOfCars){
-      return true;
+    if (this.carService.getAllCars()){
+      const numberOfCars = this.carService.getAllCars().length;
+      if (numberOfCars < this.company.numberOfCars){
+        return true;
+      }else{
+        return false;
+      }
     }else{
       return false;
     }

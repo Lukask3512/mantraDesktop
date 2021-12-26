@@ -16,15 +16,17 @@ import {MatTableDataSource} from '@angular/material/table';
 export class TheDispecerComponent implements OnInit, OnChanges {
 
   @Input() dispecer: Dispecer[];
+  masterDispecer: Dispecer[];
   dispecerovForm: any;
 
   dataSource;
+  dataSourceMaster;
   displayedColumns: string[] = ['meno', 'priezvisko', 'cislo', 'email', 'update', 'delete'];
   constructor(private dispecerService: DispecerService, private field: FormBuilder, public dataService: DataService,
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-
+  this.dataSourceMaster = new MatTableDataSource([this.dispecerService.getMasterAcc()]);
   }
 
   ngOnChanges(changes: SimpleChanges){

@@ -27,19 +27,19 @@
     </div>
 
     <div>
-      <h2>Pocet pristupov</h2>
+      <h2>{{'COMPANIES.maxPocetPristupov' | translate}}</h2>
         <div class="oneSection">
-          <label>Vozidla </label>
+          <label>{{'HEADER.cars' | translate}} </label>
           <h2>{{this.company.numberOfCars}}</h2>
         </div>
 
       <div class="oneSection">
-        <label>Vodici </label>
+        <label>{{'HEADER.drivers' | translate}} </label>
         <h2>{{this.company.numberOfDrivers}}</h2>
       </div>
 
       <div class="oneSection">
-        <label>Dispeceri </label>
+        <label>{{'HEADER.dispatcher' | translate}} </label>
         <h2>{{this.company.numberOfDispetchers}}</h2>
       </div>
 
@@ -61,7 +61,7 @@
 
 
     <div class="oneSection">
-      <label>{{'DISPATCHER.pristupKuPrivesom' | translate}}:</label>
+      <label>{{'DISPATCHER.pristupKuPrivesom' | translate}}</label>
       <div *ngIf="!this.dispecer.allPrives; else elsePrives">
         <ul *ngFor="let prives of this.dispecer.myPrives">
           <li>{{this.getEcvPrives(prives).ecv}}</li>

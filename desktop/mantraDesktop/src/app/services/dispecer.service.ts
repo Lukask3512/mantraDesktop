@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import Dispecer from "../models/Dispecer";
+import Dispecer from '../models/Dispecer';
 
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {map} from "rxjs/operators";
-import {DataService} from "../data/data.service";
+import {map, take} from 'rxjs/operators';
+import {DataService} from '../data/data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class DispecerService {
   allDispecers = this.allDispecersSource.asObservable();
 
   dispecerFromOtherCompanies: Dispecer[] = [];
+  masterDispecer: Dispecer;
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.dispecerCollection = this.afs.collection<any>('dispecers');
@@ -48,23 +49,31 @@ export class DispecerService {
     return this.dispecers;
   }
 
-  // taketo query sa pouzivaju ked chces dostat aj idcko..ked s tym budes dalej manipulovat updatovat atd..
+  getMasterAcc(){
+    return this.masterDispecer;
+  }
+
+
   getDispecersFire(): Observable<Dispecer[]>{
-    var createdBy;
+    let createdBy;
     if (this.dataService.getDispecer().createdBy !== 'master'){
         createdBy = this.dataService.getDispecer().createdBy;
+        this.getDispecerById(createdBy).pipe(take(1)).subscribe(masterDispecer => {
+          this.masterDispecer = masterDispecer;
+        });
     }else{
       createdBy = this.dataService.getDispecer().id;
+      this.masterDispecer = this.dataService.getDispecer();
     }
     return this.afs.collection<Dispecer>('dispecers', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', createdBy);
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -73,14 +82,14 @@ export class DispecerService {
 
   getOneDispecer(email){
       return this.afs.collection<Dispecer>('dispecers', ref => {
-        let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         query = query.where('email', '==', email);
         return query;
       }).snapshotChanges().pipe(
         map(actions => {
           return actions.map(a => {
             const data = a.payload.doc.data();
-            const id = a.payload.doc['id']
+            const id = a.payload.doc.id;
             return {id, ...data};
           });
         })
@@ -89,7 +98,7 @@ export class DispecerService {
 
    getMasterDispecerByCompany(companyId){
       return this.afs.collection<Dispecer>('dispecers', ref => {
-        let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         query = query.where('companyId', '==', companyId)
           .where('createdBy', '==', 'master');
         return query;
@@ -97,7 +106,7 @@ export class DispecerService {
         map(actions => {
           return actions.map(a => {
             const data = a.payload.doc.data();
-            const id = a.payload.doc['id'];
+            const id = a.payload.doc.id;
             return {id, ...data};
           });
         })
@@ -107,14 +116,14 @@ export class DispecerService {
 
   getAllDispecersWithNoShowRoute(routeId){
     return this.afs.collection<Dispecer>('dispecers', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('nezobrazovatPonuky', 'array-contains', routeId);
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })

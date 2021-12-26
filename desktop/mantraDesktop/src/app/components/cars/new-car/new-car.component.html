@@ -1,9 +1,10 @@
 
 
 <div class="button_cont" align="center">
-  <h2 *ngIf="!canAddNewCar()">
-      Nemate povolenie pridat dalsie auto.
+  <h2 *ngIf="!canAddNewCar(); else showButton">
+    {{'NOACCESS.maxCar' | translate}}
   </h2>
-  <button [disabled]="!canAddNewCar()" (click)="openAddDialog()" class="buttonG">{{'OFTEN.add' | translate}}</button>
-
+  <ng-template #showButton>
+    <button (click)="openAddDialog()" class="buttonG">{{'OFTEN.add' | translate}}</button>
+  </ng-template>
 </div>

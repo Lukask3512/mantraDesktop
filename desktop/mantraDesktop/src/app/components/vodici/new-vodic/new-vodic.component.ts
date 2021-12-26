@@ -45,9 +45,13 @@ export class NewVodicComponent implements OnInit {
   }
 
   canAddNewDriver(){
-    const numberOfCars = this.vodicService.getNoSub().length;
-    if (numberOfCars < this.company.numberOfDrivers){
-      return true;
+    if (this.vodicService.getNoSub()){
+      const numberOfCars = this.vodicService.getNoSub().length;
+      if (numberOfCars < this.company.numberOfDrivers){
+        return true;
+      }else{
+        return false;
+      }
     }else{
       return false;
     }

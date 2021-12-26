@@ -180,7 +180,11 @@
     "aboutCompany": "Údaje o spoločnosti",
     "companyName": "Názov spoločnosti",
     "masterAccount": "Master konto",
-    "bezpoistenia": "Bez poistenia"
+    "bezpoistenia": "Bez poistenia",
+    "maxPocetPristupov": "Maximálny počet prístupov",
+    "maxPocetVozidiel": "Maximálny počet vozidiel",
+    "maxPocetVodicov": "Maximálny počet vodičov",
+    "maxPocetDispecerov": "Maximálny počet dispečerov bez master konta"
   },
 
   "HINT": {
@@ -412,6 +416,11 @@
     "nespravneHeslo": "Nesprávne heslo",
     "prilizTazky": "Tovar je príliš ťažký",
     "prilizVelky": "Tovar je príliš veľký"
+  },
+  "NOACCESS": {
+    "maxCar": "Maximálny počet vozidiel pre Vašu spoločnosť bol dovŕšený",
+    "maxDrivers": "Maximálny počet vodičov pre Vašu spoločnosť bol dovŕšený",
+    "maxDispecer": "Maximálny počet dispečerov pre Vašu spoločnosť bol dovŕšený"
   }
 
 }
