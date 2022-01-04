@@ -9,6 +9,8 @@
   <h2>{{company.ico}}</h2>
   <label>{{'COMPANIES.dico' | translate}}</label>
   <h2>{{company.dicIc}}</h2>
+  <label *ngIf="company.iban">{{'COMPANIES.iban' | translate}}</label>
+  <h2 *ngIf="company.iban">{{company.iban}}</h2>
   <label>{{'COMPANIES.vyskaPoistky' | translate}}</label>
   <h2 *ngIf="!company.poistenie; else elsePoistka">
     <label>{{'COMPANIES.bezpoistenia' | translate}}</label>

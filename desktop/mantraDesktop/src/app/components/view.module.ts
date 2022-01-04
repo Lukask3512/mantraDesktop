@@ -84,6 +84,7 @@ import { MainDetailAboutComponent } from './transportation/main-detail-about/mai
 import { CompanyDetailComponent } from './dialogs/company-detail/company-detail.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import { CompanyDetailAboutComponent } from './dialogs/company-detail-about/company-detail-about.component';
 
 
 @NgModule({
@@ -108,7 +109,7 @@ import {NgxSpinnerModule} from 'ngx-spinner';
       AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent,
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
-      MainDetailAboutComponent, CompanyDetailComponent
+      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent
     ],
     exports: [
         OpenlayerComponent,

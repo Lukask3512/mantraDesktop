@@ -16,8 +16,7 @@ export class SideBarComponent implements OnInit {
 
   getCompany(){
     if (this.dataService.getDispecer().email === 'mantra@mantra.sk' ||
-      this.dataService.getDispecer().email === 'manage.transport.repeat@gmail.com' ||
-      this.dataService.getDispecer().email === 'michal.rancak@truck-alliance.cz'){
+      this.dataService.getDispecer().email === 'manage.transport.repeat@gmail.com'){
         return true;
     }else{
          return false;

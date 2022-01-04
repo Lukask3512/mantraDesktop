@@ -5,10 +5,12 @@ export default class Company {
   dicIc: string;
   poistenie: string;
 
+  psc: string;
   street: string;
   town: string;
   country: string;
   licenceUntil: string;
+  iban?: string;
 
   numberOfCars: number;
   numberOfDrivers: number;

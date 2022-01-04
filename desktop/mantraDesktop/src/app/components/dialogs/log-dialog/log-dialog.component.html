@@ -11,6 +11,7 @@
       <h3 class="address">{{this.companyZadavatel.country}}</h3>
       <h3 class="icodico">{{'COMPANIES.ico' | translate}}: {{this.companyZadavatel.ico}}</h3>
       <h3 class="icodico">{{'COMPANIES.dico' | translate}}: {{this.companyZadavatel.dicIc}}</h3>
+      <h3 *ngIf="this.companyZadavatel.iban" class="icodico">{{'COMPANIES.iban' | translate}}: {{this.companyZadavatel.iban}}</h3>
     </div>
 
     <div *ngIf="this.companyPrepravca" class="prepravca">
@@ -21,6 +22,7 @@
       <h3 class="address">{{this.companyPrepravca.country}}</h3>
       <h3 class="icodico">{{'COMPANIES.ico' | translate}}: {{this.companyPrepravca.ico}}</h3>
       <h3 class="icodico">{{'COMPANIES.dico' | translate}}: {{this.companyPrepravca.dicIc}}</h3>
+      <h3 *ngIf="this.companyPrepravca.iban" class="icodico">{{'COMPANIES.iban' | translate}}: {{this.companyPrepravca.iban}}</h3>
     </div>
   </header>
   <div *ngIf="this.route.price">
@@ -118,6 +120,7 @@
         <p class="addressSmall">{{this.companyZadavatel.country}}</p>
         <p class="addressSmall">{{'COMPANIES.ico' | translate}}: {{this.companyZadavatel.ico}}</p>
         <p class="addressSmall">{{'COMPANIES.dico' | translate}}: {{this.companyZadavatel.dicIc}}</p>
+        <p *ngIf="this.companyZadavatel.iban" class="addressSmall">{{'COMPANIES.iban' | translate}}: {{this.companyZadavatel.iban}}</p>
       </div>
 
       <div class="midBorder">
@@ -132,10 +135,18 @@
         <p class="addressSmall">{{this.companyPrepravca.country}}</p>
         <p class="addressSmall">{{'COMPANIES.ico' | translate}}: {{this.companyPrepravca.ico}}</p>
         <p class="addressSmall">{{'COMPANIES.dico' | translate}}: {{this.companyPrepravca.dicIc}}</p>
+        <p *ngIf="this.companyPrepravca.iban" class="addressSmall">{{'COMPANIES.iban' | translate}}: {{this.companyPrepravca.iban}}</p>
       </div>
     </header>
   </div>
 
+  <div *ngIf="this.route.price">
+    <p class="addressSmall">{{'LOG.prijate' | translate}}: {{this.timeToLocal(this.route.finalAcceptDate)}}</p>
+    <p class="addressSmall">{{'LOG.priradene' | translate}}: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</p>
+    <p class="addressSmall">{{'LOG.autoSaNachadzalo' | translate}}:</p>
+    <p class="addressSmall">{{'OFFER.zSirka' | translate}} {{this.route.carAtPositionLat}}</p>
+    <p class="addressSmall">{{'OFFER.zDlzka' | translate}} {{this.route.carAtPositionLon}}</p>
+  </div>
 
   <h1 class="companyNameSmall">{{'LOG.prepravovanePalety' | translate}}</h1>
   <table class="routeLogSmall" *ngIf="this.detail">

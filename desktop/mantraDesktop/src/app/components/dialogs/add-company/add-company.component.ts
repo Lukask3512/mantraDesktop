@@ -23,12 +23,14 @@ import {NgxSpinnerService} from 'ngx-spinner';
 export class AddCompanyComponent implements OnInit {
 
   companyForm = this.fb.group({
+    psc: ['', Validators.required],
     name: ['', Validators.required],
     street: ['', Validators.required],
     town: ['', Validators.required],
     country: ['', Validators.required],
     ico: ['', Validators.required],
     dicIc: ['', Validators.required],
+    iban: [''],
     poistenie: [''],
     licence: ['', Validators.required],
 
@@ -62,11 +64,13 @@ export class AddCompanyComponent implements OnInit {
     if (this.data){
       this.company = this.data;
       this.companyForm.controls.name.setValue(this.data.name);
+      this.companyForm.controls.psc.setValue(this.data.psc);
       this.companyForm.controls.street.setValue(this.data.street);
       this.companyForm.controls.town.setValue(this.data.town);
       this.companyForm.controls.country.setValue(this.data.country);
       this.companyForm.controls.ico.setValue(this.data.ico);
       this.companyForm.controls.dicIc.setValue(this.data.dicIc);
+      this.companyForm.controls.iban.setValue(this.data.iban);
       this.companyForm.controls.licence.setValue(this.data.licenceUntil);
       if (this.data.poistenie){
         this.companyForm.controls.poistenie.setValue(this.data.poistenie);
@@ -151,9 +155,9 @@ export class AddCompanyComponent implements OnInit {
               if (res){
                 this.checkCompaniesForDico().then(async resDico => {
                   if (resDico){
-                    var password = Math.random().toString(36).slice(-8);
+                    const password = Math.random().toString(36).slice(-8);
                     // password = '123456';
-                      await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
+                    await this.accountService.signup(this.dispecerForm.get('email').value, password).then((registrovany => {
                       if (registrovany){
                         this.sendMailToRegisteredUser();
                       }else{
@@ -288,10 +292,12 @@ export class AddCompanyComponent implements OnInit {
       ico: this.companyForm.get('ico').value,
       dicIc: this.companyForm.get('dicIc').value,
       poistenie,
+      psc: this.companyForm.get('psc').value,
       street: this.companyForm.get('street').value,
       town: this.companyForm.get('town').value,
       country: this.companyForm.get('country').value,
       licenceUntil: this.companyForm.get('licence').value,
+      iban: this.companyForm.get('iban').value,
 
       numberOfCars: this.numberOfAccessForm.get('numberOfCars').value,
       numberOfDispetchers: this.numberOfAccessForm.get('numberOfDispatchers').value,

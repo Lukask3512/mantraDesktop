@@ -204,6 +204,7 @@ table.fixed { table-layout:fixed; }
 .button_c {
   margin-right: 10px;
   font-family: Candara;
+  white-space: nowrap;
   color: white !important;
   text-transform: full-width;
   text-decoration: white;

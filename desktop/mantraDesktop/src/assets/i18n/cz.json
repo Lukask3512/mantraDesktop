@@ -31,7 +31,8 @@
     "preskocene": "Přeskočeno",
     "nepriradene": "Nepřiřazeno",
     "cakajuce": "Vaše reakce",
-    "skontrolovat": "Zkontrolovat"
+    "skontrolovat": "Zkontrolovat",
+    "vytvorene": "Vytvořeno"
   },
 
   "EMAIL": {
@@ -166,11 +167,13 @@
     "comapnies": "Společnosti",
     "oneCompany": "Společnost",
     "name": "Název",
+    "psc": "PSČ",
     "street": "Ulice",
     "town": "Město",
     "state": "Stát",
     "ico": "IČO",
     "dico": "DIČ",
+    "iban": "IBAN",
     "poistenie": "Pojištění",
     "vyskaPoistky": "Výše pojištění",
     "licendiaPlatnaDo": "Licence platná do",
@@ -181,10 +184,13 @@
     "companyName": "Název společnosti",
     "masterAccount": "Master konto",
     "bezpoistenia": "Bez pojištění",
-    "maxPocetPristupov": "Maximálny počet prístupov",
-    "maxPocetVozidiel": "Maximálny počet vozidiel",
-    "maxPocetVodicov": "Maximálny počet vodičov",
-    "maxPocetDispecerov": "Maximálny počet dispečerov bez master konta"
+    "maxPocetPristupov": "Maximální počet přístupů",
+    "maxPocetVozidiel": "Maximální počet vozidel",
+    "maxPocetVodicov": "Maximální počet řidičů",
+    "maxPocetDispecerov": "Maximální počet dispečerů (bez master konta)",
+    "maxVozidiel": "Max vozidel",
+    "maxDispecerov": "Max dispečerů",
+    "maxJazdcov": "Max řidičů"
   },
 
   "HINT": {
@@ -418,9 +424,9 @@
     "prilizVelky": "Zboží je příliš veliké"
   },
   "NOACCESS": {
-    "maxCar": "Maximálny počet vozidiel pre Vašu spoločnosť bol dovŕšený",
-    "maxDrivers": "Maximálny počet vodičov pre Vašu spoločnosť bol dovŕšený",
-    "maxDispecer": "Maximálny počet dispečerov pre Vašu spoločnosť bol dovŕšený"
+    "maxCar": "Dosáhli jste maximální počet vozidel pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis",
+    "maxDrivers": "Dosáhli jste maximální počet řidičů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis",
+    "maxDispecer": "Dosáhli jste maximální počet dispečerů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis"
   }
 
 }

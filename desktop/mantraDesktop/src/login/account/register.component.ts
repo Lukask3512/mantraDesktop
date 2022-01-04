@@ -94,7 +94,7 @@ export class RegisterComponent implements OnInit {
           this.companyService.getCompany(this.user.companyId).pipe(take(1)).subscribe(myCompany => {
             this.dataService.setCompany(myCompany);
             localStorage.setItem('company', JSON.stringify(myCompany));
-            if (new Date(myCompany.licenceUntil) >= new Date() || this.user.email === 'michal.rancak@truck-alliance.cz' || this.user.email === 'manage.transport.repeat@gmail.com'){
+            if (new Date(myCompany.licenceUntil) >= new Date() || this.user.email === 'mantra@mantra.sk' || this.user.email === 'manage.transport.repeat@gmail.com'){
               this.dataService.setDispecer(this.user);
               if (user){
                 localStorage.setItem('user', JSON.stringify(this.user));

@@ -18,6 +18,17 @@
 .company{
   border-bottom: 2px solid gray;
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+h1{
+  margin: 0;
+}
+
+.infoButton{
+  @include smallButton(gray);
+  margin-left: 10px;
 
 }
 

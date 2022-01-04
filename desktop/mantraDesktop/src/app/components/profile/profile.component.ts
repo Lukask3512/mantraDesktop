@@ -9,6 +9,8 @@ import {AccountService} from '../../../login/_services/account.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import Company from '../../models/Company';
 import {TranslateService} from '@ngx-translate/core';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {CompanyDetailComponent} from '../dialogs/company-detail/company-detail.component';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +23,8 @@ export class ProfileComponent implements OnInit {
               private privesService: PrivesService,
               private accountService: AccountService,
               private _snackBar: MatSnackBar,
-              private translate: TranslateService) { }
+              private translate: TranslateService,
+              private dialog: MatDialog) { }
 
   dispecer: Dispecer;
   company: Company;
@@ -45,6 +48,21 @@ export class ProfileComponent implements OnInit {
 
   getEcvPrives(privesId): Prives{
     return this.privesService.getAllPriveses().find(onePrives => onePrives.id === privesId);
+  }
+
+  openCompanyDetail(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      company: this.company,
+    };
+    const dialogRef = this.dialog.open(CompanyDetailComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
   }
 
 }

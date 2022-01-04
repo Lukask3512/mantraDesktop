@@ -31,7 +31,8 @@
     "preskocene": "Skipped",
     "nepriradene": "Unassigned",
     "cakajuce": "Your reactions",
-    "skontrolovat": "Check"
+    "skontrolovat": "Check",
+    "vytvorene": "Created"
   },
 
   "EMAIL": {
@@ -166,11 +167,13 @@
     "comapnies": "Companies",
     "oneCompany": "Company",
     "name": "Name",
+    "psc": "Postal code",
     "street": "Street",
     "town": "City",
     "state": "State",
     "ico": "ID number",
     "dico": "TAX number",
+    "iban": "IBAN",
     "poistenie": "Insurance",
     "vyskaPoistky": "Insurance limit",
     "licendiaPlatnaDo": "License valid until",
@@ -181,10 +184,13 @@
     "companyName": "Name",
     "masterAccount": "Master account",
     "bezpoistenia": "No insurance",
-    "maxPocetPristupov": "Maximálny počet prístupov",
-    "maxPocetVozidiel": "Maximálny počet vozidiel",
-    "maxPocetVodicov": "Maximálny počet vodičov",
-    "maxPocetDispecerov": "Maximálny počet dispečerov bez master konta"
+    "maxPocetPristupov": "Maximum amount of users",
+    "maxPocetVozidiel": "Maximum amount of vehicles",
+    "maxPocetVodicov": "Maximum amount of drivers",
+    "maxPocetDispecerov": "Maximum amount of dispatchers (without master account)",
+    "maxVozidiel": "Max cars",
+    "maxDispecerov": "Max dispatchers",
+    "maxJazdcov": "Max drivers"
   },
 
   "HINT": {
@@ -418,9 +424,9 @@
     "prilizVelky": "Cargo is too big"
   },
   "NOACCESS": {
-    "maxCar": "Maximálny počet vozidiel pre Vašu spoločnosť bol dovŕšený",
-    "maxDrivers": "Maximálny počet vodičov pre Vašu spoločnosť bol dovŕšený",
-    "maxDispecer": "Maximálny počet dispečerov pre Vašu spoločnosť bol dovŕšený"
+    "maxCar": "You have reached the maximum amount of vehicles allowed for your company - please contact our customer service to increase your limit",
+    "maxDrivers": "You have reached the maximum amount of drivers allowed for your company - please contact our customer service to increase your limit",
+    "maxDispecer": "You have reached the maximum amount of dispatchers allowed for your company - please contact our customer service to increase your limit"
   }
 
 }

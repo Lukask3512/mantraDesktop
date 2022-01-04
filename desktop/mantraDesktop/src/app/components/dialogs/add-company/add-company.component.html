@@ -11,6 +11,12 @@
       <mat-hint>{{'COMPANIES.companyName' | translate}}</mat-hint>
     </mat-form-field>
 
+      <mat-form-field  appearance="standard" class="gridItem">
+        <mat-label>{{'COMPANIES.psc' | translate}}</mat-label>
+        <input formControlName="psc" type="text"  matInput placeholder="{{'COMPANIES.psc' | translate}}...">
+        <mat-hint>{{'COMPANIES.psc' | translate}}</mat-hint>
+      </mat-form-field>
+
     <mat-form-field  appearance="standard" class="gridItem">
       <mat-label>{{'COMPANIES.street' | translate}}</mat-label>
       <input formControlName="street" type="text"  matInput placeholder="{{'COMPANIES.street' | translate}}...">
@@ -40,6 +46,12 @@
       <input type="text" formControlName="dicIc" matInput placeholder="{{'COMPANIES.dico' | translate}}...">
       <mat-hint>{{'COMPANIES.dico' | translate}}...</mat-hint>
     </mat-form-field>
+
+      <mat-form-field  appearance="standard" class="gridItem">
+        <mat-label>{{'COMPANIES.iban' | translate}}</mat-label>
+        <input type="text" formControlName="iban" matInput placeholder="{{'COMPANIES.iban' | translate}}...">
+        <mat-hint>{{'COMPANIES.iban' | translate}}...</mat-hint>
+      </mat-form-field>
 
 
     <mat-slide-toggle (change)="updatePoistenieForm()"

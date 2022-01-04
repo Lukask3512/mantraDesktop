@@ -131,7 +131,7 @@ export class WrapperComponent implements OnInit {
     this.whatIsActive = 0;
   }
   mine(){
-    this.routesToShow = this.routes.filter(oneRoute => oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished);
+    this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished));
     this.whatIsActive = 1;
     if (this.inputFilter){
       this.inputFilter.nativeElement.value = '';

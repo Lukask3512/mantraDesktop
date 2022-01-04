@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
-import Dispecer from "../models/Dispecer";
-import {BehaviorSubject, Observable} from "rxjs";
-import {map} from "rxjs/operators";
-import Cars from "../models/Cars";
-import {DataService} from "../data/data.service";
-import {log} from "util";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import Dispecer from '../models/Dispecer';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import Cars from '../models/Cars';
+import {DataService} from '../data/data.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,15 @@ export class CarService {
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.carsCollection = this.afs.collection<any>('cars');
 
-    this.getCars().subscribe(res => {
+    let createdBy;
+    const loggedUser = this.dataService.getDispecer();
+    if (loggedUser.createdBy !== 'master'){
+      createdBy = loggedUser.createdBy;
+    }else {
+      createdBy = loggedUser.id;
+    }
+
+    this.getCars(createdBy).subscribe(res => {
       const dispecer: Dispecer = this.dataService.getDispecer();
       // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
       let vyfiltrovanerRouty = res;
@@ -35,23 +43,16 @@ export class CarService {
   private _cars = new BehaviorSubject<any>([]);
   readonly cars$ = this._cars.asObservable();
 
-  getCars(){
-    var createdBy;
-    var loggedUser = this.dataService.getDispecer();
-    if (loggedUser.createdBy != 'master'){
-      createdBy = loggedUser.createdBy;
-    }else {
-      createdBy = loggedUser.id;
-    }
-    return this.afs.collection<Dispecer>('cars', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+  getCars(createdBy){
+    return this.afs.collection<Cars>('cars', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', createdBy);
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -78,18 +79,16 @@ export class CarService {
 
   getCarByEcv(carEcv){
     return this.afs.collection('cars', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-
-      query = query.where('ecv', '==', carEcv)
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('ecv', '==', carEcv);
       return query;
     }).valueChanges();
   }
 
   getCarByNumber(carNumber){
     return this.afs.collection('cars', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-
-      query = query.where('phoneNumber', '==', carNumber)
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('phoneNumber', '==', carNumber);
       return query;
     }).valueChanges();
   }

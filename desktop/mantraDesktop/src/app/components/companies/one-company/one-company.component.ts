@@ -5,6 +5,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {AddCompanyComponent} from '../../dialogs/add-company/add-company.component';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {CompanyDetailAboutComponent} from '../../dialogs/company-detail-about/company-detail-about.component';
 
 @Component({
   selector: 'app-one-company',
@@ -19,8 +20,8 @@ export class OneCompanyComponent implements OnChanges, AfterViewInit {
 
   @Input() companies: Company[];
   dataSource;
-  displayedColumns: string[] = ['name', 'street', 'town', 'country', 'ico', 'dicIc',
-                              'poistenie', 'licenceUntil', 'cars', 'drivers', 'dispecers', 'update'];
+  displayedColumns: string[] = ['name', 'psc', 'street', 'town', 'country', 'ico', 'dicIc',
+                              'poistenie', 'licenceUntil', 'cars', 'drivers', 'dispecers', 'detail', 'update'];
   constructor(private dialog: MatDialog) { }
 
   ngOnChanges(changes: SimpleChanges){
@@ -35,6 +36,14 @@ export class OneCompanyComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
 
+  }
+
+  getColorForLicenceUntil(dateUtc){
+    const companyLicence = new Date(dateUtc);
+    const todayDate = new Date();
+    if (companyLicence.getTime() < todayDate.getTime()){
+      return 'red';
+    }
   }
 
   applyFilter(event: Event) {
@@ -58,6 +67,20 @@ export class OneCompanyComponent implements OnChanges, AfterViewInit {
       }
     });
   }
+
+  detailAboutCompany(company: Company){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = company;
+    const dialogRef = this.dialog.open(CompanyDetailAboutComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
+  }
+
   deleteCompany(){
 
   }

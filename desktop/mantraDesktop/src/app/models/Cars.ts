@@ -37,6 +37,6 @@ export default class Cars {
   allVodici: boolean;
 
   driverInside?: string;
-
+  vytvorene?: string;
 
 }

@@ -31,7 +31,8 @@
     "preskocene": "Preskočené",
     "nepriradene": "Nepriradené",
     "cakajuce": "Vaše reakcie",
-    "skontrolovat": "Skontrolovať"
+    "skontrolovat": "Skontrolovať",
+    "vytvorene": "Vytvorené"
   },
 
   "EMAIL": {
@@ -166,11 +167,13 @@
     "comapnies": "Spoločnosti",
     "oneCompany": "Spoločnosť",
     "name": "Názov",
+    "psc": "PSČ",
     "street": "Ulica",
     "town": "Mesto",
     "state": "Štát",
     "ico": "IČO",
     "dico": "DIČ",
+    "iban": "IBAN",
     "poistenie": "Poistenie",
     "vyskaPoistky": "Výška poistenia",
     "licendiaPlatnaDo": "Licencia platná do",
@@ -184,7 +187,10 @@
     "maxPocetPristupov": "Maximálny počet prístupov",
     "maxPocetVozidiel": "Maximálny počet vozidiel",
     "maxPocetVodicov": "Maximálny počet vodičov",
-    "maxPocetDispecerov": "Maximálny počet dispečerov bez master konta"
+    "maxPocetDispecerov": "Maximálny počet dispečerov (bez master konta)",
+    "maxVozidiel": "Max áut",
+    "maxDispecerov": "Max dispečerov",
+    "maxJazdcov": "Max vodičov"
   },
 
   "HINT": {
@@ -418,9 +424,9 @@
     "prilizVelky": "Tovar je príliš veľký"
   },
   "NOACCESS": {
-    "maxCar": "Maximálny počet vozidiel pre Vašu spoločnosť bol dovŕšený",
-    "maxDrivers": "Maximálny počet vodičov pre Vašu spoločnosť bol dovŕšený",
-    "maxDispecer": "Maximálny počet dispečerov pre Vašu spoločnosť bol dovŕšený"
+    "maxCar": "Dosiahli ste maximálny počet vozidiel pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis",
+    "maxDrivers": "Dosiahli ste maximálny počet vodičov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis",
+    "maxDispecer": "Dosiahli ste maximálny počet dispečerov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis"
   }
 
 }

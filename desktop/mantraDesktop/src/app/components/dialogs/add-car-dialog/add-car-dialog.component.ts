@@ -332,20 +332,22 @@ export class AddCarDialogComponent implements OnInit {
               return;
             }
             else{
-              let car: Cars = this.assignToCar();
-              car.itinerar = [];
-              this.carService.createCar(car);
+              const carToCreate: Cars = this.assignToCar();
+              carToCreate.itinerar = [];
+              carToCreate.vytvorene = new Date().toString();
+              this.carService.createCar(carToCreate);
               this.dialogRef.close();
               return;
 
             }
           });
         }else{
-          let car: Cars = this.assignToCar();
-          car.itinerar = [];
-          car.vodici = [];
-          const carId = this.carService.createCar(car);
-            this.datPravaVodicom(carId);
+          const carToCreate: Cars = this.assignToCar();
+          carToCreate.itinerar = [];
+          carToCreate.vodici = [];
+          carToCreate.vytvorene = new Date().toString();
+          const carId = this.carService.createCar(carToCreate);
+          this.datPravaVodicom(carId);
           this.dialogRef.close();
           return;
         }
@@ -465,7 +467,6 @@ export class AddCarDialogComponent implements OnInit {
       adr: this.carForm.get('adr').value,
       vodici: this.myVodici,
       allVodici: this.carForm.get('allVodici').value,
-      // vodici:
     };
   }
 

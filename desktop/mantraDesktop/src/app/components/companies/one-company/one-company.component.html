@@ -12,6 +12,11 @@
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
+    <ng-container class="tbl-header" matColumnDef="psc">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.psc' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{element.psc}} </td>
+    </ng-container>
+
     <!-- Weight Column -->
     <ng-container class="tbl-header" matColumnDef="street">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.street' | translate}} </th>
@@ -44,27 +49,30 @@
       <td mat-cell *matCellDef="let element"> {{element.poistenie}} </td>
     </ng-container>
 
-    <ng-container class="tbl-header" matColumnDef="licenceUntil">
+    <ng-container  class="tbl-header" matColumnDef="licenceUntil">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.licenica' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.licenceUntil}} </td>
+      <td [class]="getColorForLicenceUntil(element.licenceUntil)" mat-cell *matCellDef="let element"> {{element.licenceUntil}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="cars">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pocety aut </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.maxVozidiel' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.numberOfCars}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="drivers">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pocet drivesr </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.maxJazdcov' | translate}}  </th>
       <td mat-cell *matCellDef="let element"> {{element.numberOfDrivers}} </td>
     </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="dispecers">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pocet dispec </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMPANIES.maxDispecerov' | translate}}  </th>
       <td mat-cell *matCellDef="let element"> {{element.numberOfDispetchers}} </td>
     </ng-container>
 
-
+    <ng-container class="tbl-header" matColumnDef="detail">
+      <th mat-header-cell *matHeaderCellDef> {{'OFTEN.detail' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> <button (click)="detailAboutCompany(element)" class="button" >{{'OFTEN.detail' | translate}}</button>  </td>
+    </ng-container>
 
     <ng-container class="tbl-header" matColumnDef="update">
       <th mat-header-cell *matHeaderCellDef> {{'OFTEN.update' | translate}} </th>
