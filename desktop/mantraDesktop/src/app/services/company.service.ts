@@ -20,19 +20,20 @@ export class CompanyService {
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.companiesCollection = this.afs.collection<any>('companies');
+    const dispecer: Dispecer = this.dataService.getDispecer();
 
-    this.getCompanies().subscribe(res => {
-      const dispecer: Dispecer = this.dataService.getDispecer();
-      // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
-      let vyfiltrovanerRouty = res;
-      if (dispecer.createdBy !== 'master') {
-        vyfiltrovanerRouty = res.filter(oneCar =>
-          dispecer.myCars.includes(oneCar.id));
-      }
-      this._companies.next(vyfiltrovanerRouty);
-      this.allCompanies = vyfiltrovanerRouty;
-    });
-
+    if (dispecer.email === 'mantra@mantra.sk' || dispecer.email === 'manage.transport.repeat@gmail.com'){
+      this.getCompanies().subscribe(res => {
+        // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
+        let vyfiltrovanerRouty = res;
+        if (dispecer.createdBy !== 'master') {
+          vyfiltrovanerRouty = res.filter(oneCar =>
+            dispecer.myCars.includes(oneCar.id));
+        }
+        this._companies.next(vyfiltrovanerRouty);
+        this.allCompanies = vyfiltrovanerRouty;
+      });
+    }
   }
 
   private _companies = new BehaviorSubject<any>([]);
@@ -46,7 +47,7 @@ export class CompanyService {
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id'];
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })

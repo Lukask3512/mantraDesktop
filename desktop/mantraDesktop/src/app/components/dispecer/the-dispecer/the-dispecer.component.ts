@@ -26,7 +26,17 @@ export class TheDispecerComponent implements OnInit, OnChanges {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-  this.dataSourceMaster = new MatTableDataSource([this.dispecerService.getMasterAcc()]);
+    this.getAndSetMasterDIsp();
+  }
+
+  getAndSetMasterDIsp(){
+    if (this.dispecerService.getMasterAcc()){
+      this.dataSourceMaster = new MatTableDataSource([this.dispecerService.getMasterAcc()]);
+    }else{
+      setTimeout(() => {
+        this.getAndSetMasterDIsp();
+      }, 1000);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges){
