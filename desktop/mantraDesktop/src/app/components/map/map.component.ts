@@ -252,7 +252,7 @@ export class MapComponent implements AfterViewInit {
         }, 2000);
 
 
-          setTimeout(() => {
+        setTimeout(() => {
             this.addRouteNewSystem();
           }, 1000);
         });

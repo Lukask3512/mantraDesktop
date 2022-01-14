@@ -216,6 +216,7 @@ export class TransportationWrapperComponent implements OnInit {
       if (value === undefined){
         return;
       }else{
+        this.activeRoutes();
         return;
       }
     });

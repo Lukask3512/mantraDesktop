@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import { EventEmitter } from '@angular/core';
-import {EditInfoComponent} from "../../dialogs/edit-info/edit-info.component";
+import {EditInfoComponent} from '../../dialogs/edit-info/edit-info.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {RouteStatusService} from "../../../data/route-status.service";
 import {DataService} from "../../../data/data.service";
@@ -46,11 +46,16 @@ export class DragAndDropListComponent implements OnInit {
 
 
   setAddresses(addresses: Address[]){
+
     if (addresses[0]){
       this.address = addresses;
       this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
       this.spinner.hide();
-    }else{
+    }else if (addresses && addresses.length === 0){
+      this.address = addresses;
+      this.spinner.hide();
+    }
+    else{
       this.spinner.hide();
     }
   }
