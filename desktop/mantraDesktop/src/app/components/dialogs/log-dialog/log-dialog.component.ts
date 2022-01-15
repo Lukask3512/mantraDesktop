@@ -4,11 +4,13 @@ import {RouteStatusService} from '../../../data/route-status.service';
 import Address from '../../../models/Address';
 import RouteLog from '../../../models/RouteLog';
 import {jsPDF} from 'jspdf';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import Route from '../../../models/Route';
 import Company from '../../../models/Company';
 import {PackageService} from '../../../services/package.service';
 import {TranslateService} from '@ngx-translate/core';
+import {ShowCoorOnMapComponent} from '../show-coor-on-map/show-coor-on-map.component';
+import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-log-dialog',
   templateUrl: './log-dialog.component.html',
@@ -19,7 +21,8 @@ export class LogDialogComponent implements OnInit {
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private routeLogService: RouteLogService, public routeStatusService: RouteStatusService,
               @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<LogDialogComponent>,
-              private packageService: PackageService, private translation: TranslateService) { }
+              private packageService: PackageService, private translation: TranslateService,
+              private dialog: MatDialog) { }
   dataSource;
   displayedColumns: string[] = ['town', 'status', 'time'];
 
@@ -49,7 +52,7 @@ export class LogDialogComponent implements OnInit {
 
   timeToLocal(dateUtc){
 
-    var date = (new Date(dateUtc));
+    const date = (new Date(dateUtc));
 
     if (dateUtc == null || dateUtc === '0'){
       return this.translation.instant('LOG.nezverejneny');
@@ -58,12 +61,11 @@ export class LogDialogComponent implements OnInit {
   }
 
   getDetail(){
-    var myPackages = [];
+    const myPackages = [];
     this.addresses.forEach(oneAddress => {
       if (oneAddress.type === 'nakladka'){
-        var detailAr = {detailArray: [], townsArray: [], packageId: []};
         oneAddress.packagesId.forEach( oneId => {
-            var balik = this.packageService.getOnePackage(oneId);
+            const balik = this.packageService.getOnePackage(oneId);
             myPackages.push(balik);
         });
         this.detail = myPackages;
@@ -96,9 +98,16 @@ export class LogDialogComponent implements OnInit {
   getLog(){
     this.routeLog = [];
     this.addresses.forEach(oneAddress => {
-      this.routeLogService.getLogFromRoute(oneAddress.id).subscribe(myLog => {
+      this.routeLogService.getLogFromRoute(oneAddress.id).pipe(take(1)).subscribe(myLog => {
+        // @ts-ignore
+        const logsId: RouteLog = myLog[0];
+        logsId.id = oneAddress.id;
+        // logsId = {... {id: oneAddress.id}};
+        console.log(logsId);
         if (myLog[0]){
-          this.routeLog.push(myLog[0] as RouteLog);
+          if (!this.routeLog.find(oneLog => oneLog.id === logsId.id)){
+            this.routeLog.push(logsId);
+          }
         }
         if (this.routeLog) {
           this.routeLog.sort((a, b) => {
@@ -138,6 +147,24 @@ export class LogDialogComponent implements OnInit {
 
   getCompanyZadavatel(company: Company){
     this.companyZadavatel = company;
+  }
+
+  showOnMap(townIndex, indexOfCoor){
+    console.log(this.routeLog[townIndex].lattitude[indexOfCoor]);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      lat: this.routeLog[townIndex].lattitude[indexOfCoor],
+      lon: this.routeLog[townIndex].longtitude[indexOfCoor]
+    };
+    const dialogRef = this.dialog.open(ShowCoorOnMapComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+        if (value === undefined){
+          return;
+        }else {
+
+        }
+      });
+
   }
 
 }

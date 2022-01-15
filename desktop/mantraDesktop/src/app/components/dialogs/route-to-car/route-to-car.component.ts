@@ -21,7 +21,7 @@ import { MatStepper } from '@angular/material/stepper';
 export class RouteToCarComponent implements OnInit {
 
   constructor(private dataService: DataService, private routeService: RouteService
-              , @Inject(MAT_DIALOG_DATA) public data: any,
+              ,@Inject(MAT_DIALOG_DATA) public data: any,
   public dialogRef: MatDialogRef<RouteToCarComponent>, public routeStatusService: RouteStatusService,
               private detailAboutService: DetailAboutRouteService, private carService: CarService,
               private addressService: AddressService) { }

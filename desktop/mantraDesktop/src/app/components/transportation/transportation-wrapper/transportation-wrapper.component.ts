@@ -13,6 +13,7 @@ import {OfferRouteService} from '../../../services/offer-route.service';
 import {DispecerService} from '../../../services/dispecer.service';
 import {CompanyService} from '../../../services/company.service';
 import Dispecer from '../../../models/Dispecer';
+import {ShowCoorOnMapComponent} from '../../dialogs/show-coor-on-map/show-coor-on-map.component';
 
 @Component({
   selector: 'app-transportation-wrapper',
