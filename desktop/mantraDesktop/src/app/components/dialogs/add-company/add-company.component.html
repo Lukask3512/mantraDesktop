@@ -1,9 +1,10 @@
 <mat-dialog-content class="wrapper">
   <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addComapny' | translate}}</h1>
   <h1 *ngIf="this.data" class="header">{{'COMPANIES.updateCompany' | translate}}</h1>
-  <form class="gridContainer" [formGroup]="companyForm">
     <mat-vertical-stepper>
-    <mat-step>
+      <form class="gridContainer" [formGroup]="companyForm">
+
+      <mat-step>
       <ng-template matStepLabel>{{'COMPANIES.aboutCompany' | translate}}</ng-template>
     <mat-form-field  appearance="standard" class="gridItem">
       <mat-label>{{'COMPANIES.companyName' | translate}}</mat-label>
@@ -72,7 +73,11 @@
         <input formControlName="licence" type="date" step="1" matInput placeholder="{{'HINT.datum' | translate}}...">
       </mat-form-field>
 
-
+      <mat-form-field  appearance="standard" class="gridItem">
+        <mat-label>Info</mat-label>
+        <input type="text" formControlName="infoAbout" matInput placeholder="Info...">
+        <mat-hint>Info...</mat-hint>
+      </mat-form-field>
 
     </mat-step>
 
@@ -98,6 +103,7 @@
           </div>
         </form>
       </mat-step>
+      </form>
 
     <mat-step>
       <ng-template matStepLabel>{{'COMPANIES.masterAccount' | translate}}</ng-template>
@@ -124,6 +130,9 @@
             <mat-error *ngIf="dispecerForm.invalid">{{getErrorMessage()}}</mat-error>
             <mat-hint>{{'DISPATCHER.email' | translate}}</mat-hint>
           </mat-form-field>
+          <p *ngIf="!
+          emailChanged()">Email master konta bol zmeneny. Povodne master konto strati pristup ku spolocnosti a novy email zisa master prisup.</p>
+
 
           <mat-form-field appearance="standard" class="gridItem">
             <mat-label>{{'DISPATCHER.phoneNumber' | translate}}</mat-label>
@@ -137,7 +146,6 @@
     </mat-step>
     </mat-vertical-stepper>
 
-  </form>
   <button *ngIf="!this.data" (click)="saveCompany()" type="submit" class="buttonG" [disabled]="checkFormsValid()">{{'OFTEN.add' | translate}}</button>
   <button *ngIf="this.data" (click)="updateCompany()" type="submit" class="buttonG" [disabled]="checkFormsValid()">{{'OFTEN.update' | translate}}</button>
 

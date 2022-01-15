@@ -636,9 +636,9 @@ export class MapComponent implements AfterViewInit {
       this.map.addLayer(this.vectorLayerCoordinates);
 
     }else{
-      const feature = this.vectorSourcePreTrasy.getFeatureById(carId);
-      if (feature){
-        this.vectorSourcePreTrasy.removeFeature(feature);
+      const feature2 = this.vectorSourcePreTrasy.getFeatureById(carId);
+      if (feature2){
+        this.vectorSourcePreTrasy.removeFeature(feature2);
       }
     }
     this.vectorSourcePreTrasy.addFeature(feature);
@@ -647,7 +647,7 @@ export class MapComponent implements AfterViewInit {
 
   checkFeatureUnderMouse(){
     this.map.on('pointermove', function(evt)
-    {   const hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) { return true; });
+    {   const hit = this.forEachFeatureAtPixel(evt.pixel, (feature, layer) => { return true; });
         if (hit) { this.getViewport().style.cursor = 'pointer'; }
       else { this.getViewport().style.cursor = ''; }
     });

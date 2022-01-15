@@ -147,4 +147,8 @@ export class DispecerService {
     return this.dispecerCollection.doc(dispecer.id).update(dispecer);
   }
 
+  updateDispecerWithOldIdAndNewDispecer(dispecer: Dispecer, id){
+    return this.dispecerCollection.doc(id).update(dispecer);
+  }
+
 }

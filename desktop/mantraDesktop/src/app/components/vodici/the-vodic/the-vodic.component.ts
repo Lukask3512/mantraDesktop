@@ -1,15 +1,12 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import Dispecer from '../../../models/Dispecer';
-import {DispecerService} from '../../../services/dispecer.service';
 import {FormBuilder} from '@angular/forms';
 import {DataService} from '../../../data/data.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {DeleteDispecerComponent} from '../../dialogs/delete-dispecer/delete-dispecer.component';
-import {DipecerPravaComponent} from '../../dialogs/dipecer-prava/dipecer-prava.component';
 import Vodic from '../../../models/Vodic';
 import {VodicService} from '../../../services/vodic.service';
 import {NewVodicDialogComponent} from '../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
 import {MatTableDataSource} from '@angular/material/table';
+import {DeleteVodicComponent} from '../../dialogs/delete-vodic/delete-vodic.component';
 
 @Component({
   selector: 'app-the-vodic',
@@ -38,7 +35,7 @@ export class TheVodicComponent implements OnInit, OnChanges {
 
   deleteVodic(vodic){
     if (!this.getDispecer()){
-    const dialogRef = this.dialog.open(DeleteDispecerComponent, {
+    const dialogRef = this.dialog.open(DeleteVodicComponent, {
       data: {dispecer: vodic}
     });
     dialogRef.afterClosed().subscribe(value => {

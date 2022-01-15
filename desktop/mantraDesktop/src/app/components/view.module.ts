@@ -85,6 +85,7 @@ import { CompanyDetailComponent } from './dialogs/company-detail/company-detail.
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { CompanyDetailAboutComponent } from './dialogs/company-detail-about/company-detail-about.component';
+import { DeleteVodicComponent } from './dialogs/delete-vodic/delete-vodic.component';
 
 
 @NgModule({
@@ -109,7 +110,7 @@ import { CompanyDetailAboutComponent } from './dialogs/company-detail-about/comp
       AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent,
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
-      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent
+      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent
     ],
     exports: [
         OpenlayerComponent,

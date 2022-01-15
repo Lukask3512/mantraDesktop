@@ -13,6 +13,7 @@ import {take} from 'rxjs/operators';
 import {NewCarComponent} from '../../cars/new-car/new-car.component';
 import {EmailService} from '../../../services/email/email.service';
 import {TranslateService} from '@ngx-translate/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dipecer-prava',
@@ -25,7 +26,8 @@ export class DipecerPravaComponent implements OnInit {
               private dataService: DataService, @Inject(MAT_DIALOG_DATA) public data: any,
               private dispecerService: DispecerService,  private fb: FormBuilder,
               private accountService: AccountService, public dialogRef: MatDialogRef<DipecerPravaComponent>,
-              private emailService: EmailService, private translation: TranslateService) { }
+              private emailService: EmailService, private translation: TranslateService,
+              private snackBar: MatSnackBar) { }
   cars: Cars[];
   prives: Prives[];
   displayedColumns: string[] = ['ecv', 'prava'];
@@ -49,6 +51,7 @@ export class DipecerPravaComponent implements OnInit {
     });
     if (this.data){
       this.dispecer = this.data.dispecer;
+      this.dispecerForm.get('email').disable();
       this.assignToForm();
     }else{
       this.dispecer = new Dispecer();
@@ -153,6 +156,12 @@ export class DipecerPravaComponent implements OnInit {
     });
   }
 
+  openSnackBar(message: string, action) {
+    const snackBarRef = this.snackBar.open(message, action, {
+      duration: 4000
+    });
+  }
+
   updateDispecer(){
     if (this.data){
       this.dispecer.allCars = this.allCars;
@@ -178,6 +187,7 @@ export class DipecerPravaComponent implements OnInit {
       }
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
         if (user.length > 0){
+          this.openSnackBar('Email sa uz v databaze nachadza', 'Ok');
           // tento pouzivatel uz je v databaze
           // TODO vypis ze pouzivatel sa uz nachadza v databaze
           return;

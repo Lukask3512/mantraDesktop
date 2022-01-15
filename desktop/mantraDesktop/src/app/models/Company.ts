@@ -1,8 +1,8 @@
 export default class Company {
   id?: string;
   name: string;
-  ico: string;
-  dicIc: string;
+  ico?: string;
+  dicIc?: string;
   poistenie: string;
 
   psc: string;
@@ -15,5 +15,7 @@ export default class Company {
   numberOfCars: number;
   numberOfDrivers: number;
   numberOfDispetchers: number;
+
+  infoAbout?: string;
 
 }

@@ -12,7 +12,8 @@
         <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
         <option value="cz" [selected]="lang == 'cz'">Czech</option>
       </select>
-      <i routerLink="/view/profile" class="material-icons profile">account_circle</i>
+        <i routerLink="/view/profile" class="material-icons profile">account_circle</i>
+        <span routerLink="/view/profile">Lukino pukino</span>
       <button routerLink="" (click)="logout()" class="button_c" >{{'HEADER.logout' | translate}}</button>
     </div>
 

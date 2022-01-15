@@ -480,5 +480,23 @@ export class AddCarDialogComponent implements OnInit {
     }
   }
 
+  checkNaklOtvory(){
+    if (this.carForm.get('autoVyska').value < this.carForm.get('zoZaduVyska').value ||
+      this.carForm.get('autoSirka').value < this.carForm.get('zoZaduSirka').value ||
+
+      this.carForm.get('autoVyska').value <  this.carForm.get('zPravaVyska').value ||
+      this.carForm.get('autoDlzka').value < this.carForm.get('zPravaSirka').value ||
+
+      this.carForm.get('autoVyska').value <  this.carForm.get('zLavaVyska').value ||
+      this.carForm.get('autoDlzka').value < this.carForm.get('zLavaSirka').value ||
+
+      this.carForm.get('autoDlzka').value <  this.carForm.get('zHoraVyska').value ||
+      this.carForm.get('autoSirka').value < this.carForm.get('zHoraSirka').value){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
 }
