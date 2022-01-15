@@ -60,6 +60,15 @@
 
 .flexking{
   display: flex;
+  align-items: center;
+}
+
+.dispecerName{
+  margin-left: 5px;
+  margin-right: 5px;
+  white-space: nowrap;
+  color: white;
+  cursor: pointer;
 }
 
 .hamburger{
@@ -93,7 +102,7 @@
     left: -110%;
     top: 5rem;
     flex-direction: column;
-    background-color: #fff;
+    background-color: #343a40;
     width: 100%;
     border-radius: 10px;
     text-align: center;
@@ -174,7 +183,7 @@ select::-ms-expand {
 }
 
 a{
-  color: gray;
+  color: white;
 }
 
 
@@ -233,7 +242,7 @@ table.fixed { table-layout:fixed; }
 
 .logout-btn{
   float: right;
-  margin: 0.6em 1.6em 0 0;
+  //margin: 0.6em 1.6em 0 0;
   display: flex;
   align-items: center;
 

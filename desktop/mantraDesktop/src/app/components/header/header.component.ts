@@ -6,6 +6,7 @@ import {AccountService} from "../../../login/_services/account.service";
 import {TranslateService} from '@ngx-translate/core';
 import Company from '../../models/Company';
 import Route from '../../models/Route';
+import {DispecerService} from '../../services/dispecer.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -36,6 +37,15 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'sk';
     this.company = this.dataService.getLoggedInCompany();
+  }
+
+  getDispecer(){
+    const dispecer = this.dataService.getDispecer();
+    if (dispecer.createdBy === 'master'){
+      return dispecer.name + ' - Master';
+    }else{
+      return dispecer.name + ' - ' + this.translateService.instant('DISPATCHER.dispatcher');
+    }
   }
 
   changeLang(lang){

@@ -13,30 +13,31 @@
         <option value="cz" [selected]="lang == 'cz'">Czech</option>
       </select>
         <i routerLink="/view/profile" class="material-icons profile">account_circle</i>
-        <span routerLink="/view/profile">Lukino pukino</span>
+        <span class="dispecerName" routerLink="/view/profile">{{this.getDispecer()}}</span>
       <button routerLink="" (click)="logout()" class="button_c" >{{'HEADER.logout' | translate}}</button>
     </div>
 
     <nav #navbar (click)="openHamMenu()" class="navbar">
       <ul #navMenu class="nav-menu">
         <li *ngIf="!getCompany()" class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}} </a>
+          <a routerLinkActive="active"  routerLink="/view/transport" class="nav">{{'HEADER.transport' | translate}} </a>
+        </li>
+        <li *ngIf="!getCompany()" class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.trhovisko' | translate}} </a>
+        </li>
+        <li *ngIf="!getCompany()" class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}} </a>
+        </li>
+        <li  *ngIf="!getCompany()" class="nav-item">
+          <a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}} </a>
         </li>
         <li *ngIf="!getCompany()" class="nav-item">
           <a routerLinkActive="active" routerLink="/view/vodici" class="nav">{{'HEADER.drivers' | translate}} </a>
         </li>
-        <li  *ngIf="!getCompany()"class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}} </a>
-        </li>
         <li *ngIf="!getCompany()" class="nav-item">
-          <a routerLinkActive="active"  routerLink="/view/transport" class="nav">{{'HEADER.transport' | translate}} </a>
+          <a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}} </a>
         </li>
-        <li *ngIf="!getCompany()" class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.map' | translate}} </a>
-        </li>
-        <li *ngIf="!getCompany()" class="nav-item">
-          <a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.offers' | translate}} </a>
-        </li>
+
         <li *ngIf="getCompany()" class="nav-item">
           <a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}} </a>
         </li>

@@ -6,9 +6,7 @@ import RouteLog from '../../../models/RouteLog';
 import {jsPDF} from 'jspdf';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import Route from '../../../models/Route';
-import '../../../../assets/fonts/arial/ARIALUNI-normal';
 import Company from '../../../models/Company';
-import html2canvas from 'html2canvas';
 import {PackageService} from '../../../services/package.service';
 import {TranslateService} from '@ngx-translate/core';
 @Component({

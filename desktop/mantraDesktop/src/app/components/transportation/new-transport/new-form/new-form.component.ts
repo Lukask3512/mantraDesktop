@@ -110,6 +110,7 @@ export class NewFormComponent implements OnInit {
     const z = this.transportForm.get('sizeD').value;
     // @ts-ignore
     document.getElementById('mojaABedna').setAttribute('scale', {x, y, z});
+
   }
 
   upravSipku(){

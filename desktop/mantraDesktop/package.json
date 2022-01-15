@@ -8,7 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc"
+    "postinstall": "ngcc",
+    "build:stats": "ng build --stats-json",
+    "analyze": "webpack-bundle-analyzer dist/mantraDesktop/stats.json"
   },
   "private": true,
   "dependencies": {
