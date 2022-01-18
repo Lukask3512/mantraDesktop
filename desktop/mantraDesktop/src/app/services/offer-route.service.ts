@@ -8,6 +8,8 @@ import Route from '../models/Route';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
+import {OneCompanyComponent} from '../components/companies/one-company/one-company.component';
+import {GetOneCompanyService} from './companies/get-one-company.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ export class OfferRouteService {
   // neukazovat pri kazdej zmene ten isty dialog
   dialogForRouteShown = [];
   constructor(private afs: AngularFirestore, private dataService: DataService, private _snackBar: MatSnackBar,
-              private router: Router,  private translate: TranslateService) {
+              private router: Router,  private translate: TranslateService, private oneCompanyService: GetOneCompanyService) {
     this.routesCollection = this.afs.collection<any>('route');
 
     this.readAllQueries().subscribe(res => {
@@ -35,7 +37,7 @@ export class OfferRouteService {
           if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId && !this.aldreadyThere(oneRoute.id)){
             setTimeout(() => {
               this.openSnackBar(this.translate.instant('POPUPS.ziskaliStePonuku'), this.translate.instant('OFTEN.priradit'), oneRoute);
-            }, 7000);
+            }, 5000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
           if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === '' && !this.aldreadyThere(oneRoute.id)){
@@ -44,6 +46,25 @@ export class OfferRouteService {
             }, 7000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
+        }
+        // ked chce tvorca zrusit ponuku
+        if (oneRoute.cancelByCreator && oneRoute.createdBy !== this.dataService.getMyIdOrMaster() && !oneRoute.cancelByDriver){
+          this.oneCompanyService.getCompanyName(oneRoute.createdBy).then((company) => {
+            setTimeout(() => {
+              this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit'),
+                this.translate.instant('OFTEN.skontrolovat'), oneRoute);
+            }, 9000);
+          });
+        }
+
+        // ked chce prepravca zrusit ponuku
+        if (oneRoute.cancelByDriver && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && !oneRoute.cancelByCreator){
+          this.oneCompanyService.getCompanyName(oneRoute.takenBy).then((company) => {
+            setTimeout(() => {
+              this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit')
+                , this.translate.instant('OFTEN.skontrolovat'), oneRoute);
+            }, 9000);
+          });
         }
 
       });

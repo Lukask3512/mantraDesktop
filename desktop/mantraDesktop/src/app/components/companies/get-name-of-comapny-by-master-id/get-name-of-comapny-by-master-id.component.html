@@ -1,3 +1,4 @@
-<div class="wrapper">
-  <h2 *ngIf="this.company">{{this.company.name}}</h2>
+<div class="companyNameTogether">
+  <span *ngIf="zadavatel !== undefined || zadavatel !== null">{{this.getZadavatelOr()}}</span>
+  <h2 class="nazovFirmy" *ngIf="this.company">{{this.company.name}}</h2>
 </div>

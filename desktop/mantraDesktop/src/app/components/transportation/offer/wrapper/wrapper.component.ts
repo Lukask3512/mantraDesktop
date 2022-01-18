@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {OfferRouteService} from "../../../../services/offer-route.service";
-import Route from "../../../../models/Route";
-import {RouteStatusService} from "../../../../data/route-status.service";
-import {DataService} from "../../../../data/data.service";
-import {DeleteRouteComponent} from "../../../dialogs/delete-route/delete-route.component";
-import {MatDialog} from "@angular/material/dialog";
+import {OfferRouteService} from '../../../../services/offer-route.service';
+import Route from '../../../../models/Route';
+import {RouteStatusService} from '../../../../data/route-status.service';
+import {DataService} from '../../../../data/data.service';
+import {DeleteRouteComponent} from '../../../dialogs/delete-route/delete-route.component';
+import {MatDialog} from '@angular/material/dialog';
 import Dispecer from '../../../../models/Dispecer';
 import {AddressService} from '../../../../services/address.service';
 import {DispecerService} from '../../../../services/dispecer.service';
@@ -48,7 +48,7 @@ export class WrapperComponent implements OnInit {
     for (let i = 0; i < this.routes.length; i++) {
       for (let j = 0; j < this.routes[i].addresses.length; j++) {
         const adresa = this.addressService.getOneAddresByIdGet(this.routes[i].addresses[j]);
-        if (adresa.nameOfTown.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(zFiltra)){
+        if (adresa.nameOfTown.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(zFiltra)){
           routyNaZombrazenie.push(this.routes[i]);
           break;
         }
@@ -60,7 +60,7 @@ export class WrapperComponent implements OnInit {
       const dispecer: Dispecer = this.dispecerService.getDispecerFromAnotherCompanies(this.routes[i].createdBy);
       if (dispecer){
         const company = this.companyService.getAnotherCompanies(dispecer.companyId);
-        if (company.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(zFiltra)){
+        if (company.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(zFiltra)){
           if (!routyNaZombrazenie.find(oneRoute => oneRoute.id === this.routes[i].id)){
             routyNaZombrazenie.push(this.routes[i]);
           }
@@ -117,7 +117,7 @@ export class WrapperComponent implements OnInit {
   reClickOnTab(){
     if (this.whatIsActive === 0){
       this.allActive();
-    }else if(this.whatIsActive === 1){
+    }else if (this.whatIsActive === 1){
       this.mine();
     }else if (this.whatIsActive === 2){
       this.assigned();
@@ -126,7 +126,7 @@ export class WrapperComponent implements OnInit {
 
   allActive(){
     this.finishedRoutesToShow = null;
-      this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
+    this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
       && oneRoute.createdBy !== this.getDispecerId());
     this.whatIsActive = 0;
   }

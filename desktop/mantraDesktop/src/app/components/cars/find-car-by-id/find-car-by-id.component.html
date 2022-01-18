@@ -1,5 +1,8 @@
 <div class="wrapper">
-<h2 *ngIf="carName">{{carName.ecv}}</h2>
-<p *ngIf="carName">{{this.routeStatusService.getStatus(carName.status)}}</p>
+  <div class="ecvAndStatus">
+    <h2 *ngIf="carName">{{carName.ecv}}</h2>
+    <p *ngIf="carName">{{this.routeStatusService.getStatus(carName.status)}}</p>
+  </div>
+
 <p *ngIf="carUndefined">{{carUndefined}}</p>
 </div>

@@ -14,8 +14,10 @@ body {
 
 @font-face {
   font-family: "ARIALUNI";
-  src: local("ARIALUNI"), url(./assets/fonts/arial/arial.ttf) format("truetype");
+  src: local("ARIALUNI"), url(./assets/fonts/arial/roboto.ttf) format("truetype");
+  // ak to nahodou budes menit, id arialuni nechaj ako tu, js subor zmen na konci tiez na arialuni...
 }
+
 
 body.background{
   //background-image: url("src/assets/logo/pozadie1.jpg");

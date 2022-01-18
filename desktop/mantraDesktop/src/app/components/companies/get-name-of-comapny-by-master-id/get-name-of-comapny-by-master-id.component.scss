@@ -1,5 +1,12 @@
-.wrapper{
-  display: inline-block;
+
+.companyNameTogether{
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.nazovFirmy{
+  margin: 0;
 }
 
 h2{

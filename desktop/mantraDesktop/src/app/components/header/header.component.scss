@@ -1,7 +1,6 @@
 .header{
   float: right;
   padding: 10px;
-  background: blue;
   color: white;
   border-radius: 7px;
   margin: {
@@ -102,26 +101,23 @@
     left: -110%;
     top: 5rem;
     flex-direction: column;
-    background-color: #343a40;
+    background-color: #212529;
     width: 100%;
     border-radius: 10px;
     text-align: center;
     transition: 0.3s;
-    box-shadow:
-      0 10px 27px rgba(0, 0, 0, 0.05);
+
   }
 
-  .nav-menu.active {
+  .nav-menu.activeBar {
     left: 0;
     padding-left: 3px;
     margin-top: -20px;
   }
 
   .nav-item {
-    margin: 2rem 0;
-    border-bottom: 2px solid gray;
-    box-shadow: 5px 5px 5px grey;
-    border-radius: 3px;
+    padding: 1rem 0;
+    border-radius: 10px;
   }
   .nav{
     display: inline-block;
@@ -132,19 +128,22 @@
     cursor: pointer;
   }
 
-  .hamburger.active .bar:nth-child(2) {
+  .hamburger.activeBar .bar:nth-child(2) {
     opacity: 0;
   }
 
-  .hamburger.active .bar:nth-child(1) {
+  .hamburger.activeBar .bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
   }
 
-  .hamburger.active .bar:nth-child(3) {
+  .hamburger.activeBar .bar:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
   }
 
-
+  //tu sa styluje aktivny header
+  .active{
+    background: #343a40;
+  }
 }
 
 select {
@@ -247,6 +246,7 @@ table.fixed { table-layout:fixed; }
   align-items: center;
 
 }
+
 
 
 

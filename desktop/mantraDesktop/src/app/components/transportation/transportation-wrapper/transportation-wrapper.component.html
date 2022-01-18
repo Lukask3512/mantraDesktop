@@ -61,20 +61,30 @@
       </ng-container>
     </div>
     <div class="vykladka">
-      <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
-      <h2 *ngIf="route.createdBy === this.getDispecerId()">{{'OFFER.vasaPonuka' | translate}}</h2>
-      <p *ngIf="this.route.price">{{this.route.price}}€</p>
-      <p *ngIf="!this.route.price">{{'OFFER.ponukniteCenu' | translate}}</p>
-      <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      <div *ngIf="route.createdBy === this.getDispecerId()">
+        <div class="companyNameTogether">
+          <span>{{'OFFER.zadavatel' | translate}}:</span><h2 class="nazovFirmy"> {{this.getMyCompany()}}</h2>
+        </div>
+        <app-get-name-of-comapny-by-master-id [zadavatel]="false" [masterId]="this.route.takenBy"></app-get-name-of-comapny-by-master-id>
+        <div class="companyNameTogether">
+          <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
+        </div>
+        <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+
+      </div>
+      <div *ngIf="route.createdBy !== this.getDispecerId()">
+        <app-get-name-of-comapny-by-master-id [zadavatel]="true" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
+        <div class="companyNameTogether">
+          <span>{{'OFFER.prepravca' | translate}}:</span> <h2 class="nazovFirmy">{{this.getMyCompany()}}</h2>
+        </div>
+        <div class="companyNameTogether">
+          <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
+        </div>
+        <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+      </div>
       <div *ngIf="route.carId == null">
         <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
       </div>
-
-      <div *ngIf="route.createdBy == this.getDispecerId()">
-        <!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
-<!--        <button (click)="vymazatPonuku(route)">{{'OFTEN.delete' | translate}}</button>-->
-      </div>
-
 
     </div>
   </div>
@@ -115,8 +125,25 @@
       </ng-container>
     </div>
     <div class="vykladka">
-      <app-get-name-of-comapny-by-master-id *ngIf="route.createdBy !== this.getDispecerId()" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
-      <h2 *ngIf="route.createdBy === this.getDispecerId()">{{'OFFER.vasaPonuka' | translate}}</h2>
+      <div *ngIf="route.createdBy === this.getDispecerId()">
+        <div class="companyNameTogether">
+          <span>{{'OFFER.zadavatel' | translate}}:</span><h2 class="nazovFirmy"> {{this.getMyCompany()}}</h2>
+        </div>
+        <app-get-name-of-comapny-by-master-id [zadavatel]="false" [masterId]="this.route.takenBy"></app-get-name-of-comapny-by-master-id>
+        <div class="companyNameTogether">
+          <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
+        </div>
+      </div>
+      <div *ngIf="route.createdBy !== this.getDispecerId()">
+        <app-get-name-of-comapny-by-master-id [zadavatel]="true" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
+        <div class="companyNameTogether">
+          <span>{{'OFFER.prepravca' | translate}}:</span> <h2 class="nazovFirmy">{{this.getMyCompany()}}</h2>
+        </div>
+        <div class="companyNameTogether">
+          <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
+        </div>
+      </div>
+
     </div>
   </div>
   </div>

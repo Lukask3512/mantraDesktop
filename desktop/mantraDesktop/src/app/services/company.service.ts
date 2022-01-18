@@ -22,7 +22,7 @@ export class CompanyService {
     this.companiesCollection = this.afs.collection<any>('companies');
     const dispecer: Dispecer = this.dataService.getDispecer();
 
-    if (dispecer.email === 'mantra@mantra.sk' || dispecer.email === 'manage.transport.repeat@gmail.com'){
+    if (dispecer && (dispecer.email === 'mantra@mantra.sk' || dispecer.email === 'manage.transport.repeat@gmail.com')){
       this.getCompanies().subscribe(res => {
         // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
         let vyfiltrovanerRouty = res;

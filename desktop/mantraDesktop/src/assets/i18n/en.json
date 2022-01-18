@@ -30,9 +30,9 @@
     "problem": "Problem",
     "preskocene": "Skipped",
     "nepriradene": "Unassigned",
+    "zrusene": "Zrušené",
     "cakajuce": "Your reactions",
-    "skontrolovat": "Check",
-    "vytvorene": "Created"
+    "skontrolovat": "Check"
   },
 
   "EMAIL": {
@@ -63,7 +63,7 @@
     "companies": "Companies",
     "profile": "Profile",
     "trhovisko": "Marketplace",
-    "mojePonuky": "Waiting orders"
+    "mojePonuky": "Waiting room"
   },
   "DISPATCHER": {
     "dispatcher": "Dispatcher",
@@ -128,7 +128,11 @@
     "vyskaNakPriestoru": "Cargo space height",
     "sirkaNakPriestoru": "Cargo space width",
 
-    "navesASpecRezimy": "Trailer - special requirements",
+    "vyskaNakOtvoru": "Výška nák. otvoru",
+    "sirkaNakOtvoru": "Šírka nák. otvoru",
+    "dlzkaNakOtvoru": "Dĺzka nák. otvoru",
+
+    "navesASpecRezimy": "Trailer + special requirements",
     "moznostPripojitNaves": "Able to attach trailer",
     "teplotnyRezim": "Set temperature mode",
     "minTeplota": "Minimum temperature",
@@ -167,7 +171,7 @@
     "comapnies": "Companies",
     "oneCompany": "Company",
     "name": "Name",
-    "psc": "Postal code",
+    "psc": "PSČ",
     "street": "Street",
     "town": "City",
     "state": "State",
@@ -188,9 +192,9 @@
     "maxPocetVozidiel": "Maximum amount of vehicles",
     "maxPocetVodicov": "Maximum amount of drivers",
     "maxPocetDispecerov": "Maximum amount of dispatchers (without master account)",
-    "maxVozidiel": "Max cars",
-    "maxDispecerov": "Max dispatchers",
-    "maxJazdcov": "Max drivers"
+    "maxVozidiel": "Max áut",
+    "maxDispecerov": "Max dispečerov",
+    "maxJazdcov": "Max vodičov"
   },
 
   "HINT": {
@@ -203,6 +207,7 @@
     "hodin": "Hours",
     "mobileNumber": "Drivers can log into the vehicle with their phone number or with the phone number of the vehicle.",
     "sizeWarning": "Warning! The cargo space is bigger than the size of the vehicle.",
+    "sizeOtvorWarning": "Upozornenie! Veľkosť nakladacieho otvoru je väčšia, ako veľkosť vozidla.",
     "nemajuTelefoneCislo": "Nor the driver or the vehicle have a phone number",
     "vodicMaPristupKuVsetkym": "The driver has access to all vehicles",
     "kAutuVsetciVodici": "The vehicle can be accessed by all drivers",
@@ -213,7 +218,8 @@
     "deleteCar": "Are you sure you want to delete the vehicle?",
     "deleteAdress": "Are you sure you want to delete the address",
     "deleteAdressMore": "and its corresponding loading / unloading points from the itinerary?",
-    "deleteDispecer": "Are you sure you want to delete the dispatcher?",
+    "deleteDispecer": "Are you sure you want to delete the dispatcher ",
+    "deleteDriver": "Naozaj chcete odstrániť vodiča ",
     "deleteRoute": "Are you sure you want to delete the route?",
     "max": "max",
     "min": "min",
@@ -325,7 +331,8 @@
     "pdfNepodporuje": "PDF generator does not support special signs.",
     "skontrolujteCas": "Check time",
     "odoslatPonuku": "Send",
-    "vasePonuky": "Your offers"
+    "vasePonuky": "Your offers",
+    "spolocnostChceZrusit": "chce zrušiť dohodnutú prepravu"
   },
   "FILTER": {
     "typVzialenosti": "Distance type",
@@ -357,7 +364,9 @@
     "ukazatPonuku": "Show offer",
     "mamZaujem": "Express interest",
     "nechcemZrusit": "I do not confirm",
-    "zrusenieBoloOdmientute": "Abort has been denied"
+    "zrusenieBoloOdmientute": "Abort has been denied",
+    "zobrazitPonuky": "Zobraziť ponuky",
+    "zobrazitNaMape": "Zobraziť"
   },
 
   "AUTOCOMPLETE": {
@@ -424,9 +433,9 @@
     "prilizVelky": "Cargo is too big"
   },
   "NOACCESS": {
-    "maxCar": "You have reached the maximum amount of vehicles allowed for your company - please contact our customer service to increase your limit",
-    "maxDrivers": "You have reached the maximum amount of drivers allowed for your company - please contact our customer service to increase your limit",
-    "maxDispecer": "You have reached the maximum amount of dispatchers allowed for your company - please contact our customer service to increase your limit"
+    "maxCar": "You have reached the maximum amount of vehicles allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit",
+    "maxDrivers": "You have reached the maximum amount of drivers allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit",
+    "maxDispecer": "You have reached the maximum amount of dispatchers allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit"
   }
 
 }

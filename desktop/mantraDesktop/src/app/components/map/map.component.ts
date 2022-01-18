@@ -116,8 +116,8 @@ export class MapComponent implements AfterViewInit {
   adressesFromDatabase: Address[];
   offersFromDatabase: Route[];
 
-  //pomocna premenna na stahovanie trasy
-  pocetAut: number = 0;
+  // pomocna premenna na stahovanie trasy
+  pocetAut = 0;
 
   private _routesToShow = new BehaviorSubject<any>([]);
   readonly routes$ = this._routesToShow.asObservable();
@@ -376,13 +376,13 @@ export class MapComponent implements AfterViewInit {
 
   scrollToInfo(){
     setTimeout(() => {
-      this.infoDivElement.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      this.infoDivElement.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
     }, 150);
   }
 
   scrollToUp(){
     setTimeout(() => {
-      this.filterElement.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      this.filterElement.nativeElement.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
     }, 100);
   }
 
@@ -446,7 +446,7 @@ export class MapComponent implements AfterViewInit {
 
   vratitZvyraznenuRoutu(){
     if (this.lastClickedOnRoute){
-      var routeStyle = this.lastClickedOnRoute.getStyle();
+      const routeStyle = this.lastClickedOnRoute.getStyle();
       if (routeStyle){
         const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
         rgba[3] = 0.45;
@@ -462,7 +462,7 @@ export class MapComponent implements AfterViewInit {
 
   zvyraznitRoutu(feature){
     this.lastClickedOnRoute = feature;
-    var routeStyle = feature.getStyle();
+    const routeStyle = feature.getStyle();
     if (routeStyle){
     const rgba = routeStyle[routeStyle.length - 1].getStroke().getColor();
     rgba[3] = 1;
@@ -485,11 +485,9 @@ export class MapComponent implements AfterViewInit {
     this.carService.cars$.subscribe(allCars => {
       if (this.pocetAut !== allCars.length){
       this.pocetAut = allCars.length;
-        allCars.forEach(oneCar => {
+      allCars.forEach(oneCar => {
           if (oneCar.itinerar && oneCar.itinerar.length > 0){
           let outputData;
-          // TODO tu by som mal kontrolovat ci sa mi len nahodou nezenil pocet aut,
-            //  inak to sem nepustat..zbytocne sa to bude natahovat stale
           this.routeCoordinates.getRoute(oneCar.id).subscribe((nasolSom) => {
             if (nasolSom || nasolSom === false) {
               const ref = this.storage.ref('Routes/' + oneCar.id + '.json');
@@ -647,7 +645,7 @@ export class MapComponent implements AfterViewInit {
 
   checkFeatureUnderMouse(){
     this.map.on('pointermove', function(evt)
-    {   const hit = this.forEachFeatureAtPixel(evt.pixel, (feature, layer) => { return true; });
+    {   const hit = this.forEachFeatureAtPixel(evt.pixel, (feature, layer) => true);
         if (hit) { this.getViewport().style.cursor = 'pointer'; }
       else { this.getViewport().style.cursor = ''; }
     });
@@ -702,6 +700,14 @@ export class MapComponent implements AfterViewInit {
               },
               200);
           }
+
+          if (car[i].itinerar.length === 0 && this.vectorSourcePreTrasy){
+            const feature2 = this.vectorSourcePreTrasy.getFeatureById(car[i].id);
+            if (feature2){
+              this.vectorSourcePreTrasy.removeFeature(feature2);
+            }
+          }
+
 
         }
 
@@ -861,6 +867,7 @@ export class MapComponent implements AfterViewInit {
     }
     // setTimeout(() => {
     this.drawOffers(this.offersFromDatabase, true);
+    this.pocetAut = 0; // ked auto, ktore nema ziadnu adresu dostane prepravu, aby sa mu nacitala trasa
     // }, 2500);
   }
 
@@ -872,8 +879,8 @@ export class MapComponent implements AfterViewInit {
   addAddresses(){
     let mojeAdresy: Address[];
     let mamVsetkyBaliky = true;
-    let subAdresy = this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
-      let subPonuky =  this.addressService.offerAddresses$.subscribe(allOffers => {
+    const subAdresy = this.addressService.address$.subscribe(allAddresses => { // tu by som mal natiahnut aj ponuky a dat to dokopy
+      const subPonuky =  this.addressService.offerAddresses$.subscribe(allOffers => {
 
         this.places = [];
         this.adressesFromDatabase = allAddresses.concat(allOffers);
@@ -896,7 +903,7 @@ export class MapComponent implements AfterViewInit {
                 }
                 const allPackages = this.packageService.getAllPackages().concat(this.packageService.getAllOfferPackages());
                 oneAdd.packagesId.forEach(onePackId => {
-                  const balik = allPackages.find(onePackage => onePackage.id === onePackId)
+                  const balik = allPackages.find(onePackage => onePackage.id === onePackId);
                   detailVMeste.push(balik);
                   if (!balik){
                     mamVsetkyBaliky = false;
@@ -1696,8 +1703,8 @@ export class MapComponent implements AfterViewInit {
           });
 
         }
-            this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
-            this.drawOffers(poleSMinVzdialenostamiOdAdries, fitnutPonuky);
+        this.offersFromDatabase = poleSMinVzdialenostamiOdAdries;
+        this.drawOffers(poleSMinVzdialenostamiOdAdries, fitnutPonuky);
         });
       }
       // setTimeout( () => {
@@ -2104,7 +2111,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   openAllDetailDialog(){
-    let dialogConfig = new MatDialogConfig();
+    const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       addresses: this.offersToShow.adresyVPonuke,
       route: this.offersToShow,

@@ -4,6 +4,14 @@
   align-items: center;
 }
 
-p{
-  margin: 0px;
+p,h2{
+  margin: 0;
 }
+
+.ecvAndStatus{
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+}
+
+

@@ -31,6 +31,9 @@ export class RouteStatusService {
       case 5: {
         return this.translate.instant('OFTEN.preskocene');
       }
+      case 6: {
+        return this.translate.instant('OFTEN.zrusene');
+      }
 
     }
   }

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CarService} from "../../../services/car.service";
-import {RouteStatusService} from "../../../data/route-status.service";
+import {CarService} from '../../../services/car.service';
+import {RouteStatusService} from '../../../data/route-status.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

@@ -4,6 +4,7 @@ import {DispecerService} from '../../../services/dispecer.service';
 import {CompanyService} from '../../../services/company.service';
 import {take} from 'rxjs/operators';
 import Dispecer from '../../../models/Dispecer';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-get-name-of-comapny-by-master-id',
@@ -14,16 +15,20 @@ export class GetNameOfComapnyByMasterIdComponent implements OnInit {
 
   @Input() masterId: string;
   @Input() companyId: string;
+  @Input() zadavatel: boolean;
   company: Company;
   @Output() sendCompanyToParent = new EventEmitter<Company>();
-  constructor(private dispecerService: DispecerService, private companyService: CompanyService) { }
+  constructor(private dispecerService: DispecerService, private companyService: CompanyService,
+              private translation: TranslateService) { }
 
   ngOnInit(): void {
     if (this.masterId){
       const dispecerFromApp: Dispecer = this.dispecerService.getDispecerFromAnotherCompanies(this.masterId);
+      // console.log(this.dispecerService.dispecerFromOtherCompanies);
       if (!dispecerFromApp){ // ked dispecera nemam
         this.dispecerService.getDispecerById(this.masterId).pipe(take(1)).subscribe(dispecer => {
           if (dispecer){
+            dispecer.id = this.masterId;
             this.dispecerService.setDispecersFromAnotherompanies(dispecer);
             this.companyService.getCompany(dispecer.companyId).pipe(take(1)).subscribe(myCompany => {
               this.company = myCompany;
@@ -48,6 +53,14 @@ export class GetNameOfComapnyByMasterIdComponent implements OnInit {
         }
       }
 
+    }
+  }
+
+  getZadavatelOr(){
+    if (this.zadavatel){
+      return this.translation.instant('OFFER.zadavatel') + ': ';
+    }else{
+      return this.translation.instant('OFFER.prepravca') + ': ';
     }
   }
 

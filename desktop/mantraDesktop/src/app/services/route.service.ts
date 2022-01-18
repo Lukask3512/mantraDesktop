@@ -50,7 +50,7 @@ export class RouteService {
 
   }
 
-  private _routes = new BehaviorSubject<any>([]);
+  private _routes = new BehaviorSubject<Route[]>([]);
   readonly routes$ = this._routes.asObservable();
 
   private _finishedRoutes = new BehaviorSubject<any>([]);

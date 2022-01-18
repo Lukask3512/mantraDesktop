@@ -63,8 +63,8 @@ export class HeaderComponent implements OnInit {
   }
 
   openHamMenu(){
-      this.navMenu.nativeElement.classList.toggle('active');
-      this.navBar.nativeElement.classList.toggle('active');
+      this.navMenu.nativeElement.classList.toggle('activeBar');
+      this.navBar.nativeElement.classList.toggle('activeBar');
   }
 
   getTitle(){

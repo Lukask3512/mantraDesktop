@@ -30,9 +30,9 @@
     "problem": "Problém",
     "preskocene": "Přeskočeno",
     "nepriradene": "Nepřiřazeno",
+    "zrusene": "Zrušené",
     "cakajuce": "Vaše reakce",
-    "skontrolovat": "Zkontrolovat",
-    "vytvorene": "Vytvořeno"
+    "skontrolovat": "Zkontrolovat"
   },
 
   "EMAIL": {
@@ -63,7 +63,7 @@
     "companies": "Společnosti",
     "profile": "Profil",
     "trhovisko": "Trhoviště",
-    "mojePonuky": "Čekající objednávky"
+    "mojePonuky": "Čekárna"
   },
   "DISPATCHER": {
     "dispatcher": "Dispečer",
@@ -128,7 +128,11 @@
     "vyskaNakPriestoru": "Výška nák. prostoru",
     "sirkaNakPriestoru": "Šířka nák. prostoru",
 
-    "navesASpecRezimy": "Přívěs - speciální režimy",
+    "vyskaNakOtvoru": "Výška nák. otvoru",
+    "sirkaNakOtvoru": "Šírka nák. otvoru",
+    "dlzkaNakOtvoru": "Dĺzka nák. otvoru",
+
+    "navesASpecRezimy": "Přívěs + speciální režimy",
     "moznostPripojitNaves": "Možnost připojit přívěs",
     "teplotnyRezim": "Teplotní režim",
     "minTeplota": "Minimální teplota",
@@ -188,9 +192,9 @@
     "maxPocetVozidiel": "Maximální počet vozidel",
     "maxPocetVodicov": "Maximální počet řidičů",
     "maxPocetDispecerov": "Maximální počet dispečerů (bez master konta)",
-    "maxVozidiel": "Max vozidel",
-    "maxDispecerov": "Max dispečerů",
-    "maxJazdcov": "Max řidičů"
+    "maxVozidiel": "Max áut",
+    "maxDispecerov": "Max dispečerov",
+    "maxJazdcov": "Max vodičov"
   },
 
   "HINT": {
@@ -203,6 +207,7 @@
     "hodin": "Hodin",
     "mobileNumber": "Řidiči se do vozidla mohou přihlásit pomocí svého telefonního čísla nebo pomocí telefonního čísla vozidla.",
     "sizeWarning": "Upozornění! Velikost prostoru pro zboží je větší, než-li velikost vozidla.",
+    "sizeOtvorWarning": "Upozornenie! Veľkosť nakladacieho otvoru je väčšia, ako veľkosť vozidla.",
     "nemajuTelefoneCislo": "Řidič ani vozidlo nemají telefonní číslo",
     "vodicMaPristupKuVsetkym": "Řidič má přístup ke všem vozidlům",
     "kAutuVsetciVodici": "K vozidlu mají přístup všichni řidiči",
@@ -213,7 +218,8 @@
     "deleteCar": "Skutečně chcete odstranit vozidlo?",
     "deleteAdress": "Skutečně chcete odstranit adresu",
     "deleteAdressMore": "a s ní související nakládky / vykládky z itineráře?",
-    "deleteDispecer": "Skutečně chcete odstranit dispečera?",
+    "deleteDispecer": "Skutečně chcete odstranit dispečera ",
+    "deleteDriver": "Naozaj chcete odstrániť vodiča ",
     "deleteRoute": "Skutečně chcete odstranit trasu?",
     "max": "max",
     "min": "min",
@@ -325,7 +331,8 @@
     "pdfNepodporuje": "PDF generátor nepodporuje diakritiku.",
     "skontrolujteCas": "Skontrolujte čas",
     "odoslatPonuku": "Odoslat reakci",
-    "vasePonuky": "Vaše nabídky"
+    "vasePonuky": "Vaše nabídky",
+    "spolocnostChceZrusit": "chce zrušiť dohodnutú prepravu"
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdálenosti",
@@ -357,7 +364,9 @@
     "ukazatPonuku": "Ukázat nabídku",
     "mamZaujem": "Mám zájem",
     "nechcemZrusit": "Nechci zrušit",
-    "zrusenieBoloOdmientute": "Zrušení přepravy bylo odmítnuto"
+    "zrusenieBoloOdmientute": "Zrušení přepravy bylo odmítnuto",
+    "zobrazitPonuky": "Zobraziť ponuky",
+    "zobrazitNaMape": "Zobraziť"
   },
 
   "AUTOCOMPLETE": {
@@ -424,9 +433,9 @@
     "prilizVelky": "Zboží je příliš veliké"
   },
   "NOACCESS": {
-    "maxCar": "Dosáhli jste maximální počet vozidel pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis",
-    "maxDrivers": "Dosáhli jste maximální počet řidičů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis",
-    "maxDispecer": "Dosáhli jste maximální počet dispečerů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis"
+    "maxCar": "Dosáhli jste maximální počet vozidel pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis na support@mantra-online.eu",
+    "maxDrivers": "Dosáhli jste maximální počet řidičů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis na support@mantra-online.eu",
+    "maxDispecer": "Dosáhli jste maximální počet dispečerů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis na support@mantra-online.eu"
   }
 
 }

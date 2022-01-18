@@ -20,8 +20,17 @@ export default class Route {
   takenBy?: string;
   ponuknuteTo?: string;
   offerInRoute?: string;
+
   cancelByCreator?: boolean;
+  cancelByCreatorDate?: string;
+  cancelByCreatorLat?: string;
+  cancelByCreatorLon?: string;
+
   cancelByDriver?: boolean;
+  cancelByDriverDate?: string;
+  cancelByDriverLat?: string;
+  cancelByDriverLon?: string;
+
   dontWannaCancel?: boolean;
 
   // info do logu

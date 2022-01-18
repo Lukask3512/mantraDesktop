@@ -11,12 +11,12 @@ import {DataService} from '../data/data.service';
   providedIn: 'root'
 })
 export class CarService {
-  private carsCollection: AngularFirestoreCollection<Dispecer>;
-  private cars: Observable<Dispecer[]>;
-  carsCollectionRef: AngularFirestoreCollection<Dispecer>;
+  private carsCollection: AngularFirestoreCollection<Cars>;
+  private cars: Observable<Cars[]>;
+
   allCars;
   constructor(private afs: AngularFirestore, private dataService: DataService) {
-    this.carsCollection = this.afs.collection<any>('cars');
+    this.carsCollection = this.afs.collection<Cars>('cars');
 
     let createdBy;
     const loggedUser = this.dataService.getDispecer();
@@ -29,7 +29,7 @@ export class CarService {
     this.getCars(createdBy).subscribe(res => {
       const dispecer: Dispecer = this.dataService.getDispecer();
       // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
-      let vyfiltrovanerRouty = res;
+      let vyfiltrovanerRouty: Cars[] = res;
       if (dispecer.createdBy !== 'master' && !dispecer.allCars){
         vyfiltrovanerRouty = res.filter(oneCar =>
           dispecer.myCars.includes(oneCar.id));
@@ -40,7 +40,7 @@ export class CarService {
 
   }
 
-  private _cars = new BehaviorSubject<any>([]);
+  private _cars = new BehaviorSubject<Cars[]>([]);
   readonly cars$ = this._cars.asObservable();
 
   getCars(createdBy){

@@ -30,9 +30,9 @@
     "problem": "Problém",
     "preskocene": "Preskočené",
     "nepriradene": "Nepriradené",
+    "zrusene": "Zrušené",
     "cakajuce": "Vaše reakcie",
-    "skontrolovat": "Skontrolovať",
-    "vytvorene": "Vytvorené"
+    "skontrolovat": "Skontrolovať"
   },
 
   "EMAIL": {
@@ -63,7 +63,7 @@
     "companies": "Spoločnosti",
     "profile": "Profil",
     "trhovisko": "Trhovisko",
-    "mojePonuky": "Čakajúce objednávky"
+    "mojePonuky": "Čakáreň"
   },
   "DISPATCHER": {
     "dispatcher": "Dispečer",
@@ -128,7 +128,11 @@
     "vyskaNakPriestoru": "Výška nák. priestoru",
     "sirkaNakPriestoru": "Šírka nák. priestoru",
 
-    "navesASpecRezimy": "Príves - špeciálne režimy",
+    "vyskaNakOtvoru": "Výška nák. otvoru",
+    "sirkaNakOtvoru": "Šírka nák. otvoru",
+    "dlzkaNakOtvoru": "Dĺzka nák. otvoru",
+
+    "navesASpecRezimy": "Príves + špeciálne režimy",
     "moznostPripojitNaves": "Možnosť pripojiť príves",
     "teplotnyRezim": "Teplotný režim",
     "minTeplota": "Minimálna teplota",
@@ -203,6 +207,7 @@
     "hodin": "Hodín",
     "mobileNumber": "Vodiči sa do vozidla môžu prihlásiť pomocou svojho telefónneho čísla alebo pomocou telefónneho čísla vozidla.",
     "sizeWarning": "Upozornenie! Veľkosť priestoru pre tovar je väčšia, ako veľkosť vozidla.",
+    "sizeOtvorWarning": "Upozornenie! Veľkosť nakladacieho otvoru je väčšia, ako veľkosť vozidla.",
     "nemajuTelefoneCislo": "Vodič ani vozidlo nemajú telefónne číslo",
     "vodicMaPristupKuVsetkym": "Vodič má prístup ku všetkým vozidlám",
     "kAutuVsetciVodici": "K vozidlu majú prístup všetci vodiči",
@@ -213,7 +218,8 @@
     "deleteCar": "Naozaj chcete odstrániť vozidlo?",
     "deleteAdress": "Naozaj chcete odstrániť adresu",
     "deleteAdressMore": "a s ňou súvisiace nakládky / vykládky z itinerára?",
-    "deleteDispecer": "Naozaj chcete odstrániť dispečera?",
+    "deleteDispecer": "Naozaj chcete odstrániť dispečera ",
+    "deleteDriver": "Naozaj chcete odstrániť vodiča ",
     "deleteRoute": "Naozaj chcete odstrániť trasu?",
     "max": "max",
     "min": "min",
@@ -325,7 +331,8 @@
     "pdfNepodporuje": "PDF generátor nepodporuje mäkčene.",
     "skontrolujteCas": "Skontrolujte čas",
     "odoslatPonuku": "Odoslať reakciu",
-    "vasePonuky": "Vaše ponuky"
+    "vasePonuky": "Vaše ponuky",
+    "spolocnostChceZrusit": "chce zrušiť dohodnutú prepravu"
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdialenosti",
@@ -357,7 +364,9 @@
     "ukazatPonuku": "Ukázať ponuku",
     "mamZaujem": "Mám záujem",
     "nechcemZrusit": "Nechcem zrušiť",
-    "zrusenieBoloOdmientute": "Zrušenie prepravy bolo odmietnuté"
+    "zrusenieBoloOdmientute": "Zrušenie prepravy bolo odmietnuté",
+    "zobrazitPonuky": "Zobraziť ponuky",
+    "zobrazitNaMape": "Zobraziť"
   },
 
   "AUTOCOMPLETE": {
@@ -424,9 +433,9 @@
     "prilizVelky": "Tovar je príliš veľký"
   },
   "NOACCESS": {
-    "maxCar": "Dosiahli ste maximálny počet vozidiel pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis",
-    "maxDrivers": "Dosiahli ste maximálny počet vodičov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis",
-    "maxDispecer": "Dosiahli ste maximálny počet dispečerov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis"
+    "maxCar": "Dosiahli ste maximálny počet vozidiel pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu",
+    "maxDrivers": "Dosiahli ste maximálny počet vodičov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu",
+    "maxDispecer": "Dosiahli ste maximálny počet dispečerov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu"
   }
 
 }

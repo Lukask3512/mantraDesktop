@@ -187,9 +187,7 @@ export class DipecerPravaComponent implements OnInit {
       }
       this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
         if (user.length > 0){
-          this.openSnackBar('Email sa uz v databaze nachadza', 'Ok');
-          // tento pouzivatel uz je v databaze
-          // TODO vypis ze pouzivatel sa uz nachadza v databaze
+          this.openSnackBar(this.translation.instant('POPUPS.emailSaUzNachadza'), 'Ok');
           return;
         }
         else {

@@ -149,10 +149,13 @@
     <div *ngIf="!isCancel() && !this.route.finished">
       <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}:</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
-      <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
-      <button *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" (click)="nechcemZrusitPonuku()" class="cancelOffer">
-        {{'MAP.nechcemZrusit' | translate}}
-      </button>
+      <div class="deleteButtons">
+        <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+        <button *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" (click)="nechcemZrusitPonuku()" class="cancelOffer">
+          {{'MAP.nechcemZrusit' | translate}}
+        </button>
+      </div>
+
       <h3 *ngIf="this.route.dontWannaCancel">{{'MAP.zrusenieBoloOdmientute' | translate}}</h3>
       <ng-template #elseCancelCompany>
         <button  class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>

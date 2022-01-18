@@ -11,6 +11,9 @@ import {PackageService} from '../../../services/package.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ShowCoorOnMapComponent} from '../show-coor-on-map/show-coor-on-map.component';
 import {take} from 'rxjs/operators';
+import '../../../../assets/fonts/arial/ARIALUNI-normal';
+
+
 @Component({
   selector: 'app-log-dialog',
   templateUrl: './log-dialog.component.html',
@@ -120,16 +123,23 @@ export class LogDialogComponent implements OnInit {
 
   toDate(datum){
     const date = new Date(datum);
-    return date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes();
+    return date.toDateString() + ' ' + date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
   }
 
   downloadAsPDF(){
 
 
     const doc: jsPDF = new jsPDF('p', 'pt', 'a4');
-    doc.setFont('ARIALUNI', 'normal');
+    console.log(doc.getFontList());
+    // doc.setFont('HelveticaWorld-Regular', 'normal');
     const data2 = document.getElementById('allWrapperToDownload');
     data2.style.visibility = 'visible';
+
+
+    console.log(doc.getFontList());
+
+
+    doc.setFont('ARIALUNI', 'normal');
 
     doc.html(data2, {
       callback: (docCal) => {
@@ -156,6 +166,9 @@ export class LogDialogComponent implements OnInit {
       lat: this.routeLog[townIndex].lattitude[indexOfCoor],
       lon: this.routeLog[townIndex].longtitude[indexOfCoor]
     };
+    dialogConfig.width = '70%';
+    // dialogConfig.height = 'auto';
+    dialogConfig.height = '600px';
     const dialogRef = this.dialog.open(ShowCoorOnMapComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
         if (value === undefined){
@@ -167,6 +180,70 @@ export class LogDialogComponent implements OnInit {
 
   }
 
+  getFirstCompany(first: boolean){
+    const firmaKtoraPonukla = {
+      spolocnost: this.companyZadavatel.name,
+      datum: new Date(this.route.cancelByCreatorDate),
+      lat: this.route.cancelByCreatorLat,
+      lon: this.route.cancelByCreatorLon
+    };
+    const firmaKtoraPrijala = {
+      spolocnost: this.companyPrepravca.name,
+      datum: new Date(this.route.cancelByDriverDate),
+      lat: this.route.cancelByDriverLat,
+      lon: this.route.cancelByDriverLon
+    };
+
+
+    if (first){ // vraciam spolocnost ktora prva odmietla
+      if (firmaKtoraPonukla.datum.getTime() >= firmaKtoraPrijala.datum.getTime()){
+        return firmaKtoraPrijala;
+      }else{
+        return firmaKtoraPonukla;
+      }
+    }else{
+      if (firmaKtoraPonukla.datum.getTime() >= firmaKtoraPrijala.datum.getTime()){
+        return firmaKtoraPonukla;
+      }else{
+        return firmaKtoraPrijala;
+      }
+    }
+  }
+
+  getOneCompanyCancel(first: boolean){
+    if (this.companyPrepravca){
+      const firmaKtoraPonukla = {
+        spolocnost: this.companyZadavatel.name,
+        datum: new Date(this.route.cancelByCreatorDate),
+        lat: this.route.cancelByCreatorLat,
+        lon: this.route.cancelByCreatorLon
+      };
+      const firmaKtoraPrijala = {
+        spolocnost: this.companyPrepravca.name,
+        datum: new Date(this.route.cancelByDriverDate),
+        lat: this.route.cancelByDriverLat,
+        lon: this.route.cancelByDriverLon
+      };
+
+
+      if (first){ // vraciam spolocnost ktora prva odmietla
+        if (firmaKtoraPonukla.datum){
+          return firmaKtoraPrijala;
+        }else{
+          return firmaKtoraPonukla;
+        }
+      }else{
+        if (firmaKtoraPonukla.datum){
+          return firmaKtoraPonukla;
+        }else{
+          return firmaKtoraPrijala;
+        }
+      }
+    }
+
+  }
+
 }
+
 
 

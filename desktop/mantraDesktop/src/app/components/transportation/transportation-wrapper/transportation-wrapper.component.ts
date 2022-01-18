@@ -46,6 +46,10 @@ export class TransportationWrapperComponent implements OnInit {
 
   }
 
+  getMyCompany(){
+    return this.dataService.getLoggedInCompany().name;
+  }
+
   filterTowns(text){
     const zFiltra = text.target.value.replace(/[^a-zA-Z ]/g, '').toLowerCase();
     const routyNaZombrazenie = [];
@@ -119,7 +123,7 @@ export class TransportationWrapperComponent implements OnInit {
 
   ngOnInit(): void {
     this.routeService.routes$.subscribe(newRoutes => {
-      this.allActiveRoutes = newRoutes;
+      this.allActiveRoutes = newRoutes.filter(oneRoute => oneRoute.takenBy === '');
       this.mineRoutes();
     });
 
@@ -156,7 +160,7 @@ export class TransportationWrapperComponent implements OnInit {
   nonActiveRoutes(){
     this.active = false;
     if (this.showMineRoutes){
-      this.routesToShow = this.allFinishedRoutes;
+      this.routesToShow = this.allFinishedRoutes.filter(oneRoute => oneRoute.takenBy === '');
       this.routesToShow = this.sortByFinished(this.routesToShow, true);
     }else{
       this.routesToShowOffers = this.allActiveRoutesOffer.filter(oneRoute => oneRoute.finished);
@@ -180,7 +184,7 @@ export class TransportationWrapperComponent implements OnInit {
       this.routesToShow = this.allActiveRoutes;
       this.routesToShow = this.sortByFinished(this.routesToShow, false);
     }else{
-      this.routesToShow = this.allFinishedRoutes;
+      this.routesToShow = this.allFinishedRoutes.filter(oneRoute => oneRoute.takenBy === '');
       this.routesToShow = this.sortByFinished(this.routesToShow, true);
     }
     if (this.inputFilter){

@@ -25,15 +25,40 @@
       <h3 *ngIf="this.companyPrepravca.iban" class="icodico">{{'COMPANIES.iban' | translate}}: {{this.companyPrepravca.iban}}</h3>
     </div>
   </header>
+
   <div *ngIf="this.route.price">
     <h3 >{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
     <h3>{{'LOG.prijate' | translate}}: {{this.timeToLocal(this.route.finalAcceptDate)}}</h3>
     <h3>{{'LOG.priradene' | translate}}: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</h3>
     <h3>{{'LOG.autoSaNachadzalo' | translate}}:</h3>
-    <h3>{{'OFFER.zSirka' | translate}} {{this.route.carAtPositionLat}}</h3>
-    <h3>{{'OFFER.zDlzka' | translate}} {{this.route.carAtPositionLon}}</h3>
+    <h3>{{'OFFER.zSirka' | translate}} {{this.roundDecimal(route.carAtPositionLat)}}</h3>
+    <h3>{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(route.carAtPositionLon)}}</h3>
   </div>
 
+  <!--   ak to zrusili uplne -->
+  <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && this.route.cancelByCreator && this.route.cancelByDriver">
+    <p class="addressSmall">{{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(true).spolocnost}}
+      navrhla zrusenie prepravy. Datum - {{getFirstCompany(true).datum.toString()}}. Pozicia vozidla
+      lat <span *ngIf="getFirstCompany(true).lat">{{this.roundDecimal(getFirstCompany(true).lat)}}</span>
+      lon <span *ngIf="getFirstCompany(true).lon">{{this.roundDecimal(getFirstCompany(true).lon)}}</span>.
+
+      {{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(false).spolocnost}} súhlasila s návrhom, preprava bola zrušená.
+      Datum - {{getFirstCompany(false).datum.toString()}}. <span *ngIf="getFirstCompany(false).lat">
+        Pozicia vozidla lat {{this.roundDecimal(getFirstCompany(false).lat)}}</span>
+      <span *ngIf="getFirstCompany(false).lon">lon {{this.roundDecimal(getFirstCompany(false).lon)}}</span></p>
+  </div>
+  <!-- ak to dakto nechce zrusit-->
+  <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && (this.route.cancelByCreator || this.route.cancelByDriver) && this.route.dontWannaCancel">
+    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(true).spolocnost}}
+    navrhla zrusenie prepravy. Datum - {{getOneCompanyCancel(true).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(true).lat">Pozicia vozidla lat{{this.roundDecimal(getOneCompanyCancel(true).lat)}}</span>
+     <span *ngIf="getOneCompanyCancel(true).lon">lon {{this.roundDecimal(getOneCompanyCancel(true).lon)}}</span>.
+
+    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(false).spolocnost}} s návrhom nesúhlasila.
+    Datum - {{getOneCompanyCancel(false).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(false).lat">Pozicia vozidla lat {{this.roundDecimal(getOneCompanyCancel(false).lat)}}</span>
+    <span *ngIf="getOneCompanyCancel(false).lon">lon {{this.roundDecimal(getOneCompanyCancel(false).lon)}}</span>
+  </div>
 
   <h1>{{'LOG.prepravovanePalety' | translate}}</h1>
   <table *ngIf="this.detail">
@@ -91,7 +116,7 @@
       <th>{{'OFFER.cas' | translate}}</th>
       <th>{{'OFFER.zSirka' | translate}}</th>
       <th>{{'OFFER.zDlzka' | translate}}</th>
-      <th>Zobraz na mape</th>
+      <th>{{'HEADER.map' | translate}}</th>
 
     </tr>
     <tbody *ngFor="let jedenAllLog of this.routeLog; let i = index;">
@@ -102,7 +127,7 @@
       <td>{{this.toDate(jedenAllLog.timestamp[j])}}</td>
       <td>{{roundDecimal(jedenAllLog.lattitude[j])}}</td>
       <td>{{roundDecimal(jedenAllLog.longtitude[j])}}</td>
-      <td><button (click)="showOnMap(i, j)">Show</button></td>
+      <td><button class="buttonShowOnMap" (click)="showOnMap(i, j)">{{'MAP.zobrazitNaMape' | translate}}</button></td>
     </tr>
     </tbody>
 
@@ -149,6 +174,32 @@
     <p class="addressSmall">{{'OFFER.zSirka' | translate}} {{this.route.carAtPositionLat}}</p>
     <p class="addressSmall">{{'OFFER.zDlzka' | translate}} {{this.route.carAtPositionLon}}</p>
   </div>
+
+  <!--   ak to zrusili uplne -->
+  <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && this.route.cancelByCreator && this.route.cancelByDriver">
+    <p class="addressSmall">{{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(true).spolocnost}}
+      navrhla zrusenie prepravy. Datum - {{getFirstCompany(true).datum.toString()}}. Pozicia vozidla
+      lat <span *ngIf="getFirstCompany(true).lat">{{this.roundDecimal(getFirstCompany(true).lat)}}</span>
+      lon <span *ngIf="getFirstCompany(true).lon">{{this.roundDecimal(getFirstCompany(true).lon)}}</span>.
+
+      {{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(false).spolocnost}} súhlasila s návrhom, preprava bola zrušená.
+      Datum - {{getFirstCompany(false).datum.toString()}}. <span *ngIf="getFirstCompany(false).lat">
+        Pozicia vozidla lat {{this.roundDecimal(getFirstCompany(false).lat)}}</span>
+      <span *ngIf="getFirstCompany(false).lon">lon {{this.roundDecimal(getFirstCompany(false).lon)}}</span></p>
+  </div>
+  <!-- ak to dakto nechce zrusit-->
+  <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && (this.route.cancelByCreator || this.route.cancelByDriver) && this.route.dontWannaCancel">
+    <p class="addressSmall">{{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(true).spolocnost}}
+    navrhla zrusenie prepravy. Datum - {{getOneCompanyCancel(true).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(true).lat">Pozicia vozidla lat{{this.roundDecimal(getOneCompanyCancel(true).lat)}}</span>
+    <span *ngIf="getOneCompanyCancel(true).lon">lon {{this.roundDecimal(getOneCompanyCancel(true).lon)}}</span>.
+
+    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(false).spolocnost}} s návrhom nesúhlasila.
+    Datum - {{getOneCompanyCancel(false).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(false).lat">Pozicia vozidla lat {{this.roundDecimal(getOneCompanyCancel(false).lat)}}</span>
+      <span *ngIf="getOneCompanyCancel(false).lon">lon {{this.roundDecimal(getOneCompanyCancel(false).lon)}}</span></p>
+  </div>
+
 
   <h1 class="companyNameSmall">{{'LOG.prepravovanePalety' | translate}}</h1>
   <table class="routeLogSmall" *ngIf="this.detail">
