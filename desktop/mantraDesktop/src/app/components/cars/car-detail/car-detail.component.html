@@ -3,6 +3,8 @@
     <h1>{{this.car.ecv}}</h1>
     <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
     <app-car-naklad [car]="this.car"></app-car-naklad>
+    <h3 *ngIf="this.car.lastUpdate">Posledná aktualizácia z vozidla {{toDateLastUpdateOfCar(this.car.lastUpdate)}}</h3>
+
   </div>
 
 

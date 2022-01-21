@@ -17,6 +17,7 @@
       </div>
 
       <div *ngIf="this.offersToShow == null" class="car">
+        <h3 *ngIf="carToShow && carToShow.lastUpdate">Posledná aktualizácia z vozidla {{toDateLastUpdateOfCar(carToShow.lastUpdate)}}</h3>
 
         <table *ngIf="carToShow">
           <tr class="tableHeader">
@@ -26,7 +27,7 @@
           </tr>
           <tr class="tablerow" >
             <td>{{carToShow.ecv}}</td>
-            <td>{{this.routeStatusService.getStatus(carToShow.status)}}</td>
+            <td >{{this.routeStatusService.getStatus(carToShow.status)}}</td>
             <td>{{carToShow.phoneNumber}}</td>
           </tr>
           <tr class="tableHeader">

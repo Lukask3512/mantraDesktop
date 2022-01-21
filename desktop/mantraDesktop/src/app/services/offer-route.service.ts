@@ -48,7 +48,7 @@ export class OfferRouteService {
           }
         }
         // ked chce tvorca zrusit ponuku
-        if (oneRoute.cancelByCreator && oneRoute.createdBy !== this.dataService.getMyIdOrMaster() && !oneRoute.cancelByDriver){
+        if (!oneRoute.dontWannaCancel && oneRoute.cancelByCreator && oneRoute.createdBy !== this.dataService.getMyIdOrMaster() && !oneRoute.cancelByDriver){
           this.oneCompanyService.getCompanyName(oneRoute.createdBy).then((company) => {
             setTimeout(() => {
               this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit'),
@@ -58,7 +58,7 @@ export class OfferRouteService {
         }
 
         // ked chce prepravca zrusit ponuku
-        if (oneRoute.cancelByDriver && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && !oneRoute.cancelByCreator){
+        if (!oneRoute.dontWannaCancel && oneRoute.cancelByDriver && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && !oneRoute.cancelByCreator){
           this.oneCompanyService.getCompanyName(oneRoute.takenBy).then((company) => {
             setTimeout(() => {
               this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit')

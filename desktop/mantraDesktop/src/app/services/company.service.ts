@@ -20,8 +20,14 @@ export class CompanyService {
 
   constructor(private afs: AngularFirestore, private dataService: DataService) {
     this.companiesCollection = this.afs.collection<any>('companies');
-    const dispecer: Dispecer = this.dataService.getDispecer();
 
+  }
+
+  private _companies = new BehaviorSubject<any>([]);
+  readonly companies$ = this._companies.asObservable();
+
+  getCompaniesForDistr(){
+    const dispecer: Dispecer = this.dataService.getDispecer();
     if (dispecer && (dispecer.email === 'mantra@mantra.sk' || dispecer.email === 'manage.transport.repeat@gmail.com')){
       this.getCompanies().subscribe(res => {
         // tu kontrolujem ci mam povolenie k adrese podla aut ktore mam pridelene
@@ -35,9 +41,6 @@ export class CompanyService {
       });
     }
   }
-
-  private _companies = new BehaviorSubject<any>([]);
-  readonly companies$ = this._companies.asObservable();
 
   getCompanies() {
     return this.afs.collection<Dispecer>('companies', ref => {

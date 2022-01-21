@@ -16,6 +16,7 @@ export class CompaniesWrapperComponent implements OnInit {
 
   companies: Company[];
   ngOnInit(): void {
+    this.companyService.getCompaniesForDistr();
     this.companyService.companies$.subscribe(allCompanies => {
       this.companies = allCompanies;
     });

@@ -1,0 +1,15 @@
+<div style="position: relative" class="cat-container">
+  <h1 class="header">{{'COMPANIES.vyskaPoistky' | translate}} {{this.data.car.ecv}}? </h1>
+
+  <mat-form-field appearance="standard" class="gridItem">
+    <mat-label>{{'COMPANIES.vyskaPoistky' | translate}}</mat-label>
+    <input [(ngModel)]="vyskaPoistky" type="number" min="0" matInput placeholder="{{'COMPANIES.vyskaPoistky' | translate}}..." required>
+    <mat-hint>{{'COMPANIES.vyskaPoistky' | translate}}</mat-hint>
+  </mat-form-field>
+
+  <div class="buttons">
+    <button  class="smallButton" (click)="change()">{{'OFTEN.update' | translate}}</button>
+    <button (click)="close()" class="smallButton" >{{'OFFER.zrusenie' | translate}}</button>
+  </div>
+
+</div>

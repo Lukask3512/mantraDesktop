@@ -37,6 +37,8 @@ export class ItinerarDaDComponent implements OnInit {
   setAddress(address: Address[], car: Cars){
     if (!this.address){
       this.address = address;
+    }else if (address.length === 0){
+      this.address = [];
     }else{
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < address.length; i++) {

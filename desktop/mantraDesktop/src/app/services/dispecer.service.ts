@@ -80,6 +80,22 @@ export class DispecerService {
     );
   }
 
+  getDispecersByMasterId(masterId){
+    return this.afs.collection<Dispecer>('dispecers', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('createdBy', '==', masterId);
+      return query;
+    }).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+      })
+    );
+  }
+
   getOneDispecer(email){
       return this.afs.collection<Dispecer>('dispecers', ref => {
         let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;

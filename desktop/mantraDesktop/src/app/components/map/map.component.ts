@@ -165,6 +165,9 @@ export class MapComponent implements AfterViewInit {
 
   snackBarIsOpen = false;
 
+  lastZoom;
+  centerOfZoom;
+
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
@@ -190,6 +193,8 @@ export class MapComponent implements AfterViewInit {
 
   @ViewChild(PosliPonukuComponent)
   private posliPonuku: PosliPonukuComponent;
+
+
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
@@ -229,11 +234,22 @@ export class MapComponent implements AfterViewInit {
         },
       });
 
+      this.lastZoom = localStorage.getItem('zoomLevel');
+      this.centerOfZoom = localStorage.getItem('zoomCenter');
+      this.centerOfZoom = this.centerOfZoom.split(',');
 
-      this.view = new View({
-      center: olProj.fromLonLat([0, 0]),
-      zoom: 1
-    });
+      if (this.lastZoom && this.centerOfZoom && !isNaN(this.centerOfZoom[0])){
+        this.view = new View({
+          center: olProj.fromLonLat(this.centerOfZoom),
+          zoom: this.lastZoom
+        });
+      }else{
+        this.view = new View({
+          center: olProj.fromLonLat([0, 0]),
+          zoom: 1
+        });
+      }
+
 
       this.map = new Map({
       target: 'map',
@@ -278,6 +294,7 @@ export class MapComponent implements AfterViewInit {
               if (feature.get('features').length === 1){ // ak som klikol na 1 auto
                 this.onClickFindInfo(feature.get('features')[0].get('name'));
                 this.zoomToAddressOrCar(feature);
+                this.scrollToInfo();
 
               }else{ // ak som klikol na viacero aut
                 const coordinate = evt.coordinate;
@@ -289,6 +306,7 @@ export class MapComponent implements AfterViewInit {
             if (feature.get('features').length === 1){ // ak som klikol na 1 auto
               this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
               this.zoomToAddressOrCar(feature);
+              this.scrollToInfo();
 
             }else{ // ak som klikol na viacero ponuk
               const coordinate = evt.coordinate;
@@ -300,6 +318,7 @@ export class MapComponent implements AfterViewInit {
         else if (type === 'car'){
           this.onClickFindInfo(feature.get('name'));
           this.zoomToAddressOrCar(feature);
+          this.scrollToInfo();
         }
 
         else if (type === 'town'){
@@ -307,6 +326,7 @@ export class MapComponent implements AfterViewInit {
           this.zoomToAddressOrCar(feature);
           this.onClickFindInfoAdress(feature.get('name'));
           this.lastClickedOnaddressId = feature.get('name');
+          this.scrollToInfo();
         }
         else if (type === 'route'){
           this.zoomToRoute(feature);
@@ -315,10 +335,11 @@ export class MapComponent implements AfterViewInit {
           // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
           // this.countDistance(feature.getGeometry(), [48.896324, 19.267890])
           this.onClickFindInfo(feature.get('name'));
+          this.scrollToInfo();
         }
         else if (type === 'offer'){
           this.zoomToRoute(feature);
-
+          this.scrollToInfo();
           // this.countDistance(feature.getGeometry().getCoordinates(), [20.226853, 49.055083])
           // this.countDistance(feature.getGeometry(), [48.896324, 19.267890])
           this.onClickFindInfoOffer(feature.get('name'), feature);
@@ -395,7 +416,6 @@ export class MapComponent implements AfterViewInit {
       // @ts-ignore
       this.dragComponent.setAddresses(this.carToShow.itiAdresy);
     }, 100);
-    this.scrollToInfo();
     this.resizeMap();
   }
 
@@ -413,7 +433,7 @@ export class MapComponent implements AfterViewInit {
     setTimeout(() => {
       this.dragComponent.setAddresses(this.routesToShow);
     }, 100);
-    this.scrollToInfo();
+    // this.scrollToInfo();
     this.resizeMap();
   }
 
@@ -438,7 +458,7 @@ export class MapComponent implements AfterViewInit {
     this.posliPonuku.setOfferId(this.offersToShow.id);
     this.carIti.setPonuka(this.offersToShow);
     this.carIti.setPrekrocenieVelkosti(this.maxPrekrocenieRozmerov);
-    this.scrollToInfo();
+    // this.scrollToInfo();
     this.resizeMap();
     this.zvyraznitRoutu(feature);
 
@@ -677,7 +697,7 @@ export class MapComponent implements AfterViewInit {
 
 
               // pre blikanie
-              const isThereCar = this.carWarningStatus.filter(findCar => findCar.id == car[i].id);
+              const isThereCar = this.carWarningStatus.filter(findCar => findCar.id === car[i].id);
 
               if (isThereCar.length === 0 ){
                 this.flashCar(carFeature, 1000, car[i]);
@@ -685,7 +705,7 @@ export class MapComponent implements AfterViewInit {
               }
 
             }else{
-              this.carWarningStatus = this.carWarningStatus.filter(findCar => findCar.id != car[i].id);
+              this.carWarningStatus = this.carWarningStatus.filter(findCar => findCar.id !== car[i].id);
             }
           }
 
@@ -791,6 +811,13 @@ export class MapComponent implements AfterViewInit {
         this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
           duration: 800} );
         this.firstZoomCars = true;
+          setTimeout(() => {
+            this.lastZoom = this.map.getView().getZoom();
+            localStorage.setItem('zoomLevel', this.lastZoom);
+            this.centerOfZoom = transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
+            localStorage.setItem('zoomCenter', this.centerOfZoom);
+          }, 2000);
+
     }
     }
 
@@ -1008,6 +1035,12 @@ export class MapComponent implements AfterViewInit {
                 duration: 800
               });
               this.firstZoomAddress = true;
+                setTimeout(() => {
+                  this.lastZoom = this.map.getView().getZoom();
+                  localStorage.setItem('zoomLevel', this.lastZoom);
+                  this.centerOfZoom = transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
+                  localStorage.setItem('zoomCenter', this.centerOfZoom);
+                }, 2000);
             }
           }, 1500);
 
@@ -2131,6 +2164,12 @@ export class MapComponent implements AfterViewInit {
     this.offersToShow.takenBy = confirmId;
     this.carIti.setPonuka(this.offersToShow);
   }
+
+  toDateLastUpdateOfCar(datum){
+      const date = new Date(datum);
+      return date.toDateString() + ' ' + date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
+  }
+
 
 }
 

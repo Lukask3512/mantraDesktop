@@ -1,26 +1,103 @@
 <div class="wrapper">
-  <table mat-table [dataSource]="dataSource" matSort class="tabulka">
-    <!-- Name Column -->
-    <ng-container class="tbl-header" matColumnDef="ecv">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.ecv' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.ecv}} </td>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container class="tbl-header" matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.status' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{routeStatusService.getStatus(element.status)}} </td>
-    </ng-container>
 
 
-    <ng-container class="tbl-header" matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef>{{'OFTEN.vytvorene' | translate}}</th>
-      <td mat-cell *matCellDef="let element"> {{this.toLocalString(element.vytvorene)}} </td>
-    </ng-container>
+  <div class="buttonsWrapper">
+    <button [class]="getClass(1)" class="smallButton" (click)="activateCars()">{{'HEADER.cars' | translate}}</button>
+    <button [class]="getClass(3)" class="smallButton" (click)="activateDrivers()">{{'HEADER.drivers' | translate}}</button>
+    <button [class]="getClass(2)" class="smallButton" (click)="activateDispecers()">{{'HEADER.dispatcher' | translate}}</button>
+  </div>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50]" aria-label="Select page of users"></mat-paginator>
+  <div *ngIf="this.showCarsOr === 1">
+    <table mat-table [dataSource]="dataSource" matSort class="tabulka">
+      <!-- Name Column -->
+      <ng-container class="tbl-header" matColumnDef="ecv">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.ecv' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.ecv}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container class="tbl-header" matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'CAR.status' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{routeStatusService.getStatus(element.status)}} </td>
+      </ng-container>
+
+
+      <ng-container class="tbl-header" matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.vytvorene' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> {{this.toLocalString(element.vytvorene)}} </td>
+      </ng-container>
+
+      <ng-container class="tbl-header" matColumnDef="poistka">
+        <th mat-header-cell *matHeaderCellDef>{{'COMPANIES.poistenie' | translate}}</th>
+        <td mat-cell *matCellDef="let element"><span *ngIf="element.poistka">{{element.poistka}}€</span>
+          <button class="smallButton" (click)="changePoistka(element.poistka ,element)">{{'OFTEN.update' | translate}}</button>
+        </td>
+      </ng-container>
+
+      <ng-container class="tbl-header" matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.delete' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> <button class="smallButton" (click)="deleteCar(element)">{{'OFTEN.delete' | translate}}</button> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50]" aria-label="Select page of users"></mat-paginator>
+  </div>
+
+  <div *ngIf="this.showCarsOr === 2">
+    <table mat-table [dataSource]="dataSource" matSort class="tabulka">
+      <!-- Name Column -->
+      <ng-container class="tbl-header" matColumnDef="meno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DISPATCHER.name' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container class="tbl-header" matColumnDef="priezvisko">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DISPATCHER.surname' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
+      </ng-container>
+
+
+
+      <ng-container class="tbl-header" matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.delete' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> <button class="smallButton" (click)="deleteDispecer(element)">{{'OFTEN.delete' | translate}}</button> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsForDrivers"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsForDrivers;"></tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50]" aria-label="Select page of users"></mat-paginator>
+  </div>
+
+  <div *ngIf="this.showCarsOr === 3">
+    <table mat-table [dataSource]="dataSource" matSort class="tabulka">
+      <!-- Name Column -->
+      <ng-container class="tbl-header" matColumnDef="meno">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DISPATCHER.name' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container class="tbl-header" matColumnDef="priezvisko">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DISPATCHER.surname' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
+      </ng-container>
+
+
+
+      <ng-container class="tbl-header" matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.delete' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> <button class="smallButton" (click)="deleteDriver(element)">{{'OFTEN.delete' | translate}}</button> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsForDrivers"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsForDrivers;"></tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 25, 50]" aria-label="Select page of users"></mat-paginator>
+  </div>
+
 </div>
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

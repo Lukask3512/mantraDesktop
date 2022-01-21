@@ -77,6 +77,10 @@ export class CarDetailComponent implements AfterViewInit {
         setTimeout(() =>
           {
             this.child.notifyMe(this.myAddresses, this.car);
+            if (this.car.itinerar.length === 0){
+              this.dragComponent.setAddress([], this.car);
+              this.child.notifyMe([], this.car);
+            }
 
           },
           800);
@@ -89,8 +93,13 @@ export class CarDetailComponent implements AfterViewInit {
             allAddresses = vsetkyAdress.concat(vsetkyPonuky);
             this.findMyAdresses(allAddresses);
             if (this.dragComponent){
-              this.dragComponent.setAddress(this.myAddresses, this.car);
-              this.child.notifyMe(this.myAddresses, this.car);
+              if (this.car.itinerar.length === 0){
+                this.dragComponent.setAddress([], this.car);
+                this.child.notifyMe([], this.car);
+              }else{
+                this.dragComponent.setAddress(this.myAddresses, this.car);
+                this.child.notifyMe(this.myAddresses, this.car);
+              }
             }
             resolve();
           });
@@ -323,6 +332,11 @@ export class CarDetailComponent implements AfterViewInit {
         return;
       }
     });
+  }
+
+  toDateLastUpdateOfCar(datum){
+    const date = new Date(datum);
+    return date.toDateString() + ' ' + date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
   }
 
 }

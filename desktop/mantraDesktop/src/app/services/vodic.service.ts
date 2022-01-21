@@ -54,6 +54,22 @@ export class VodicService {
     );
   }
 
+  getVodiciById(masterId){
+    return this.afs.collection<Vodic>('vodici', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('createdBy', '==', masterId);
+      return query;
+    }).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc['id'];
+          return {id, ...data};
+        });
+      })
+    );
+  }
+
   // taketo query sa pouzivaju hlavne na zobrazovanie dat, ked to nechces updatovat atd...bez idcka
   // getDispecers2(){
   //   return this.afs.collection<Dispecer>('dispecer').valueChanges();

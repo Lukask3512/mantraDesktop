@@ -88,6 +88,7 @@ import { CompanyDetailAboutComponent } from './dialogs/company-detail-about/comp
 import { DeleteVodicComponent } from './dialogs/delete-vodic/delete-vodic.component';
 import { ShowCoorOnMapComponent } from './dialogs/show-coor-on-map/show-coor-on-map.component';
 import { PopUpMapComponent } from './google/map/pop-up-map/pop-up-map.component';
+import { ZmenVyskuPoistkyUAutaComponent } from './dialogs/zmen-vysku-poistky-uauta/zmen-vysku-poistky-uauta.component';
 
 
 @NgModule({
@@ -112,7 +113,7 @@ import { PopUpMapComponent } from './google/map/pop-up-map/pop-up-map.component'
       AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent,
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
-      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent, PopUpMapComponent
+      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent, PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent
     ],
     exports: [
         OpenlayerComponent,

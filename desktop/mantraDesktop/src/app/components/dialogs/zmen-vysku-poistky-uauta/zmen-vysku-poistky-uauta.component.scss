@@ -1,0 +1,10 @@
+@import "./src/sccs/shared/mixins";
+
+.smallButton{
+  @include smallButton(gray);
+}
+
+.buttons{
+  display: flex;
+  gap: 5px;
+}

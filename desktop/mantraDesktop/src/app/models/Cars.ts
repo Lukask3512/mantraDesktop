@@ -39,4 +39,8 @@ export default class Cars {
   driverInside?: string;
   vytvorene?: string;
 
+  poistka?: number;
+
+  lastUpdate?: string;
+
 }
