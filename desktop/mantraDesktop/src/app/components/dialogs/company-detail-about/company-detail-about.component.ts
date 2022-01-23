@@ -34,7 +34,7 @@ export class CompanyDetailAboutComponent implements OnInit {
   dataSource;
   displayedColumns: string[] = ['ecv', 'status', 'createdAt', 'poistka', 'delete'];
 
-  displayedColumnsForDrivers: string[] = ['meno', 'priezvisko', 'delete'];
+  displayedColumnsForDrivers: string[] = ['meno', 'priezvisko', 'createdAt', 'delete'];
 
   // displayedColumns: string[] = ['ecv', 'status', 'createdAt', 'poistka', 'delete'];
 

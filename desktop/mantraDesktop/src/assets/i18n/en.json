@@ -40,7 +40,7 @@
     "welcome": "Welcome to Mantra",
     "prihlasovacieMeno": "Your name: ",
     "heslo": ", password: ",
-    "neboloZmenene": "Your password has not been changed. If you forgot your password, you can change it at https://prototyp.mantra-online.eu."
+    "neboloZmenene": "Your password has not been changed. If you forgot your password, you can change it at https://desktop.mantra-online.eu/."
   },
 
   "LOGIN": {

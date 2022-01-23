@@ -152,7 +152,7 @@ export class DispecerService {
   }
 
   createDispecer(dispecer: Dispecer){
-    return this.dispecerCollection.add(dispecer);
+    return this.dispecerCollection.add({...dispecer});
   }
 
   deleteDispecer(dispecerID){

@@ -236,9 +236,9 @@ export class MapComponent implements AfterViewInit {
 
       this.lastZoom = localStorage.getItem('zoomLevel');
       this.centerOfZoom = localStorage.getItem('zoomCenter');
-      this.centerOfZoom = this.centerOfZoom.split(',');
 
       if (this.lastZoom && this.centerOfZoom && !isNaN(this.centerOfZoom[0])){
+        this.centerOfZoom = this.centerOfZoom.split(',');
         this.view = new View({
           center: olProj.fromLonLat(this.centerOfZoom),
           zoom: this.lastZoom

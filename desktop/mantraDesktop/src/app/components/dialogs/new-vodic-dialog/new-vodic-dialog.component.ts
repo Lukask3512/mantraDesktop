@@ -166,6 +166,7 @@ export class NewVodicDialogComponent implements OnInit {
       this.vodic.phone = valuesForm.phone;
       this.vodic.email = valuesForm.email;
       this.vodic.createdBy = valuesForm.createdBy;
+      // this.vodic.createdAt = new Date().toString();
       this.vodic.myCars = this.myCars;
       if (this.dispecerForm.get('email').value){
       this.vodicService.getOneVodic(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(user => {
@@ -177,7 +178,7 @@ export class NewVodicDialogComponent implements OnInit {
         else {
           var vodic: Vodic;
           vodic = this.assignToDirector();
-          // this.accountService.signup(vodic.email, '123456');
+          vodic.createdAt = new Date().toString();
           const newIdVodica = this.vodicService.createVodic(vodic);
           if (vodic.phone === ''){
             this.updateCars(newIdVodica);
@@ -191,7 +192,7 @@ export class NewVodicDialogComponent implements OnInit {
       }else{ // bez emailu
         var vodic: Vodic;
         vodic = this.assignToDirector();
-        // this.accountService.signup(vodic.email, '123456');
+        vodic.createdAt = new Date().toString();
         this.vodicService.createVodic(vodic);
         this.dispecerForm.reset();
         this.dialogRef.close();

@@ -59,7 +59,10 @@
         <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
       </ng-container>
 
-
+      <ng-container class="tbl-header" matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.vytvorene' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> {{this.toLocalString(element.createdAt)}} </td>
+      </ng-container>
 
       <ng-container class="tbl-header" matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef>{{'OFTEN.delete' | translate}}</th>
@@ -86,7 +89,10 @@
         <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
       </ng-container>
 
-
+      <ng-container class="tbl-header" matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>{{'OFTEN.vytvorene' | translate}}</th>
+        <td mat-cell *matCellDef="let element"> {{this.toLocalString(element.createdAt)}} </td>
+      </ng-container>
 
       <ng-container class="tbl-header" matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef>{{'OFTEN.delete' | translate}}</th>

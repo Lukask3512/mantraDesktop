@@ -5,6 +5,7 @@ export default class Vodic {
   phone?: string;
   email: string;
   createdBy?: string;
+  createdAt?: string;
   myCars: string[];
   allCars: boolean;
 }

@@ -179,6 +179,7 @@ export class DipecerPravaComponent implements OnInit {
       this.dispecer.companyId = this.dataService.getDispecer().companyId;
       this.dispecer.allCars = this.allCars;
       this.dispecer.allPrives = this.allPrives;
+      this.dispecer.createdAt = new Date().toString();
       if (!this.dispecer.myPrives){
         this.dispecer.myPrives = [];
       }
@@ -192,7 +193,7 @@ export class DipecerPravaComponent implements OnInit {
         }
         else {
           const password = Math.random().toString(36).slice(-8);
-          this.accountService.signup(this.dispecerForm.get('email').value, password).then( (registrovany) => {
+          this.accountService.signup(this.dispecer.email, password).then( (registrovany) => {
             this.dispecerService.createDispecer(this.dispecer).then((pro) => {
               if (registrovany){
                 this.sendMailToRegisteredUser();
@@ -206,7 +207,7 @@ export class DipecerPravaComponent implements OnInit {
             });
           }).catch((err) => { // uzivatel je registrovany, ale v ziadnej spolocnosti nie je
             console.log('Error' + err);
-            this.dispecerService.createDispecer(valuesForm).then((pro) => {
+            this.dispecerService.createDispecer(this.dispecer).then((pro) => {
               this.sendMailToRegisteredUser();
             }).catch((erroro) => {
               console.log(erroro);
