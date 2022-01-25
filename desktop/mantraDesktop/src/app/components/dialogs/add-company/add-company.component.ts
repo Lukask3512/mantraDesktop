@@ -101,8 +101,7 @@ export class AddCompanyComponent implements OnInit {
   deleteOldDispecerAneChangeNew(){
     this.dispecerService.getOneDispecer(this.dispecerForm.get('email').value).pipe(take(1)).subscribe(oneDispecer => {
       if (oneDispecer[0] && oneDispecer[0].companyId !== this.company.id){
-        console.log('tento email sa nachadza v inej spolocnosti');
-        this.openSnackBar('Tento pouzivatel sa nachadza v inej spolocnosti', 'Ok');
+        this.openSnackBar(this.translate.instant('POPUPS.pouzivatelVInejSpolocnosti'), 'Ok');
         this.spinner.hide();
         return;
       } else if (oneDispecer[0]){
@@ -122,7 +121,15 @@ export class AddCompanyComponent implements OnInit {
         newDispecer.id = this.dispecer.id;
         this.dispecerService.updateDispecerWithOldIdAndNewDispecer(newDispecer, this.dispecer.id).then(() => {
           const password = Math.random().toString(36).slice(-8);
-          this.sendMail(password);
+
+          this.accountService.signup(newDispecer.email, password).then((registrovany => {
+            if (registrovany){
+              this.sendMailToRegisteredUser();
+            }else{
+              this.sendMail(password);
+            }
+          }));
+
           // this.sendMailToRegisteredUser();
           this.spinner.hide();
           this.dialogRef.close();
@@ -152,7 +159,7 @@ export class AddCompanyComponent implements OnInit {
     const email  = this.dispecerForm.get('email').value;
     const header  = this.translate.instant('EMAIL.welcome');
     const text  = this.translate.instant('EMAIL.prihlasovacieMeno') + this.dispecerForm.get('email').value + ' ' +
-      this.translate.instant('EMAIL.neboloZmenene') ;
+      this.translate.instant('EMAIL.neboloZmenene');
 
     const reqObj = {
       email,
@@ -170,7 +177,7 @@ export class AddCompanyComponent implements OnInit {
     const header  = this.translate.instant('EMAIL.welcome');
     const text  = this.translate.instant('EMAIL.prihlasovacieMeno') + ' ' + this.dispecerForm.get('email').value + ' ' +
       this.translate.instant('EMAIL.heslo') + password + ' ' +
-      'https://prototyp.mantra-online.eu' + ' ' + 'Pokial sa uz pouzivatel v aplikacii nachadza, heslo mu zmenene nebolo.';
+      this.translate.instant('EMAIL.domena');
 
     const reqObj = {
       email,

@@ -127,9 +127,12 @@ export class DipecerPravaComponent implements OnInit {
   }
 
   sendMail(password){
+
     const email  = this.dispecerForm.get('email').value;
     const header  = this.translation.instant('EMAIL.welcome');
-    const text  = this.translation.instant('EMAIL.prihlasovacieMeno')  + this.dispecerForm.get('email').value + this.translation.instant('EMAIL.heslo') + password;
+    const text  = this.translation.instant('EMAIL.prihlasovacieMeno') + ' ' + this.dispecerForm.get('email').value + ' ' +
+      this.translation.instant('EMAIL.heslo') + password + ' ' +
+      this.translation.instant('EMAIL.domena');
 
     const reqObj = {
       email,
@@ -137,7 +140,7 @@ export class DipecerPravaComponent implements OnInit {
       text
     };
     this.emailService.sendMessage(reqObj).subscribe(data => {
-      console.log(data);
+      // console.log(data);
     });
   }
 

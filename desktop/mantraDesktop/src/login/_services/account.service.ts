@@ -40,11 +40,19 @@ export class AccountService {
          resolve(false);
        })
        .catch(err => {
-         resolve(true);
+         // Handle Errors here.
+         var errorCode = err.code;
+         var errorMessage = err.message;
+         if (errorCode === 'auth/email-already-in-use'){
+           resolve(true);
+         }else{
+           resolve(null);
+         }
          console.log('Something went wrong:', err.message);
        });
    }));
   }
+
 
   login(email: string, password: string): Subject<any> {
     let user = new Subject();

@@ -30,17 +30,18 @@
     "problem": "Problem",
     "preskocene": "Skipped",
     "nepriradene": "Unassigned",
-    "zrusene": "Zrušené",
+    "zrusene": "Canceled",
     "cakajuce": "Your reactions",
     "skontrolovat": "Check",
-    "vytvorene": "Vytvorené"
+    "vytvorene": "Created"
   },
 
   "EMAIL": {
     "welcome": "Welcome to Mantra",
     "prihlasovacieMeno": "Your name: ",
     "heslo": ", password: ",
-    "neboloZmenene": "Your password has not been changed. If you forgot your password, you can change it at https://desktop.mantra-online.eu/."
+    "neboloZmenene": "Your password has not been changed. If you forgot your password, you can change it at https://desktop.mantra-online.eu/.",
+    "domena": "https://desktop.mantra-online.eu/"
   },
 
   "LOGIN": {
@@ -129,9 +130,9 @@
     "vyskaNakPriestoru": "Cargo space height",
     "sirkaNakPriestoru": "Cargo space width",
 
-    "vyskaNakOtvoru": "Výška nák. otvoru",
-    "sirkaNakOtvoru": "Šírka nák. otvoru",
-    "dlzkaNakOtvoru": "Dĺzka nák. otvoru",
+    "vyskaNakOtvoru": "Loading opening height",
+    "sirkaNakOtvoru": "Loading opening width",
+    "dlzkaNakOtvoru": "Loading opening length",
 
     "navesASpecRezimy": "Trailer + special requirements",
     "moznostPripojitNaves": "Able to attach trailer",
@@ -172,7 +173,7 @@
     "comapnies": "Companies",
     "oneCompany": "Company",
     "name": "Name",
-    "psc": "PSČ",
+    "psc": "Postal code",
     "street": "Street",
     "town": "City",
     "state": "State",
@@ -193,9 +194,9 @@
     "maxPocetVozidiel": "Maximum amount of vehicles",
     "maxPocetVodicov": "Maximum amount of drivers",
     "maxPocetDispecerov": "Maximum amount of dispatchers (without master account)",
-    "maxVozidiel": "Max áut",
-    "maxDispecerov": "Max dispečerov",
-    "maxJazdcov": "Max vodičov"
+    "maxVozidiel": "Max. vehicles",
+    "maxDispecerov": "Max. dispatchers",
+    "maxJazdcov": "Max. drivers"
   },
 
   "HINT": {
@@ -208,7 +209,7 @@
     "hodin": "Hours",
     "mobileNumber": "Drivers can log into the vehicle with their phone number or with the phone number of the vehicle.",
     "sizeWarning": "Warning! The cargo space is bigger than the size of the vehicle.",
-    "sizeOtvorWarning": "Upozornenie! Veľkosť nakladacieho otvoru je väčšia, ako veľkosť vozidla.",
+    "sizeOtvorWarning": "Warning! The loading opening is bigger than the size of the vehicle.",
     "nemajuTelefoneCislo": "Nor the driver or the vehicle have a phone number",
     "vodicMaPristupKuVsetkym": "The driver has access to all vehicles",
     "kAutuVsetciVodici": "The vehicle can be accessed by all drivers",
@@ -219,9 +220,9 @@
     "deleteCar": "Are you sure you want to delete the vehicle?",
     "deleteAdress": "Are you sure you want to delete the address",
     "deleteAdressMore": "and its corresponding loading / unloading points from the itinerary?",
-    "deleteDispecer": "Are you sure you want to delete the dispatcher ",
-    "deleteDriver": "Naozaj chcete odstrániť vodiča ",
-    "deleteRoute": "Are you sure you want to delete the route?",
+    "deleteDispecer": "Are you sure you want to delete this dispatcher",
+    "deleteDriver": "Are you sure you want to delete this driver",
+    "deleteRoute": "Are you sure you want to delete this route?",
     "max": "max",
     "min": "min",
     "teplota": "Temperature",
@@ -333,7 +334,7 @@
     "skontrolujteCas": "Check time",
     "odoslatPonuku": "Send",
     "vasePonuky": "Your offers",
-    "spolocnostChceZrusit": "chce zrušiť dohodnutú prepravu"
+    "spolocnostChceZrusit": "wants to cancel agreed transport job."
   },
   "FILTER": {
     "typVzialenosti": "Distance type",
@@ -366,8 +367,8 @@
     "mamZaujem": "Express interest",
     "nechcemZrusit": "I do not confirm",
     "zrusenieBoloOdmientute": "Abort has been denied",
-    "zobrazitPonuky": "Zobraziť ponuky",
-    "zobrazitNaMape": "Zobraziť"
+    "zobrazitPonuky": "Show offers",
+    "zobrazitNaMape": "Show"
   },
 
   "AUTOCOMPLETE": {
@@ -431,7 +432,8 @@
     "ponukaBolaVymazana": "Offer deleted",
     "nespravneHeslo": "Wrong password",
     "prilizTazky": "Cargo is too heavy",
-    "prilizVelky": "Cargo is too big"
+    "prilizVelky": "Cargo is too big",
+    "pouzivatelVInejSpolocnosti": "The user is in another company."
   },
   "NOACCESS": {
     "maxCar": "You have reached the maximum amount of vehicles allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit",

@@ -40,7 +40,8 @@
     "welcome": "Vitajte v aplikácii Mantra",
     "prihlasovacieMeno": "Vaše prihlasovacie meno: ",
     "heslo": ", heslo: ",
-    "neboloZmenene": "Vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte, môžete si ho zmeniť na stránke https://desktop.mantra-online.eu/."
+    "neboloZmenene": "Vaše heslo nebolo zmenené. Pokiaľ si heslo nepamätáte, môžete si ho zmeniť na stránke https://desktop.mantra-online.eu/.",
+    "domena": "https://desktop.mantra-online.eu/"
   },
 
   "LOGIN": {
@@ -129,9 +130,9 @@
     "vyskaNakPriestoru": "Výška nák. priestoru",
     "sirkaNakPriestoru": "Šírka nák. priestoru",
 
-    "vyskaNakOtvoru": "Výška nák. otvoru",
-    "sirkaNakOtvoru": "Šírka nák. otvoru",
-    "dlzkaNakOtvoru": "Dĺzka nák. otvoru",
+    "vyskaNakOtvoru": "Výška nak. otvoru",
+    "sirkaNakOtvoru": "Šírka nak. otvoru",
+    "dlzkaNakOtvoru": "Dĺžka nak. otvoru",
 
     "navesASpecRezimy": "Príves + špeciálne režimy",
     "moznostPripojitNaves": "Možnosť pripojiť príves",
@@ -193,9 +194,9 @@
     "maxPocetVozidiel": "Maximálny počet vozidiel",
     "maxPocetVodicov": "Maximálny počet vodičov",
     "maxPocetDispecerov": "Maximálny počet dispečerov (bez master konta)",
-    "maxVozidiel": "Max áut",
-    "maxDispecerov": "Max dispečerov",
-    "maxJazdcov": "Max vodičov"
+    "maxVozidiel": "Max. vozidiel",
+    "maxDispecerov": "Max. dispečerov",
+    "maxJazdcov": "Max. vodičov"
   },
 
   "HINT": {
@@ -219,8 +220,8 @@
     "deleteCar": "Naozaj chcete odstrániť vozidlo?",
     "deleteAdress": "Naozaj chcete odstrániť adresu",
     "deleteAdressMore": "a s ňou súvisiace nakládky / vykládky z itinerára?",
-    "deleteDispecer": "Naozaj chcete odstrániť dispečera ",
-    "deleteDriver": "Naozaj chcete odstrániť vodiča ",
+    "deleteDispecer": "Naozaj chcete odstrániť dispečera",
+    "deleteDriver": "Naozaj chcete odstrániť vodiča",
     "deleteRoute": "Naozaj chcete odstrániť trasu?",
     "max": "max",
     "min": "min",
@@ -333,7 +334,7 @@
     "skontrolujteCas": "Skontrolujte čas",
     "odoslatPonuku": "Odoslať reakciu",
     "vasePonuky": "Vaše ponuky",
-    "spolocnostChceZrusit": "chce zrušiť dohodnutú prepravu"
+    "spolocnostChceZrusit": "chce zrušiť dohodnutú prepravu."
   },
   "FILTER": {
     "typVzialenosti": "Typ vzdialenosti",
@@ -431,7 +432,8 @@
     "ponukaBolaVymazana": "Ponuka bola vymazaná",
     "nespravneHeslo": "Nesprávne heslo",
     "prilizTazky": "Tovar je príliš ťažký",
-    "prilizVelky": "Tovar je príliš veľký"
+    "prilizVelky": "Tovar je príliš veľký",
+    "pouzivatelVInejSpolocnosti": "Používateľ sa nachádza v inej spoločnosti."
   },
   "NOACCESS": {
     "maxCar": "Dosiahli ste maximálny počet vozidiel pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu",
