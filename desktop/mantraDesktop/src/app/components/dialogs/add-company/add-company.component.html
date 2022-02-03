@@ -88,12 +88,12 @@
           <div>
             <mat-form-field appearance="standard" class="gridItem">
               <mat-label>{{'COMPANIES.maxPocetVozidiel' | translate}}</mat-label>
-              <input formControlName="numberOfCars" type="number" min="1" step="1" matInput placeholder="...">
+              <input formControlName="numberOfCars" type="number" min="0" step="1" matInput placeholder="...">
             </mat-form-field>
 
             <mat-form-field appearance="standard" class="gridItem">
               <mat-label>{{'COMPANIES.maxPocetVodicov' | translate}}</mat-label>
-              <input formControlName="numberOfDrivers" type="number" min="1" step="1" matInput placeholder="...">
+              <input formControlName="numberOfDrivers" type="number" min="0" step="1" matInput placeholder="...">
             </mat-form-field>
 
             <mat-form-field appearance="standard" class="gridItem">
@@ -131,7 +131,8 @@
             <mat-hint>{{'DISPATCHER.email' | translate}}</mat-hint>
           </mat-form-field>
           <p *ngIf="!
-          emailChanged()">Email master konta bol zmeneny. Povodne master konto strati pristup ku spolocnosti a novy email zisa master prisup.</p>
+          emailChanged()">
+            E-mail Master konta bol zmenený. Pôvodné Master konto stratí prístup ku spoločnosti a nový e-mail získa Master prístup.</p>
 
 
           <mat-form-field appearance="standard" class="gridItem">

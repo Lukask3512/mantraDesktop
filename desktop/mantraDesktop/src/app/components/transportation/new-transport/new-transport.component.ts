@@ -345,6 +345,9 @@ else{
   }
 
   openAddDialog() {
+    if ((this.route.ponuknuteTo && this.route.ponuknuteTo === '') || this.route.forEveryone){
+      return;
+    }
     const dialogConfig = new MatDialogConfig();
 
     if (this.route.id == undefined){
@@ -749,12 +752,18 @@ else{
     if (this.addresses.length <= 0 || this.addresses == null){
       return true;
     }
-    const vylozene = this.dataService.vsetkoVylozeneGet;
-    if (vylozene){
+
+      const vylozene = this.dataService.vsetkoVylozeneGet;
+    if (this.dataService.actualDetailGet !== null){
+        return true;
+      }
+      if (vylozene){
         return false;
       }else{
         return true;
       }
+
+
   }
 
   vylozeneBaliky(){

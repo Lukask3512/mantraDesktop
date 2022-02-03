@@ -88,7 +88,11 @@ export class LogDialogComponent implements OnInit {
     }
   }
 
+
   roundDecimal(sameNumber){
+    if (!sameNumber){
+      return 'Nezname';
+    }
     let numberToRound;
     if (typeof sameNumber === 'string'){
       numberToRound = parseFloat(sameNumber);
@@ -104,7 +108,10 @@ export class LogDialogComponent implements OnInit {
       this.routeLogService.getLogFromRoute(oneAddress.id).pipe(take(1)).subscribe(myLog => {
         // @ts-ignore
         const logsId: RouteLog = myLog[0];
-        logsId.id = oneAddress.id;
+        if (oneAddress && oneAddress.id){
+          logsId.id = oneAddress.id;
+        }
+
         // logsId = {... {id: oneAddress.id}};
         console.log(logsId);
         if (myLog[0]){
@@ -195,7 +202,7 @@ export class LogDialogComponent implements OnInit {
     };
 
 
-    if (first){ // vraciam spolocnost ktora prva odmietla
+    if (first === true) { // vraciam spolocnost ktora prva odmietla
       if (firmaKtoraPonukla.datum.getTime() >= firmaKtoraPrijala.datum.getTime()){
         return firmaKtoraPrijala;
       }else{
@@ -226,14 +233,14 @@ export class LogDialogComponent implements OnInit {
       };
 
 
-      if (first){ // vraciam spolocnost ktora prva odmietla
-        if (firmaKtoraPonukla.datum){
+      if (first === true){ // vraciam spolocnost ktora prva odmietla
+        if (firmaKtoraPonukla.datum.getTime() >= firmaKtoraPrijala.datum.getTime()){
           return firmaKtoraPrijala;
         }else{
           return firmaKtoraPonukla;
         }
       }else{
-        if (firmaKtoraPonukla.datum){
+        if (firmaKtoraPonukla.datum.getTime() >= firmaKtoraPrijala.datum.getTime()) {
           return firmaKtoraPonukla;
         }else{
           return firmaKtoraPrijala;

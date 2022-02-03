@@ -445,13 +445,13 @@ export class NewFormComponent implements OnInit {
           this.resetFormToDefault(false);
 
         }
-        else if (this.detailsArray[this.actualItemInForm] == undefined){
+        else if (this.detailsArray[this.actualItemInForm] === undefined){
           this.pushItemsToArray(0, this.actualItemInForm);
 
           // this.oneDetailAboutRoute.stohovatelnost.push()
           this.resetFormToDefault(false);
         }
-        else if (this.actualItemInForm == this.detailsArray.length){
+        else if (this.actualItemInForm === this.detailsArray.length){
           this.pushItemsToArray(0, this.actualItemInForm);
 
           // this.oneDetailAboutRoute.stohovatelnost.push()
@@ -472,12 +472,12 @@ export class NewFormComponent implements OnInit {
           this.resetFormToDefault(false);
 
       }
-      else if (this.townIndex[this.actualItemInForm] == undefined){
+      else if (this.townIndex[this.actualItemInForm] === undefined){
         this.townIndex.push(this.actualTownIndex);
         this.detailIndex.push(this.actualDetailIndex);
         this.resetFormToDefault(false);
       }
-      else if (this.actualItemInForm == this.townIndex.length){
+      else if (this.actualItemInForm === this.townIndex.length){
         this.townIndex.push(this.actualTownIndex);
         this.detailIndex.push(this.actualDetailIndex);
         this.resetFormToDefault(false);
@@ -487,44 +487,12 @@ export class NewFormComponent implements OnInit {
           this.townIndex[this.actualItemInForm] = this.actualTownIndex;
           this.detailIndex[this.actualItemInForm] = this.actualDetailIndex;
         this.resetFormToDefault(false);
-        if (this.townIndex[this.actualItemInForm + 1] != null || this.townIndex[this.actualItemInForm + 1] != undefined){
+        if (this.townIndex[this.actualItemInForm + 1] != null || this.townIndex[this.actualItemInForm + 1] !== undefined){
           let detail = this.getDetailByIds(this.townIndex[this.actualItemInForm + 1], this.detailIndex[this.actualItemInForm + 1]);
           this.assignToDetail(0, this.actualItemInForm + 1, detail);
         }
 
       }
-      // if (this.townIndex[this.actualItemInForm] !== undefined || this.townIndex[this.actualItemInForm] !== null){
-      //   this.townIndex[this.actualItemInForm] = this.actualTownIndex;
-      //   this.detailIndex[this.actualItemInForm] = this.actualDetailIndex;
-      //   if (this.townIndex[this.actualTownIndex + 1] !== undefined || this.townIndex[this.actualItemInForm+1] !== null){
-      //     let detail = this.getDetailByIds(this.townIndex[this.actualItemInForm + 1], this.detailIndex[this.actualItemInForm + 1]);
-      //     this.assignToDetail(0, this.actualItemInForm + 1, detail);
-      //   }else{
-      //     this.resetFormToDefault(false);
-      //   }
-      // }
-      // else if (this.townIndex.length == this.actualItemInForm + 1){
-      //   this.townIndex.push(this.actualTownIndex);
-      //   this.detailIndex.push(this.actualDetailIndex);
-      //   this.resetFormToDefault(false);
-      //
-      // }else if (this.townIndex[this.actualItemInForm] == undefined){
-      //   this.townIndex.push(this.actualTownIndex);
-      //   this.detailIndex.push(this.actualDetailIndex);
-      //
-      //   // this.oneDetailAboutRoute.stohovatelnost.push()
-      //   this.resetFormToDefault(false);
-      // }
-      //
-      // else{
-      //   this.townIndex[this.actualItemInForm] = this.actualTownIndex;
-      //   this.detailIndex[this.actualItemInForm] = this.actualDetailIndex;
-      //   // tu by som mal dat daco ine asik
-      //   console.log(this.townIndex[this.actualItemInForm + 1]);
-      //   console.log(this.detailIndex[this.actualItemInForm + 1]);
-      //   let detail = this.getDetailByIds(this.townIndex[this.actualItemInForm + 1], this.detailIndex[this.actualItemInForm + 1]);
-      //   this.assignToDetail(0, this.actualItemInForm + 1, detail);
-      // }
     }
 
     this.actualTownIndex = this.townIndex[this.actualItemInForm + 1];

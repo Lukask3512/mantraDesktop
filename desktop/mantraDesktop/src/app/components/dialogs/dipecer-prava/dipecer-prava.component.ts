@@ -147,7 +147,7 @@ export class DipecerPravaComponent implements OnInit {
   sendMailToRegisteredUser(){
     const email  = this.dispecerForm.get('email').value;
     const header  = this.translation.instant('EMAIL.welcome');
-    const text  = this.translation.instant('EMAIL.prihlasovacieMeno') + this.dispecerForm.get('email').value + this.translation.instant('EMAIL.neboloZmenene') ;
+    const text  = this.translation.instant('EMAIL.prihlasovacieMeno') + this.dispecerForm.get('email').value + ' ' + this.translation.instant('EMAIL.neboloZmenene') ;
 
     const reqObj = {
       email,

@@ -17,7 +17,7 @@
       </div>
 
       <div *ngIf="this.offersToShow == null" class="car">
-        <h3 *ngIf="carToShow && carToShow.lastUpdate">Posledná aktualizácia z vozidla {{toDateLastUpdateOfCar(carToShow.lastUpdate)}}</h3>
+        <h3 *ngIf="carToShow && carToShow.lastUpdate">{{'CAR.poslednaAktualizacia' | translate}} {{toDateLastUpdateOfCar(carToShow.lastUpdate)}}</h3>
 
         <table *ngIf="carToShow">
           <tr class="tableHeader">

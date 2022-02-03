@@ -105,7 +105,7 @@
               <mat-icon>
                    info
             </mat-icon>
-            </span>  <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="element"></app-get-info-about-company>
+            </span>  <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event, i)" [masterId]="element"></app-get-info-about-company>
           </td>
         </ng-container>
 
@@ -134,7 +134,7 @@
       <button class="buttonTable xButton" (click)="cancelOffer()"> {{'OFFER.zrusenie' | translate}} </button>
       <span>{{'OFFER.ponukuPreFirmu' | translate}}</span>
       <app-get-info-about-company [masterId]="this.route.ponuknuteTo"></app-get-info-about-company>
-      <span *ngIf="this.route.ponuknuteTo && companiesFromChild">
+      <span *ngIf="this.route.ponuknuteTo">
         <app-get-name-of-comapny-by-master-id class="companyName" [masterId]="this.route.ponuknuteTo"></app-get-name-of-comapny-by-master-id>
       </span>
     </div>

@@ -147,7 +147,8 @@
     "pristupVsetkym": "Allow access to all",
     "pravaPreVodica": "Access rights",
     "neznamaPolohaAuta": "Warning! The vehicle's position is unknown and we cannot estimate distance to the offer. To set vehicle's position, log into the vehicle via the mobile app.",
-    "zmeneneAdresy": "The addresses have changed. You need to re-save the offer."
+    "zmeneneAdresy": "The addresses have changed. You need to re-save the offer.",
+    "poslednaAktualizacia": "Last update"
 
   },
   "VODIC": {
@@ -217,11 +218,11 @@
     "do": "to",
     "deleteAdresyZVozidla": "Are you sure you want to remove the addresses from the vehicle?",
     "deleteAdresyHint": "If there are any packages / pallets in the vehicle, they will be removed",
-    "deleteCar": "Are you sure you want to delete the vehicle?",
+    "deleteCar": "Are you sure you want to delete vehicle",
     "deleteAdress": "Are you sure you want to delete the address",
     "deleteAdressMore": "and its corresponding loading / unloading points from the itinerary?",
     "deleteDispecer": "Are you sure you want to delete this dispatcher",
-    "deleteDriver": "Are you sure you want to delete this driver",
+    "deleteDriver": "Are you sure you want to delete driver",
     "deleteRoute": "Are you sure you want to delete this route?",
     "max": "max",
     "min": "min",
@@ -248,7 +249,9 @@
     "dlzka": "Length",
     "maxVaha": "Maximum weight",
     "najvacsiBalik": "Biggest package",
-    "celkovyObjem": "Total cargo volume"
+    "celkovyObjem": "Total cargo volume",
+    "predchBalik": "Previous package",
+    "nasledujuciBalik": "Next package"
 
   },
 
@@ -334,7 +337,7 @@
     "skontrolujteCas": "Check time",
     "odoslatPonuku": "Send",
     "vasePonuky": "Your offers",
-    "spolocnostChceZrusit": "wants to cancel agreed transport job."
+    "spolocnostChceZrusit": "wants to abort agreed transport job."
   },
   "FILTER": {
     "typVzialenosti": "Distance type",
@@ -385,10 +388,10 @@
     "potrebnaTeplota": "Temperature required",
     "velkostiBalikov": "Packages / pallets sizes",
     "zadajteVelkostiNakladu": "Enter the size of each package / pallete",
-    "pocetKusov": "Number of pieces",
+    "pocetKusov": "Number of items",
     "poslednePridanyBalik": "Last added package / pallete",
     "pocet": "Amount",
-    "parametre": "Parameters",
+    "parametre": "Item",
     "polohaNakladania": "Loading direction",
     "pozadovanaVyskaHrany": "Loading edge height required",
     "maximalnaNosnost": "Maximum load capacity",
@@ -433,7 +436,7 @@
     "nespravneHeslo": "Wrong password",
     "prilizTazky": "Cargo is too heavy",
     "prilizVelky": "Cargo is too big",
-    "pouzivatelVInejSpolocnosti": "The user is in another company."
+    "pouzivatelVInejSpolocnosti": "This user is already registered in another company."
   },
   "NOACCESS": {
     "maxCar": "You have reached the maximum amount of vehicles allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit",

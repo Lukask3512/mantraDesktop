@@ -82,8 +82,8 @@ export class DetailComponent implements AfterViewInit {
         console.log(route);
         this.fakeRoute = JSON.parse(JSON.stringify(this.route));
         this.offerService.routes$.subscribe(routes => {
-          this.route = routes.find(oneRoute => oneRoute.id == route.id);
-          // this.getDetails();
+          this.route = routes.find(oneRoute => oneRoute.id === route.id);
+          this.skontrolovanaPonuka();
           if (this.route === undefined) {
             this.route = this.fakeRoute;
           }
@@ -174,6 +174,12 @@ export class DetailComponent implements AfterViewInit {
     });
     }
 
+    skontrolovanaPonuka(){
+      const routeID = this.offerService.getSkontrolovanePonuky().find(route => route === this.route.id);
+      if (!routeID && this.route){
+        this.offerService.setSkontrolovanePonuky(this.route.id);
+      }
+    }
 
     nechcemZrusitPonuku(){
       this.getCarIfNoInData().then(car => {
@@ -348,7 +354,7 @@ export class DetailComponent implements AfterViewInit {
 
   tryCancelOffer(){
     let car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
-    if (!car){
+    if (!car && this.route.carId){
       // toto tu je pre zadavatela, on nema prisup k vozidlu, preto to auto musim natiahnut
       this.carService.getCar(this.route.carId).pipe(take(1)).subscribe(oneCar => {
         car = oneCar;
@@ -383,19 +389,26 @@ export class DetailComponent implements AfterViewInit {
       if (this.createdBy()){
         this.route.cancelByCreator = true;
         this.route.cancelByCreatorDate = new Date().toString();
-        this.route.cancelByCreatorLat = car.lattitude;
-        this.route.cancelByCreatorLon = car.longtitude;
+        if (this.route.carId && car){
+          this.route.cancelByCreatorLat = car.lattitude;
+          this.route.cancelByCreatorLon = car.longtitude;
+        }
+
       }else{
         this.route.cancelByDriver = true;
         this.route.cancelByDriverDate = new Date().toString();
-        this.route.cancelByDriverLat = car.lattitude;
-        this.route.cancelByDriverLon = car.longtitude;
+        if (this.route.carId && car) {
+          this.route.cancelByDriverLat = car.lattitude;
+          this.route.cancelByDriverLon = car.longtitude;
+        }
       }
 
       if (this.route.cancelByCreator && this.route.cancelByDriver){
         this.route.finished = true;
         // toto tu je pre zadavatela, on nema prisup k vozidlu, preto to auto musim natiahnut
-        this.odstranZVozidla(car, true);
+        if (this.route.carId && car){
+          this.odstranZVozidla(car, true);
+        }
         this.offerService.updateRoute(this.route);
 
       }else{
@@ -520,7 +533,10 @@ export class DetailComponent implements AfterViewInit {
     });
   }
 
-  getCompaniesFromChild(company: Company){
+  getCompaniesFromChild(company: Company, elementIndex){
+    if (elementIndex === 0){
+      this.companiesFromChild = [];
+    }
     this.companiesFromChild.push(company);
   }
 

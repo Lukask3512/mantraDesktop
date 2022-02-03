@@ -10,6 +10,11 @@
   border-radius: 3px;
   transition: transform  0.2s;
 }
+
+.blickAnimation {
+  animation: 1s spinnow infinite linear;
+}
+
 .oneRoute:hover{
   transform: scale(1.02);
 }
@@ -427,4 +432,20 @@ $color: #111;
   border-left: 10px*$scale solid transparent;
   border-right: 10px*$scale solid transparent;
 }
+
+// animation
+@keyframes spinnow {
+  0% {
+    border: 3px solid rgba(50, 205, 50, 1);
+    //border-color: ;
+  }
+  50% {
+    border: 3px solid rgba(50, 205, 50, 0);
+  }
+  100% {
+    border: 3px solid rgba(50, 205, 50, 1);
+  }
+}
+
+
 

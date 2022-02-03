@@ -21,8 +21,8 @@
   <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
 
 
-  <div *ngFor="let route of this.routesToShow; let i = index" class="oneRoute">
-    <div *ngIf="!route.finished" class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
+  <div *ngFor="let route of this.routesToShow; let i = index" [class]="getAnimation(route)" class="oneRoute">
+    <div *ngIf="!route.finished"  class="vykladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
       <!--      <h2>Vykládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
         <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>

@@ -145,4 +145,26 @@ export class WrapperComponent implements OnInit {
       this.inputFilter.nativeElement.value = '';
     }
   }
+
+  getAnimation(route: Route){
+    const ponukySkontrolovane = this.offerService.getSkontrolovanePonuky().find(oneRoute => oneRoute === route.id);
+    if (ponukySkontrolovane){
+      return; // ked som to uz pozrel
+    }else{
+      // moje
+      if (this.whatIsActive === 1){
+        if (route.offerFrom.length === 0 || route.ponuknuteTo !== ''){
+          return;
+        }else{
+          return 'blickAnimation';
+        }
+      }
+      if (this.whatIsActive === 2){
+        if (route.ponuknuteTo === this.getDispecerId()){
+          return 'blickAnimation';
+        }
+      }
+    }
+    }
+
 }

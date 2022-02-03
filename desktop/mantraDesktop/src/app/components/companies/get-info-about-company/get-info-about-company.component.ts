@@ -25,6 +25,7 @@ export class GetInfoAboutCompanyComponent implements OnInit {
       if (!dispecerFromApp){ // ked dispecera nemam
         this.dispecerService.getDispecerById(this.masterId).pipe(take(1)).subscribe(dispecer => {
           if (dispecer){
+            dispecer.id = this.masterId;
             this.dispecerService.setDispecersFromAnotherompanies(dispecer);
             this.companyService.getCompany(dispecer.companyId).pipe(take(1)).subscribe(myCompany => {
               this.company = myCompany;

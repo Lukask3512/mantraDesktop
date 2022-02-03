@@ -21,7 +21,11 @@ export class OfferRouteService {
   private allRoutesSource = new BehaviorSubject<any>(null);
   allRoutes = this.allRoutesSource.asObservable();
 
+  skontrolovanePonuky = [];
+
   routesForGet: Route[];
+
+  oldRoutesForCheckNewOffers: Route[];
 
   // neukazovat pri kazdej zmene ten isty dialog
   dialogForRouteShown = [];
@@ -35,12 +39,14 @@ export class OfferRouteService {
       this.routesForGet.forEach(oneRoute => {
         if (!oneRoute.cancelByDriver && !oneRoute.cancelByCreator){
           if (oneRoute.takenBy === this.dataService.getMyIdOrMaster() && !oneRoute.carId && !this.aldreadyThere(oneRoute.id)){
+            this.deleteRouteFromAnimation(oneRoute.id);
             setTimeout(() => {
               this.openSnackBar(this.translate.instant('POPUPS.ziskaliStePonuku'), this.translate.instant('OFTEN.priradit'), oneRoute);
             }, 5000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
           if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === '' && !this.aldreadyThere(oneRoute.id)){
+            this.deleteRouteFromAnimation(oneRoute.id);
             setTimeout(() => {
               this.openSnackBar(this.translate.instant('POPUPS.niektoMaZaujem'), this.translate.instant('OFTEN.skontrolovat'), oneRoute);
             }, 7000);
@@ -68,6 +74,7 @@ export class OfferRouteService {
         }
 
       });
+      this.oldRoutesForCheckNewOffers = JSON.parse(JSON.stringify(allKindTogether));
       this._routes.next(allKindTogether);
     });
 
@@ -80,11 +87,62 @@ export class OfferRouteService {
     return this.routesForGet;
   }
 
+  // sluzi na vymazanie id z pola, ktore je na blikanie
+  deleteRouteFromAnimation(routeId){
+    this.skontrolovanePonuky = this.skontrolovanePonuky.filter(allRoute => allRoute !== routeId);
+  }
+
+  setSkontrolovanePonuky(routeId){
+    this.skontrolovanePonuky.push(routeId);
+  }
+
+  getSkontrolovanePonuky(){
+    return this.skontrolovanePonuky;
+  }
+
   // uz sa nachadza v poli, aby dialog stale nevcyskakoval
   aldreadyThere(routeId){
     if (this.dialogForRouteShown.find(oneId => oneId === routeId)){
       return true;
     }else{
+      return false;
+    }
+  }
+
+  // uz sa nachadza v poli, aby dialog stale nevcyskakoval
+  aldreadyThere2(routeId){
+    if (!this.oldRoutesForCheckNewOffers){
+      return true;
+    }
+    const oldRoute = this.oldRoutesForCheckNewOffers.find(oneRoute => oneRoute.id === routeId);
+    const newRoute = this.routesForGet.find(oneRoute => oneRoute.id === routeId);
+    if (!oldRoute){
+      return false;
+    }
+    else if(oldRoute.ponuknuteTo !== newRoute.ponuknuteTo){
+      return true;
+    }else if(oldRoute.takenBy !== newRoute.takenBy){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  // uz sa nachadza v poli, aby dialog stale nevcyskakoval
+  aldreadyThereMoja(routeId){
+    if (!this.oldRoutesForCheckNewOffers){
+      return true;
+    }
+    const oldRoute = this.oldRoutesForCheckNewOffers.find(oneRoute => oneRoute.id === routeId);
+    const newRoute = this.routesForGet.find(oneRoute => oneRoute.id === routeId);
+    if (!oldRoute || (newRoute.ponuknuteTo !== '' && oldRoute.ponuknuteTo === '') || (newRoute.ponuknuteTo === '' && oldRoute.ponuknuteTo === '')){
+      return true;
+    }
+    else if (oldRoute.offerFrom.length !== newRoute.offerFrom.length){
+      return true;
+    }
+    else{
       return false;
     }
   }

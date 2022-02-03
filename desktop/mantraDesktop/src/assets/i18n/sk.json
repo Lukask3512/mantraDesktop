@@ -147,7 +147,8 @@
     "pristupVsetkym": "Udeliť prístup všetkým",
     "pravaPreVodica": "Práva",
     "neznamaPolohaAuta": "Upozornenie! Vozidlo nemá známu polohu a nedokážeme určiť vzdialenosť k ponuke. Pre určenie polohy sa prihláste do vozidla cez mobilnú aplikáciu.",
-    "zmeneneAdresy": "Vo vozidle sa zmenili adresy. Ponuku musíte uložiť nanovo."
+    "zmeneneAdresy": "Vo vozidle sa zmenili adresy. Ponuku musíte uložiť nanovo.",
+    "poslednaAktualizacia": "Posledná aktualizácia"
 
   },
   "VODIC": {
@@ -217,7 +218,7 @@
     "do": "do",
     "deleteAdresyZVozidla": "Naozaj chcete odstrániť adresy z vozidla?",
     "deleteAdresyHint": "Ak sa vo vozidle nachádzajú balíky / palety z nakládky, odstránia sa",
-    "deleteCar": "Naozaj chcete odstrániť vozidlo?",
+    "deleteCar": "Naozaj chcete odstrániť vozidlo",
     "deleteAdress": "Naozaj chcete odstrániť adresu",
     "deleteAdressMore": "a s ňou súvisiace nakládky / vykládky z itinerára?",
     "deleteDispecer": "Naozaj chcete odstrániť dispečera",
@@ -248,7 +249,9 @@
     "dlzka": "Dĺžka",
     "maxVaha": "Maximálna hmotnosť",
     "najvacsiBalik": "Najväčší balík",
-    "celkovyObjem": "Celkový objem balíkov"
+    "celkovyObjem": "Celkový objem balíkov",
+    "predchBalik": "Predchádzajúci balík",
+    "nasledujuciBalik": "Nasledujúci balík"
 
   },
 
@@ -385,10 +388,10 @@
     "potrebnaTeplota": "Potrebná teplota",
     "velkostiBalikov": "Veľkosti balíkov / paliet",
     "zadajteVelkostiNakladu": "Zadajte veľkosť jednotlivých balíkov / paliet",
-    "pocetKusov": "Počet kusov",
+    "pocetKusov": "Počet položiek",
     "poslednePridanyBalik": "Naposledy pridaný balík / paleta",
     "pocet": "Počet",
-    "parametre": "Parametre",
+    "parametre": "Položka",
     "polohaNakladania": "Poloha nakladania",
     "pozadovanaVyskaHrany": "Požadovaná výška nakladacej hrany",
     "maximalnaNosnost": "Maximálna nosnosť",
@@ -433,12 +436,12 @@
     "nespravneHeslo": "Nesprávne heslo",
     "prilizTazky": "Tovar je príliš ťažký",
     "prilizVelky": "Tovar je príliš veľký",
-    "pouzivatelVInejSpolocnosti": "Používateľ sa nachádza v inej spoločnosti."
+    "pouzivatelVInejSpolocnosti": "Používateľ sa už nachádza v inej spoločnosti."
   },
   "NOACCESS": {
-    "maxCar": "Dosiahli ste maximálny počet vozidiel pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu",
-    "maxDrivers": "Dosiahli ste maximálny počet vodičov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu",
-    "maxDispecer": "Dosiahli ste maximálny počet dispečerov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznický servis na support@mantra-online.eu"
+    "maxCar": "Dosiahli ste maximálny počet vozidiel pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznícký servis na support@mantra-online.eu",
+    "maxDrivers": "Dosiahli ste maximálny počet vodičov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznícký servis na support@mantra-online.eu",
+    "maxDispecer": "Dosiahli ste maximálny počet dispečerov pre Vašu spoločnosť - pre navýšenie kontaktujte náš zákaznícký servis na support@mantra-online.eu"
   }
 
 }

@@ -44,6 +44,7 @@ export class DataService {
   // detail v aktualnej adrese ktoru vytvaram
   private actualDetailSource = new BehaviorSubject<any>(null);
   actualDetail = this.actualDetailSource.asObservable();
+  actualDetailGet;
 
   loginInCompany: Company;
 
@@ -82,6 +83,7 @@ export class DataService {
   }
 
   setActualDetailsInAddress(details){
+    this.actualDetailGet = details;
     this.actualDetailSource.next(details);
   }
 
