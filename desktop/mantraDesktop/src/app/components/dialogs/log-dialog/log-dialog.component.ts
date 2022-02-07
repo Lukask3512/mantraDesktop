@@ -147,10 +147,15 @@ export class LogDialogComponent implements OnInit {
 
 
     doc.setFont('ARIALUNI', 'normal');
+    const date = new Date().toDateString();
 
     doc.html(data2, {
       callback: (docCal) => {
-        docCal.output('dataurlnewwindow');
+        docCal.save(date.toString() + ' ' + 'route.pdf');
+        // docCal.setProperties({
+        //   title: date.toString()
+        // });
+        // docCal.output('dataurlnewwindow');
         setTimeout(() => {
           data2.style.visibility = 'hidden';
           }, 2000);
