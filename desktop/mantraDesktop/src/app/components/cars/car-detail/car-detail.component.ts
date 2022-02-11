@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {RouteService} from '../../../services/route.service';
 import Route from '../../../models/Route';
@@ -25,7 +25,7 @@ import {GetNameOfDriverComponent} from '../../vodici/get-name-of-driver/get-name
   templateUrl: './car-detail.component.html',
   styleUrls: ['./car-detail.component.scss']
 })
-export class CarDetailComponent implements AfterViewInit {
+export class CarDetailComponent implements AfterViewInit, OnDestroy {
   // aby log sledoval zmeny ak zmenim trasu
   parentSubject: Subject<any> = new Subject();
 
@@ -52,6 +52,11 @@ export class CarDetailComponent implements AfterViewInit {
   @ViewChild('dragDrop')
   private dragComponent: ItinerarDaDComponent;
 
+  actualCarSub;
+  myCarsSub;
+  addressSub;
+  offerSub;
+
   constructor(private http: HttpClient, private storage: AngularFireStorage, private routeService: RouteService,
               private dataService: DataService, private dialog: MatDialog, public routeStatus: RouteStatusService,
               private carService: CarService, private addressService: AddressService) {
@@ -69,9 +74,9 @@ export class CarDetailComponent implements AfterViewInit {
     this.status = [];
     this.aboutRoute = [];
     // this.carService.cars$.subscribe()
-    this.dataService.currentCar.subscribe(car => {
+    this.actualCarSub = this.dataService.currentCar.subscribe(car => {
       // this.car = car;
-      this.carService.cars$.subscribe(cars => {
+      this.myCarsSub = this.carService.cars$.subscribe(cars => {
         // @ts-ignore
         this.car = cars.find(oneCarFromDt => oneCarFromDt.id === car.id);
         setTimeout(() =>
@@ -88,8 +93,8 @@ export class CarDetailComponent implements AfterViewInit {
 
       let allAddresses: Address[];
       new Promise((resolve, reject) => {
-        this.addressService.address$.subscribe(vsetkyAdress => {
-          this.addressService.offerAddresses$.subscribe(vsetkyPonuky => {
+        this.addressSub = this.addressService.address$.subscribe(vsetkyAdress => {
+          this.offerSub = this.addressService.offerAddresses$.subscribe(vsetkyPonuky => {
             allAddresses = vsetkyAdress.concat(vsetkyPonuky);
             this.findMyAdresses(allAddresses);
             if (this.dragComponent){
@@ -337,6 +342,21 @@ export class CarDetailComponent implements AfterViewInit {
   toDateLastUpdateOfCar(datum){
     const date = new Date(datum);
     return date.toDateString() + ' ' + date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
+  }
+
+  ngOnDestroy(): void {
+    if (this.myCarsSub){
+      this.myCarsSub.unsubscribe();
+    }
+    if (this.addressSub){
+      this.addressSub.unsubscribe();
+    }
+    if (this.offerSub){
+      this.offerSub.unsubscribe();
+    }
+    if (this.actualCarSub){
+      this.actualCarSub.unsubscribe();
+    }
   }
 
 }

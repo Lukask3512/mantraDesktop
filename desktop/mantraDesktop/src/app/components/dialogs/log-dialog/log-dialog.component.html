@@ -27,7 +27,7 @@
   </header>
 
   <div *ngIf="this.route.price">
-    <h3 >{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+    <h3 >{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h3>
     <h3>{{'LOG.prijate' | translate}}: {{this.timeToLocal(this.route.finalAcceptDate)}}</h3>
     <h3>{{'LOG.priradene' | translate}}: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</h3>
     <h3>{{'LOG.autoSaNachadzalo' | translate}}:</h3>
@@ -38,26 +38,26 @@
   <!--   ak to zrusili uplne -->
   <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && this.route.cancelByCreator && this.route.cancelByDriver">
     <p class="addressSmall">{{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(true).spolocnost}}
-      navrhla zrusenie prepravy. Datum - {{getFirstCompany(true).datum.toString()}}. Pozicia vozidla
-      lat <span *ngIf="getFirstCompany(true).lat">{{this.roundDecimal(getFirstCompany(true).lat)}}</span>
-      lon <span *ngIf="getFirstCompany(true).lon">{{this.roundDecimal(getFirstCompany(true).lon)}}</span>.
+      {{'LOG.zrusenie1' | translate}} Datum - {{getFirstCompany(true).datum.toString()}}. {{'LOG.zrusenie2' | translate}}
+      {{'OFFER.zSirka' | translate}} <span *ngIf="getFirstCompany(true).lat">{{this.roundDecimal(getFirstCompany(true).lat)}}</span>
+      {{'OFFER.zDlzka' | translate}} <span *ngIf="getFirstCompany(true).lon">{{this.roundDecimal(getFirstCompany(true).lon)}}</span>.
 
-      {{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(false).spolocnost}} súhlasila s návrhom, preprava bola zrušená.
-      Datum - {{getFirstCompany(false).datum.toString()}}. <span *ngIf="getFirstCompany(false).lat">
-        Pozicia vozidla lat {{this.roundDecimal(getFirstCompany(false).lat)}}</span>
-      <span *ngIf="getFirstCompany(false).lon">lon {{this.roundDecimal(getFirstCompany(false).lon)}}</span></p>
+      {{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(false).spolocnost}} {{'LOG.zrusenie3' | translate}}
+      {{'HINT.datum' | translate}} - {{getFirstCompany(false).datum.toString()}}. <span *ngIf="getFirstCompany(false).lat">
+        {{'LOG.zrusenie2' | translate}} {{'OFFER.zSirka' | translate}} {{this.roundDecimal(getFirstCompany(false).lat)}}</span>
+      <span *ngIf="getFirstCompany(false).lon">{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(getFirstCompany(false).lon)}}</span></p>
   </div>
   <!-- ak to dakto nechce zrusit-->
   <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && (this.route.cancelByCreator || this.route.cancelByDriver) && this.route.dontWannaCancel">
     {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(true).spolocnost}}
-    navrhla zrusenie prepravy. Datum - {{getOneCompanyCancel(true).datum.toString()}}.
-    <span *ngIf="getOneCompanyCancel(true).lat">Pozicia vozidla lat{{this.roundDecimal(getOneCompanyCancel(true).lat)}}</span>
-     <span *ngIf="getOneCompanyCancel(true).lon">lon {{this.roundDecimal(getOneCompanyCancel(true).lon)}}</span>.
+    {{'LOG.zrusenie1' | translate}} {{'HINT.datum' | translate}} - {{getOneCompanyCancel(true).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(true).lat">{{'LOG.zrusenie2' | translate}} {{'OFFER.zSirka' | translate}} {{this.roundDecimal(getOneCompanyCancel(true).lat)}}</span>
+     <span *ngIf="getOneCompanyCancel(true).lon">{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(getOneCompanyCancel(true).lon)}}</span>.
 
-    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(false).spolocnost}} s návrhom nesúhlasila.
-    Datum - {{getOneCompanyCancel(false).datum.toString()}}.
-    <span *ngIf="getOneCompanyCancel(false).lat">Pozicia vozidla lat {{this.roundDecimal(getOneCompanyCancel(false).lat)}}</span>
-    <span *ngIf="getOneCompanyCancel(false).lon">lon {{this.roundDecimal(getOneCompanyCancel(false).lon)}}</span>
+    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(false).spolocnost}} {{'LOG.odmiernutie1' | translate}}
+    {{'HINT.datum' | translate}} - {{getOneCompanyCancel(false).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(false).lat">{{'LOG.zrusenie2' | translate}} {{'OFFER.zSirka' | translate}} {{this.roundDecimal(getOneCompanyCancel(false).lat)}}</span>
+    <span *ngIf="getOneCompanyCancel(false).lon">{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(getOneCompanyCancel(false).lon)}}</span>
   </div>
 
   <h1>{{'LOG.prepravovanePalety' | translate}}</h1>
@@ -168,6 +168,7 @@
   </div>
 
   <div *ngIf="this.route.price">
+    <p class="addressSmall">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</p>
     <p class="addressSmall">{{'LOG.prijate' | translate}}: {{this.timeToLocal(this.route.finalAcceptDate)}}</p>
     <p class="addressSmall">{{'LOG.priradene' | translate}}: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</p>
     <p class="addressSmall">{{'LOG.autoSaNachadzalo' | translate}}:</p>
@@ -178,26 +179,26 @@
   <!--   ak to zrusili uplne -->
   <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && this.route.cancelByCreator && this.route.cancelByDriver">
     <p class="addressSmall">{{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(true).spolocnost}}
-      navrhla zrusenie prepravy. Datum - {{getFirstCompany(true).datum.toString()}}. Pozicia vozidla
-      lat <span *ngIf="getFirstCompany(true).lat">{{this.roundDecimal(getFirstCompany(true).lat)}}</span>
-      lon <span *ngIf="getFirstCompany(true).lon">{{this.roundDecimal(getFirstCompany(true).lon)}}</span>.
+      {{'LOG.zrusenie1' | translate}} {{'HINT.datum' | translate}} - {{getFirstCompany(true).datum.toString()}}. {{'LOG.zrusenie2' | translate}}
+      {{'OFFER.zSirka' | translate}} <span *ngIf="getFirstCompany(true).lat">{{this.roundDecimal(getFirstCompany(true).lat)}}</span>
+      {{'OFFER.zDlzka' | translate}} <span *ngIf="getFirstCompany(true).lon">{{this.roundDecimal(getFirstCompany(true).lon)}}</span>.
 
-      {{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(false).spolocnost}} súhlasila s návrhom, preprava bola zrušená.
-      Datum - {{getFirstCompany(false).datum.toString()}}. <span *ngIf="getFirstCompany(false).lat">
-        Pozicia vozidla lat {{this.roundDecimal(getFirstCompany(false).lat)}}</span>
-      <span *ngIf="getFirstCompany(false).lon">lon {{this.roundDecimal(getFirstCompany(false).lon)}}</span></p>
+      {{'COMPANIES.oneCompany' | translate}} {{getFirstCompany(false).spolocnost}} {{'LOG.zrusenie3' | translate}}
+      {{'HINT.datum' | translate}} - {{getFirstCompany(false).datum.toString()}}. <span *ngIf="getFirstCompany(false).lat">
+        {{'LOG.zrusenie2' | translate}} {{'OFFER.zSirka' | translate}} {{this.roundDecimal(getFirstCompany(false).lat)}}</span>
+      <span *ngIf="getFirstCompany(false).lon">{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(getFirstCompany(false).lon)}}</span></p>
   </div>
   <!-- ak to dakto nechce zrusit-->
   <div *ngIf="getOneCompanyCancel(true) && getOneCompanyCancel(false) && this.route.price && (this.route.cancelByCreator || this.route.cancelByDriver) && this.route.dontWannaCancel">
     <p class="addressSmall">{{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(true).spolocnost}}
-    navrhla zrusenie prepravy. Datum - {{getOneCompanyCancel(true).datum.toString()}}.
-    <span *ngIf="getOneCompanyCancel(true).lat">Pozicia vozidla lat{{this.roundDecimal(getOneCompanyCancel(true).lat)}}</span>
-    <span *ngIf="getOneCompanyCancel(true).lon">lon {{this.roundDecimal(getOneCompanyCancel(true).lon)}}</span>.
+      {{'LOG.zrusenie1' | translate}} Datum - {{getOneCompanyCancel(true).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(true).lat">{{'LOG.zrusenie2' | translate}} {{'OFFER.zSirka' | translate}}{{this.roundDecimal(getOneCompanyCancel(true).lat)}}</span>
+    <span *ngIf="getOneCompanyCancel(true).lon">{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(getOneCompanyCancel(true).lon)}}</span>.
 
-    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(false).spolocnost}} s návrhom nesúhlasila.
-    Datum - {{getOneCompanyCancel(false).datum.toString()}}.
-    <span *ngIf="getOneCompanyCancel(false).lat">Pozicia vozidla lat {{this.roundDecimal(getOneCompanyCancel(false).lat)}}</span>
-      <span *ngIf="getOneCompanyCancel(false).lon">lon {{this.roundDecimal(getOneCompanyCancel(false).lon)}}</span></p>
+    {{'COMPANIES.oneCompany' | translate}} {{getOneCompanyCancel(false).spolocnost}} {{'LOG.odmiernutie1' | translate}}
+      {{'HINT.datum' | translate}} - {{getOneCompanyCancel(false).datum.toString()}}.
+    <span *ngIf="getOneCompanyCancel(false).lat">{{'LOG.zrusenie2' | translate}} {{'OFFER.zSirka' | translate}} {{this.roundDecimal(getOneCompanyCancel(false).lat)}}</span>
+      <span *ngIf="getOneCompanyCancel(false).lon">{{'OFFER.zDlzka' | translate}} {{this.roundDecimal(getOneCompanyCancel(false).lon)}}</span></p>
   </div>
 
 

@@ -31,7 +31,7 @@
 
 
   <div *ngIf="this.route.takenBy == ''">
-      <button [disabled]="disableButtonAfterAdd" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0 && this.offer != 0 && !this.offer; else elseIf" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
+      <button [disabled]="disableButtonAfterAdd || !price || price < 1" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0 && this.offer != 0 && !this.offer; else elseIf" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
       <ng-template #elseIf>
         <button [disabled]="disableButtonAfterAdd" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price !== 0 && this.offer != 0 && !this.offer; else elseUpdate" (click)="addPrice()">{{'MAP.mamZaujem' | translate}}</button>
 

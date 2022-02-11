@@ -3,7 +3,7 @@
 .chooseCar{
  overflow: auto;
   white-space: nowrap;
-  width: 400px;
+  width: 100%;
 }
 
 .filter{
@@ -56,11 +56,13 @@
   //height: 100%;
   width: 100%;
   position: relative;
-  height: 90%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow: hidden;
 }
+
 
 .headerName{
   display: flex;
@@ -73,6 +75,7 @@
   padding: 20px;
   font-family: "Lato", sans-serif;
   font-size: medium;
+  overflow: hidden;
 }
 
 
@@ -199,7 +202,7 @@
   align-items: center;
   margin-left: 10px;
   flex-grow: 2;
-  height: 84vh;
+  min-height: auto;
   overflow: auto;
 }
 
@@ -345,6 +348,8 @@ tr:nth-child(even) {
   .info{
     margin-top: 10px;
     width: 100%;
+    margin-left: 0;
+    overflow-x: hidden;
   }
 }
 

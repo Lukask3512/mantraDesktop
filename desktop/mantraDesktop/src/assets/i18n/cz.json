@@ -33,7 +33,8 @@
     "zrusene": "Zrušeno",
     "cakajuce": "Vaše reakce",
     "skontrolovat": "Zkontrolovat",
-    "vytvorene": "Vytvořeno"
+    "vytvorene": "Vytvořeno",
+    "ulozene": "Uloženo"
   },
 
   "EMAIL": {
@@ -180,6 +181,7 @@
     "state": "Stát",
     "ico": "IČO",
     "dico": "DIČ",
+    "icdph": "IČ DPH",
     "iban": "IBAN",
     "poistenie": "Pojištění",
     "vyskaPoistky": "Výše pojištění",
@@ -197,7 +199,9 @@
     "maxPocetDispecerov": "Maximální počet dispečerů (bez master konta)",
     "maxVozidiel": "Max. vozidel",
     "maxDispecerov": "Max. dispečerů",
-    "maxJazdcov": "Max. řidičů"
+    "maxJazdcov": "Max. řidičů",
+    "emailMaster": "E-mail Master konta bol zmenený. Pôvodné Master konto stratí prístup ku spoločnosti a nový e-mail získa Master prístup."
+
   },
 
   "HINT": {
@@ -415,7 +419,11 @@
     "adresa": "Adresa",
     "internaPraprava": "Interní přeprava",
     "nezverejneny": "Nezveřejneno",
-    "logInfo": "Tento log představuje objednávku a dodací list. Dle dohody smluvních stran se můžou vyžadovat další dokumenty (např. CMR, faktura, a pod.).\n  Přeprava se řídí příslušnými právními předpisy. Jde o obchodní vztah, můžou se aplikovat zákonní a/nebo všeobecné obchodní podmínky\n  smluvních stran, včetně přepravních a jiných řádů. Log byl vygenerován automaticky a odpovídá záznamům provozovatele\n  aplikace. Přístup k logu mají obě smluvní strany ve své aplikaci. Pro více informací navštivte www.mantra-online.eu."
+    "logInfo": "Tento log představuje objednávku a dodací list. Dle dohody smluvních stran se můžou vyžadovat další dokumenty (např. CMR, faktura, a pod.).\n  Přeprava se řídí příslušnými právními předpisy. Jde o obchodní vztah, můžou se aplikovat zákonní a/nebo všeobecné obchodní podmínky\n  smluvních stran, včetně přepravních a jiných řádů. Log byl vygenerován automaticky a odpovídá záznamům provozovatele\n  aplikace. Přístup k logu mají obě smluvní strany ve své aplikaci. Pro více informací navštivte www.mantra-online.eu.",
+    "zrusenie1": "navrhla zrušenie prepravy ",
+    "zrusenie2": "súradnice vozidla ",
+    "zrusenie3": "súhlasila s návrhom, preprava bola zrušená ",
+    "odmiernutie1": "s návrhom nesúhlasila, preprava pokračuje "
   },
   "POPUPS": {
     "nolicence": "Licence vypršela",
@@ -442,6 +450,9 @@
     "maxCar": "Dosáhli jste maximální počet vozidel pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis na support@mantra-online.eu",
     "maxDrivers": "Dosáhli jste maximální počet řidičů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis na support@mantra-online.eu",
     "maxDispecer": "Dosáhli jste maximální počet dispečerů pro Vaši společnost - pro navýšení kontaktujte náš zákaznický servis na support@mantra-online.eu"
+  },
+  "AFRAME": {
+    "velkost": "~ 13,6m x 2,48m x 2,85m"
   }
 
 }

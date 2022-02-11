@@ -33,7 +33,8 @@
     "zrusene": "Canceled",
     "cakajuce": "Your reactions",
     "skontrolovat": "Check",
-    "vytvorene": "Created"
+    "vytvorene": "Created",
+    "ulozene": "Saved"
   },
 
   "EMAIL": {
@@ -180,6 +181,7 @@
     "state": "State",
     "ico": "ID number",
     "dico": "TAX number",
+    "icdph": "VAT No.",
     "iban": "IBAN",
     "poistenie": "Insurance",
     "vyskaPoistky": "Insurance limit",
@@ -197,7 +199,9 @@
     "maxPocetDispecerov": "Maximum amount of dispatchers (without master account)",
     "maxVozidiel": "Max. vehicles",
     "maxDispecerov": "Max. dispatchers",
-    "maxJazdcov": "Max. drivers"
+    "maxJazdcov": "Max. drivers",
+    "emailMaster": "E-mail Master konta bol zmenený. Pôvodné Master konto stratí prístup ku spoločnosti a nový e-mail získa Master prístup."
+
   },
 
   "HINT": {
@@ -415,7 +419,11 @@
     "adresa": "Address",
     "internaPraprava": "Internal transport",
     "nezverejneny": "Undisclosed",
-    "logInfo": "This log represents a contract and a delivery note. If agreed upon, the contractual parties may require additional documentation, such as CMR, invoice, or other.\n  The contract is commercial in nature. As such, it is a subject to applicable laws and may be affected by legal and/or contractual duties not stated in this log.\n  Terms and conditions, as well as transport rules and orders, may apply. This log has been generated automatically and is based on data aquired by the application operator.\n  Both contractual parties can access this log via their app. For more info visit www.mantra-online.eu."
+    "logInfo": "This log represents a contract and a delivery note. If agreed upon, the contractual parties may require additional documentation, such as CMR, invoice, or other.\n  The contract is commercial in nature. As such, it is a subject to applicable laws and may be affected by legal and/or contractual duties not stated in this log.\n  Terms and conditions, as well as transport rules and orders, may apply. This log has been generated automatically and is based on data aquired by the application operator.\n  Both contractual parties can access this log via their app. For more info visit www.mantra-online.eu.",
+    "zrusenie1": "navrhla zrušenie prepravy ",
+    "zrusenie2": "súradnice vozidla ",
+    "zrusenie3": "súhlasila s návrhom, preprava bola zrušená ",
+    "odmiernutie1": "s návrhom nesúhlasila, preprava pokračuje "
   },
   "POPUPS": {
     "nolicence": "Licence expired",
@@ -442,6 +450,9 @@
     "maxCar": "You have reached the maximum amount of vehicles allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit",
     "maxDrivers": "You have reached the maximum amount of drivers allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit",
     "maxDispecer": "You have reached the maximum amount of dispatchers allowed for your company - please contact our customer service at support@mantra-online.eu to increase your limit"
+  },
+  "AFRAME": {
+    "velkost": "~ 13,6m x 2,48m x 2,85m"
   }
 
 }

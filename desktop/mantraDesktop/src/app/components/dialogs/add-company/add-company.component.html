@@ -48,6 +48,12 @@
       <mat-hint>{{'COMPANIES.dico' | translate}}...</mat-hint>
     </mat-form-field>
 
+        <mat-form-field  appearance="standard" class="gridItem">
+          <mat-label>{{'COMPANIES.icdph' | translate}}</mat-label>
+          <input type="text" formControlName="icdph" matInput placeholder="{{'COMPANIES.icdph' | translate}}">
+          <mat-hint>{{'COMPANIES.icdph' | translate}}...</mat-hint>
+        </mat-form-field>
+
       <mat-form-field  appearance="standard" class="gridItem">
         <mat-label>{{'COMPANIES.iban' | translate}}</mat-label>
         <input type="text" formControlName="iban" matInput placeholder="{{'COMPANIES.iban' | translate}}...">
@@ -132,7 +138,8 @@
           </mat-form-field>
           <p *ngIf="!
           emailChanged()">
-            E-mail Master konta bol zmenený. Pôvodné Master konto stratí prístup ku spoločnosti a nový e-mail získa Master prístup.</p>
+            {{'COMPANIES.emailMaster' | translate}}
+          </p>
 
 
           <mat-form-field appearance="standard" class="gridItem">

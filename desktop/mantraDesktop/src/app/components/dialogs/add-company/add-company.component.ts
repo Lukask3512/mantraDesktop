@@ -28,8 +28,11 @@ export class AddCompanyComponent implements OnInit {
     street: ['', Validators.required],
     town: ['', Validators.required],
     country: ['', Validators.required],
-    ico: [''],
-    dicIc: [''],
+
+    ico: ['', Validators.required],
+    dicIc: ['', Validators.required],
+    icdph: [''],
+
     iban: [''],
     poistenie: [''],
     licence: ['', Validators.required],
@@ -72,6 +75,7 @@ export class AddCompanyComponent implements OnInit {
       this.companyForm.controls.country.setValue(this.data.country);
       this.companyForm.controls.ico.setValue(this.data.ico);
       this.companyForm.controls.dicIc.setValue(this.data.dicIc);
+      this.companyForm.controls.icdph.setValue(this.data.icdph);
       this.companyForm.controls.iban.setValue(this.data.iban);
       this.companyForm.controls.licence.setValue(this.data.licenceUntil);
       this.companyForm.controls.infoAbout.setValue(this.data.infoAbout);
@@ -346,19 +350,24 @@ export class AddCompanyComponent implements OnInit {
     }
     let infoAboutCompany = '';
     if (this.companyForm.get('infoAbout').value){
-      infoAboutCompany = this.companyForm.get('infoAbout').value
+      infoAboutCompany = this.companyForm.get('infoAbout').value;
     }
 
     let companyIban = '';
     if (this.companyForm.get('iban').value){
-      companyIban = this.companyForm.get('iban').value
+      companyIban = this.companyForm.get('iban').value;
     }
 
+    let icdph = '';
+    if (this.companyForm.get('icdph').value){
+      icdph = this.companyForm.get('icdph').value;
+    }
 
     return {
       name: this.companyForm.get('name').value,
       ico: this.companyForm.get('ico').value,
       dicIc: this.companyForm.get('dicIc').value,
+      icdph,
       poistenie,
       psc: this.companyForm.get('psc').value,
       street: this.companyForm.get('street').value,

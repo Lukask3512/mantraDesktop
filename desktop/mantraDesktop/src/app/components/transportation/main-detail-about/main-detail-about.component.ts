@@ -32,7 +32,20 @@ export class MainDetailAboutComponent implements OnInit {
   }
 
   maxVaha(){
-    return this.countFreeSpace.celkovaVahaNakladov(this.route);
+    return this.roundDecimal(this.countFreeSpace.celkovaVahaNakladov(this.route));
+  }
+
+  roundDecimal(sameNumber){
+    if (!sameNumber){
+      return 'Nezname';
+    }
+    let numberToRound;
+    if (typeof sameNumber === 'string'){
+      numberToRound = parseFloat(sameNumber);
+    }else{
+      numberToRound = sameNumber;
+    }
+    return parseFloat((numberToRound).toFixed(5)); // ==> 1.005
   }
 
   objemBalikov() {

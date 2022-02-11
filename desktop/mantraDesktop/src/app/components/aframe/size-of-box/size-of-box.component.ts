@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -8,13 +8,25 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class SizeOfBoxComponent implements OnInit {
 
+  public innerWidth: any;
   constructor(private translation: TranslateService) { }
 
+  @ViewChild('container') elWrapper: ElementRef;
   ngOnInit(): void {
+    this.getName();
   }
+
   getName(){
-    return 'pro'
+    this.translation.onLangChange.subscribe((event) => {
+      document.getElementById('texttiik2').setAttribute('value', this.translation.instant('AFRAME.velkost'));
+    });
   }
 
-
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth / 150;
+    const velkostElementu = this.elWrapper.nativeElement.offsetWidth / 100;
+    console.log(velkostElementu);
+    document.getElementById('texttiik2').setAttribute('width', String((velkostElementu)));
+  }
 }

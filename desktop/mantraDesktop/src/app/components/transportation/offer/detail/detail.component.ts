@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../../../../data/data.service';
 import {take} from 'rxjs/operators';
 import Route from '../../../../models/Route';
@@ -32,6 +32,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {MainDetailAboutComponent} from '../../main-detail-about/main-detail-about.component';
 import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -39,7 +40,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class DetailComponent implements AfterViewInit {
+export class DetailComponent implements AfterViewInit, OnDestroy {
 
 
   displayedColumns: string[] = ['companiesFromChild[i].name', 'route.priceFrom[i]', 'potvrdit', 'zrusit'];
@@ -72,16 +73,20 @@ export class DetailComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   dataSource;
+
+  currentRouteUns: Subscription;
+  offerRoutesUns: Subscription;
+  offerAddUns: Subscription;
   ngAfterViewInit(): void {
     // this.spinner.show();
     setTimeout(() => { // pre exoressionchanged error...
 
-      this.dataService.currentRoute.subscribe(route => {
+      this.currentRouteUns = this.dataService.currentRoute.subscribe(route => {
         console.log('zacinam');
         this.route = route;
         console.log(route);
         this.fakeRoute = JSON.parse(JSON.stringify(this.route));
-        this.offerService.routes$.subscribe(routes => {
+        this.offerRoutesUns = this.offerService.routes$.subscribe(routes => {
           this.route = routes.find(oneRoute => oneRoute.id === route.id);
           this.skontrolovanaPonuka();
           if (this.route === undefined) {
@@ -97,7 +102,7 @@ export class DetailComponent implements AfterViewInit {
             }, 1000);
 
 
-          this.addressesService.offerAddresses$.subscribe(alAdd => {
+         this.offerAddUns = this.addressesService.offerAddresses$.subscribe(alAdd => {
             let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
             adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
             this.address = adresy;
@@ -178,6 +183,7 @@ export class DetailComponent implements AfterViewInit {
       const routeID = this.offerService.getSkontrolovanePonuky().find(route => route === this.route.id);
       if (!routeID && this.route){
         this.offerService.setSkontrolovanePonuky(this.route.id);
+        console.log('zapisujem')
       }
     }
 
@@ -315,6 +321,14 @@ export class DetailComponent implements AfterViewInit {
       this.price = undefined;
       this.offerService.updateRoute(this.route);
     }
+
+  checkIfDisabled(){
+    if (this.route.price === 0 && (!this.price || this.price < 1)){
+      return true;
+    }else{
+      return false;
+    }
+  }
 
   deleteMyPriceOffer(){
     this.route.offerFrom.forEach((offer, index) => {
@@ -542,6 +556,18 @@ export class DetailComponent implements AfterViewInit {
 
   getCompanyById(companyid: string): Company{
     return this.companiesFromChild.find(oneCompany => oneCompany.id === companyid);
+  }
+
+  ngOnDestroy(): void {
+    if (this.offerAddUns){
+      this.offerAddUns.unsubscribe();
+    }
+    if (this.offerRoutesUns){
+      this.offerRoutesUns.unsubscribe();
+    }
+    if (this.currentRouteUns){
+      this.currentRouteUns.unsubscribe();
+    }
   }
 
 

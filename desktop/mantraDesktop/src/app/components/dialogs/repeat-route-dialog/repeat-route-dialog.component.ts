@@ -14,7 +14,7 @@ import {RouteService} from '../../../services/route.service';
 export class RepeatRouteDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<RepeatRouteDialogComponent>,
-              private addressService: AddressService, private routeService: RouteService,) { }
+              private addressService: AddressService, private routeService: RouteService) { }
 
   addresses: Address[] = [];
   route: Route;
@@ -40,7 +40,8 @@ export class RepeatRouteDialogComponent implements OnInit {
   ngOnInit(): void {
     this.minDate = new Date();
     if (this.data){
-      this.route = this.data.route;
+      this.route = JSON.parse(JSON.stringify(this.data.route));
+
       this.getAddresses();
     }
   }
@@ -58,7 +59,10 @@ export class RepeatRouteDialogComponent implements OnInit {
     console.log(adresy);
     console.log(this.route);
     this.route.addresses.forEach(oneAddressId => {
-      this.addresses.push(adresy.find(jednaAdresa => jednaAdresa.id === oneAddressId));
+      const adresa: Address = JSON.parse(JSON.stringify(adresy.find(jednaAdresa => jednaAdresa.id === oneAddressId)));
+      adresa.datumPrijazdu = '0';
+      adresa.datumLastPrijazdy = '0';
+      this.addresses.push(adresa);
     });
   }
 

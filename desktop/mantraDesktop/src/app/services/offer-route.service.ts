@@ -45,13 +45,28 @@ export class OfferRouteService {
             }, 5000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
-          if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === '' && !this.aldreadyThere(oneRoute.id)){
-            this.deleteRouteFromAnimation(oneRoute.id);
-            setTimeout(() => {
-              this.openSnackBar(this.translate.instant('POPUPS.niektoMaZaujem'), this.translate.instant('OFTEN.skontrolovat'), oneRoute);
-            }, 7000);
-            this.dialogForRouteShown.push(oneRoute.id);
+          if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === ''){
+            if (!this.aldreadyThere(oneRoute.id)){ // toto je na popup okno aby stale neskakalo
+              this.deleteRouteFromAnimation(oneRoute.id);
+              setTimeout(() => {
+                this.openSnackBar(this.translate.instant('POPUPS.niektoMaZaujem'), this.translate.instant('OFTEN.skontrolovat'), oneRoute);
+              }, 7000);
+              this.dialogForRouteShown.push(oneRoute.id);
+            }
+            const uzJeSkontrolovana = this.skontrolovanePonuky.find(oneId => oneId === oneRoute.id);
+            if (uzJeSkontrolovana){
+              const ponukaPredosla = this.oldRoutesForCheckNewOffers.find(oneRouteF => oneRouteF.id === oneRoute.id);
+              if (ponukaPredosla && ponukaPredosla.offerFrom.length < oneRoute.offerFrom.length){
+                this.deleteRouteFromAnimation(oneRoute.id);
+                // console.log('vymazal som ponuku zo skontrolovanych');
+                // console.log(this.getSkontrolovanePonuky());
+              }
+            }
           }
+
+
+
+
         }
         // ked chce tvorca zrusit ponuku
         if (!oneRoute.dontWannaCancel && oneRoute.cancelByCreator && oneRoute.createdBy !== this.dataService.getMyIdOrMaster() && !oneRoute.cancelByDriver){

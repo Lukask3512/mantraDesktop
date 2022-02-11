@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div #container class="wrapper">
 
 <a-scene device-orientation-permission-ui="enabled: false" vr-mode-ui="enabled: false" embedded>
 
@@ -36,8 +36,8 @@
 <!--  position="7 1 12 pozicia kkamery z predu-->
 
   <a-entity rotation="-20 50 0" movement-controls="fly: true">
-    <a-entity id="mojaKamera" position="8 -1 20"  camera look-controls wasd-controls="fly:true">
-      <a-text id="texttiik2" value="Size ~ 13,6m x 2,48m x 2,85m" lirkis-text-component position="0 0.7 -1" color="#000000"
+    <a-entity id="mojaKamera" position="8 -1 20"  camera touch-controls wasd-controls="fly:true">
+      <a-text id="texttiik2" value="~ 13,6m x 2,48m x 2,85m" lirkis-text-component position="0 0.7 -1" color="#000000"
               align="center" scale="0.5 0.5 0.5"></a-text>
     </a-entity>
   </a-entity>

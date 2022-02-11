@@ -293,7 +293,8 @@ export class MapComponent implements AfterViewInit {
             if (feature.get('features')[0].get('type') === 'car'){
               if (feature.get('features').length === 1){ // ak som klikol na 1 auto
                 this.onClickFindInfo(feature.get('features')[0].get('name'));
-                this.zoomToAddressOrCar(feature);
+                // this.zoomToAddressOrCar(feature);
+                this.zoomToCarAndIti(feature.get('features')[0].get('name'));
                 this.scrollToInfo();
 
               }else{ // ak som klikol na viacero aut
@@ -305,7 +306,8 @@ export class MapComponent implements AfterViewInit {
             if (feature.get('features')[0].get('type') === 'offer'){
             if (feature.get('features').length === 1){ // ak som klikol na 1 auto
               this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
-              this.zoomToAddressOrCar(feature);
+              // this.zoomToAddressOrCar(feature);
+              this.zoomToCarAndIti(feature.get('features')[0].get('name'));
               this.scrollToInfo();
 
             }else{ // ak som klikol na viacero ponuk
@@ -317,13 +319,14 @@ export class MapComponent implements AfterViewInit {
         }
         else if (type === 'car'){
           this.onClickFindInfo(feature.get('name'));
-          this.zoomToAddressOrCar(feature);
+          // this.zoomToAddressOrCar(feature);
+          this.zoomToCarAndIti(feature.get('features')[0].get('name'));
           this.scrollToInfo();
         }
 
         else if (type === 'town'){
 
-          this.zoomToAddressOrCar(feature);
+          this.zoomToAddressInRoutes(feature);
           this.onClickFindInfoAdress(feature.get('name'));
           this.lastClickedOnaddressId = feature.get('name');
           this.scrollToInfo();
@@ -376,7 +379,8 @@ export class MapComponent implements AfterViewInit {
     const feature = this.cars.find(oneFeature => oneFeature.get('name') === carId);
     if (carId){
       this.onClickFindInfo(carId);
-      this.zoomToAddressOrCar(feature);
+      // this.zoomToAddressOrCar(feature);
+      this.zoomToCarAndIti(feature)
     }
   }
 
@@ -1253,10 +1257,71 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
+  zoomToCarAndIti(carFeatureFrom){
+    const carFeature = carFeatureFrom;
+    const idAuta = carFeatureFrom.get('name');
+    const vozidlo: Cars = this.carsFromDatabase.find(allCars => allCars.id === idAuta);
+    const vectorSource = this.vectorLayerAdress.getSource();
+    const features = vectorSource.getFeatures();
+    const featuresToShow = [];
+    featuresToShow.push(carFeature);
+    for (let i = 0; i < features.length; i++) {
+      if (vozidlo.itinerar.includes(features[i].get('name'))) {
+        featuresToShow.push(features[i]);
+      }
+    }
+    if (featuresToShow.length === 1){
+      const poloha = featuresToShow[0].getGeometry().getCoordinates();
+      this.view.animate({
+        center: poloha,
+        duration: 500,
+        zoom: 15
+      });
+    }else{
+      const vectorSourceToZoom = new VectorSource({
+        features: featuresToShow
+      });
+      this.view.fit(vectorSourceToZoom.getExtent(), {
+        padding: [80, 80, 80, 80],
+        duration: 800
+      });
+    }
+  }
+
+  zoomToAddressInRoutes(addressFeature){
+    const idAdresy =  addressFeature.get('name');
+    const routa = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(idAdresy));
+    const vectorSource = this.vectorLayerAdress.getSource();
+    const features = vectorSource.getFeatures();
+    const featuresToShow = [];
+    for (let i = 0; i < features.length; i++) {
+      if (routa.addresses.includes(features[i].get('name'))) {
+        featuresToShow.push(features[i]);
+      }
+    }
+    if (featuresToShow.length === 1){
+      const poloha = featuresToShow[0].getGeometry().getCoordinates();
+      this.view.animate({
+        center: poloha,
+        duration: 500,
+        zoom: 15
+      });
+    }else{
+      const vectorSourceToZoom = new VectorSource({
+        features: featuresToShow
+      });
+      this.view.fit(vectorSourceToZoom.getExtent(), {
+        padding: [80, 80, 80, 80],
+        duration: 800
+      });
+    }
+
+  }
+
   zoomToRoute(address){
     const celaCesta = address.getGeometry().getExtent();
 
-    this.view.fit(celaCesta, {padding: [100, 100, 100, 100],
+    this.view.fit(celaCesta, {padding: [80, 80, 80, 80],
       minResolution: 50,
       duration: 800} );
 

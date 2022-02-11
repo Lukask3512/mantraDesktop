@@ -237,6 +237,7 @@ export class TransportationWrapperComponent implements OnInit {
       if (value === undefined){
         return;
       }else {
+        this.routesToShow = this.routesToShow.filter(oneRoute => oneRoute.id !== route.id);
         this.routeService.deleteRoute(route.id);
         route.addresses.forEach(oneAddressId => {
           this.addressService.deleteAddress(oneAddressId);

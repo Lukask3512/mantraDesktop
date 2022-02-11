@@ -122,7 +122,7 @@
           <span *ngIf="address.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
           {{address.nameOfTown}}
         </p>
-        <span class="oversize" matTooltip="{{'POPUPS.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
+        <span class="oversize" matTooltip="{{'POPUPS.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto && volnaVahaPreAuto[i] && volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{this.roundDecimal(volnaVahaPreAuto[i])}}t</span>
         <span class="oversize" matTooltip="{{'POPUPS.prilizVelky' | translate}}" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
       </div>
       <div class="bottom">

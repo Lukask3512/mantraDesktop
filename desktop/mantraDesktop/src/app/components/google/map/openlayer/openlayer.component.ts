@@ -1,4 +1,15 @@
-import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Polyline from 'ol/format/Polyline';
@@ -29,7 +40,7 @@ import {RouteCoordinatesService} from '../../../../services/route/route-coordina
   templateUrl: './openlayer.component.html',
   styleUrls: ['./openlayer.component.scss']
 })
-export class OpenlayerComponent implements AfterViewInit{
+export class OpenlayerComponent implements AfterViewInit, OnDestroy{
   map;
   vectorLayer = new VectorLayer();
   vectorLayerRoute = new VectorLayer();
@@ -58,6 +69,12 @@ export class OpenlayerComponent implements AfterViewInit{
 
   resizeObservable$: Observable<Event>;
   resizeSubscription$: Subscription;
+
+  routeSubs: Subscription;
+
+  vectorSource: VectorSource;
+
+  @ViewChild('mapContainer') elWrapper: ElementRef;
 
   constructor(private http: HttpClient, private storage: AngularFireStorage,
               private routeCoordinates: RouteCoordinatesService) { }
@@ -115,11 +132,27 @@ export class OpenlayerComponent implements AfterViewInit{
 
   }
 
-
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    setTimeout( () => {
+      this.map.updateSize();
+      console.log(this.vectorSource.getFeatures());
+      if (this.vectorSource.getFeatures().length === 1){
+        const poloha = this.vectorSource.getFeatures()[0].getGeometry().getCoordinates();
+        this.view.animate({
+          center: poloha,
+          duration: 500,
+          zoom: 15
+        });
+      }else{
+        this.view.fit(this.vectorSource.getExtent(), {padding: [100, 100, 100, 100], duration: 800} );
+      }
+      }, 200);
+  }
 
   addRoute(car){
     if (car && car.id){
-      this.routeCoordinates.getRoute(car.id).subscribe((nasolSom) => {
+      this.routeSubs = this.routeCoordinates.getRoute(car.id).subscribe((nasolSom) => {
         if (nasolSom !== undefined || nasolSom !== null){
           setTimeout(() => {
 
@@ -258,7 +291,7 @@ export class OpenlayerComponent implements AfterViewInit{
 
 
     // this.coordinatesFeature =
-    const vectorSource = new VectorSource({
+    this.vectorSource = new VectorSource({
       features: this.places,
     });
 
@@ -270,12 +303,13 @@ export class OpenlayerComponent implements AfterViewInit{
 
 
     this.vectorLayer = new VectorLayer({
-      source: vectorSource,
+      source: this.vectorSource,
     });
     this.vectorLayer.setZIndex(2);
     this.map.addLayer(this.vectorLayer);
 
-    this.view.fit(vectorSource.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50} );
+    // this.view.fit(this.vectorSource.getExtent(), {padding: [100, 100, 100, 100], duration: 800} );
+    this.onResize();
 
   }
 
@@ -357,6 +391,14 @@ export class OpenlayerComponent implements AfterViewInit{
     };
     const listenerKey = this.tileLayer.on('postrender', animate); // to remove the listener after the duration
 
+  }
 
+  ngOnDestroy(): void {
+    if (this.resizeSubscription$){
+      this.resizeSubscription$.unsubscribe();
+    }
+    if (this.routeSubs){
+      this.routeSubs.unsubscribe();
+    }
   }
 }

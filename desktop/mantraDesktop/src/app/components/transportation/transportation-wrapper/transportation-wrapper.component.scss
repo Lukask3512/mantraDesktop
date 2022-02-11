@@ -1,6 +1,13 @@
 @import "./src/sccs/shared/mixins";
 
 
+.wrapper{
+  min-height: auto;
+  overflow-y: auto;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 .companyNameTogether{
   display: flex;
   column-gap: 8px;

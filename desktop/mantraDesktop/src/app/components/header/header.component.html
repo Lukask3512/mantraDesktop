@@ -9,8 +9,8 @@
     <div class="flexking">
       <select class="selectLanguage" (change)="changeLang($event.target.value)">
         <option value="en" [selected]="lang == 'en'">English</option>
-        <option value="sk" [selected]="lang == 'sk'">Slovakia</option>
-        <option value="cz" [selected]="lang == 'cz'">Czech</option>
+        <option value="sk" [selected]="lang == 'sk'">Slovenčina</option>
+        <option value="cz" [selected]="lang == 'cz'">Čeština</option>
       </select>
         <i routerLink="/view/profile" class="material-icons profile">account_circle</i>
         <span class="dispecerName" routerLink="/view/profile">{{this.getDispecer()}}</span>

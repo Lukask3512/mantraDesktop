@@ -143,7 +143,7 @@
           <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
         </div>
       </div>
-
+      <button *ngIf="route.createdBy === this.getDispecerId()" (click)="openAddDialog(route)" class="buttonB">{{'OFTEN.zopakovat' | translate}}</button>
     </div>
   </div>
   </div>

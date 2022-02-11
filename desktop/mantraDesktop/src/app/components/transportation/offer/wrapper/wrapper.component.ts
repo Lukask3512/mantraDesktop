@@ -147,6 +147,9 @@ export class WrapperComponent implements OnInit {
   }
 
   getAnimation(route: Route){
+    if (route.ponuknuteTo === this.getDispecerId()){ // ked mam ponuku na finalne prijatie
+      return 'blickAnimation';
+    }
     const ponukySkontrolovane = this.offerService.getSkontrolovanePonuky().find(oneRoute => oneRoute === route.id);
     if (ponukySkontrolovane){
       return; // ked som to uz pozrel

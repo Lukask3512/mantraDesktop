@@ -3,6 +3,7 @@ export default class Company {
   name: string;
   ico?: string;
   dicIc?: string;
+  icdph?: string;
   poistenie: string;
 
   psc: string;

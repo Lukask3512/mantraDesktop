@@ -2,8 +2,7 @@
 .wrapper{
   padding: 5px;
   margin-left: 150px;
-  width: 100%;
-  //overflow: auto;
+  width: calc(100% - 150px);
 }
 
 .navHeader{
@@ -37,6 +36,7 @@
   .wrapper{
     margin-left: 0;
     overflow: initial;
+    width: 100%;
   }
 }
 
@@ -60,7 +60,7 @@
   display: flex;
   position: absolute;
   width: 100%;
-  min-height: 100%;
+  height: calc(100% - 50px);
 }
 
 .sidenav a {

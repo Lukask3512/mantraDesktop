@@ -1,5 +1,9 @@
 @import "./src/sccs/shared/mixins";
 
+.allWrapper{
+  height: 100%;
+}
+
 .header{
   display: flex;
   justify-content: center;
@@ -20,6 +24,10 @@
   flex-direction: column;
   align-items: center;
   row-gap: 5px;
+}
+
+.dragAndDropList{
+  width: 100%;
 }
 
 .deleteButtons{
@@ -152,12 +160,17 @@ td{
   .map{
     height: 500px;
     width: 100%;
+    margin: 0;
   }
 
   .tableArountAddresses{
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0;
+  }
+  .wrapperMid{
+    margin: 0;
   }
 }
 

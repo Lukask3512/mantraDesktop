@@ -561,6 +561,7 @@ export class CarItiDetailComponent implements OnInit {
       ponukaId: this.offer.id
     };
     this.predpokladService.createPredpoklad(predpoklad);
+    this.openSnackBar(this.translation.instant('OFTEN.ulozene'), 'Ok');
   }
 
   sendCarToPredpoklad(predpoklad: Predpoklad){
@@ -823,6 +824,19 @@ export class CarItiDetailComponent implements OnInit {
     }
     indexBedne += detailIndex + 1;
     return indexBedne;
+  }
+
+  roundDecimal(sameNumber){
+    if (!sameNumber){
+      return 'Nezname';
+    }
+    let numberToRound;
+    if (typeof sameNumber === 'string'){
+      numberToRound = parseFloat(sameNumber);
+    }else{
+      numberToRound = sameNumber;
+    }
+    return parseFloat((numberToRound).toFixed(5)); // ==> 1.005
   }
 
 

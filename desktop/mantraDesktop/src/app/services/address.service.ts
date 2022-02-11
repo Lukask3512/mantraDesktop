@@ -83,7 +83,9 @@ export class AddressService {
       let finishIt = true;
       adresyZRouty.forEach(jednaAdresa => {
         if (jednaAdresa.status !== 3){
-          finishIt = false;
+          if (jednaAdresa.status !== 5){
+            finishIt = false;
+          }
         }
       });
       // ak je finishIt stale true, route upravim na finished
@@ -109,7 +111,9 @@ export class AddressService {
         }
         adresyZRouty.forEach(jednaAdresa => {
           if (jednaAdresa.status !== 3){
-            finishIt = false;
+            if (jednaAdresa.status !== 5){
+              finishIt = false;
+            }
           }
         });
         // ak je finishIt stale true, route upravim na finished
