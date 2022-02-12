@@ -180,11 +180,13 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
     }
 
     skontrolovanaPonuka(){
+    if (this.route && this.route.id){
       const routeID = this.offerService.getSkontrolovanePonuky().find(route => route === this.route.id);
       if (!routeID && this.route){
         this.offerService.setSkontrolovanePonuky(this.route.id);
         console.log('zapisujem')
       }
+    }
     }
 
     nechcemZrusitPonuku(){
@@ -348,6 +350,7 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
       this.route.price = this.offer;
     }
     this.route.forEveryone = false;
+    this.route.finalAcceptDate = new Date().toString();
     this.offerService.updateRoute(this.route);
     this.fakeRoute = JSON.parse(JSON.stringify(this.route));
   }

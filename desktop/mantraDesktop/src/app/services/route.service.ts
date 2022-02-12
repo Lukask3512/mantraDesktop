@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
-import Dispecer from "../models/Dispecer";
-import {map, take} from "rxjs/operators";
-import Cars from "../models/Cars";
-import {BehaviorSubject, Observable} from "rxjs";
-import Route from "../models/Route";
-import {DataService} from "../data/data.service";
-import Address from "../models/Address";
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import Dispecer from '../models/Dispecer';
+import {map, take} from 'rxjs/operators';
+import Cars from '../models/Cars';
+import {BehaviorSubject, Observable} from 'rxjs';
+import Route from '../models/Route';
+import {DataService} from '../data/data.service';
+import Address from '../models/Address';
 
 @Injectable({
   providedIn: 'root'
@@ -58,15 +58,15 @@ export class RouteService {
 
   getRoutes(carId){
     return this.afs.collection<Dispecer>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-      query = query.where('carId', '==', carId).where('finished', '==', false)
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('carId', '==', carId).where('finished', '==', false);
       ref.orderBy('createdAt');
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })
@@ -78,7 +78,7 @@ export class RouteService {
   //
   // }
 
-  //toto i treba dorobit
+  // toto i treba dorobit
   async createRoute(route: Route){
     return new Promise(resolve => {
       const id = this.afs.createId();
@@ -93,7 +93,7 @@ export class RouteService {
   }
 
   updateRoute(newRoute) {
-    console.log(newRoute)
+    console.log(newRoute);
     if (newRoute.id === undefined){
       this.createRoute(newRoute);
       return;
@@ -110,26 +110,26 @@ export class RouteService {
   }
 
   getAllRoutes(){
-    //id of logged dispecer
-    var id;
-    var loggedDispecer = this.dataService.getDispecer();
+    // id of logged dispecer
+    let id;
+    let loggedDispecer = this.dataService.getDispecer();
     if (loggedDispecer.createdBy == 'master'){
-      id = loggedDispecer.id
+      id = loggedDispecer.id;
     }else{
       id = loggedDispecer.createdBy;
     }
-      return this.afs.collection<Route>('route', ref => {
-        let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+    return this.afs.collection<Route>('route', ref => {
+        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         query = query.where('createdBy', '==', id)
           .where('finished', '==', false)
-          .where('forEveryone', '==', false).where('takenBy', '==', '')
+          .where('forEveryone', '==', false).where('takenBy', '==', '');
         ref.orderBy('createdAt');
         return query;
       }).snapshotChanges().pipe(
         map(actions => {
           return actions.map(a => {
             const data = a.payload.doc.data();
-            const id = a.payload.doc['id']
+            const id = a.payload.doc.id;
             return {id, ...data};
           });
         })
@@ -137,25 +137,25 @@ export class RouteService {
     }
 
   getAllFinishedRoutes(){
-    //id of logged dispecer
-    var id;
-    var loggedDispecer = this.dataService.getDispecer();
+    // id of logged dispecer
+    let id;
+    let loggedDispecer = this.dataService.getDispecer();
     if (loggedDispecer.createdBy == 'master'){
-      id = loggedDispecer.id
+      id = loggedDispecer.id;
     }else{
       id = loggedDispecer.createdBy;
     }
     return this.afs.collection<Route>('route', ref => {
-      let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', id)
         .where('finished', '==', true)
-        .orderBy('finishedAt', 'desc').limit(10);
+        .orderBy('finishedAt', 'desc').limit(20);
       return query;
     }).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc['id']
+          const id = a.payload.doc.id;
           return {id, ...data};
         });
       })

@@ -92,7 +92,7 @@ export class AddressService {
       if (finishIt){
         const routeSFinish = oneRoute;
         routeSFinish.finished = true;
-        routeSFinish.finishedAt = new Date().toString();
+        routeSFinish.finishedAt = new Date().getTime();
         this.routeService.updateRoute(routeSFinish);
         console.log('Updatol som routu cislo: ',  routeSFinish);
       }
@@ -120,7 +120,7 @@ export class AddressService {
         if (finishIt){
           const routeSFinish = oneRoute;
           routeSFinish.finished = true;
-          routeSFinish.finishedAt = new Date().toString();
+          routeSFinish.finishedAt = new Date().getTime();
           this.routeService.updateRoute(routeSFinish);
         }
       }

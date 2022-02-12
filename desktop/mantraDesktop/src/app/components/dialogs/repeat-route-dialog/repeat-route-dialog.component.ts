@@ -162,6 +162,22 @@ export class RepeatRouteDialogComponent implements OnInit {
       route.ponuknuteTo = '';
       route.offerInRoute = '';
 
+      delete route.cancelByCreatorLon;
+      delete route.cancelByCreatorLat;
+      delete route.cancelByCreatorDate;
+      delete route.dontWannaCancel;
+      delete route.cancelByCreator;
+
+      delete route.cancelByDriverLon;
+      delete route.cancelByDriverLat;
+      delete route.cancelByDriverDate;
+      delete route.cancelByDriver;
+
+      delete route.carAtPositionLat;
+      delete route.carAtPositionLon;
+      delete route.finalAcceptDate;
+      delete route.offerAddedToCarDate;
+
       console.log(route);
       this.routeService.createRoute(route).then(resolve => {
         this.dialogRef.close(true);

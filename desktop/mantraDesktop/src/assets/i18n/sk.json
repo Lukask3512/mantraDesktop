@@ -251,10 +251,10 @@
     "sirka": "Šírka",
     "dlzka": "Dĺžka",
     "maxVaha": "Maximálna hmotnosť",
-    "najvacsiBalik": "Najväčší balík",
-    "celkovyObjem": "Celkový objem balíkov",
-    "predchBalik": "Predchádzajúci balík",
-    "nasledujuciBalik": "Nasledujúci balík"
+    "najvacsiBalik": "Najväčšia položka",
+    "celkovyObjem": "Celkový objem",
+    "predchBalik": "Predchádzajúca položka",
+    "nasledujuciBalik": "Nasledujúca položka"
 
   },
 
@@ -392,7 +392,7 @@
     "velkostiBalikov": "Veľkosti balíkov / paliet",
     "zadajteVelkostiNakladu": "Zadajte veľkosť jednotlivých balíkov / paliet",
     "pocetKusov": "Počet položiek",
-    "poslednePridanyBalik": "Naposledy pridaný balík / paleta",
+    "poslednePridanyBalik": "Naposledy pridaná položka",
     "pocet": "Počet",
     "parametre": "Položka",
     "polohaNakladania": "Poloha nakladania",

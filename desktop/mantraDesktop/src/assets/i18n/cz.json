@@ -41,7 +41,7 @@
     "welcome": "Vítejte v aplikaci Mantra",
     "prihlasovacieMeno": "Vaše přihlašovací jméno: ",
     "heslo": ", heslo: ",
-    "neboloZmenene": "Vaše heslo nebylo změneno. Jestli si nepamatujete heslo, můžete si ho změnit na stránce https://desktop.mantra-online.eu/.",
+    "neboloZmenene": "Vaše heslo nebylo změneno. Jestli si nepamatujete heslo, můžete si ho změnit na https://desktop.mantra-online.eu/.",
     "domena": "https://desktop.mantra-online.eu/"
   },
 
@@ -200,7 +200,7 @@
     "maxVozidiel": "Max. vozidel",
     "maxDispecerov": "Max. dispečerů",
     "maxJazdcov": "Max. řidičů",
-    "emailMaster": "E-mail Master konta bol zmenený. Pôvodné Master konto stratí prístup ku spoločnosti a nový e-mail získa Master prístup."
+    "emailMaster": "E-mail Master konta byl změněn. Původní Master konto stratí přístup ke společnosti a nový e-mail získá Master přístup."
 
   },
 
@@ -252,10 +252,10 @@
     "sirka": "Šířka",
     "dlzka": "Délka",
     "maxVaha": "Maximální hmotnost",
-    "najvacsiBalik": "Největší balík",
-    "celkovyObjem": "Celkový objem balíků",
-    "predchBalik": "Předchozí balik",
-    "nasledujuciBalik": "Následující balik"
+    "najvacsiBalik": "Největší položka",
+    "celkovyObjem": "Celkový objem",
+    "predchBalik": "Předchozí položka",
+    "nasledujuciBalik": "Následující položka"
 
   },
 
@@ -393,7 +393,7 @@
     "velkostiBalikov": "Velikosti balíků / palet",
     "zadajteVelkostiNakladu": "Zadejte velikost jednotlivých balíků / palet",
     "pocetKusov": "Počet položek",
-    "poslednePridanyBalik": "Posledně přidaný balík / paleta",
+    "poslednePridanyBalik": "Posledně přidána položka",
     "pocet": "Počet",
     "parametre": "Položka",
     "polohaNakladania": "Poloha nakládání",
@@ -420,10 +420,10 @@
     "internaPraprava": "Interní přeprava",
     "nezverejneny": "Nezveřejneno",
     "logInfo": "Tento log představuje objednávku a dodací list. Dle dohody smluvních stran se můžou vyžadovat další dokumenty (např. CMR, faktura, a pod.).\n  Přeprava se řídí příslušnými právními předpisy. Jde o obchodní vztah, můžou se aplikovat zákonní a/nebo všeobecné obchodní podmínky\n  smluvních stran, včetně přepravních a jiných řádů. Log byl vygenerován automaticky a odpovídá záznamům provozovatele\n  aplikace. Přístup k logu mají obě smluvní strany ve své aplikaci. Pro více informací navštivte www.mantra-online.eu.",
-    "zrusenie1": "navrhla zrušenie prepravy ",
-    "zrusenie2": "súradnice vozidla ",
-    "zrusenie3": "súhlasila s návrhom, preprava bola zrušená ",
-    "odmiernutie1": "s návrhom nesúhlasila, preprava pokračuje "
+    "zrusenie1": "navrhla zrušení přepravy ",
+    "zrusenie2": "souřadnice vozidla ",
+    "zrusenie3": "souhlasila s návrhem, přeprava byla zrušena ",
+    "odmiernutie1": "s návrhem nesouhlasila, přeprava pokračuje "
   },
   "POPUPS": {
     "nolicence": "Licence vypršela",

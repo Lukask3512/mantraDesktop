@@ -12,6 +12,7 @@ import {ShowItinerarComponent} from "./show-itinerar/show-itinerar.component";
 import {RouteToItinerarComponent} from "../../new-transport/route-to-itinerar/route-to-itinerar.component";
 import Address from "../../../../models/Address";
 import {AddressService} from '../../../../services/address.service';
+import {CarService} from '../../../../services/car.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ import {AddressService} from '../../../../services/address.service';
 export class OfferToRouteComponent implements OnInit {
 
   constructor(private offerService: OfferRouteService, private routeService: RouteService, public routeStatus: RouteStatusService,
-              private dataService: DataService,  private dialog: MatDialog, private addressesService: AddressService) { }
+              private dataService: DataService,  private dialog: MatDialog, private addressesService: AddressService,
+              private carService: CarService) { }
   routes: Route[];
   fakeRoutes: Route[];
 
@@ -124,6 +126,11 @@ export class OfferToRouteComponent implements OnInit {
     var offer: Route = this.offer;
     offer.offerInRoute = carId;
     offer.carId = carId;
+    const car = this.carService.getAllCars().find(oneCar => oneCar.id === carId);
+    offer.carAtPositionLon = car.longtitude;
+    offer.carAtPositionLat = car.lattitude;
+    offer.offerAddedToCarDate = new Date().toString();
+
     let adresy: Address[] = this.addressesService.getAddressesFromOffer().filter(oneAdresa => offer.addresses.includes(oneAdresa.id));
     this.offerService.updateRoute(offer);
   }

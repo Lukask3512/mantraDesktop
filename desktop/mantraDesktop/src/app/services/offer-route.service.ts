@@ -42,7 +42,7 @@ export class OfferRouteService {
             this.deleteRouteFromAnimation(oneRoute.id);
             setTimeout(() => {
               this.openSnackBar(this.translate.instant('POPUPS.ziskaliStePonuku'), this.translate.instant('OFTEN.priradit'), oneRoute);
-            }, 5000);
+            }, 8000);
             this.dialogForRouteShown.push(oneRoute.id);
           }
           if (oneRoute.offerFrom.length > 0 && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && oneRoute.takenBy === ''){

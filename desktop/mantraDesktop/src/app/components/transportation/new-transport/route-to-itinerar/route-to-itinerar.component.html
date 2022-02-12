@@ -109,7 +109,7 @@
               <span *ngIf="itiAddress.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
               {{itiAddress.nameOfTown}}
               <span class="oversize" matTooltip="{{'TRANSPORT.prilizVelky' | translate}}" matTooltipPosition="right" *ngIf="!kontrolaCiSaVopcha(i)">{{'PACKAGES.nevopchasa' | translate}}</span>
-              <span class="oversize" matTooltip="{{'TRANSPORT.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{volnaVahaPreAuto[i]}}t</span>
+              <span class="oversize" matTooltip="{{'TRANSPORT.prilizTazky' | translate}}" matTooltipPosition="right" *ngIf="volnaVahaPreAuto[i] < 0">{{'PACKAGES.pretazene' | translate}} {{this.roundDecimal(volnaVahaPreAuto[i])}}t</span>
               <span class="oversize" matTooltip="{{'TRANSPORT.moznyDatumPrichodu' | translate}} {{timeToLocal(itiAddress.datumPrijazdu, itiAddress.casPrijazdu)}} - {{timeToLocal(itiAddress.datumLastPrijazdy, itiAddress.casLastPrijazdu)}}" matTooltipPosition="right" *ngIf="casyPreAuto[i].sediCas == false">{{'OFFER.skontrolujteCas' | translate}}</span>
 
 

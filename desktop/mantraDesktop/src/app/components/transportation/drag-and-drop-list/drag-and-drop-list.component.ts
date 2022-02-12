@@ -60,6 +60,12 @@ export class DragAndDropListComponent implements OnInit {
     }
   }
 
+  isDraggable(){
+    if (!this.draggable){
+      return 'normalCursor'
+    }
+  }
+
   // kontrola ci mozem prehodit mesta - podla detailu
   najdiCiMozemPresunut(detail, previous, current){
     var mozemPresunut = true;

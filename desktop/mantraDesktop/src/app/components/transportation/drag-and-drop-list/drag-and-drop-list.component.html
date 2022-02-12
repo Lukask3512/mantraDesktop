@@ -2,7 +2,7 @@
   <h3 *ngIf="!this.address || this.address.length === 0">{{'CAR.noAdress' | translate}}</h3>
   <div *ngIf="this.address"  cdkDropList class="example-list"
        (cdkDropListDropped)="drop($event)" id="dragList1" cdkDropListConnectedTo="dragList2" [cdkDropListDisabled]="!draggable">
-    <div class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
+    <div [class]="isDraggable()" class="example-box" *ngFor="let routeTown of this.address; let i = index" cdkDrag>
       <div *ngIf="this.detailArray && this.detailArray[i] && routeTown && routeTown.datumPrijazdu" class="bednaWrapperAndTime">
         <!--      <app-detail-img  class="imageInRow" [address]="this.address[i]"></app-detail-img>-->
         <div class="bednaWrapper" *ngIf="this.detailArray[i].townsArray">

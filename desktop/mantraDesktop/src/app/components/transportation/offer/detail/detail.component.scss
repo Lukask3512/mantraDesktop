@@ -2,6 +2,7 @@
 
 .allWrapper{
   height: 100%;
+  overflow: auto;
 }
 
 .header{
@@ -17,6 +18,7 @@
   display: flex;
   width: 100%;
   min-height: 90%;
+  height: 100%;
 }
 
 .headerFlexer{
@@ -131,8 +133,9 @@ button[disabled]{
 
 .map{
   width: 100%;
-  height: auto;
+  height: 96%;
   margin: 10px;
+  min-height: 500px;
   @include tableBorder();
 }
 

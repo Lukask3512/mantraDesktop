@@ -168,7 +168,7 @@
   </div>
 
   <div *ngIf="this.route.price">
-    <p class="addressSmall">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</p>
+<!--    <p class="addressSmall">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</p>-->
     <p class="addressSmall">{{'LOG.prijate' | translate}}: {{this.timeToLocal(this.route.finalAcceptDate)}}</p>
     <p class="addressSmall">{{'LOG.priradene' | translate}}: {{this.timeToLocal(this.route.offerAddedToCarDate)}}</p>
     <p class="addressSmall">{{'LOG.autoSaNachadzalo' | translate}}:</p>
@@ -252,7 +252,7 @@
   </table>
 
 
-  <h3 class="icodicoSmall" *ngIf="this.route.price; else elseInterna">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h3>
+  <h3 class="icodicoSmall" *ngIf="this.route.price; else elseInterna">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h3>
   <ng-template #elseInterna>
     <h3>{{'LOG.internaPraprava' | translate}}</h3>
   </ng-template>

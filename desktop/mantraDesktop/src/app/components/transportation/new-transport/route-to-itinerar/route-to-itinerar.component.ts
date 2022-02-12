@@ -59,6 +59,19 @@ export class RouteToItinerarComponent implements OnInit {
 
   }
 
+  roundDecimal(sameNumber){
+    if (!sameNumber){
+      return 'Nezname';
+    }
+    let numberToRound;
+    if (typeof sameNumber === 'string'){
+      numberToRound = parseFloat(sameNumber);
+    }else{
+      numberToRound = sameNumber;
+    }
+    return parseFloat((numberToRound).toFixed(5)); // ==> 1.005
+  }
+
   najdiIndexNakladky(){
     let maxIndexNakladky = -1;
     if (this.myNewRouteWithEverything.adresyVPonuke[0] && this.myNewRouteWithEverything.adresyVPonuke[0].type === 'vykladka'){

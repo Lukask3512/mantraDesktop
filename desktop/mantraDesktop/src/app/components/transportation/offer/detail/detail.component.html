@@ -63,7 +63,7 @@
     <h4 *ngIf="this.offer">
       {{'OFFER.vasaPonuka' | translate}} {{this.offer}}
     </h4>
-    <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h4>
+    <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h4>
 
 
     <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">
@@ -87,7 +87,7 @@
   </div>
 
   <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="ponuky">
-    <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}</h4>
+    <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h4>
     <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
     <button class="deletePrice" (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
     <h2>

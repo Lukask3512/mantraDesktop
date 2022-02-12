@@ -193,10 +193,10 @@ export class TransportationWrapperComponent implements OnInit {
   }
 
   sortByFinished(arrayOfRoutes: Route[], finished: boolean){
-    if (finished){
-      return arrayOfRoutes.sort((a, b) => (a.finishedAt > b.finishedAt) ? 1 : ((b.finishedAt > a.finishedAt) ? -1 : 0));
+    if (finished === true){
+      return arrayOfRoutes.sort((a, b) => (a.finishedAt > b.finishedAt) ? 1 : ((b.finishedAt > a.finishedAt) ? -1 : 0)).reverse();
     }else{
-      return arrayOfRoutes.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0));
+      return arrayOfRoutes.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : ((b.createdAt > a.createdAt) ? -1 : 0)).reverse();
     }
   }
 

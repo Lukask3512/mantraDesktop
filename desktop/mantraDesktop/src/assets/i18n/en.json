@@ -30,7 +30,7 @@
     "problem": "Problem",
     "preskocene": "Skipped",
     "nepriradene": "Unassigned",
-    "zrusene": "Canceled",
+    "zrusene": "Cancelled",
     "cakajuce": "Your reactions",
     "skontrolovat": "Check",
     "vytvorene": "Created",
@@ -200,7 +200,7 @@
     "maxVozidiel": "Max. vehicles",
     "maxDispecerov": "Max. dispatchers",
     "maxJazdcov": "Max. drivers",
-    "emailMaster": "E-mail Master konta bol zmenený. Pôvodné Master konto stratí prístup ku spoločnosti a nový e-mail získa Master prístup."
+    "emailMaster": "Master account e-mail has been changed. The original Master account will lose its rights and the new e-mail will be assigned as a Master account."
 
   },
 
@@ -393,7 +393,7 @@
     "velkostiBalikov": "Packages / pallets sizes",
     "zadajteVelkostiNakladu": "Enter the size of each package / pallete",
     "pocetKusov": "Number of items",
-    "poslednePridanyBalik": "Last added package / pallete",
+    "poslednePridanyBalik": "Last added item",
     "pocet": "Amount",
     "parametre": "Item",
     "polohaNakladania": "Loading direction",
@@ -420,10 +420,10 @@
     "internaPraprava": "Internal transport",
     "nezverejneny": "Undisclosed",
     "logInfo": "This log represents a contract and a delivery note. If agreed upon, the contractual parties may require additional documentation, such as CMR, invoice, or other.\n  The contract is commercial in nature. As such, it is a subject to applicable laws and may be affected by legal and/or contractual duties not stated in this log.\n  Terms and conditions, as well as transport rules and orders, may apply. This log has been generated automatically and is based on data aquired by the application operator.\n  Both contractual parties can access this log via their app. For more info visit www.mantra-online.eu.",
-    "zrusenie1": "navrhla zrušenie prepravy ",
-    "zrusenie2": "súradnice vozidla ",
-    "zrusenie3": "súhlasila s návrhom, preprava bola zrušená ",
-    "odmiernutie1": "s návrhom nesúhlasila, preprava pokračuje "
+    "zrusenie1": "suggested to abort the agreed transport job ",
+    "zrusenie2": "vehicle coordinates ",
+    "zrusenie3": "agreed to abort - transport job has been aborted ",
+    "odmiernutie1": "did not agree to abort - transport job continues "
   },
   "POPUPS": {
     "nolicence": "Licence expired",
