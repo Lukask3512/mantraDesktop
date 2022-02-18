@@ -663,6 +663,7 @@ export class NewFormComponent implements OnInit {
     this.transportForm.controls.poziciaNakladania.setValue('nerozhoduje');
     this.transportForm.controls.vyskaHrany.setValue('nerozhoduje');
     this.transportForm.controls.stohovatelnost.setValue('nie');
+    this.transportForm.controls.stohoSize.setValue(0);
     this.transportForm.controls.poziciaNakladania.setValue('nerozhoduje');
     this.transportForm.controls.fromBackSide.setValue(undefined);
     this.transportForm.controls.fromSide.setValue(undefined);

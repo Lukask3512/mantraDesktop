@@ -29,7 +29,7 @@ header{
   display: flex;
   margin: 10px;
   align-items: flex-start;
-  min-height: 90%;
+  //min-height: 90%;
 }
 
 .wrapper{
@@ -112,7 +112,7 @@ header{
 @media (max-width: 1600px) {
   .allWrapper{
     flex-direction: column;
-    min-height: initial;
+    //min-height: initial;
   }
   .wrapper{
     width: 100%;
@@ -145,6 +145,7 @@ header{
   .mapAndBox{
     width: 100%;
     padding: 10px;
+    margin-right: 0;
   }
   .mapWrapper{
     height: 500px;

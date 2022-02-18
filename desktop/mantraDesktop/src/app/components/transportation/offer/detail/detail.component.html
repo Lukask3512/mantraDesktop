@@ -150,8 +150,8 @@
       {{this.route.price}}€
     </h4>
     <div *ngIf="!isCancel() && !this.route.finished">
-      <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}:</h2>
-      <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
+      <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}</h2>
+      <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznamPrepravca' | translate}}.</h2>
       <div class="deleteButtons">
         <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
         <button *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" (click)="nechcemZrusitPonuku()" class="cancelOffer">

@@ -324,6 +324,7 @@
     "presuntePonukuDoIti": "Move the transport to the vehicle's itinerary",
     "ponukaPriradenaZa": "Transport moved to",
     "zruseniePrepravyOznam": "Aborting transport must be approved by the customer",
+    "zruseniePrepravyOznamPrepravca": "Aborting transport must be approved by the transporter",
     "zruseniePrepravyPotvrdenie": "The customer wants to abort the transport. Do you confirm the abort?",
     "zruseniePrepravca": "The transporter wants to abort the transport. Do you confirm the abort?",
     "zrusenie": "Abort",

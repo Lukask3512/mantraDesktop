@@ -1,0 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
+.potvrd{
+  @include smallButton(limegreen)
+}
