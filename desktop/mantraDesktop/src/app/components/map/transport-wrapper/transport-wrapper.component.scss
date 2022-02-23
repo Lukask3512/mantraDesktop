@@ -1,0 +1,457 @@
+@import "./src/sccs/shared/mixins";
+
+
+.wrapper{
+  min-height: auto;
+  overflow-y: auto;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.companyNameTogether{
+  display: flex;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.nazovFirmy{
+  margin: 0;
+}
+
+.routeWrapper{
+  border-bottom: 2px solid gray;
+  box-shadow: 5px 5px 5px gray;
+}
+
+.oneRoute{
+
+  margin: 10px;
+  display: flex;
+  padding: 10px;
+  border-radius: 3px;
+  transition: transform  0.2s;
+}
+.oneRoute:hover{
+  transform: scale(1.02);
+}
+
+.filter{
+  margin-left: 15px;
+}
+
+.oneRoute:hover{
+  transform: scale(1.02);
+}
+
+.activitySign{
+  font-family: Candara;
+  font-size: 40px;
+  font-palette: dark;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  position: center;
+  margin-top: 20px;
+  letter-spacing: .15rem;
+
+}
+.oneRouteHeader{
+  border-bottom: 2px solid gray;
+  margin: 10px;
+  display: flex;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.noCar{
+  order: 1;
+}
+
+table {
+  border-collapse: collapse;
+  width: 105%;
+}
+
+.spanY{
+  background: rgba(255, 255, 0,0.5);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.actFinHead{
+  margin-left: 15px;
+}
+
+.spanG{
+  //background: rgba(30, 180, 0,0.5);
+  background: rgba(191, 191, 191, 0.7);
+  border-radius: 5px;
+  padding: 5px;
+  font-size: small;
+  font-weight: 600;
+
+}
+
+.blink_me {
+  animation: blinker 2s linear infinite;
+  color: white;
+}
+
+@keyframes blinker {
+  50% {
+    background: red;
+  }
+}
+
+.spanR{
+  background: rgb(255, 73, 73);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.noCursor{
+  cursor: default;
+}
+
+.nakladka{
+  max-width: 65%;
+  min-width: 65%;
+  cursor: pointer;
+}
+.vykladka{
+  max-width: 35%;
+  min-width: 35%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.noCursor{
+  cursor: default;
+}
+
+.repetRoute .status{
+  max-width: 20%;
+  min-width: 20%;
+}
+
+.repetRoute{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.status{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 27px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s
+}
+.buttonR {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+
+}
+
+.buttonR:hover{
+  background-color: #f44336;
+  transition: 0.2s, 0.2s;
+}
+p{
+  margin: 0px;
+}
+
+.buttonB {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+  z-index: 2;
+
+}
+.buttonB:hover {
+  color: white !important;
+  background: #008CBA;
+}
+
+li{
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.buttonG {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 10px 27px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.green{
+  background: limegreen;
+  color: white;
+}
+
+.orangered{
+  background: orangered;
+  color: white;
+}
+
+.darkorange{
+  background: darkorange;
+  color: white;
+}
+
+.buttonG:hover{
+  background-color: #4CAF50;
+}
+
+.activeNonActive{
+  display: flex;
+  justify-content: center;
+}
+
+.buttonTab{
+  @include buttonNoColor();
+  margin: 10px;
+
+}
+
+.buttonDelete{
+  @include buttonNoColor();
+  background: orangered;
+}
+
+ol {
+  background: #ff9999;
+  padding: 20px;
+}
+
+ol li {
+  background: #ffe5e5;
+  padding: 5px;
+  margin-left: 35px;
+  margin-bottom: 2px;
+}
+
+.centrovanie{
+  position: center;
+}
+.deleteTrack{
+  width: 40px;
+  cursor: pointer;
+}
+
+
+.buttonSlide {
+  padding: 10px 27px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 8px;
+
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #57b057;
+    border-radius: 8px;
+    z-index: -2;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: darkolivegreen;
+    border-radius: 8px;
+    z-index: -2;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: darken(green, 15%);
+    transition: all .3s;
+    border-radius: 8px;
+    z-index: -1;
+  }
+  &:hover {
+    color: #fff;
+    &:before {
+      width: 100%;
+    }
+  }
+}
+
+.priradenieButton{
+  padding: 10px 27px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 8px;
+
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #57b057;
+    border-radius: 8px;
+    z-index: -2;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #87acdd;
+    border-radius: 8px;
+    z-index: -2;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: #5956bc;
+    transition: all .3s;
+    border-radius: 8px;
+    z-index: -1;
+  }
+  &:hover {
+    color: #fff;
+    &:before {
+      width: 100%;
+    }
+  }
+}
+
+
+$scale: 0.7;
+$color: #111;
+
+.icon {
+  background: invert($color);
+  position: relative;
+  width: 200px*$scale;
+  height: 200px*$scale;
+  margin: 50px auto 0;
+  border-radius: 5px*$scale;
+  transition: box-shadow .2s ease;
+  &:hover {
+    box-shadow: 0 0 10px*$scale rgba(10,10,10,.3);
+  }
+}
+
+.icon:hover .lid, .icon:hover .lidcap {
+  transform: rotate(10deg);
+  margin-bottom: 15px*$scale;
+}
+
+.lidcap, .lid, .bin {
+  position: absolute;
+}
+
+.lidcap, .lid {
+  border-top-left-radius: 4px*$scale;
+  border-top-right-radius: 4px*$scale;
+  background: $color;
+  transition: transform .2s linear, margin .2s linear;
+}
+
+.lidcap {
+  bottom: 138px*$scale;
+  left: 90px*$scale;
+  height: 10px*$scale;
+  width: 20px*$scale;
+}
+
+.lid {
+  bottom: 120px*$scale;
+  left: 30px*$scale;
+  width: 140px*$scale;
+  height: 20px*$scale;
+}
+
+.bin {
+  bottom: 0;
+  left: 40px*$scale;
+  width: 100px*$scale;
+  border-top: 120px*$scale solid $color;
+  border-left: 10px*$scale solid transparent;
+  border-right: 10px*$scale solid transparent;
+}
+

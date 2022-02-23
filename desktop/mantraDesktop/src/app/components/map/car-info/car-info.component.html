@@ -1,0 +1,19 @@
+<div id="popup" class="ol-popup">
+  <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>
+  <div id="popup-content">
+    <section *ngIf="this.car" class="carInfo">
+      <h2>
+        {{this.car.ecv}}
+        <span>{{this.statusService.getStatus(this.car.status)}}</span>
+      </h2>
+      <span *ngIf="this.car.phoneNumber">{{this.car.phoneNumber}}</span>
+      <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
+    </section>
+    <section class="itinerar">
+      <div *ngFor="let address of this.myAddresses">
+        <h3>{{address.nameOfTown}} <span>{{this.statusService.getStatus(address.status)}}</span></h3>
+        <span *ngIf="address.estimatedTimeArrival">{{address.estimatedTimeArrival}}</span>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<div *ngIf="allActiveRoutes" class="wrapper">
+  <section class="activeNonActive">
+    <button class="buttonTab" [class]="getClass('mine')"  (click)="mineRoutes()">{{'TRANSPORT.vlastnePrepravy' | translate}}</button>
+    <button class="buttonTab" [class]="getClass('offers')"  (click)="offersRoutes()">{{'TRANSPORT.prepravyZPonuk' | translate}}</button>
+  </section>
+
+
+  <section class="filter">
+    <mat-form-field  appearance="standard" class="gridItem">
+      <mat-label>{{'FILTER.filter' | translate}}</mat-label>
+      <input #inputFilter (input)="filterTowns($event)" matInput placeholder="{{'FILTER.mestoSpolocnost' | translate}}...">
+      <mat-hint>{{'FILTER.zadajMestoSpolocnost' | translate}}</mat-hint>
+    </mat-form-field>
+  </section>
+
+
+
+  <div *ngIf="active">
+    <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
+    <!--  moje prepravy-->
+    <div *ngIf="showMineRoutes">
+
+      <div *ngFor="let route of routesToShow; let i = index" class="routeWrapper" >
+        <div class="oneRoute" (click)="routeDetail(route)">
+        <div *ngIf="routesToShow.length" class="nakladka" >
+
+          <ng-container *ngFor="let town of route.addresses; index as i">
+            <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+          </ng-container>
+
+        </div>
+
+        <div *ngIf="routesToShow.length" class="vykladka">
+          <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+          <div *ngIf="route.carId == null">
+            <button (click)="routeDetail(route)" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
+          </div>
+          <div>
+            <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
+          </div>
+
+        </div>
+
+      </div>
+        <div *ngIf="clickedOnThis && clickedOnThis.id === route.id" class="detailAbout oneRoute">
+          <app-main-detail-about></app-main-detail-about>
+          <button class="buttonTransport" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div *ngIf="!showMineRoutes">
+
+      <div *ngFor="let route of this.routesToShowOffers; let i = index" class="oneRoute">
+        <div *ngIf="!route.finished" class="nakladka" (click)="routeDetail(route)">
+          <!--      <h2>Vykládky</h2>-->
+          <ng-container *ngFor="let town of route.addresses; index as i">
+            <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+          </ng-container>
+        </div>
+        <div class="vykladka">
+          <div *ngIf="route.createdBy === this.getDispecerId()">
+            <div class="companyNameTogether">
+              <span>{{'OFFER.zadavatel' | translate}}:</span><h2 class="nazovFirmy"> {{this.getMyCompany()}}</h2>
+            </div>
+            <app-get-name-of-comapny-by-master-id [zadavatel]="false" [masterId]="this.route.takenBy"></app-get-name-of-comapny-by-master-id>
+            <div class="companyNameTogether">
+              <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
+            </div>
+            <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+
+          </div>
+          <div *ngIf="route.createdBy !== this.getDispecerId()">
+            <app-get-name-of-comapny-by-master-id [zadavatel]="true" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
+            <div class="companyNameTogether">
+              <span>{{'OFFER.prepravca' | translate}}:</span> <h2 class="nazovFirmy">{{this.getMyCompany()}}</h2>
+            </div>
+            <div class="companyNameTogether">
+              <span>{{'OFTEN.cena' | translate}}:</span> <h2 class="nazovFirmy">{{this.route.price}}€</h2>
+            </div>
+            <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
+          </div>
+          <div *ngIf="route.carId == null">
+            <button (click)="routeDetail(route)" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
+          </div>
+
+        </div>
+
+        <div *ngIf="clickedOnThis && clickedOnThis.id === route.id" class="detailAbout">
+          <app-main-detail-about></app-main-detail-about>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+

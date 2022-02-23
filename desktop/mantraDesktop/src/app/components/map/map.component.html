@@ -4,15 +4,27 @@
 
   <div #filterElement class="filter">
     <app-filter (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
+    <app-choose-car-to-map (carEmitter)="whichCarsToShow($event)"></app-choose-car-to-map>
   </div>
   <div class="wrapper">
-    <div id="map"></div>
+    <div id="mapWrapper" class="mapWrapper">
+      <div id="map"></div>
+      <button class="addButton" (click)="addNewRoute()">Add</button>
+      <button class="sideButton" (click)="vysunBocneInfo()">Vysun</button>
+      <button class="trhovikoButton">Cakaren</button>
+    </div>
     <app-cars-pop-up (carEmitter)="carFromDialog($event)" id="popup"></app-cars-pop-up>
     <app-offers-pop-up (offerEmitter)="offerFromDialog($event)" id="offerPopUp"></app-offers-pop-up>
+    <app-car-info (carEmitter)="carFromDialog($event)" id="carPopup"></app-car-info>
 <!--    <div id="popup" class="ol-popup">-->
 <!--      <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>-->
 <!--      <div id="popup-content"></div>-->
 <!--    </div>-->
+    <div #transportationElement class="info">
+      <app-transport-wrapper></app-transport-wrapper>
+    </div>
+
+
     <div #infoElement class="info">
       <div class="infoHeader">
         <h1>{{'MAP.informacie' | translate}}</h1>

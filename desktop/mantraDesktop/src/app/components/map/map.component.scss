@@ -6,6 +6,12 @@
   width: 100%;
 }
 
+.mapWrapper{
+  position: relative;
+  width: 70%;
+
+}
+
 .filter{
   margin-right: 5px;
 }
@@ -183,11 +189,30 @@
 }
 #map{
   //height: 100%;
-  width: 70%;
+  width: 100%;
   height: 100%;
   border-bottom: 2px solid gray;
   box-shadow: 5px 5px 5px grey;
 }
+
+.addButton{
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+}
+
+.sideButton{
+  position: absolute;
+  right: 5px;
+  bottom: 50%;
+}
+
+.trhovikoButton{
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+}
+
 
 .appcarIti{
   display: flex;
@@ -204,6 +229,7 @@
   flex-grow: 2;
   min-height: auto;
   overflow: auto;
+  display: none;
 }
 
 .dragDropList{
