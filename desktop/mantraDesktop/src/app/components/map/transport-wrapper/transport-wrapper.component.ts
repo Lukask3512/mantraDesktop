@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import Route from '../../../models/Route';
 import {RouteStatusService} from '../../../data/route-status.service';
 import {RouteService} from '../../../services/route.service';
@@ -48,6 +48,8 @@ export class TransportWrapperComponent implements OnInit {
 
   @ViewChild(MainDetailAboutComponent)
   private mainDetailAboutComponent: MainDetailAboutComponent;
+
+  @Output() addressesEmitter = new EventEmitter<Address[]>();
 
   constructor(public routeStatusService: RouteStatusService, private routeService: RouteService,
               private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
@@ -107,6 +109,7 @@ export class TransportWrapperComponent implements OnInit {
   routeDetail(route: Route){
     if (this.clickedOnThis && this.clickedOnThis.id === route.id){
       this.clickedOnThis = null;
+      this.addressesEmitter.emit(null);
       return;
     }
     this.clickedOnThis = route;
@@ -141,6 +144,8 @@ export class TransportWrapperComponent implements OnInit {
         this.detail.push(detailAr);
       }
     });
+
+    this.addressesEmitter.emit(allAddresses);
 
     const routeToDetail = {
       adresyVPonuke: allAddresses,

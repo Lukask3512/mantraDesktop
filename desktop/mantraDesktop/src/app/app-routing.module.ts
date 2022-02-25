@@ -16,6 +16,7 @@ import {DetailComponent} from './components/transportation/offer/detail/detail.c
 import {VodiciWrapperComponent} from './components/vodici/vodici-wrapper/vodici-wrapper.component';
 import {CompaniesWrapperComponent} from './components/companies/companies-wrapper/companies-wrapper.component';
 import {ProfileComponent} from './components/profile/profile.component';
+import {MapWrapperComponent} from './components/map/map-wrapper/map-wrapper.component';
 
 
 
@@ -31,7 +32,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [{
       path: 'map',
-      component: MapComponent
+      component: MapWrapperComponent
     }]
   },
   { path: 'view', component: ViewComponent,

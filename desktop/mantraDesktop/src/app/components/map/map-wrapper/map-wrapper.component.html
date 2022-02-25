@@ -1,0 +1,30 @@
+<div class="mapComponentWrapper">
+
+
+
+  <div #filterElement class="filter">
+    <app-filter (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
+<!--    <app-choose-car-to-map (carEmitter)="whichCarsToShow($event)"></app-choose-car-to-map>-->
+  </div>
+  <div class="wrapper">
+    <div id="mapWrapper" class="mapWrapper">
+      <app-map (carIdEmitter)="sendRoute($event)"></app-map>
+<!--      <button class="addButton" (click)="addNewRoute()">Add</button>-->
+      <button class="sideButton" (click)="vysunBocneInfo()">Vysun</button>
+      <button class="trhovikoButton">Cakaren</button>
+    </div>
+
+    <!--      <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>-->
+    <!--      <div id="popup-content"></div>-->
+    <!--    </div>-->
+    <div #transportationElement class="info">
+      <app-transport-wrapper (addressesEmitter)="showAddressesByRoute($event)"></app-transport-wrapper>
+    </div>
+
+  </div>
+
+
+</div>
+
+
+

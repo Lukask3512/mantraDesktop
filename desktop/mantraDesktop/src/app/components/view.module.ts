@@ -93,6 +93,7 @@ import { CarInfoComponent } from './map/car-info/car-info.component';
 import { TransportWrapperComponent } from './map/transport-wrapper/transport-wrapper.component';
 
 
+
 @NgModule({
     declarations: [OpenlayerComponent, DeleteCarDialogComponent,
       TheDispecerComponent, TransportationWrapperComponent,
@@ -115,7 +116,8 @@ import { TransportWrapperComponent } from './map/transport-wrapper/transport-wra
       AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent,
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
-      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent, PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent
+      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent,
+      PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent
     ],
   exports: [
     OpenlayerComponent,
@@ -144,30 +146,30 @@ import { TransportWrapperComponent } from './map/transport-wrapper/transport-wra
     TransportationWrapperComponent,
     TransportWrapperComponent
   ],
-    imports: [
-        CommonModule,
-        ViewRoutingModule,
-        MatTableModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTooltipModule,
-        MatSlideToggleModule,
-        MatStepperModule,
-        DragDropModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatDatepickerModule,
-        MatSortModule,
-        MatExpansionModule,
-        CommonModule,
-        MatDialogModule,
-        MatIconModule,
-        TranslateModule,
-        MatPaginatorModule,
-        NgxSpinnerModule
-    ],
+  imports: [
+    CommonModule,
+    ViewRoutingModule,
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatStepperModule,
+    DragDropModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatSortModule,
+    MatExpansionModule,
+    CommonModule,
+    MatDialogModule,
+    MatIconModule,
+    TranslateModule,
+    MatPaginatorModule,
+    NgxSpinnerModule,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ViewModule { }

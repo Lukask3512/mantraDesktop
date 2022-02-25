@@ -58,6 +58,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MapWrapperComponent} from './components/map/map-wrapper/map-wrapper.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -83,6 +84,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewTransportComponent,
     RouteLogComponent,
     NewFormComponent,
+    MapWrapperComponent
 
   ],
     imports: [
@@ -139,7 +141,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatFormFieldModule,
         MatInputModule,
         AdressesComponent,
-      NewFormComponent
+        NewFormComponent,
+        MapComponent
 
     ],
   providers: [

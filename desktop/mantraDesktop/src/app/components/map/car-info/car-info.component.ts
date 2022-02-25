@@ -35,7 +35,7 @@ export class CarInfoComponent implements OnInit {
     this.addressesService.address$.subscribe(allAddresses => {
       this.addressesService.offerAddresses$.subscribe(allOffers => {
         const allAddress = allAddresses.concat(allOffers);
-        this.findMyAdresses(allAddresses);
+        this.findMyAdresses(allAddress);
       });
     });
   }
@@ -48,6 +48,7 @@ export class CarInfoComponent implements OnInit {
   }
 
   setCarId(carId){
+    console.log('setol som car')
     this.carsSerevice.cars$.subscribe(allCars => {
       this.car = allCars.find(allCarsDb => allCarsDb.id === carId);
       this.getAddresses();
