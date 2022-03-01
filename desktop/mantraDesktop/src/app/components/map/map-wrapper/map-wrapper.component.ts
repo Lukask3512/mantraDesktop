@@ -36,6 +36,7 @@ import LineString from 'ol/geom/LineString';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style';
 import {MapComponent} from '../map.component';
 import {CountOffersService} from '../count-offers.service';
+import {OfferDetailComponent} from '../offer-detail/offer-detail.component';
 
 @Component({
   selector: 'app-map-wrapper',
@@ -58,7 +59,13 @@ export class MapWrapperComponent implements AfterViewInit {
   colors = ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#27AE60', '#E67E22', '#F1C40F', '#E67E22',
     '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949'];
 
+  maxPrekrocenieRozmerov = 0;
+  maxPrekrocenieVahy = 0;
 
+  myTransportOpen = false;
+  myCakarenOpen = false;
+
+  allCountedOffers;
 
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
@@ -69,12 +76,21 @@ export class MapWrapperComponent implements AfterViewInit {
   @ViewChild('transportationElement')
   private transportationElement: ElementRef;
 
+  @ViewChild('offerDetailElement')
+  private offerDetailElement: ElementRef;
+
+  @ViewChild('cakarenElement')
+  private cakarenElement: ElementRef;
+
   @ViewChild('filterElement')
   private filterElement: ElementRef;
 
 
   @ViewChild(CarItiDetailComponent)
   private carIti: CarItiDetailComponent;
+
+  @ViewChild(OfferDetailComponent)
+  private offerDetailComponent: OfferDetailComponent;
 
   @ViewChild(ChoosCarToMoveComponent)
   private chooseCar: ChoosCarToMoveComponent;
@@ -238,14 +254,33 @@ export class MapWrapperComponent implements AfterViewInit {
 
 
   vysunBocneInfo() {
-    if (document.getElementById('mapWrapper').style.width === '70%') {
+    if (this.myCakarenOpen){
+      this.openInfoMoje();
+      this.closeInfoCakaren();
+    }
+    else if (document.getElementById('mapWrapper').style.width === '70%') {
       document.getElementById('mapWrapper').style.width = '100%';
-      this.infoDivElement.nativeElement.style.display = 'none';
-      this.transportationElement.nativeElement.style.display = 'none';
+      this.closeInfoMoje();
+    } else {
+      this.openInfoMoje();
+      this.myTransportOpen = true;
+      this.closeInfoCakaren();
+    }
+  }
+
+  vysunCakaren(){
+    if (this.myTransportOpen){
+      this.openInfoCakaren();
+      this.closeInfoMoje();
+    }
+    else if (document.getElementById('mapWrapper').style.width === '70%') {
+      document.getElementById('mapWrapper').style.width = '100%';
+      this.closeInfoCakaren();
 
     } else {
-      document.getElementById('mapWrapper').style.width = '70%';
-      this.transportationElement.nativeElement.style.display = 'block';
+      this.openInfoCakaren();
+      this.closeInfoMoje();
+
     }
   }
 
@@ -260,12 +295,14 @@ export class MapWrapperComponent implements AfterViewInit {
 
   offersUpdate(emitFromFilter){
     if (emitFromFilter == null){
-      this.mapComponent.drawOffers(null, null);
+      this.mapComponent.drawOffers(null, null, emitFromFilter);
     }else if (emitFromFilter != null) {
-      console.log(emitFromFilter)
+      this.maxPrekrocenieVahy = emitFromFilter.weight;
+      this.maxPrekrocenieRozmerov = emitFromFilter.size;
       this.countOffersService.offersUpdate(emitFromFilter, this.getCarsWithEverything()).then(resolve => {
         console.log(resolve);
-        this.mapComponent.drawOffers(resolve, this.getCarsWithEverything());
+        this.mapComponent.drawOffers(resolve, this.getCarsWithEverything(), emitFromFilter);
+        this.allCountedOffers = JSON.parse(JSON.stringify(resolve));
       });
     }
   }
@@ -306,6 +343,49 @@ export class MapWrapperComponent implements AfterViewInit {
     });
     return carsWithIti;
     // console.log(carsWithIti)
+  }
+
+  displayOffer(offer){
+    const countedOffer = this.allCountedOffers.find(oneOffer => oneOffer.id === offer.offerId);
+    document.getElementById('mapWrapper').style.width = '70%';
+    this.offerDetailElement.nativeElement.style.display = 'block';
+    this.offerDetailComponent.setOffer(countedOffer, offer.feature, this.maxPrekrocenieVahy, this.maxPrekrocenieRozmerov);
+    this.closeInfoMoje();
+    this.mapComponent.onResize();
+  }
+
+  openInfoMoje(){
+    document.getElementById('mapWrapper').style.width = '70%';
+    this.transportationElement.nativeElement.style.display = 'block';
+    this.mapComponent.onResize();
+    this.myTransportOpen = true;
+  }
+
+
+
+  closeInfoMoje(){
+    this.transportationElement.nativeElement.style.display = 'none';
+    this.mapComponent.onResize();
+    this.myTransportOpen = false;
+
+  }
+
+  openInfoCakaren(){
+    document.getElementById('mapWrapper').style.width = '70%';
+    this.cakarenElement.nativeElement.style.display = 'block';
+    this.mapComponent.onResize();
+    this.myCakarenOpen = true;
+  }
+
+  closeInfoCakaren(){
+    this.cakarenElement.nativeElement.style.display = 'none';
+    this.mapComponent.onResize();
+    this.myCakarenOpen = false;
+  }
+
+  successfullAddedToCar(){
+    this.offerDetailElement.nativeElement.style.display = 'none';
+    this.openInfoMoje();
   }
 
 

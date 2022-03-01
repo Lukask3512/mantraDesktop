@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Output, ViewChild} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 
@@ -78,13 +78,14 @@ export class MapComponent implements AfterViewInit {
   vectorLayerOffersRoutesYellow = new VectorLayer();
   vectorLayerOffersRoutesRed = new VectorLayer();
   vectorLayerCoordinates;
+
+  emitFromFilter;
   // vectorLayer;
   // skusam vytvorit trasu
   points;
 
   carWarningStatus = []; // ukladam si vectori sem, aby sa neduplikovali
 
-  emitFromFilter;
 
   colors = ['#C0392B', '#9B59B6', '#2980B9', '#1ABC9C', '#27AE60', '#E67E22', '#F1C40F', '#E67E22',
     '#641E16', '#4A235A', '#0B5345', '#7D6608', '#626567', '#424949'];
@@ -211,6 +212,7 @@ export class MapComponent implements AfterViewInit {
   private posliPonuku: PosliPonukuComponent;
 
   @Output() carIdEmitter = new EventEmitter<string>();
+  @Output() offerIdEmitter = new EventEmitter<{}>();
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
               private routeService: RouteService, private carService: CarService, public routeStatusService: RouteStatusService,
@@ -303,6 +305,7 @@ export class MapComponent implements AfterViewInit {
 
           if (feature) {
             const type = feature.get('type');
+            console.log(feature.get('features'))
             if (feature.get('features')){
               if (feature.get('features')[0].get('type') === 'car'){
                 if (feature.get('features').length === 1){ // ak som klikol na 1 auto
@@ -323,17 +326,22 @@ export class MapComponent implements AfterViewInit {
                 }
               }
               if (feature.get('features')[0].get('type') === 'offer'){
-                // if (feature.get('features').length === 1){ // ak som klikol na 1 auto
-                //   this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
-                //   // this.zoomToAddressOrCar(feature);
-                //   this.zoomToCarAndIti(feature.get('features')[0].get('name'));
-                //   this.scrollToInfo();
-                //
-                // }else{ // ak som klikol na viacero ponuk
-                //   const coordinate = evt.coordinate;
-                //   this.overlayOffer.setPosition(coordinate);
-                //   this.chooseOfferPoUp.setOffers(feature.get('features'));
-                // }
+                if (feature.get('features').length === 1){ // ak som klikol na 1 auto
+                  // this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
+                  // this.zoomToAddressOrCar(feature);
+                  // this.zoomToCarAndIti(feature.get('features')[0].get('name'));
+                  // this.scrollToInfo();
+                  this.offerFromDialog(feature.get('features')[0].get('name'));
+
+                }else{ // ak som klikol na viacero ponuk
+                  const coordinate = evt.coordinate;
+                  this.overlayOffer.setPosition(coordinate);
+                  this.chooseOfferPoUp.setOffers(feature.get('features'));
+                }
+              }
+            }else{ // ked to nie je cluster - ciary medzdi ponukami
+              if (feature.get('type') === 'offer'){
+                  this.offerFromDialog(feature.get('name'));
               }
             }
           } else {
@@ -469,10 +477,11 @@ export class MapComponent implements AfterViewInit {
                 }),
                 text: new Text({
                   text: carToShow.ecv,
+                  font: 15 + 'px sans-serif',
                   fill: new Fill({
                     color: '#000000',
                   }),
-                  offsetY: 15
+                  offsetY: 20
                 }),
               });
               styleCache[size] = style;
@@ -512,6 +521,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   drawRoute(route: Feature){
+    if (route){
     if (!this.vectorSourcePreTrasy) {
       this.vectorSourcePreTrasy = new VectorSource({
         features: [route]
@@ -527,9 +537,16 @@ export class MapComponent implements AfterViewInit {
 
     this.vectorSourcePreTrasy.clear();
     this.vectorSourcePreTrasy.addFeature(route);
+    }else if (this.vectorSourcePreTrasy){
+      this.vectorSourcePreTrasy.clear();
+    }
+
   }
 
   drawAddresses(addresses: Address[]){
+    if (!addresses){
+      return;
+    }
     this.places = [];
     addresses.forEach((oneAddress, addressIndex) => {
       const iconFeature = new Feature({
@@ -642,7 +659,7 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  drawOffers(offers, cars){
+  drawOffers(offers, cars, emitFromFilter){
     if (offers === null){
       this.map.removeLayer(this.vectorLayerOffersRoutesGreen);
       this.map.removeLayer(this.vectorLayerOffersRoutesYellow);
@@ -653,6 +670,9 @@ export class MapComponent implements AfterViewInit {
       this.map.removeLayer(this.clustersOfOffers);
       return;
     }
+    this.emitFromFilter = emitFromFilter;
+    const maxPrekrocenieVahy = emitFromFilter.weight;
+    this.maxPrekrocenieRozmerov = emitFromFilter.size;
     this.offersFromDatabase = offers;
     const carsCounted = cars.map(oneCar => oneCar.id);
     this.offersGreen = [];
@@ -894,7 +914,7 @@ export class MapComponent implements AfterViewInit {
       this.carsToDisplay = this.carsFromDatabase.map(oneCar => oneCar.id);
     }
     // setTimeout(() => {
-    this.drawOffers(this.offersFromDatabase, cars);
+    this.drawOffers(this.offersFromDatabase, cars, this.emitFromFilter);
     this.pocetAut = 0; // ked auto, ktore nema ziadnu adresu dostane prepravu, aby sa mu nacitala trasa
     // }, 2500);
   }
@@ -1016,8 +1036,31 @@ export class MapComponent implements AfterViewInit {
     this.closer.blur();
     this.overlayOffer.setPosition(undefined);
     this.overlayCar.setPosition(undefined);
-    this.vectorSourcePreTrasy.clear();
-    this.addressVectorSource.clear();
+    if (this.vectorSourcePreTrasy){
+      this.vectorSourcePreTrasy.clear();
+    }
+    if (this.addressVectorSource){
+      this.addressVectorSource.clear();
+    }
+  }
+
+  offerFromDialog(offerId){
+    const allOffers = this.offersGreen.concat(this.offersYellow).concat(this.offersRed);
+    const feature = allOffers.find(oneFeature => oneFeature.get('name') === offerId);
+    if (offerId){
+      // this.onClickFindInfoOffer(offerId, feature);
+      console.log(offerId);
+      this.offerIdEmitter.emit({offerId, feature});
+    }
+    this.closePopUp();
+
+  }
+
+
+  onResize() {
+    setTimeout( () => {
+      this.map.updateSize();
+    }, 200);
   }
 
 }

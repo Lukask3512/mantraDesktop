@@ -1,0 +1,29 @@
+<div #infoElement class="info">
+  <div class="infoHeader">
+    <h1>{{'MAP.informacie' | translate}}</h1>
+    <button (click)="closeInfo()" class="closeInfo">x</button>
+  </div>
+
+  <div *ngIf="this.offersToShow == null" class="car">
+
+    <app-drag-and-drop-list class="dragDropList" *ngIf="this.offersToShow == null" #dragDrop [draggable]="false">
+
+    </app-drag-and-drop-list>
+
+  </div>
+
+
+  <div *ngIf="this.offersToShow != null" class="offers">
+    <app-posli-ponuku (offerConfirm)="offerConfirm($event)" (whichOffersToShow)="reDrawOffersNoDelay()" [offerId]="this.offersToShow.id" ></app-posli-ponuku>
+    <app-main-detail-about [route]="this.offersToShow"></app-main-detail-about>
+    <h3>{{'MAP.celkovaVzdialenost' | translate}}: ~ {{this.distanceOfOffer}} km</h3>
+    <button class="detailBut" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>
+    <h2>{{'MAP.vyberVozidlo' | translate}}</h2>
+
+    <div class="chooseCar">
+      <app-choos-car-to-move (carOutput)="choosenCar($event)"></app-choos-car-to-move>
+    </div>
+
+    <app-car-iti-detail class="detailMargin appcarIti" (reDrawEmitter)="reDrawOffers(null)" (uspecnePriradenie)="otvorAuto($event)" (sendCarToPredpokad)="getPredpoklad($event)"></app-car-iti-detail>
+  </div>
+</div>

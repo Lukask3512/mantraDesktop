@@ -91,6 +91,8 @@ import { PopUpMapComponent } from './google/map/pop-up-map/pop-up-map.component'
 import { ZmenVyskuPoistkyUAutaComponent } from './dialogs/zmen-vysku-poistky-uauta/zmen-vysku-poistky-uauta.component';
 import { CarInfoComponent } from './map/car-info/car-info.component';
 import { TransportWrapperComponent } from './map/transport-wrapper/transport-wrapper.component';
+import { OfferDetailComponent } from './map/offer-detail/offer-detail.component';
+import { OfferToCarDialogComponent } from './dialogs/offer-to-car-dialog/offer-to-car-dialog.component';
 
 
 
@@ -117,35 +119,37 @@ import { TransportWrapperComponent } from './map/transport-wrapper/transport-wra
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
       MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent,
-      PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent
+      PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent, OfferDetailComponent, OfferToCarDialogComponent
     ],
-  exports: [
-    OpenlayerComponent,
-    TheDispecerComponent,
-    FindCarByIdComponent,
-    NewPrivesComponent,
-    PrivesWrapperComponent,
-    DragAndDropListComponent,
-    FilterComponent,
-    DetailImgComponent,
-    DetailFormComponent,
-    ShowDetailComponent,
-    ChoosCarToMoveComponent,
-    CarItiDetailComponent,
-    SizeOfBoxComponent,
-    ItinerarDaDComponent,
-    CarNakladComponent,
-    GetNameOfDriverComponent,
-    AllDetailAboutRouteDialogComponent,
-    PosliPonukuComponent,
-    CarsPopUpComponent,
-    OffersPopUpComponent,
-    MainDetailAboutComponent,
-    CarInfoComponent,
-    ChooseCarToMapComponent,
-    TransportationWrapperComponent,
-    TransportWrapperComponent
-  ],
+    exports: [
+        OpenlayerComponent,
+        TheDispecerComponent,
+        FindCarByIdComponent,
+        NewPrivesComponent,
+        PrivesWrapperComponent,
+        DragAndDropListComponent,
+        FilterComponent,
+        DetailImgComponent,
+        DetailFormComponent,
+        ShowDetailComponent,
+        ChoosCarToMoveComponent,
+        CarItiDetailComponent,
+        SizeOfBoxComponent,
+        ItinerarDaDComponent,
+        CarNakladComponent,
+        GetNameOfDriverComponent,
+        AllDetailAboutRouteDialogComponent,
+        PosliPonukuComponent,
+        CarsPopUpComponent,
+        OffersPopUpComponent,
+        MainDetailAboutComponent,
+        CarInfoComponent,
+        ChooseCarToMapComponent,
+        TransportationWrapperComponent,
+        TransportWrapperComponent,
+        OfferDetailComponent,
+        WrapperComponent
+    ],
   imports: [
     CommonModule,
     ViewRoutingModule,

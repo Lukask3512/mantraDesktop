@@ -17,6 +17,9 @@ import Address from '../../../models/Address';
 import {PackageService} from '../../../services/package.service';
 import {MainDetailAboutComponent} from '../../transportation/main-detail-about/main-detail-about.component';
 import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
+import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
+import {CountOffersService} from '../count-offers.service';
+import {OfferToCarDialogComponent} from '../../dialogs/offer-to-car-dialog/offer-to-car-dialog.component';
 
 @Component({
   selector: 'app-transport-wrapper',
@@ -55,7 +58,7 @@ export class TransportWrapperComponent implements OnInit {
               private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
               private addressService: AddressService, private offerService: OfferRouteService,
               private dispecerService: DispecerService, private companyService: CompanyService,
-              private packageService: PackageService,) {
+              private packageService: PackageService, private countOfferService: CountOffersService) {
 
   }
 
@@ -113,44 +116,12 @@ export class TransportWrapperComponent implements OnInit {
       return;
     }
     this.clickedOnThis = route;
-    let allAddresses: Address[] = this.addressService.addressesGet.concat(this.addressService.addressesOfferGet);
-    allAddresses.filter(allAddressess => route.addresses.includes(allAddressess.id));
-    allAddresses = route.addresses.map((i) => allAddresses.find((j) => j.id === i)); // ukladam ich do poradia
-    const myPackages = [];
-    const detailAr = {detailArray: [], townsArray: [], packageId: []};
-    allAddresses.forEach(oneAddress => {
-      oneAddress.packagesId.forEach( oneId => {
-        if (oneAddress.type === 'nakladka'){
-          const balik = this.packageService.getOnePackage(oneId);
-          myPackages.push(balik);
-        }else{
-          // tu by som mal vlozit len indexy do vykladky
-          this.detail.forEach((oneDetail, townId) => {
-            if (oneDetail.townsArray === undefined){
-              oneDetail.forEach((oneDetailId, packageId) => {
-                if (oneDetailId && oneDetailId.id === oneId){
-                  detailAr.detailArray.push(packageId);
-                  detailAr.townsArray.push(townId);
-                  detailAr.packageId.push(oneDetailId.id);
-                }
-              });
-            }
-          });
-        }
-      });
-      if (myPackages.length !== 0){
-        this.detail.push(myPackages);
-      }else{
-        this.detail.push(detailAr);
-      }
-    });
 
-    this.addressesEmitter.emit(allAddresses);
 
-    const routeToDetail = {
-      adresyVPonuke: allAddresses,
-      detailVPonuke: this.detail
-    };
+    const routeToDetail = this.countOfferService.getRouteWithEverything(route);
+
+    this.addressesEmitter.emit(routeToDetail.adresyVPonuke);
+
     setTimeout(() =>
       {
         this.mainDetailAboutComponent.setRoute(routeToDetail);
@@ -298,6 +269,36 @@ export class TransportWrapperComponent implements OnInit {
           this.addressService.deleteAddress(oneAddressId);
         });
       }
+    });
+  }
+
+  deleteFromCar(route: Route){
+    console.log(route);
+    const routeToDetail = this.countOfferService.getRouteWithEverything(route);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      route: routeToDetail.route,
+      addresses: routeToDetail.adresyVPonuke,
+      detail: routeToDetail.detailVPonuke
+    };
+    const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+
+    });
+  }
+
+  addToCarOffer(route){
+    console.log(route);
+    const routeToDetail = this.countOfferService.getRouteWithEverything(route);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      route: routeToDetail.route,
+      address: routeToDetail.adresyVPonuke,
+      detail: routeToDetail.detailVPonuke
+    };
+    const dialogRef = this.dialog.open(OfferToCarDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+
     });
   }
 }

@@ -63,6 +63,9 @@ export class CarItiDetailComponent implements OnInit {
 
   setCar(car){
     console.log(car);
+    if (!car.itiAdresy){
+
+    }
     this.car = JSON.parse(JSON.stringify(car));
     this.offer = JSON.parse(JSON.stringify(this.realOffer));
     this.countDistanceOfItinerarWithou();

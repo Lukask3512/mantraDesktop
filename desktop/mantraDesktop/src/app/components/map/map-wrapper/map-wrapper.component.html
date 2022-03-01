@@ -8,10 +8,10 @@
   </div>
   <div class="wrapper">
     <div id="mapWrapper" class="mapWrapper">
-      <app-map (carIdEmitter)="sendRoute($event)"></app-map>
+      <app-map (carIdEmitter)="sendRoute($event)" (offerIdEmitter)="displayOffer($event)"></app-map>
 <!--      <button class="addButton" (click)="addNewRoute()">Add</button>-->
       <button class="sideButton" (click)="vysunBocneInfo()">Vysun</button>
-      <button class="trhovikoButton">Cakaren</button>
+      <button class="trhovikoButton" (click)="vysunCakaren()">Cakaren</button>
     </div>
 
     <!--      <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>-->
@@ -19,6 +19,14 @@
     <!--    </div>-->
     <div #transportationElement class="info">
       <app-transport-wrapper (addressesEmitter)="showAddressesByRoute($event)"></app-transport-wrapper>
+    </div>
+
+    <div #offerDetailElement class="info">
+      <app-offer-detail (uspesnePriradenie)="successfullAddedToCar()"></app-offer-detail>
+    </div>
+
+    <div #cakarenElement class="info">
+      <app-wrapper></app-wrapper>
     </div>
 
   </div>

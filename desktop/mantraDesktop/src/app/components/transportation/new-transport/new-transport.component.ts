@@ -638,27 +638,31 @@ else{
 
   cancelFromCarDialog(){
     const dialogConfig = new MatDialogConfig();
-    // dialogConfig.width = '23em';
+    dialogConfig.data = {
+
+    }
     const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;
       }else {
-        if (!this.car){
-          this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
-        }
-        this.addresses.forEach(oneAddress => {
-          if (this.car.aktualnyNaklad){
-            this.car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
-          }
-          oneAddress.carId = null;
-          this.addressService.updateAddress(oneAddress);
-          this.car.itinerar = this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
-        });
-        this.route.carId = null;
-        this.routeService.updateRoute(this.route);
-        this.carService.updateCar(this.car, this.car.id);
-        this.getNewRoute(this.route.id);
+        // je to upravene uz
+
+        // if (!this.car){
+        //   this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+        // }
+        // this.addresses.forEach(oneAddress => {
+        //   if (this.car.aktualnyNaklad){
+        //     this.car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
+        //   }
+        //   oneAddress.carId = null;
+        //   this.addressService.updateAddress(oneAddress);
+        //   this.car.itinerar = this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
+        // });
+        // this.route.carId = null;
+        // this.routeService.updateRoute(this.route);
+        // this.carService.updateCar(this.car, this.car.id);
+        // this.getNewRoute(this.route.id);
       }
     });
   }

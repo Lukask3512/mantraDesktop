@@ -35,7 +35,7 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       const boloSpustene = localStorage.getItem('showOffers') || 'false';
-      this.checked = boloSpustene === 'true';
+      // this.checked = boloSpustene === 'true';
 
       this.fewSecDisable = false;
     }, 5000);

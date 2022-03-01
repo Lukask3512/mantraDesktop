@@ -528,4 +528,76 @@ export class CountOffersService {
     }
   }
 
+  getCarWithIti(oneCar: Cars){
+    if (oneCar.itinerar) {
+      const itinerarAuta: Address[] = [];
+      const detailAuta: any[] = [];
+      oneCar.itinerar.forEach(addId => {
+        const detailVMeste = [];
+        const vsetkyAdresy = this.addressesService.getAddresses().concat(this.addressesService.getAddressesFromOffer());
+        const oneAdd = vsetkyAdresy.find(oneAddress => oneAddress.id === addId);
+        if (oneAdd) {
+          if (itinerarAuta.find(oneIti => oneIti.id === oneAdd.id)) { // hladam duplikat
+            const indexAdresy = itinerarAuta.findIndex(oneIti => oneIti.id === oneAdd.id);
+            itinerarAuta[indexAdresy] = oneAdd;
+          } else {
+            itinerarAuta.push(oneAdd);
+          }
+          const allPackages = this.packageService.getAllPackages().concat(this.packageService.getAllOfferPackages());
+          oneAdd.packagesId.forEach(onePackId => {
+            const balik = allPackages.find(onePackage => onePackage.id === onePackId);
+            detailVMeste.push(balik);
+            if (!balik){
+              // mamVsetkyBaliky = false;
+            }
+          });
+        }
+
+        detailAuta.push(detailVMeste);
+      });
+      return {...oneCar, itiAdresy: itinerarAuta, detailIti: detailAuta};
+    }
+  }
+
+  getRouteWithEverything(route: Route){
+    const detail = [];
+    let allAddresses: Address[] = this.addressesService.addressesGet.concat(this.addressesService.addressesOfferGet);
+    allAddresses.filter(allAddressess => route.addresses.includes(allAddressess.id));
+    allAddresses = route.addresses.map((i) => allAddresses.find((j) => j.id === i)); // ukladam ich do poradia
+    const myPackages = [];
+    const detailAr = {detailArray: [], townsArray: [], packageId: []};
+    allAddresses.forEach(oneAddress => {
+      oneAddress.packagesId.forEach( oneId => {
+        if (oneAddress.type === 'nakladka'){
+          const balik = this.packageService.getOnePackage(oneId);
+          myPackages.push(balik);
+        }else{
+          // tu by som mal vlozit len indexy do vykladky
+          detail.forEach((oneDetail, townId) => {
+            if (oneDetail.townsArray === undefined){
+              oneDetail.forEach((oneDetailId, packageId) => {
+                if (oneDetailId && oneDetailId.id === oneId){
+                  detailAr.detailArray.push(packageId);
+                  detailAr.townsArray.push(townId);
+                  detailAr.packageId.push(oneDetailId.id);
+                }
+              });
+            }
+          });
+        }
+      });
+      if (myPackages.length !== 0){
+        detail.push(myPackages);
+      }else{
+        detail.push(detailAr);
+      }
+    });
+    const routeToDetail = {
+      route,
+      adresyVPonuke: allAddresses,
+      detailVPonuke: detail
+    };
+    return routeToDetail;
+  }
+
 }
