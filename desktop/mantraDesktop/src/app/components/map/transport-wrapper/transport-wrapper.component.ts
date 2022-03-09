@@ -54,6 +54,9 @@ export class TransportWrapperComponent implements OnInit {
 
   @Output() addressesEmitter = new EventEmitter<Address[]>();
 
+  @Output() otvorPonukuEmitter = new EventEmitter<Route>();
+  @Output() otvorPrepravuEmitter = new EventEmitter<Route>();
+
   constructor(public routeStatusService: RouteStatusService, private routeService: RouteService,
               private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
               private addressService: AddressService, private offerService: OfferRouteService,
@@ -117,17 +120,7 @@ export class TransportWrapperComponent implements OnInit {
     }
     this.clickedOnThis = route;
 
-
-    const routeToDetail = this.countOfferService.getRouteWithEverything(route);
-
-    this.addressesEmitter.emit(routeToDetail.adresyVPonuke);
-
-    setTimeout(() =>
-      {
-        this.mainDetailAboutComponent.setRoute(routeToDetail);
-
-      },
-      100);
+    this.sendRouteToMap(route);
 
   }
 
@@ -283,6 +276,24 @@ export class TransportWrapperComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
+      if (!value){
+
+      }else{
+        // const car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+        //
+        // this.addresses.forEach(oneAddress => {
+        //   if (car.aktualnyNaklad){
+        //     car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
+        //   }
+        //   oneAddress.carId = null;
+        //   this.addressService.updateAddress(oneAddress);
+        //   car.itinerar = car.itinerar.filter(oneId => oneId !== oneAddress.id);
+        // });
+        // this.route.carId = null;
+        // this.route.offerInRoute = '';
+        // this.routeService.updateRoute(this.route);
+        // this.carService.updateCar(car, car.id);
+      }
 
     });
   }
@@ -300,5 +311,33 @@ export class TransportWrapperComponent implements OnInit {
     dialogRef.afterClosed().subscribe(value => {
 
     });
+  }
+
+  prejdiDoDetailuPrepravy(route: Route){
+    this.otvorPrepravuEmitter.emit(route);
+    setTimeout(() =>
+      {
+        this.sendRouteToMap(route);
+      },
+      100);
+  }
+
+  prejdiDoDetailuPonuky(route: Route){
+    this.otvorPonukuEmitter.emit(route);
+    setTimeout(() =>
+      {
+        this.sendRouteToMap(route);
+      },
+      100);
+  }
+
+  sendRouteToMap(route: Route){
+    const routeToDetail = this.countOfferService.getRouteWithEverything(route);
+    this.addressesEmitter.emit(routeToDetail.adresyVPonuke);
+    setTimeout(() =>
+      {
+        this.mainDetailAboutComponent.setRoute(routeToDetail);
+      },
+      100);
   }
 }

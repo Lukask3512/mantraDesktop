@@ -40,7 +40,7 @@
 
         <img *ngIf="draggable" (click)="deleteTownFromIti(this.address[i])" class="delete" src="assets/logo/delete.svg">
       </div>
-      <div class="routeTown routeInfo">
+      <div *ngIf="this.address[i]" class="routeTown routeInfo">
         <p *ngIf="this.address[i].aboutRoute != null || this.address[i].aboutRoute != undefined">{{this.address[i].aboutRoute}}</p>
         <img *ngIf="this.address[i].status !== 3 && this.address[i].status !== 5 && this.address[i].status !== 6" (click)="editInfo(this.address[i].aboutRoute, i)" class="delete" src="assets/logo/edit.svg">
       </div>

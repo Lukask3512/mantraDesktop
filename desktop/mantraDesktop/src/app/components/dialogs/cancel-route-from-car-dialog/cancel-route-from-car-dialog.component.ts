@@ -28,20 +28,7 @@ export class CancelRouteFromCarDialogComponent implements OnInit {
   }
 
   yes(){
-      const car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
 
-      this.addresses.forEach(oneAddress => {
-      if (car.aktualnyNaklad){
-        car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
-      }
-      oneAddress.carId = null;
-      this.addressService.updateAddress(oneAddress);
-      car.itinerar = car.itinerar.filter(oneId => oneId !== oneAddress.id);
-    });
-      this.route.carId = null;
-      this.route.offerInRoute = '';
-      this.routeService.updateRoute(this.route);
-      this.carService.updateCar(car, car.id);
       this.dialogRef.close(true);
   }
 

@@ -1,46 +1,42 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {DataService} from '../../../../data/data.service';
-import {take} from 'rxjs/operators';
-import Route from '../../../../models/Route';
-import {OpenlayerComponent} from '../../../google/map/openlayer/openlayer.component';
-import {OfferRouteService} from '../../../../services/offer-route.service';
-import {CarService} from '../../../../services/car.service';
-import DeatilAboutAdresses from '../../../../models/DeatilAboutAdresses';
-import {DetailAboutRouteService} from '../../../../services/detail-about-route.service';
-import {DragAndDropListComponent} from '../../drag-and-drop-list/drag-and-drop-list.component';
-import {AddressService} from '../../../../services/address.service';
-import Address from '../../../../models/Address';
-import {PackageService} from '../../../../services/package.service';
-import {PosliPonukuComponent} from './posli-ponuku/posli-ponuku.component';
+import {DataService} from '../../../data/data.service';
+import {OfferRouteService} from '../../../services/offer-route.service';
+import {CarService} from '../../../services/car.service';
+import {DetailAboutRouteService} from '../../../services/detail-about-route.service';
+import {AddressService} from '../../../services/address.service';
+import {PackageService} from '../../../services/package.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {LogDialogComponent} from '../../../dialogs/log-dialog/log-dialog.component';
-import {UpdateOfferPriceComponent} from '../../../dialogs/update-offer-price/update-offer-price.component';
-import {OfferPriceComponent} from '../../../dialogs/offer-price/offer-price.component';
-import {AllDetailAboutRouteDialogComponent} from '../../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
-import {DeleteRouteComponent} from '../../../dialogs/delete-route/delete-route.component';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import Company from '../../../../models/Company';
-import {CancelRouteFromCarDialogComponent} from '../../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
-import Cars from '../../../../models/Cars';
-import {RouteService} from '../../../../services/route.service';
-import {DispecerService} from '../../../../services/dispecer.service';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {CompanyDetailComponent} from '../../../dialogs/company-detail/company-detail.component';
-import {MatPaginator} from '@angular/material/paginator';
+import {RouteService} from '../../../services/route.service';
+import {DispecerService} from '../../../services/dispecer.service';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {MainDetailAboutComponent} from '../../main-detail-about/main-detail-about.component';
 import {TranslateService} from '@ngx-translate/core';
+import Route from '../../../models/Route';
+import Address from '../../../models/Address';
+import Company from '../../../models/Company';
+import {OpenlayerComponent} from '../../google/map/openlayer/openlayer.component';
+import {DragAndDropListComponent} from '../../transportation/drag-and-drop-list/drag-and-drop-list.component';
+import {MainDetailAboutComponent} from '../../transportation/main-detail-about/main-detail-about.component';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {Subscription} from 'rxjs';
-
+import {MatTableDataSource} from '@angular/material/table';
+import Cars from '../../../models/Cars';
+import {take} from 'rxjs/operators';
+import {CompanyDetailComponent} from '../../dialogs/company-detail/company-detail.component';
+import {DeleteRouteComponent} from '../../dialogs/delete-route/delete-route.component';
+import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
+import {OfferPriceComponent} from '../../dialogs/offer-price/offer-price.component';
+import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
+import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 
 @Component({
-  selector: 'app-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  selector: 'app-my-offer-detail',
+  templateUrl: './my-offer-detail.component.html',
+  styleUrls: ['./my-offer-detail.component.scss']
 })
-export class DetailComponent implements AfterViewInit, OnDestroy {
+export class MyOfferDetailComponent implements AfterViewInit, OnDestroy {
 
 
   displayedColumns: string[] = ['companiesFromChild[i].name', 'route.priceFrom[i]', 'potvrdit', 'zrusit'];
@@ -95,12 +91,12 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
         this.offerRoutesUns = this.offerService.routes$.subscribe(routes => {
           if (routes){
 
-          this.route = routes.find(oneRoute => oneRoute.id === route.id);
-          this.skontrolovanaPonuka();
-          if (this.route === undefined) {
-            this.route = this.fakeRoute;
-          }
-          setTimeout(() => {
+            this.route = routes.find(oneRoute => oneRoute.id === route.id);
+            this.skontrolovanaPonuka();
+            if (this.route === undefined) {
+              this.route = this.fakeRoute;
+            }
+            setTimeout(() => {
               this.dataSource = new MatTableDataSource(this.route.offerFrom);
               this.dataSource.paginator = this.paginator;
               setTimeout(() => {
@@ -110,73 +106,73 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
             }, 1000);
 
 
-         this.offerAddUns = this.addressesService.offerAddresses$.subscribe(alAdd => {
-            let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
-            adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
-            this.address = adresy;
-            // this.childDropList.setAddresses(this.address);
-            this.address.forEach(oneAddress => {
-              let myPackages = [];
-              let detailAr = {detailArray: [], townsArray: [], packageId: []};
-              if (oneAddress){
-                oneAddress.packagesId.forEach(oneId => {
-                  if (oneAddress.type === 'nakladka') {
-                    let balik = this.packageService.getOnePackage(oneId);
-                    myPackages.push(balik);
-                  } else {
-                    // tu by som mal vlozit len indexy do vykladky
-                    this.detail.forEach((oneDetail, townId) => {
-                      if (oneDetail.townsArray === undefined) {
-                        oneDetail.forEach((oneDetailId, packageId) => {
-                          if (oneDetailId && oneDetailId.id === oneId) {
-                            detailAr.detailArray.push(packageId);
-                            detailAr.townsArray.push(townId);
-                            detailAr.packageId.push(oneDetailId.id);
-                          }
-                        });
-                      }
-                    });
+            this.offerAddUns = this.addressesService.offerAddresses$.subscribe(alAdd => {
+              let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
+              adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
+              this.address = adresy;
+              // this.childDropList.setAddresses(this.address);
+              this.address.forEach(oneAddress => {
+                let myPackages = [];
+                let detailAr = {detailArray: [], townsArray: [], packageId: []};
+                if (oneAddress){
+                  oneAddress.packagesId.forEach(oneId => {
+                    if (oneAddress.type === 'nakladka') {
+                      let balik = this.packageService.getOnePackage(oneId);
+                      myPackages.push(balik);
+                    } else {
+                      // tu by som mal vlozit len indexy do vykladky
+                      this.detail.forEach((oneDetail, townId) => {
+                        if (oneDetail.townsArray === undefined) {
+                          oneDetail.forEach((oneDetailId, packageId) => {
+                            if (oneDetailId && oneDetailId.id === oneId) {
+                              detailAr.detailArray.push(packageId);
+                              detailAr.townsArray.push(townId);
+                              detailAr.packageId.push(oneDetailId.id);
+                            }
+                          });
+                        }
+                      });
 
-                  }
-                });
+                    }
+                  });
+                }
+
+                if (myPackages.length !== 0) {
+                  this.detail.push(myPackages);
+                } else {
+                  this.detail.push(detailAr);
+                }
+
+              });
+
+              const routeToDetail = {
+                adresyVPonuke: this.address,
+                detailVPonuke: this.detail
+              };
+
+              setTimeout(() =>
+                {
+                  this.mainDetailAbout.setRoute(routeToDetail);
+                },
+                300);
+
+
+              if (this.detail[0]){
+                this.childDropList.setDetails(this.detail);
+                // this.setDetailInDetail();
+
               }
-
-              if (myPackages.length !== 0) {
-                this.detail.push(myPackages);
-              } else {
-                this.detail.push(detailAr);
-              }
-
             });
 
-            const routeToDetail = {
-              adresyVPonuke: this.address,
-              detailVPonuke: this.detail
-            };
 
-            setTimeout(() =>
-              {
-                this.mainDetailAbout.setRoute(routeToDetail);
-              },
-              300);
-
-
-            if (this.detail[0]){
-              this.childDropList.setDetails(this.detail);
-              // this.setDetailInDetail();
+            if (this.route.offerFrom !== undefined) {
+              this.route.offerFrom.forEach((offer, index) => {
+                if (offer === this.getDispecerId()) {
+                  this.offer = this.route.priceFrom[index];
+                }
+              });
 
             }
-          });
-
-
-          if (this.route.offerFrom !== undefined) {
-            this.route.offerFrom.forEach((offer, index) => {
-              if (offer === this.getDispecerId()) {
-                this.offer = this.route.priceFrom[index];
-              }
-            });
-
-          }
           }
         });
 
@@ -188,13 +184,13 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
           800);
       });
     });
-    }
+  }
 
-    setRoute(route: Route){
+  setRoute(route: Route){
 
-    }
+  }
 
-    skontrolovanaPonuka(){
+  skontrolovanaPonuka(){
     if (this.route && this.route.id){
       const routeID = this.offerService.getSkontrolovanePonuky().find(route => route === this.route.id);
       if (!routeID && this.route){
@@ -202,47 +198,47 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
         console.log('zapisujem')
       }
     }
-    }
+  }
 
-    nechcemZrusitPonuku(){
-      this.getCarIfNoInData().then(car => {
-        let carFromDb = car;
-        if (!carFromDb){
-          // @ts-ignore
-          carFromDb = {
-            lattitude: null,
-            longtitude: null
-          };
-        }
-        this.route.dontWannaCancel = true;
-        if (this.createdBy()){
-          this.route.cancelByCreatorDate = new Date().toString();
-          this.route.cancelByCreatorLat = carFromDb.lattitude;
-          this.route.cancelByCreatorLon = carFromDb.longtitude;
-        }else{
-          this.route.cancelByDriverDate = new Date().toString();
-          this.route.cancelByDriverLat = carFromDb.lattitude;
-          this.route.cancelByDriverLon = carFromDb.longtitude;
-        }
-        this.routeService.updateRoute(this.route);
-      });
-    }
+  nechcemZrusitPonuku(){
+    this.getCarIfNoInData().then(car => {
+      let carFromDb = car;
+      if (!carFromDb){
+        // @ts-ignore
+        carFromDb = {
+          lattitude: null,
+          longtitude: null
+        };
+      }
+      this.route.dontWannaCancel = true;
+      if (this.createdBy()){
+        this.route.cancelByCreatorDate = new Date().toString();
+        this.route.cancelByCreatorLat = carFromDb.lattitude;
+        this.route.cancelByCreatorLon = carFromDb.longtitude;
+      }else{
+        this.route.cancelByDriverDate = new Date().toString();
+        this.route.cancelByDriverLat = carFromDb.lattitude;
+        this.route.cancelByDriverLon = carFromDb.longtitude;
+      }
+      this.routeService.updateRoute(this.route);
+    });
+  }
 
 
-    getCarIfNoInData(){
-      return new Promise<Cars>((resolve, reject) => {
-        if (!this.route.carId){
-          resolve(null);
-        }
-        let car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
-        if (!car) {
-          this.carService.getCar(this.route.carId).pipe(take(1)).subscribe(oneCar => {
-            resolve(oneCar);
-          });
-        }else{
-          resolve(car);
-        }
-      });
+  getCarIfNoInData(){
+    return new Promise<Cars>((resolve, reject) => {
+      if (!this.route.carId){
+        resolve(null);
+      }
+      let car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+      if (!car) {
+        this.carService.getCar(this.route.carId).pipe(take(1)).subscribe(oneCar => {
+          resolve(oneCar);
+        });
+      }else{
+        resolve(car);
+      }
+    });
   }
 
   openCompanyDetail(company: Company){
@@ -257,28 +253,28 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
 
   }
 
-    createdBy(){
-      let idCreated;
-      if (this.dataService.getDispecer().createdBy === 'master'){
-        idCreated = this.dataService.getDispecer().id;
-      }else{
-        idCreated = this.dataService.getDispecer().createdBy;
-      }
-      console.log();
-      if (this.route.createdBy !==  idCreated){
-        return false;
-      }else{
-        return true;
-      }
+  createdBy(){
+    let idCreated;
+    if (this.dataService.getDispecer().createdBy === 'master'){
+      idCreated = this.dataService.getDispecer().id;
+    }else{
+      idCreated = this.dataService.getDispecer().createdBy;
     }
+    console.log();
+    if (this.route.createdBy !==  idCreated){
+      return false;
+    }else{
+      return true;
+    }
+  }
 
-    getDispecerId(){
-      if (this.dataService.getDispecer().createdBy === 'master'){
-        return this.dataService.getDispecer().id;
-      }else{
-        return this.dataService.getDispecer().createdBy;
-      }
+  getDispecerId(){
+    if (this.dataService.getDispecer().createdBy === 'master'){
+      return this.dataService.getDispecer().id;
+    }else{
+      return this.dataService.getDispecer().createdBy;
     }
+  }
 
   getCarById(){
     return this.carService.getAllCars().find(oneCar => oneCar.id === this.route.offerInRoute);
@@ -316,28 +312,28 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-    addPrice(){
-      let idCreated;
-      if (this.dataService.getDispecer().createdBy === 'master'){
-        idCreated = this.dataService.getDispecer().id;
-      }else{
-        idCreated = this.dataService.getDispecer().createdBy;
-      }
-
-      this.route.offerFrom.forEach((offer, index) => {
-        if (offer === this.getDispecerId()){
-          this.route.offerFrom.splice(index, 1);
-          this.route.priceFrom.splice(index, 1);
-        }
-      });
-      if (this.price === undefined){
-        this.price = 0;
-      }
-      this.route.offerFrom.push(idCreated);
-      this.route.priceFrom.push(this.price);
-      this.price = undefined;
-      this.offerService.updateRoute(this.route);
+  addPrice(){
+    let idCreated;
+    if (this.dataService.getDispecer().createdBy === 'master'){
+      idCreated = this.dataService.getDispecer().id;
+    }else{
+      idCreated = this.dataService.getDispecer().createdBy;
     }
+
+    this.route.offerFrom.forEach((offer, index) => {
+      if (offer === this.getDispecerId()){
+        this.route.offerFrom.splice(index, 1);
+        this.route.priceFrom.splice(index, 1);
+      }
+    });
+    if (this.price === undefined){
+      this.price = 0;
+    }
+    this.route.offerFrom.push(idCreated);
+    this.route.priceFrom.push(this.price);
+    this.price = undefined;
+    this.offerService.updateRoute(this.route);
+  }
 
   checkIfDisabled(){
     if (this.route.price === 0 && (!this.price || this.price < 1)){

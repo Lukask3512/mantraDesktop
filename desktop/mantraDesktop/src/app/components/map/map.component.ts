@@ -170,6 +170,8 @@ export class MapComponent implements AfterViewInit {
   carsToDisplay;
 
 
+  carUnderMouse: string;
+
   snackBarIsOpen = false;
 
   lastZoom;
@@ -229,7 +231,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // setTimeout(() => {
+    setTimeout(() => {
 
         this.container = document.getElementById('popup');
         this.containerOffer = document.getElementById('offerPopUp');
@@ -345,12 +347,12 @@ export class MapComponent implements AfterViewInit {
               }
             }
           } else {
-
+            this.closePopUp();
           }
         });
         this.checkFeatureUnderMouse(); // pointer
-      // },
-      // 200);
+      },
+      200);
 
   }
 
@@ -364,22 +366,43 @@ export class MapComponent implements AfterViewInit {
   }
 
   checkFeatureUnderMouse() {
-    this.map.on('pointermove', function(evt) {
-      const hit = this.forEachFeatureAtPixel(evt.pixel, (feature, layer) => true);
+    this.map.on('pointermove', (evt) => {
+      const hit = this.map.forEachFeatureAtPixel(evt.pixel, (feature, layer) => true);
       if (hit) {
-        this.getViewport().style.cursor = 'pointer';
+        this.map.getViewport().style.cursor = 'pointer';
+        // this.newInfoForFeature(evt);
       } else {
-        this.getViewport().style.cursor = '';
+        this.map.getViewport().style.cursor = '';
+        // if (this.carUnderMouse){
+        //   this.carUnderMouse = null;
+        // }
       }
     });
   }
 
+  newInfoForFeature(evt){
+    // const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+    //   return feature;
+    // });
+    // const carId = feature.get('features')[0].get('name');
+    // this.carUnderMouse = carId;
+
+  }
+
   // TODO to by som mohol upravit vytvaranie novych layerov... ako to mam aj inde
   drawCars(car: Cars[]){
+    if (!this.map){
+      setTimeout(() => {
+        this.drawCars(car);
+
+      }, 200);
+      return;
+    }
     this.carsFromDatabase = car;
     this.cars = [];
     // this.carWarningStatus = [];
     this.pulseCar = false;
+
 
 
     if (car !== undefined){
@@ -395,8 +418,12 @@ export class MapComponent implements AfterViewInit {
           });
 
 
-
-          this.cars.push(carFeature);
+          if (!this.carsToDisplayFromFilter){
+            this.cars.push(carFeature);
+          }
+          else if (this.carsToDisplayFromFilter.includes(car[i].id) || car[i].status === 4){
+            this.cars.push(carFeature);
+          }
           if (car[i].status === 4) {
             this.pulseCar = true;
 
@@ -468,22 +495,42 @@ export class MapComponent implements AfterViewInit {
             }else{
               const carId = feature.get('features')[0].get('name');
               const carToShow: Cars = this.carsFromDatabase.find(carFrom => carFrom.id === carId);
-              style = new Style({
-                image: new Icon({
-                  color: '#8959A8',
-                  crossOrigin: 'anonymous',
-                  src: 'assets/logo/truck.png',
-                  scale: 0.05
-                }),
-                text: new Text({
-                  text: carToShow.ecv,
-                  font: 15 + 'px sans-serif',
-                  fill: new Fill({
-                    color: '#000000',
+              if (this.carUnderMouse){
+                style = new Style({
+                  image: new Icon({
+                    color: '#8959A8',
+                    crossOrigin: 'anonymous',
+                    src: 'assets/logo/truck.png',
+                    scale: 0.05
                   }),
-                  offsetY: 20
-                }),
-              });
+                  text: new Text({
+                    text: 'som pro pro pro',
+                    font: 15 + 'px sans-serif',
+                    fill: new Fill({
+                      color: '#000000',
+                    }),
+                    offsetY: 20
+                  }),
+                });
+              }else{
+                style = new Style({
+                  image: new Icon({
+                    color: '#8959A8',
+                    crossOrigin: 'anonymous',
+                    src: 'assets/logo/truck.png',
+                    scale: 0.05
+                  }),
+                  text: new Text({
+                    text: carToShow.ecv,
+                    font: 15 + 'px sans-serif',
+                    fill: new Fill({
+                      color: '#000000',
+                    }),
+                    offsetY: 20
+                  }),
+                });
+              }
+
               styleCache[size] = style;
             }
           }
@@ -907,6 +954,26 @@ export class MapComponent implements AfterViewInit {
     // }
   }
 
+  // ked z cakarne chcem prejst do ponuky, vratim si feature
+  getFeatureFromOffer(routes){
+    const route = routes[0];
+    const coordinatesToArray = [];
+    route.adresyVPonuke.forEach((adresa, index) => {
+      coordinatesToArray.push([adresa.coordinatesOfTownsLon, adresa.coordinatesOfTownsLat]);
+    });
+
+    // draw lines
+    const routeString = new LineString(coordinatesToArray)
+      .transform('EPSG:4326', 'EPSG:3857');
+
+    const routeFeature = new Feature({
+      type: 'offer',
+      geometry: routeString,
+      name: route.id
+    });
+    return routeFeature;
+  }
+
   public reDrawOffers(carsId, cars){
     if (carsId){
       this.carsToDisplay = carsId;
@@ -1061,6 +1128,21 @@ export class MapComponent implements AfterViewInit {
     setTimeout( () => {
       this.map.updateSize();
     }, 200);
+  }
+
+  whichCarsToShow(carsId){
+    console.log(carsId);
+    if (!carsId){
+      this.carsToDisplayFromFilter = null;
+    }else{
+      this.carsToDisplayFromFilter = carsId;
+    }
+    // this.addCars(this.carsFromDatabase);
+    this.drawCars(this.carsFromDatabase);
+    // if (this.addressVectorSource){
+    //   this.vectorSourcePreTrasy.clear();
+    //   this.addressVectorSource.clear();
+    // }
   }
 
 }

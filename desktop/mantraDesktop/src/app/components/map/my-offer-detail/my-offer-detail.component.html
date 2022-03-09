@@ -1,0 +1,180 @@
+<div class="allWrapper">
+
+
+  <header class="header" *ngIf="this.route">
+    <div *ngIf="this.route.takenBy == getDispecerId()" class="headerFlexer">
+      <h4>
+        {{'OFFER.ponukaPriradenaZa' | translate}} <span class="price">{{this.route.price}}€</span>
+      </h4>
+      <div  class="headerFlexer" *ngIf="!isCancel() && !this.route.finished">
+        <h2 *ngIf="this.route.cancelByDriver">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
+        <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyPotvrdenie' | translate}}</h2>
+        <button class="cancelOffer" *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+        <button *ngIf="this.route.cancelByCreator && !this.route.dontWannaCancel" class="cancelOffer" (click)="nechcemZrusitPonuku()">
+          {{'MAP.nechcemZrusit' | translate}}
+        </button>
+        <h3 *ngIf="this.route.dontWannaCancel">  {{'MAP.zrusenieBoloOdmientute' | translate}}</h3>
+        <ng-template #elseCancel>
+          <button class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
+        </ng-template>
+      </div>
+      <h2  *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!!</h2>
+
+    </div>
+  </header>
+  <div class="wrapper">
+    <section class="addressList">
+      <div class="tableArountAddresses">
+        <app-drag-and-drop-list class="dragAndDropList" #dropList
+                                [address]="this.address"
+                                [draggable]="false">
+
+        </app-drag-and-drop-list>
+
+        <footer>
+          <button class="detailLog" (click)="openLog()">{{'OFTEN.detail' | translate}} </button>
+          <!--      <button class="detailLog" (click)="openAllDetailDialog()">{{'OFTEN.detail' | translate}}</button>-->
+
+        </footer>
+      </div>
+
+      <div class="tableArountAddresses">
+        <app-main-detail-about #detailAboutComponent></app-main-detail-about>
+      </div>
+
+    </section>
+
+
+
+
+    <div *ngIf="this.route" class="wrapperMid">
+
+      <app-offer-to-route class="maxWidth"  (routeToMap)="changeRouteOnMap($event)" [offerAddresses]="this.address" [offer]="this.route"
+                          *ngIf="this.route.takenBy == getDispecerId() && !isCancel() && this.route.offerInRoute == ''"></app-offer-to-route>
+
+      <h2  *ngIf="this.route.takenBy == getDispecerId() && this.route.offerInRoute != ''">
+        {{'OFFER.ponukaVoVozidle' | translate}}: <button class="detailLog" (click)="sendCar(this.getCarById())" routerLink="/view/cars/detail">{{this.getCarById().ecv}}</button>
+        <button *ngIf="!this.route.finished" class="cancelOffer" (click)="cancelFromCarDialog()">{{'NEWADDRESSFORM.odstranitZVoziudla' | translate}}</button>
+
+      </h2>
+
+
+      <div *ngIf="!createdBy() && !isCancel() && this.route.takenBy !== getDispecerId()" class="input ponukaWrapper">
+        <h4 *ngIf="this.offer">
+          {{'OFFER.vasaPonuka' | translate}} {{this.offer}}
+        </h4>
+        <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h4>
+
+
+        <mat-form-field *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price == 0" appearance="standard" class="sizeInput">
+          <mat-label>{{'OFFER.ponukniteCenu' | translate}}</mat-label>
+          <input type="number" matInput placeholder="{{'OFTEN.cena' | translate}}...."  [(ngModel)]="price">
+          <span matSuffix> € </span>
+          <mat-hint>{{'HINT.vEurach' | translate}}</mat-hint>
+        </mat-form-field>
+
+        <!--    <h3 *ngIf="this.route.takenBy == '' && this.price > 0">{{this.route.price}}</h3>-->
+
+        <button [disabled]="checkIfDisabled()" class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.offer != 0 && !this.offer; else elseUpravitCenu" (click)="addPrice()">{{'OFFER.odoslatPonuku' | translate}}</button>
+        <ng-template #elseUpravitCenu>
+          <button [disabled]="this.price < 1 || !price" class="addPrice" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0" (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
+        </ng-template>
+        <button class="deletePrice" *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+        <button class="deletePrice" *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+        <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >{{'OFFER.finalnePrijatie' | translate}}</h2>
+        <button class="addPriceGreen" *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>
+        <button class="addPrice xButton" *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="cancelOffer()">{{'OFFER.odmietnutPrepravu' | translate}}</button>
+      </div>
+
+      <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="ponuky">
+        <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h4>
+        <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
+        <button class="deletePrice" (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
+        <h2>
+          {{'HEADER.offers' | translate}}
+        </h2>
+        <!--    <div class="oneOffer" *ngFor="let offer of this.route.offerFrom; index as i">-->
+        <!--      <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event)" [masterId]="offer"></app-get-info-about-company>-->
+
+        <table mat-table  [dataSource]="this.dataSource" matSort class="tableWrapper">
+          <ng-container matColumnDef="companiesFromChild[i].name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{'COMPANIES.oneCompany' | translate}} </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+            <span class="spanClick" (click)="openCompanyDetail(companiesFromChild[i])" *ngIf="companiesFromChild[i]">
+              {{companiesFromChild[i].name}}
+              <mat-icon>
+                   info
+            </mat-icon>
+            </span>  <app-get-info-about-company (sendCompanyToParent)="getCompaniesFromChild($event, i)" [masterId]="element"></app-get-info-about-company>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="route.priceFrom[i]">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header> {{'OFTEN.cena' | translate}} </th>
+            <td mat-cell *matCellDef="let element; let i = index"> <p *ngIf="this.route.price === 0">{{route.priceFrom[i]}}</p> </td>
+          </ng-container>
+
+          <ng-container matColumnDef="potvrdit">
+            <th mat-header-cell *matHeaderCellDef>  {{'OFTEN.potvrdit' | translate}} </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <button class="buttonTable" *ngIf="this.route.ponuknuteTo == '' " (click)="chooseCompany(this.route.offerFrom[i])"> {{'OFTEN.potvrdit' | translate}}</button> </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="zrusit">
+            <th mat-header-cell *matHeaderCellDef>  {{'OFFER.zrusenie' | translate}} </th>
+            <td mat-cell *matCellDef="let element; let i = index">    <button class="buttonTable xButton" *ngIf="this.route.ponuknuteTo == '' " (click)="deleteCompany(i)">X</button> </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" aria-label="Select page of offers"></mat-paginator>
+
+        <div *ngIf="this.route.ponuknuteTo != ''">
+          <button class="buttonTable xButton" (click)="cancelOffer()"> {{'OFFER.zrusenie' | translate}} </button>
+          <span>{{'OFFER.ponukuPreFirmu' | translate}}</span>
+          <app-get-info-about-company [masterId]="this.route.ponuknuteTo"></app-get-info-about-company>
+          <span *ngIf="this.route.ponuknuteTo">
+        <app-get-name-of-comapny-by-master-id class="companyName" [masterId]="this.route.ponuknuteTo"></app-get-name-of-comapny-by-master-id>
+      </span>
+        </div>
+
+
+
+      </div>
+
+      <div *ngIf="createdBy() && this.route.takenBy !== ''" class="prijalaFirma">
+        <h4>
+          {{'OFFER.ponukuPrijalaFrima' | translate}}:
+          <app-get-name-of-comapny-by-master-id [masterId]="this.route.takenBy"></app-get-name-of-comapny-by-master-id>
+          {{this.route.price}}€
+        </h4>
+        <div *ngIf="!isCancel() && !this.route.finished">
+          <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}</h2>
+          <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznamPrepravca' | translate}}.</h2>
+          <div class="deleteButtons">
+            <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+            <button *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" (click)="nechcemZrusitPonuku()" class="cancelOffer">
+              {{'MAP.nechcemZrusit' | translate}}
+            </button>
+          </div>
+
+          <h3 *ngIf="this.route.dontWannaCancel">{{'MAP.zrusenieBoloOdmientute' | translate}}</h3>
+          <ng-template #elseCancelCompany>
+            <button  class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
+          </ng-template>
+        </div>
+        <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!</h2>
+
+      </div>
+
+      <div>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+</div>

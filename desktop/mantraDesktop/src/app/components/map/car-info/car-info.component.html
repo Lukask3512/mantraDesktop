@@ -8,12 +8,16 @@
       </h2>
       <span *ngIf="this.car.phoneNumber">{{this.car.phoneNumber}}</span>
       <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
+      <h3 *ngIf="this.car.lastUpdate">{{'CAR.poslednaAktualizacia' | translate}} {{toDateLastUpdateOfCar(this.car.lastUpdate)}}</h3>
+
+      <app-car-naklad [car]="this.car"></app-car-naklad>
     </section>
-    <section class="itinerar">
-      <div *ngFor="let address of this.myAddresses">
-        <h3>{{address.nameOfTown}} <span>{{this.statusService.getStatus(address.status)}}</span></h3>
-        <span *ngIf="address.estimatedTimeArrival">{{address.estimatedTimeArrival}}</span>
-      </div>
+    <section class="itinerar" *ngIf="this.myAddresses">
+<!--      <div *ngFor="let address of this.myAddresses">-->
+<!--        <h3>{{address.nameOfTown}} <span>{{this.statusService.getStatus(address.status)}}</span></h3>-->
+<!--        <span *ngIf="address.estimatedTimeArrival">{{address.estimatedTimeArrival}}</span>-->
+<!--      </div>-->
+      <app-itinerar-da-d></app-itinerar-da-d>
     </section>
   </div>
 </div>

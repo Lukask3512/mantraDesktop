@@ -3,11 +3,11 @@
     <ul class="unstyled list-hover-slide">
       <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.trhovisko' | translate}}</a></li>
 
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}}</a></li>
+<!--        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}}</a></li>-->
         <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}}</a></li>
         <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/vodici" class="nav">{{'HEADER.drivers' | translate}}</a></li>
         <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}}</a></li>
-      <li *ngIf="!getCompany()"><a routerLinkActive="active"  routerLink="/view/transport" class="nav">{{'HEADER.transport' | translate}}</a></li>
+      <li *ngIf="!getCompany()"><a routerLinkActive="active"  routerLink="/view/transport" class="nav">Archiv</a></li>
 
       <li *ngIf="getCompany()"><a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}}</a></li>
     </ul>

@@ -1,49 +1,43 @@
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {OpenlayerComponent} from '../../google/map/openlayer/openlayer.component';
-import {AdressesComponent} from '../../google/adresses/adresses.component';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {AddCarDialogComponent} from '../../dialogs/add-car-dialog/add-car-dialog.component';
-import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.component';
-import Route from '../../../models/Route';
-import {DataService} from '../../../data/data.service';
-import {take} from 'rxjs/operators';
-import {RouteService} from '../../../services/route.service';
-import {EditInfoComponent} from '../../dialogs/edit-info/edit-info.component';
-import {RouteStatusService} from '../../../data/route-status.service';
+import Address from '../../../models/Address';
 import {Subject} from 'rxjs';
 import Cars from '../../../models/Cars';
-import { jsPDF } from 'jspdf';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import Route from '../../../models/Route';
 import DeatilAboutAdresses from '../../../models/DeatilAboutAdresses';
-
+import {DragAndDropListComponent} from '../../transportation/drag-and-drop-list/drag-and-drop-list.component';
+import {OpenlayerComponent} from '../../google/map/openlayer/openlayer.component';
+import {AdressesComponent} from '../../google/adresses/adresses.component';
+import {NewFormComponent} from '../../transportation/new-transport/new-form/new-form.component';
+import {ShowDetailComponent} from '../../transportation/new-transport/show-detail/show-detail.component';
+import {MainDetailAboutComponent} from '../../transportation/main-detail-about/main-detail-about.component';
+import {FormBuilder} from '@angular/forms';
+import {RouteStatusService} from '../../../data/route-status.service';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {DataService} from '../../../data/data.service';
+import {RouteService} from '../../../services/route.service';
 import {DetailAboutRouteService} from '../../../services/detail-about-route.service';
-import OneDetailRoute from '../../../models/OneDetailRoute';
-import {DragAndDropListComponent} from '../drag-and-drop-list/drag-and-drop-list.component';
 import {CountFreeSpaceService} from '../../../data/count-free-space.service';
-import {OfferPriceComponent} from '../../dialogs/offer-price/offer-price.component';
-import Address from '../../../models/Address';
 import {AddressService} from '../../../services/address.service';
-import {NewFormComponent} from './new-form/new-form.component';
-import {ShowDetailComponent} from './show-detail/show-detail.component';
 import {PackageService} from '../../../services/package.service';
-import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
 import {Router} from '@angular/router';
-import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {CarService} from '../../../services/car.service';
-import {MainDetailAboutComponent} from '../main-detail-about/main-detail-about.component';
-
-
+import {RouteToCarComponent} from '../../dialogs/route-to-car/route-to-car.component';
+import {OfferPriceComponent} from '../../dialogs/offer-price/offer-price.component';
+import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
+import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component';
+import {AllDetailAboutRouteDialogComponent} from '../../dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
+import {FindCarByIdComponent} from '../../cars/find-car-by-id/find-car-by-id.component';
+import {CountOffersService} from '../count-offers.service';
 
 @Component({
-  selector: 'app-new-transport',
-  templateUrl: './new-transport.component.html',
-  styleUrls: ['./new-transport.component.scss']
+  selector: 'app-my-route-detail',
+  templateUrl: './my-route-detail.component.html',
+  styleUrls: ['./my-route-detail.component.scss']
 })
-export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
+export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy {
+
   addresses: Address[] = [];
   detail = [];
 
@@ -107,13 +101,16 @@ export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(MainDetailAboutComponent)
   private mainDetailAboutComponent: MainDetailAboutComponent;
 
+  @ViewChild(FindCarByIdComponent)
+  private findCarByIdComponent: FindCarByIdComponent;
+
   @ViewChild('pdfLog', {static: true}) pdfTable: ElementRef;
   constructor(private fb: FormBuilder, public routeStatus: RouteStatusService, private dialog: MatDialog,
               private dataService: DataService, private routeService: RouteService,
               private detailAboutService: DetailAboutRouteService, private countFreeSpace: CountFreeSpaceService,
               private addressService: AddressService, private packageService: PackageService,
               private router: Router, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService,
-              private carService: CarService) { }
+              private carService: CarService, private countOfferService: CountOffersService) { }
 
 
   ngOnDestroy(): void {
@@ -129,124 +126,123 @@ export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
 
-              ngOnInit() {
-              }
+  ngOnInit() {
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => { // pre exoressionchanged error...
-    const loggedDispecer = this.dataService.getDispecer();
-    let dispecerId;
-    if (loggedDispecer.createdBy == 'master'){
-      dispecerId = loggedDispecer.id;
-    }else {
-      dispecerId = loggedDispecer.createdBy;
-    }
-    this.route = new Route();
-    this.route.carId = '';
-    this.route.createdBy = dispecerId;
-    this.route.finished = false;
-    this.route.forEveryone = false;
-    this.route.price = 0;
-    this.route.takenBy = '';
-    this.route.ponuknuteTo =  '';
-    this.route.offerInRoute = '';
+      const loggedDispecer = this.dataService.getDispecer();
+      let dispecerId;
+      if (loggedDispecer.createdBy == 'master'){
+        dispecerId = loggedDispecer.id;
+      }else {
+        dispecerId = loggedDispecer.createdBy;
+      }
+      this.route = new Route();
+      this.route.carId = '';
+      this.route.createdBy = dispecerId;
+      this.route.finished = false;
+      this.route.forEveryone = false;
+      this.route.price = 0;
+      this.route.takenBy = '';
+      this.route.ponuknuteTo =  '';
+      this.route.offerInRoute = '';
 
 
-    this.detailAboutRoute = {};
-    this.change = false;
-    this.currentRouteUns = this.dataService.currentRoute.subscribe(route => {
-      console.log(route);
-      if (route != null){
-        // this.spinner.show();
-        this.route = route;
-        this.addressesUns = this.addressService.address$.subscribe(alAdd => {
+      this.detailAboutRoute = {};
+      this.change = false;
+      this.currentRouteUns = this.dataService.currentRoute.subscribe(route => {
+        console.log(route);
+        if (route != null){
+          // this.spinner.show();
+          this.route = route;
+          this.addressesUns = this.addressService.address$.subscribe(alAdd => {
 
-          let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
-          adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
-          this.addresses = adresy;
+            let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
+            adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
+            this.addresses = adresy;
 
 
-          // this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
-          this.addresses.forEach(oneAddress => {
-            const myPackages = [];
-            const detailAr = {detailArray: [], townsArray: [], packageId: []};
-            oneAddress.packagesId.forEach( oneId => {
-              if (oneAddress.type === 'nakladka'){
-                const balik = this.packageService.getOnePackage(oneId);
-                myPackages.push(balik);
-              }else{
-                // tu by som mal vlozit len indexy do vykladky
-                this.detail.forEach((oneDetail, townId) => {
-                  if (oneDetail.townsArray === undefined){
-                    oneDetail.forEach((oneDetailId, packageId) => {
-                      if (oneDetailId && oneDetailId.id === oneId){
+            // this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
+            this.addresses.forEach(oneAddress => {
+              const myPackages = [];
+              const detailAr = {detailArray: [], townsArray: [], packageId: []};
+              oneAddress.packagesId.forEach( oneId => {
+                if (oneAddress.type === 'nakladka'){
+                  const balik = this.packageService.getOnePackage(oneId);
+                  myPackages.push(balik);
+                }else{
+                  // tu by som mal vlozit len indexy do vykladky
+                  this.detail.forEach((oneDetail, townId) => {
+                    if (oneDetail.townsArray === undefined){
+                      oneDetail.forEach((oneDetailId, packageId) => {
+                        if (oneDetailId && oneDetailId.id === oneId){
                           detailAr.detailArray.push(packageId);
                           detailAr.townsArray.push(townId);
                           detailAr.packageId.push(oneDetailId.id);
-                      }
-                    });
-                  }
-                });
+                        }
+                      });
+                    }
+                  });
 
+                }
+              });
+              if (myPackages.length !== 0){
+                this.detail.push(myPackages);
+              }else{
+                this.detail.push(detailAr);
               }
+
             });
-            if (myPackages.length !== 0){
-              this.detail.push(myPackages);
-            }else{
-              this.detail.push(detailAr);
+
+            if (this.route && this.route.id){
+              this.childDropList.setDragable(false);
+              this.childDropList.setUpdatable(true);
             }
+            this.spinner.hide();
+            this.childDropList.setDetails(this.detail);
+            this.childDropList.setAddresses(this.addresses);
+
+            this.routeToDetail = {
+              adresyVPonuke: this.addresses,
+              detailVPonuke: this.detail
+            };
+
+            setTimeout(() =>
+              {
+                this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+              },
+              300);
 
           });
 
-          if (this.route && this.route.id){
-            this.childDropList.setDragable(false);
-            this.childDropList.setUpdatable(true);
+
+          this.carId = this.route.carId;
+          this.findCarByIdComponent.setCar(this.carId);
+          if (this.carId){
+            this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.carId);
+            setTimeout(() =>
+              {
+
+                this.notifyChildren(this.route.id);
+
+              },
+              800);
+          }else{
+            setTimeout(() =>
+              {
+                this.notifyChildren(this.route.id);
+
+
+              },
+              800);
           }
-          this.spinner.hide();
-          this.childDropList.setDetails(this.detail);
-          this.childDropList.setAddresses(this.addresses);
-
-          this.routeToDetail = {
-            adresyVPonuke: this.addresses,
-            detailVPonuke: this.detail
-          };
-
-          setTimeout(() =>
-            {
-              this.mainDetailAboutComponent.setRoute(this.routeToDetail);
-            },
-            300);
-
-        });
 
 
-        this.carId = this.route.carId;
-        if (this.carId){
-          this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.carId);
-          setTimeout(() =>
-            {
-
-              this.notifyChildren(this.route.id);
-              if (this.child){
-                this.child.notifyMe(this.addresses, this.car);
-              }
-            },
-            800);
         }else{
-          setTimeout(() =>
-            {
-              this.notifyChildren(this.route.id);
-              this.child.notifyMe(this.addresses,  null);
-
-            },
-            800);
+          this.childDropList.setAddresses(null);
         }
-
-
-      }else{
-        this.childDropList.setAddresses(null);
-      }
-    });
+      });
     });
   }
 
@@ -266,10 +262,10 @@ export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
   updateDetailOnTown(index: number){
     console.log(this.detail);
     if (this.detail[index][0] !== undefined){
-    this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
-    this.newFormChild.setAddress(this.addresses[index], index);
+      this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
+      this.newFormChild.setAddress(this.addresses[index], index);
     }
-else{
+    else{
 
       this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
       this.newFormChild.setAddress(this.addresses[index], index);
@@ -287,25 +283,12 @@ else{
     this.dataService.setDetailSource(this.detail);
   }
 
-  setMapPoints(){
-    setTimeout(() =>
-      {
-        if (this.carId !== undefined || this.carId !==  null){
-          this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId));
-        }
-        else{
-          this.child.notifyMe(this.addresses, this.car);
 
-        }
-      },
-      800);
-  }
 
 
   onDropListChange(changedRoute: Address[]){
     this.addresses = changedRoute;
     // this.dataService.checkAddressesTime(this.addresses);
-    this.setMapPoints();
     this.clickedOnIndexDetail = undefined;
     this.change = true;
   }
@@ -317,7 +300,6 @@ else{
     }else{
       this.addresses.push(address);
     }
-    this.child.notifyMe(this.addresses, undefined);
     this.clickedOnIndexDetail = undefined;
     this.checkAllDetails();
 
@@ -406,7 +388,7 @@ else{
     });
   }
 
- async saveAddresses(){
+  async saveAddresses(){
     const addressesId: string[] = [];
     for (const oneAddres of this.addresses){
       if (oneAddres.id){
@@ -455,11 +437,11 @@ else{
   sendToDriver(){
 
     const route = {
-        // carId: this.carId,
-        // createdBy: this.createdById,
-        route: this.route,
-        // createdAt: (Date.now()/1000)
-      };
+      // carId: this.carId,
+      // createdBy: this.createdById,
+      route: this.route,
+      // createdAt: (Date.now()/1000)
+    };
     console.log(route);
     this.routeService.updateRoute(route);
     this.change = false;
@@ -625,9 +607,10 @@ else{
           this.getNewRoute(idRouty);
           return;
         }, 200);
-        }
+      }
       this.route.id = idRouty;
       this.carId = this.route.carId;
+      this.findCarByIdComponent.setCar(this.carId);
       this.addressesUns2 = this.addressService.address$.subscribe(alAdd => {
 
         let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
@@ -655,32 +638,33 @@ else{
   }
 
   cancelFromCarDialog(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
+    const routeToDetail = this.countOfferService.getRouteWithEverything(this.route);
 
-    }
+    const dialogConfig = new MatDialogConfig();
+
     const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent);
+
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;
       }else {
         // je to upravene uz
 
-        // if (!this.car){
-        //   this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
-        // }
-        // this.addresses.forEach(oneAddress => {
-        //   if (this.car.aktualnyNaklad){
-        //     this.car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
-        //   }
-        //   oneAddress.carId = null;
-        //   this.addressService.updateAddress(oneAddress);
-        //   this.car.itinerar = this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
-        // });
-        // this.route.carId = null;
-        // this.routeService.updateRoute(this.route);
-        // this.carService.updateCar(this.car, this.car.id);
-        // this.getNewRoute(this.route.id);
+        if (!this.car){
+          this.car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+        }
+        this.addresses.forEach(oneAddress => {
+          if (this.car.aktualnyNaklad){
+            this.car.aktualnyNaklad.filter(onePackageId => !oneAddress.packagesId.includes(onePackageId));
+          }
+          oneAddress.carId = null;
+          this.addressService.updateAddress(oneAddress);
+          this.car.itinerar = this.car.itinerar.filter(oneId => oneId !== oneAddress.id);
+        });
+        this.route.carId = null;
+        this.routeService.updateRoute(this.route);
+        this.carService.updateCar(this.car, this.car.id);
+        this.getNewRoute(this.route.id);
       }
     });
   }
@@ -775,15 +759,15 @@ else{
       return true;
     }
 
-      const vylozene = this.dataService.vsetkoVylozeneGet;
+    const vylozene = this.dataService.vsetkoVylozeneGet;
     if (this.dataService.actualDetailGet !== null){
-        return true;
-      }
-      if (vylozene){
-        return false;
-      }else{
-        return true;
-      }
+      return true;
+    }
+    if (vylozene){
+      return false;
+    }else{
+      return true;
+    }
 
 
   }
@@ -824,7 +808,6 @@ else{
     this.childDropList.setDetails(this.detail);
     this.childDropList.setAddresses(this.addresses);
     this.detailChild.setDetails(this.detail);
-    this.setMapPoints();
 
     this.dataService.setDetailSource(this.detail);
     this.newFormChild.deletePackages();

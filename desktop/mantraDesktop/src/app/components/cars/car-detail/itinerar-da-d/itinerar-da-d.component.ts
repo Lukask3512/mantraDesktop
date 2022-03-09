@@ -160,8 +160,11 @@ export class ItinerarDaDComponent implements OnInit {
             const balik = this.packageService.getOnePackage(oneId);
             myPackages.push(balik);
           }else{
-            const indexVAute = this.car.aktualnyNaklad.findIndex(oneId2 => oneId2 === oneId);
-            if (indexVAute > -1){ // ak ho najdem  v aute, nehladam to medzi ostatnymi
+            let indexVAute;
+            if (this.car.aktualnyNaklad){
+              indexVAute = this.car.aktualnyNaklad.findIndex(oneId2 => oneId2 === oneId);
+            }
+            if (indexVAute && indexVAute > -1){ // ak ho najdem  v aute, nehladam to medzi ostatnymi
               detailAr.detailArray.push(0);
               detailAr.townsArray.push(indexVAute);
               detailAr.packageId.push(oneId);

@@ -1,0 +1,183 @@
+@import "./src/sccs/shared/mixins";
+
+.allWrapper{
+  height: 100%;
+  overflow: auto;
+}
+
+.header{
+  display: flex;
+  justify-content: center;
+}
+
+.price{
+  font-weight: 500;
+}
+
+.wrapper{
+  display: flex;
+  width: 100%;
+  min-height: 90%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.headerFlexer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 5px;
+}
+
+.dragAndDropList{
+  width: 100%;
+}
+
+.deleteButtons{
+  display: flex;
+  row-gap: 5px;
+  column-gap: 5px;
+}
+
+.maxWidth{
+  width: 100%;
+}
+
+.wrapperMid{
+  width: 100%;
+  @include tableBorder();
+  height: fit-content;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.ponukaWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 3px;
+  margin-left: 3px;
+}
+
+.detailLog{
+  @include button(#343a40);
+  margin: 10px;
+}
+
+.addressList{
+  height: fit-content;
+  margin-right: 7px;
+}
+
+.tableArountAddresses{
+  @include tableBorder();
+
+}
+
+.deletePrice{
+  @include button(orangered);
+  margin: 10px;
+}
+
+.tableWrapper{
+  width: 100%;
+}
+
+.buttonTable{
+  @include buttonNoColor();
+  padding-bottom: 8px;
+  padding-top: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+  margin-right: 7px;
+  background: #343a40;
+}
+.spanClick{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.xButton{
+  background: orangered;
+}
+
+.addPrice{
+  @include button(darkorange);
+  margin: 10px;
+}
+
+.companyName{
+  margin-left: 5px;
+}
+
+.addPriceGreen{
+  @include button(limegreen);
+  margin: 10px;
+}
+
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.marginMid{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.ponuky{
+  //@include tableBorder();
+}
+
+.map{
+  width: 100%;
+  height: 96%;
+  margin: 10px;
+  min-height: 500px;
+  @include tableBorder();
+}
+
+
+.imageInRow{
+  display: flex;
+  margin-top: 30px;
+}
+
+.oneOffer{
+  display: flex;
+}
+li{
+  display: flex;
+  align-items: center;
+}
+
+td{
+  padding-left: 10px;
+}
+@media (max-width: 1300px) {
+
+  .map{
+    height: 500px;
+    width: 100%;
+    margin: 0;
+  }
+
+  .tableArountAddresses{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+  .wrapperMid{
+    margin: 0;
+  }
+}
+
+.cancelOffer{
+  @include button(orangered);
+}
+
+

@@ -17,8 +17,10 @@ export class CarInfoComponent implements OnInit {
   myAddresses: Address[];
   car: Cars;
   @Output() carEmitter = new EventEmitter<Cars>();
-  @ViewChild('dragDrop')
+  @ViewChild(ItinerarDaDComponent)
   private dragComponent: ItinerarDaDComponent;
+
+
 
   constructor(private carsSerevice: CarService, public statusService: RouteStatusService, private addressesService: AddressService) { }
 
@@ -45,6 +47,9 @@ export class CarInfoComponent implements OnInit {
     this.car.itinerar.forEach(oneAddresId => {
       this.myAddresses.push(allAddresses.find(oneAddress => oneAddress.id === oneAddresId));
     });
+    setTimeout(() => {
+      this.dragComponent.setAddress(this.myAddresses, this.car);
+    }, 100);
   }
 
   setCarId(carId){
@@ -53,6 +58,11 @@ export class CarInfoComponent implements OnInit {
       this.car = allCars.find(allCarsDb => allCarsDb.id === carId);
       this.getAddresses();
     });
+  }
+
+  toDateLastUpdateOfCar(datum){
+    const date = new Date(datum);
+    return date.toDateString() + ' ' + date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
   }
 
 }

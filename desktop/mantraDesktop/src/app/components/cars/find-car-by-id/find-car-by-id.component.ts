@@ -16,15 +16,23 @@ export class FindCarByIdComponent implements OnInit {
   constructor(public routeStatusService: RouteStatusService, private carService: CarService, private translation: TranslateService) { }
 
   ngOnInit(): void {
+    this.findCar();
+
+  }
+  setCar(carId){
+    this.carId = carId;
+    this.findCar();
+  }
+
+  findCar(){
     if (this.carId != null){
       this.carService.getCar(this.carId).subscribe(car => {
         this.carName = car;
         this.carUndefined = null;
       });
     }else{
-      this.carUndefined = this.translation.instant('OFTEN.nepriradene');
+      this.carUndefined = true;
     }
-
   }
 
 }

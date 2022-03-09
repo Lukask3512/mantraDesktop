@@ -47,7 +47,7 @@ export class DragAndDropListComponent implements OnInit {
 
   setAddresses(addresses: Address[]){
 
-    if (addresses[0]){
+    if (addresses && addresses[0]){
       this.address = addresses;
       this.dniKtoreSaPrelinaju = this.dataService.checkAddressesTime(this.address);
       this.spinner.hide();

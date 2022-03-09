@@ -1,0 +1,380 @@
+@import "./src/sccs/shared/mixins";
+
+
+.routeList{
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.relaviteDiv{
+  width: 500px;
+  height: 500px;
+}
+
+header{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+.sizeInput{
+  width: 100px;
+}
+
+.allWrapper{
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  //min-height: 90%;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1.5;
+  justify-content: center;
+  width: 600px;
+  margin-right: 20px;
+}
+
+.wrapperWithMap{
+  display: flex;
+  min-height: 96%;
+  height: calc(100% - 30px);
+  overflow: auto;
+}
+
+.mapWrapper{
+  height: 50%;
+  @include tableBorder();
+  padding: 0;
+  margin: 0;
+}
+
+.mapWrapperWithouBox{
+  height: 100%;
+}
+
+.newFormWrapper{
+  @include table();
+  margin: 0;
+  padding: 0;
+  padding-bottom: 10px;
+
+}
+
+.mapAndBox{
+  flex-grow: 2;
+  width: 25%;
+  height: calc(100% - 30px);
+  margin-right: 10px;
+
+}
+
+.headerCar{
+  height: 30px;
+}
+
+.map{
+
+  width: 100%;
+  height: 50%;
+  @include tableBorder();
+  padding: 0;
+  margin: 0;
+  margin-top: 5px;
+}
+.aframe{
+  width: 100%;
+  height: 50%;
+  @include tableBorder();
+  margin-left: 0;
+  padding: 0;
+}
+
+.addresses{
+  @include table();
+  overflow-x: initial;
+  //width: initial;
+}
+
+.mainDetailAbout{
+  @include tableBorder();
+  margin: 0;
+  margin-top: 5px;
+}
+
+
+@media (max-width: 1600px) {
+
+  .wrapper{
+    width: 100%;
+    margin: 0;
+  }
+  .addresses{
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mainDetailAbout{
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
+.dropList{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1100px) {
+  .wrapperWithMap{
+    flex-direction: column;
+  }
+  .mapAndBox{
+    width: 100%;
+    padding: 10px;
+    margin-right: 0;
+  }
+  .mapWrapper{
+    height: 500px;
+  }
+  .aframe{
+    height: 500px;
+  }
+}
+
+
+.center{
+  display: flex;
+  justify-content: center;
+}
+
+.detailFormular{
+  min-width: 180px;
+}
+
+
+
+.oneButton{
+  padding: {
+    left: 10px;
+    right: 10px;
+    top: 5px;
+    bottom: 5px;
+  }
+  border-radius: 3px;
+  border: none;
+  margin-left: 5px;
+}
+
+.changeButtons{
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.yellow{
+  background-color: orange;
+}
+.green{
+  background-color: limegreen;
+}
+
+.nakaldkaVykladka{
+  font-weight: 800;
+  padding: {
+    top: 2px;
+    bottom: 2px;
+    left: 5px;
+    right: 5px;
+  };
+  background: rgba(191, 191, 191, 0.7);
+  font-size: xx-small;
+  border-radius: 4px;
+}
+
+.size{
+  border: 2px solid gray;
+  border-radius: 2px;
+}
+
+
+.delete{
+  color: red;
+  cursor: pointer;
+}
+
+.buttonTransport {
+  background-color: #343a40;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 4px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: darkolivegreen;
+  transition: 0.2s, 0.2s;
+}
+
+.redAllert{
+  color: red;
+}
+
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+  cursor: initial;
+}
+
+
+.orangered{
+  background: orangered;
+}
+.darkorange{
+  background: darkorange;
+}
+
+.redBack{
+  background: red;
+}
+
+.detailLog{
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+
+.buttonDriver {
+  background-color: #343a40;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: green;
+  transition: 0.2s, 0.2s;
+}
+
+.buttonChange {
+  background-color: darkorange;
+  border: none;
+  color: white;
+  padding: 8px 23px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  //margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 160px;
+
+}
+.buttonRepeat:hover{
+  background-color: darkolivegreen;
+  transition: 0.2s, 0.2s;
+}
+
+
+.routeTown{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-start;
+}
+.routeInfo{
+  background: #cccccc;
+  border-radius: 2px;
+}
+
+
+
+
+.formAndBedna{
+  display: flex;
+}
+
+
+
+
+
+
+.example-list {
+  width: 500px;
+  max-width: 100%;
+  border: solid 1px #ccc;
+  min-height: 60px;
+  display: block;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-box {
+  padding: 20px 10px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+

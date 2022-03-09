@@ -25,7 +25,7 @@
         <div *ngIf="routesToShow.length" class="nakladka" >
 
           <ng-container *ngFor="let town of route.addresses; index as i">
-            <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+            <app-one-address-info *ngIf="town" [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
           </ng-container>
 
         </div>
@@ -33,7 +33,7 @@
         <div *ngIf="routesToShow.length" class="vykladka">
           <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
           <div *ngIf="route.carId == null">
-            <button class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
+            <button (click)="prejdiDoDetailuPrepravy(route)" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
           </div>
           <div>
             <button *ngIf="!this.route.carId" (click)="deleteRoute(route)" class="buttonR" >{{'OFTEN.delete' | translate}}</button>
@@ -45,8 +45,9 @@
         <div *ngIf="clickedOnThis && clickedOnThis.id === route.id" class="detailAbout">
           <app-main-detail-about></app-main-detail-about>
           <div class="buttons">
-            <button class="buttonTransport" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>
-            <button *ngIf="route.carId !== null || route.carId !== ''" (click)="deleteFromCar(route)">Odstran z vozidla</button>
+<!--            <button class="buttonTransport" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>-->
+<!--            <button *ngIf="route.carId !== null || route.carId !== ''" (click)="deleteFromCar(route)">Odstran z vozidla</button>-->
+            <button (click)="prejdiDoDetailuPrepravy(route)">Prejdi</button>
           </div>
         </div>
       </div>
@@ -61,7 +62,7 @@
         <div *ngIf="!route.finished" class="nakladka">
           <!--      <h2>Vykládky</h2>-->
           <ng-container *ngFor="let town of route.addresses; index as i">
-            <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+            <app-one-address-info *ngIf="town" [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
           </ng-container>
         </div>
         <div class="vykladka">
@@ -87,7 +88,8 @@
             <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
           </div>
           <div *ngIf="route.carId == null">
-            <button (click)="addToCarOffer(route)" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
+<!--            <button (click)="addToCarOffer(route)" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>-->
+            <button (click)="prejdiDoDetailuPonuky(route)" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
           </div>
 
         </div>
@@ -96,8 +98,9 @@
         <div *ngIf="clickedOnThis && clickedOnThis.id === route.id" class="detailAbout">
           <app-main-detail-about></app-main-detail-about>
           <div class="buttons">
-            <button class="buttonTransport" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>
-            <button *ngIf="route.carId !== null" (click)="deleteFromCar(route)">Odstran z vozidla</button>
+<!--            <button class="buttonTransport" (click)="openLog()">{{'NEWADDRESSFORM.logPrepravy' | translate}}</button>-->
+<!--            <button *ngIf="route.carId !== null" (click)="deleteFromCar(route)">Odstran z vozidla</button>-->
+            <button (click)="prejdiDoDetailuPonuky(route)">Prejdi</button>
           </div>
         </div>
 

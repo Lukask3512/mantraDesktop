@@ -37,6 +37,10 @@ import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style';
 import {MapComponent} from '../map.component';
 import {CountOffersService} from '../count-offers.service';
 import {OfferDetailComponent} from '../offer-detail/offer-detail.component';
+import {OfferCreatorDetailComponent} from '../offer-creator-detail/offer-creator-detail.component';
+import {NewTransportComponent} from '../../transportation/new-transport/new-transport.component';
+import {MyRouteDetailComponent} from '../my-route-detail/my-route-detail.component';
+import {MyOfferDetailComponent} from '../my-offer-detail/my-offer-detail.component';
 
 @Component({
   selector: 'app-map-wrapper',
@@ -64,6 +68,7 @@ export class MapWrapperComponent implements AfterViewInit {
 
   myTransportOpen = false;
   myCakarenOpen = false;
+  offerDetailOpen = false;
 
   allCountedOffers;
 
@@ -79,6 +84,9 @@ export class MapWrapperComponent implements AfterViewInit {
   @ViewChild('offerDetailElement')
   private offerDetailElement: ElementRef;
 
+  @ViewChild('offerCreatorDetailElement')
+  private offerCreatorDetailElement: ElementRef;
+
   @ViewChild('cakarenElement')
   private cakarenElement: ElementRef;
 
@@ -86,11 +94,21 @@ export class MapWrapperComponent implements AfterViewInit {
   private filterElement: ElementRef;
 
 
+  @ViewChild('myRouteElement')
+  private myRouteElement: ElementRef;
+
+
   @ViewChild(CarItiDetailComponent)
   private carIti: CarItiDetailComponent;
 
+  @ViewChild(MyRouteDetailComponent)
+  private newTransportComponent: MyRouteDetailComponent;
+
   @ViewChild(OfferDetailComponent)
   private offerDetailComponent: OfferDetailComponent;
+
+  @ViewChild(MyOfferDetailComponent)
+  private offerCreatorDetailComponent: MyOfferDetailComponent;
 
   @ViewChild(ChoosCarToMoveComponent)
   private chooseCar: ChoosCarToMoveComponent;
@@ -251,35 +269,40 @@ export class MapWrapperComponent implements AfterViewInit {
     return date.toDateString() + ' ' + date.getHours() + ':' + String(date.getMinutes()).padStart(2, '0');
   }
 
-
+  closeAll(){
+    this.closeInfoDetail();
+    this.closeInfoCreatorDetail();
+    this.closeInfoCakaren();
+    this.closeInfoMoje();
+    this.closeInfoRouteDetail();
+  }
 
   vysunBocneInfo() {
-    if (this.myCakarenOpen){
+    if (this.myCakarenOpen || this.offerDetailOpen){
+      this.closeAll();
       this.openInfoMoje();
-      this.closeInfoCakaren();
     }
     else if (document.getElementById('mapWrapper').style.width === '70%') {
       document.getElementById('mapWrapper').style.width = '100%';
-      this.closeInfoMoje();
+      this.closeAll();
     } else {
+      this.closeAll();
       this.openInfoMoje();
-      this.myTransportOpen = true;
-      this.closeInfoCakaren();
     }
   }
 
   vysunCakaren(){
-    if (this.myTransportOpen){
+    if (this.myTransportOpen || this.offerDetailOpen){
+      this.closeAll();
       this.openInfoCakaren();
-      this.closeInfoMoje();
     }
     else if (document.getElementById('mapWrapper').style.width === '70%') {
       document.getElementById('mapWrapper').style.width = '100%';
-      this.closeInfoCakaren();
+      this.closeAll();
 
     } else {
+      this.closeAll();
       this.openInfoCakaren();
-      this.closeInfoMoje();
 
     }
   }
@@ -297,6 +320,7 @@ export class MapWrapperComponent implements AfterViewInit {
     if (emitFromFilter == null){
       this.mapComponent.drawOffers(null, null, emitFromFilter);
     }else if (emitFromFilter != null) {
+      console.log(emitFromFilter);
       this.maxPrekrocenieVahy = emitFromFilter.weight;
       this.maxPrekrocenieRozmerov = emitFromFilter.size;
       this.countOffersService.offersUpdate(emitFromFilter, this.getCarsWithEverything()).then(resolve => {
@@ -347,14 +371,14 @@ export class MapWrapperComponent implements AfterViewInit {
 
   displayOffer(offer){
     const countedOffer = this.allCountedOffers.find(oneOffer => oneOffer.id === offer.offerId);
-    document.getElementById('mapWrapper').style.width = '70%';
-    this.offerDetailElement.nativeElement.style.display = 'block';
+    this.closeAll();
+    this.openInfoOfferDetail();
     this.offerDetailComponent.setOffer(countedOffer, offer.feature, this.maxPrekrocenieVahy, this.maxPrekrocenieRozmerov);
-    this.closeInfoMoje();
     this.mapComponent.onResize();
   }
 
   openInfoMoje(){
+    this.closeAll();
     document.getElementById('mapWrapper').style.width = '70%';
     this.transportationElement.nativeElement.style.display = 'block';
     this.mapComponent.onResize();
@@ -371,6 +395,7 @@ export class MapWrapperComponent implements AfterViewInit {
   }
 
   openInfoCakaren(){
+    this.closeAll();
     document.getElementById('mapWrapper').style.width = '70%';
     this.cakarenElement.nativeElement.style.display = 'block';
     this.mapComponent.onResize();
@@ -383,9 +408,102 @@ export class MapWrapperComponent implements AfterViewInit {
     this.myCakarenOpen = false;
   }
 
+  openInfoOfferDetail(){
+    document.getElementById('mapWrapper').style.width = '70%';
+    this.offerDetailElement.nativeElement.style.display = 'block';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = true;
+  }
+
+  closeInfoDetail(){
+    this.offerDetailElement.nativeElement.style.display = 'none';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = false;
+  }
+
+  openInfoOfferCreatorDetail(){
+    document.getElementById('mapWrapper').style.width = '70%';
+    this.offerCreatorDetailElement.nativeElement.style.display = 'block';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = true;
+  }
+
+  closeInfoCreatorDetail(){
+    this.offerCreatorDetailElement.nativeElement.style.display = 'none';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = false;
+  }
+
+  openInfoRouteDetail(){
+    document.getElementById('mapWrapper').style.width = '70%';
+    this.offerDetailOpen = true;
+    this.myRouteElement.nativeElement.style.display = 'block';
+    this.mapComponent.onResize();
+  }
+
+  closeInfoRouteDetail(){
+    this.myRouteElement.nativeElement.style.display = 'none';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = false;
+  }
+
   successfullAddedToCar(){
     this.offerDetailElement.nativeElement.style.display = 'none';
     this.openInfoMoje();
+  }
+
+  otvorPonukuZCakarne(route: Route){
+    if (route.createdBy === this.dataService.getMyIdOrMaster()){
+      this.dataService.changeRealRoute(route);
+      this.closeAll();
+      this.openInfoOfferCreatorDetail();
+      return;
+    }
+    const akoKebyPonuka = {
+    offers : [route],
+      minDistance: 5000 * 1000, maxDistance: 5000 * 1000,
+      weight: 1, size:  1, typeDistance: 'maxAll',
+      ukazat: true
+    };
+    console.log(akoKebyPonuka);
+
+    // this.maxPrekrocenieVahy = emitFromFilter.weight;
+    // this.maxPrekrocenieRozmerov = emitFromFilter.size;
+    this.countOffersService.offersUpdate(akoKebyPonuka, this.getCarsWithEverything()).then(resolve => {
+      console.log(resolve);
+      const featureOffer = this.mapComponent.getFeatureFromOffer(resolve);
+      console.log(featureOffer);
+      this.offerDetailComponent.setOffer(resolve[0], featureOffer, this.maxPrekrocenieVahy, this.maxPrekrocenieRozmerov);
+      this.openInfoOfferDetail();
+      this.closeInfoCakaren();
+    });
+  }
+
+  otvorPrepravu(route: Route){
+    this.dataService.changeRealRoute(route);
+    this.closeAll();
+    this.openInfoRouteDetail();
+  }
+
+  otvorPonuku(route: Route){
+    this.dataService.changeRealRoute(route);
+    this.closeAll();
+    this.openInfoOfferCreatorDetail();
+
+  }
+
+  whichCarsToShow(cars){
+    this.mapComponent.whichCarsToShow(cars);
+  }
+
+  closeInfo(){
+    this.closeAll();
+    this.showAddressesByRoute(null);
+    document.getElementById('mapWrapper').style.width = '100%';
+  }
+
+  addNewRoute(){
+    this.dataService.changeRealRoute(null);
   }
 
 

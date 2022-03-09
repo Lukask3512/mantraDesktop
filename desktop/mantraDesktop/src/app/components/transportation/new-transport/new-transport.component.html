@@ -27,7 +27,7 @@
 
 </div>
 <!--  <button (click)="buttonForExampleData()">Exapmle</button>-->
-  <div class="addresses">
+  <div class="addresses" *ngIf="this.addresses">
     <app-drag-and-drop-list class="dropList" #dropList
                             [address]="this.addresses"
                             [draggable]="true"
@@ -65,7 +65,7 @@
 </div>
 
 
-  <div class="mapAndBox">
+  <div *ngIf="showMapAndBoz" class="mapAndBox">
     <div class="mapWrapper" [ngClass]="{'mapWrapperWithouBox' : this.route && this.route.id}">
       <app-openlayer #child></app-openlayer>
     </div>

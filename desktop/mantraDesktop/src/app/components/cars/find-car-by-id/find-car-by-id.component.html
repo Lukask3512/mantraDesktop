@@ -4,5 +4,5 @@
     <p *ngIf="carName">{{this.routeStatusService.getStatus(carName.status)}}</p>
   </div>
 
-<p *ngIf="carUndefined">{{carUndefined}}</p>
+<p *ngIf="carUndefined === true">{{'OFTEN.nepriradene' | translate}}</p>
 </div>

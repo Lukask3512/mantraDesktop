@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AddressService} from "../../../../services/address.service";
-import Address from "../../../../models/Address";
-import {RouteStatusService} from "../../../../data/route-status.service";
-import {OfferRouteService} from "../../../../services/offer-route.service";
+import {AddressService} from '../../../../services/address.service';
+import Address from '../../../../models/Address';
+import {RouteStatusService} from '../../../../data/route-status.service';
+import {OfferRouteService} from '../../../../services/offer-route.service';
 import {PackageService} from '../../../../services/package.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {DataService} from '../../../../data/data.service';
@@ -49,7 +49,7 @@ export class OneAddressInfoComponent implements OnInit {
   getMyAddresses(){
     if (this.allAddressesIds){
       const adresy = this.allAddresses.filter(jednaAdresa => this.allAddressesIds.includes(jednaAdresa.id));
-      this.allAddresses = this.allAddressesIds.map((i) => adresy.find((j) => j.id === i)); //ukladam ich do poradia
+      this.allAddresses = this.allAddressesIds.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
       this.getDetailsAboutAllAddresses();
     }
 
@@ -59,15 +59,15 @@ export class OneAddressInfoComponent implements OnInit {
   getDetailsAboutAllAddresses(){
     // this.detail = [];
     this.allAddresses.forEach((oneAddress, indexAddress) => {
-      var myPackages = [];
-      var detailAr = {detailArray: [], townsArray: [], packageId: []};
+      let myPackages = [];
+      let detailAr = {detailArray: [], townsArray: [], packageId: []};
       if (oneAddress){
         oneAddress.packagesId.forEach( oneId => {
           if (oneAddress.type === 'nakladka'){
-            var balik = this.packageService.getOnePackage(oneId);
+            let balik = this.packageService.getOnePackage(oneId);
             myPackages.push(balik);
           }else{
-            //tu by som mal vlozit len indexy do vykladky
+            // tu by som mal vlozit len indexy do vykladky
             this.detail.forEach((oneDetail, townId) => {
               if (oneDetail.townsArray === undefined){
                 oneDetail.forEach((oneDetailId, packageId) => {

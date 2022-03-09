@@ -4,12 +4,12 @@
 
   <div #filterElement class="filter">
     <app-filter (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
-<!--    <app-choose-car-to-map (carEmitter)="whichCarsToShow($event)"></app-choose-car-to-map>-->
+    <app-choose-car-to-map (carEmitter)="whichCarsToShow($event)"></app-choose-car-to-map>
   </div>
   <div class="wrapper">
     <div id="mapWrapper" class="mapWrapper">
       <app-map (carIdEmitter)="sendRoute($event)" (offerIdEmitter)="displayOffer($event)"></app-map>
-<!--      <button class="addButton" (click)="addNewRoute()">Add</button>-->
+      <button class="addButton" (click)="addNewRoute()" routerLink="/view/newRoute">Add</button>
       <button class="sideButton" (click)="vysunBocneInfo()">Vysun</button>
       <button class="trhovikoButton" (click)="vysunCakaren()">Cakaren</button>
     </div>
@@ -18,15 +18,46 @@
     <!--      <div id="popup-content"></div>-->
     <!--    </div>-->
     <div #transportationElement class="info">
-      <app-transport-wrapper (addressesEmitter)="showAddressesByRoute($event)"></app-transport-wrapper>
+      <div class="closeButtonWrapper">
+        <button (click)="closeInfo()" class="closeInfo">x</button>
+      </div>
+
+      <app-transport-wrapper (otvorPonukuEmitter)="otvorPonuku($event)" (addressesEmitter)="showAddressesByRoute($event)"
+                              (otvorPrepravuEmitter)="otvorPrepravu($event)">
+
+      </app-transport-wrapper>
     </div>
 
     <div #offerDetailElement class="info">
-      <app-offer-detail (uspesnePriradenie)="successfullAddedToCar()"></app-offer-detail>
+      <div class="closeButtonWrapper">
+        <button (click)="closeInfo()" class="closeInfo">x</button>
+      </div>
+
+      <app-offer-detail  (uspesnePriradenie)="successfullAddedToCar()"></app-offer-detail>
+    </div>
+
+    <div #offerCreatorDetailElement class="info">
+      <div class="closeButtonWrapper">
+        <button (click)="closeInfo()" class="closeInfo">x</button>
+      </div>
+
+      <app-my-offer-detail></app-my-offer-detail>
+    </div>
+
+    <div #myRouteElement class="info">
+      <div class="closeButtonWrapper">
+        <button (click)="closeInfo()" class="closeInfo">x</button>
+      </div>
+
+      <app-my-route-detail></app-my-route-detail>
     </div>
 
     <div #cakarenElement class="info">
-      <app-wrapper></app-wrapper>
+      <div class="closeButtonWrapper">
+        <button (click)="closeInfo()" class="closeInfo">x</button>
+      </div>
+
+      <app-cakaren-wrapper (otvorPonukuEmitter)="otvorPonukuZCakarne($event)" (addressesEmitter)="showAddressesByRoute($event)"></app-cakaren-wrapper>
     </div>
 
   </div>

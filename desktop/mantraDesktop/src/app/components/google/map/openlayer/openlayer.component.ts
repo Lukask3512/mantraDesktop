@@ -93,8 +93,8 @@ export class OpenlayerComponent implements AfterViewInit, OnDestroy{
 
 
   ngAfterViewInit(): void {
-    // setTimeout(() =>
-    //   {
+    setTimeout(() =>
+      {
         this.view = new View({
           center: olProj.fromLonLat([0, 0]),
           zoom: 1
@@ -129,6 +129,8 @@ export class OpenlayerComponent implements AfterViewInit, OnDestroy{
 
       },
       500);
+      },
+      200);
 
   }
 
