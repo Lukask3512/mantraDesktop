@@ -1,3 +1,5 @@
+@import "./src/sccs/shared/mixins";
+
 table {
   font-family: Candara;
   border-collapse: collapse;
@@ -27,6 +29,15 @@ tr:nth-child(even) {
   cursor: pointer;
 }
 
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-route',
@@ -8,7 +8,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 })
 export class DeleteRouteComponent implements OnInit {
 
-  constructor( public dialogRef: MatDialogRef<DeleteRouteComponent>) { }
+  constructor( public dialogRef: MatDialogRef<DeleteRouteComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
   }

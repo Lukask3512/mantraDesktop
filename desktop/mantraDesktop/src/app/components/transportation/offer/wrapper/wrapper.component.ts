@@ -4,7 +4,7 @@ import Route from '../../../../models/Route';
 import {RouteStatusService} from '../../../../data/route-status.service';
 import {DataService} from '../../../../data/data.service';
 import {DeleteRouteComponent} from '../../../dialogs/delete-route/delete-route.component';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import Dispecer from '../../../../models/Dispecer';
 import {AddressService} from '../../../../services/address.service';
 import {DispecerService} from '../../../../services/dispecer.service';
@@ -93,13 +93,12 @@ export class WrapperComponent implements OnInit {
 
 
 
-  vymazatPonuku(route){
-    this.offerService.deleteRoute(route.id);
-  }
-
-
   deleteRoute(route: Route){
-    const dialogRef = this.dialog.open(DeleteRouteComponent);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      deleteOffer: true
+    };
+    const dialogRef = this.dialog.open(DeleteRouteComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
         return;

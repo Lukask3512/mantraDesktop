@@ -9,12 +9,18 @@ import Company from '../../../models/Company';
 })
 export class CompanyDetailComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CompanyDetailComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CompanyDetailComponent>) {
+    dialogRef.disableClose = true;
+  }
     company: Company;
   ngOnInit(): void {
     if (this.data){
       this.company = this.data.company;
     }
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
 }

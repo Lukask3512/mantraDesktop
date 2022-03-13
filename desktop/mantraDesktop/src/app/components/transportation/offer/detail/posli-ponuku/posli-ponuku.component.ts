@@ -11,6 +11,9 @@ import {DispecerService} from '../../../../../services/dispecer.service';
 })
 export class PosliPonukuComponent implements OnInit {
 
+  runningInterval = false;
+  stopInterval = false;
+
   offer; // ponuku ktoru som dal
   @Input() route; // ponuka
   @Input() price: number;
@@ -89,7 +92,7 @@ export class PosliPonukuComponent implements OnInit {
     this.disableButtonAfterAdd = true;
     setTimeout(() => {
       this.disableButtonAfterAdd = false;
-    }, 5000);
+    }, 3000);
   }
 
   addPrice(){
@@ -126,7 +129,26 @@ export class PosliPonukuComponent implements OnInit {
     this.disableButtonAfterAdd = true;
     setTimeout(() => {
       this.disableButtonAfterAdd = false;
-    }, 5000);
+    }, 3000);
+  }
+
+  addPriceWithDelay(){
+    this.runningInterval = true;
+    setTimeout(() => {
+      this.runningInterval = false;
+      if (this.stopInterval === false){
+        this.addPrice();
+      }
+      this.stopInterval = false;
+    }, 3000);
+  }
+
+  deleteMyPriceIfRunning(){
+    if (this.runningInterval){
+      this.stopInterval = true;
+    }else{
+      this.deleteMyPriceOffer();
+    }
   }
 
   confirm(){

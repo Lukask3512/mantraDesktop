@@ -1,4 +1,7 @@
-<h2>{{'OFFER.cenaPrepravy' | translate}}</h2>
+<div class="headerWrapper">
+  <h2>{{'OFFER.cenaPrepravy' | translate}}</h2>
+  <button (click)="close()" class="closeButton">X</button>
+</div>
 <mat-form-field appearance="standard" class="sizeInput">
   <mat-label>{{'OFFER.cenaPrepravy' | translate}}</mat-label>
   <input [(ngModel)]="price" type="number"  min="1" matInput placeholder="{{'OFFER.cenaPrepravy' | translate}}....">
@@ -8,5 +11,6 @@
 
 <p>{{'OFFER.praznePoleCeny' | translate}}</p>
 <div class="buttonWrapper">
-  <button class="buttonAdd" (click)="add()">{{'OFFER.pridajPonuku' | translate}}</button>
+  <button *ngIf="!this.data.changePrice" class="buttonAdd" (click)="add()">{{'OFFER.pridajPonuku' | translate}}</button>
+  <button *ngIf="this.data.changePrice === true" class="buttonAdd" (click)="add()">{{'OFFER.upravitCenu' | translate}}</button>
 </div>

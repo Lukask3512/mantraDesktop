@@ -44,11 +44,17 @@ export class CompanyDetailAboutComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<CompanyDetailAboutComponent>,
               private dispecerService: DispecerService, private carService: CarService,
               public routeStatusService: RouteStatusService, private spinner: NgxSpinnerService,
-              private dialog: MatDialog, private vodiciService: VodicService) { }
+              private dialog: MatDialog, private vodiciService: VodicService) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.company = this.data;
     this.getDispecer(this.company.id);
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
   getDispecer(companyId){

@@ -164,7 +164,7 @@ export class OfferRouteService {
 
   openSnackBar(message: string, action: string, route: Route) {
     const snackBarRef = this._snackBar.open(message, action, {
-      duration: 8000
+
     });
     snackBarRef.afterDismissed().subscribe((info) => {
       if (info.dismissedByAction === true){

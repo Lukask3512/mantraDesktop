@@ -1,5 +1,9 @@
 
 <mat-dialog-content class="wrapper">
+  <div class="headerWrapper">
+    <div></div>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
   <mat-horizontal-stepper #stepper linear (selectionChange)="selectionChange($event)">
     <mat-step>
       <ng-template matStepLabel>{{'TRANSPORT.vyberAuta' | translate}}</ng-template>

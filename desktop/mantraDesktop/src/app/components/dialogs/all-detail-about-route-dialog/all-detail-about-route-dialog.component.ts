@@ -18,13 +18,19 @@ export class AllDetailAboutRouteDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<AllDetailAboutRouteDialogComponent>,
-              private packageService: PackageService, private dialog: MatDialog) { }
+              private packageService: PackageService, private dialog: MatDialog) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.addresses = this.data.addresses;
     this.stiahniDetail();
   }
 
+
+  closeDialog(){
+    this.dialogRef.close();
+  }
   stiahniDetail(){
     this.detail = [];
     this.addresses.forEach(oneAddress => {

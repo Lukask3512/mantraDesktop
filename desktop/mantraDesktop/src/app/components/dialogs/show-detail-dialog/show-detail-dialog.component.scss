@@ -1,4 +1,16 @@
+@import "./src/sccs/shared/mixins";
+
 .aframe{
   height: 50%;
   width: 50%;
+}
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

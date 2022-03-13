@@ -6,16 +6,6 @@
   margin-top: 20px;
 }
 
-.closeButton{
-  @include closeButton();
-}
-
-.headerWrapper{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .button{
   @include button($color-button-green);
 }
@@ -58,4 +48,14 @@ h1{
   background-color: #4CAF50;
   margin-right: 10px;
   color: white;
+}
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

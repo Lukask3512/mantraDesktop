@@ -8,10 +8,25 @@ td{
   @include tableAddButton();
 }
 
+.buttonWrapper{
+  display: flex;
+  justify-content: center;
+}
+
 
 .inputWrapper{
   display: flex;
   //flex-direction: column;
   gap: 10px;
+  align-items: center;
+}
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }

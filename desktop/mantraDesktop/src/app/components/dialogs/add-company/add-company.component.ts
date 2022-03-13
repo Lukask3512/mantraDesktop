@@ -62,7 +62,9 @@ export class AddCompanyComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AddCompanyComponent>,
               private fb: FormBuilder, private companyService: CompanyService, private dispecerService: DispecerService,
               private accountService: AccountService, private emailService: EmailService, private snackBar: MatSnackBar,
-              private translate: TranslateService, private spinner: NgxSpinnerService) { }
+              private translate: TranslateService, private spinner: NgxSpinnerService) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -92,6 +94,10 @@ export class AddCompanyComponent implements OnInit {
       // this.dispecerForm.get('email').disable();
       this.getDispecer();
     }
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
   emailChanged(){

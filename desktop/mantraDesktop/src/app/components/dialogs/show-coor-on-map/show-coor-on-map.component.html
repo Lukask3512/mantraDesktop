@@ -1,4 +1,8 @@
 <mat-dialog-content class="wrapper">
+  <div class="headerWrapper">
+    <div></div>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
   <h3>Lat: {{this.lattitude}}</h3>
   <h3>Lon: {{this.longtitude}}</h3>
   <div class="mapWrapper">

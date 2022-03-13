@@ -15,10 +15,13 @@
   </section>
 
 
-  <mat-icon class="infoIcon"  matTooltip="{{'HINT.prijateSuVPrepravach' | translate}}">
+  <mat-icon *ngIf="this.whatIsActive === 1" class="infoIcon"  matTooltip="{{'HINT.infoVCakarniPreMoje' | translate}}">
     info
   </mat-icon>
-  <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>
+  <mat-icon *ngIf="this.whatIsActive === 2" class="infoIcon"  matTooltip="{{'HINT.infoVCakarni' | translate}}">
+    info
+  </mat-icon>
+<!--  <h1 class="actFinHead">{{'OFFER.aktivne' | translate}}</h1>-->
 
 
   <div *ngFor="let route of this.routesToShow; let i = index" [class]="getAnimation(route)" class="oneRoute">
@@ -39,7 +42,7 @@
 
             <div *ngIf="route.createdBy == this.getDispecerId()">
 <!--              <button (click)="routeDetail(route)" routerLink="/view/newRoute">Upravit</button>-->
-              <button class="buttonDelete" (click)="vymazatPonuku(route)">{{'OFTEN.delete' | translate}}</button>
+              <button class="buttonDelete" (click)="deleteRoute(route)">{{'OFTEN.delete' | translate}}</button>
             </div>
 
 

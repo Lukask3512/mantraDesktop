@@ -1,5 +1,15 @@
 @import "./src/sccs/shared/mixins";
 
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .gridContainer{
   display: grid;
   grid-template-columns: auto auto auto;
@@ -41,7 +51,7 @@
 }
 
 button[type=submit] {
-  width: 100%;
+  //width: 100%;
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
@@ -60,6 +70,11 @@ button[disabled]{
 
 td{
   padding-left: 8px;
+}
+
+.buttonsWrapper{
+  display: flex;
+  justify-content: center;
 }
 
 

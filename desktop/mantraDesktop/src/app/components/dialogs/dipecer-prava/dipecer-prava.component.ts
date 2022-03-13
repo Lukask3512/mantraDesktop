@@ -59,6 +59,11 @@ export class DipecerPravaComponent implements OnInit {
 
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
+
   getErrorMessage() {
     return this.dispecerForm.hasError('required') ? 'You must enter a value' :
       this.dispecerForm.get('email').hasError('email') ? 'Not a valid email' : '';

@@ -4,3 +4,13 @@
   @include button(limegreen);
   margin-top: 3px;
 }
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

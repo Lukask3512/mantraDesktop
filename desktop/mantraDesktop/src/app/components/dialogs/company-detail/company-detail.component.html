@@ -1,4 +1,8 @@
 <div class="wrapper">
+  <div class="headerWrapper">
+    <div></div>
+    <button (click)="closeDialog()" class="closeButton">X</button>
+  </div>
   <label>{{'COMPANIES.companyName' | translate}}</label>
   <h2>{{company.name}}</h2>
   <label>{{'COMPANIES.town' | translate}}</label>

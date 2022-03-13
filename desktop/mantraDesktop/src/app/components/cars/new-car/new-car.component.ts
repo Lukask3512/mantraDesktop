@@ -4,6 +4,7 @@ import {AddCarDialogComponent} from '../../dialogs/add-car-dialog/add-car-dialog
 import {DataService} from '../../../data/data.service';
 import Company from '../../../models/Company';
 import {CarService} from '../../../services/car.service';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -14,7 +15,8 @@ import {CarService} from '../../../services/car.service';
 })
 export class NewCarComponent implements OnInit {
 
-  constructor(private dialog: MatDialog, private dataService: DataService, private carService: CarService) { }
+  constructor(private dialog: MatDialog, private dataService: DataService, private carService: CarService,
+              private translate: TranslateService) { }
   company: Company;
   ngOnInit(): void {
     this.company = this.dataService.getLoggedInCompany();
@@ -46,6 +48,10 @@ export class NewCarComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  getVozidloSmall(){
+    return this.translate.instant('CAR.car').toLowerCase();
   }
 
 

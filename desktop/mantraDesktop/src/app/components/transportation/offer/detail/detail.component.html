@@ -88,7 +88,7 @@
 
   <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="ponuky">
     <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h4>
-    <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
+    <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitCenu' | translate}}</button>
     <button class="deletePrice" (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
     <h2>
       {{'HEADER.offers' | translate}}

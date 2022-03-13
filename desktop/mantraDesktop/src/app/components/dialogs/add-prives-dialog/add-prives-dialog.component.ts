@@ -58,7 +58,9 @@ export class AddPrivesDialogComponent implements OnInit {
   secondFormGroup: FormGroup;
 
   constructor(private fb: FormBuilder, private privesService: PrivesService, public dialogRef: MatDialogRef<NewPrivesComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, private dataServce: DataService, private snackBar: MatSnackBar) { }
+              @Inject(MAT_DIALOG_DATA) public data: any, private dataServce: DataService, private snackBar: MatSnackBar) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.firstFormGroup = this.fb.group({
@@ -67,6 +69,63 @@ export class AddPrivesDialogComponent implements OnInit {
     this.secondFormGroup = this.fb.group({
       secondCtrl: ['', Validators.required]
     });
+    if (this.data){
+      this.privesForm.controls.ecv.setValue(this.data.ecv);
+      this.privesForm.controls.autoVyska.setValue(this.data.carSize[0]);
+      this.privesForm.controls.autoDlzka.setValue(this.data.carSize[2]);
+      this.privesForm.controls.autoSirka.setValue(this.data.carSize[1]);
+      this.privesForm.controls.priestorVyska.setValue(this.data.sizePriestoru[0]);
+      this.privesForm.controls.priestorDlzka.setValue(this.data.sizePriestoru[2]);
+      this.privesForm.controls.priestorSirka.setValue(this.data.sizePriestoru[1]);
+      this.privesForm.controls.vahaVozidlo.setValue(this.data.vaha);
+      this.privesForm.controls.nosnost.setValue(this.data.nosnost);
+      this.privesForm.controls.vyskaHrany.setValue(this.data.nakladaciaHrana[0]);
+
+      if (this.data.nakladaciaHrana.length > 1){
+        this.privesForm.controls.minHrana.setValue(this.data.nakladaciaHrana[0]);
+        this.privesForm.controls.maxHrana.setValue(this.data.nakladaciaHrana[1]);
+        this.privesForm.controls.pohyblivaNakHrana.setValue(true);
+      }
+
+
+      this.privesForm.controls.zoZaduVyska.setValue(this.data.nakladaciPriestorZoZadu[0]);
+      this.privesForm.controls.zoZaduSirka.setValue(this.data.nakladaciPriestorZoZadu[1]);
+      this.privesForm.controls.zPravaVyska.setValue(this.data.nakladaciPriestorZPrava[0]);
+      this.privesForm.controls.zPravaSirka.setValue(this.data.nakladaciPriestorZPrava[1]);
+      this.privesForm.controls.zLavaVyska.setValue(this.data.nakladaciPriestorZLava[0]);
+      this.privesForm.controls.zLavaSirka.setValue(this.data.nakladaciPriestorZLava[1]);
+      this.privesForm.controls.zHoraVyska.setValue(this.data.nakladaciPriestorZVrchu[0]);
+      this.privesForm.controls.zHoraSirka.setValue(this.data.nakladaciPriestorZVrchu[1]);
+
+
+
+      //
+      // this.privesForm.controls.minTeplota.setValue(this.data.minTeplota);
+      // this.privesForm.controls.maxTeplota.setValue(this.data.maxTeplota);
+      // if (this.data.minTeplota){
+      //   this.privesForm.controls.teplota.setValue(true);
+      // }
+      // this.privesForm.controls.adr.setValue(this.data.adr);
+      // this.privesForm.controls.ruka.setValue(this.data.ruka);
+
+      if (this.data.nakladaciPriestorZLava[0] !== ''){
+        this.privesForm.controls.fromLeft.setValue(true);
+      }
+      if (this.data.nakladaciPriestorZPrava[0] !== ''){
+        this.privesForm.controls.fromRight.setValue(true);
+      }
+      if (this.data.nakladaciPriestorZoZadu[0] !== ''){
+        this.privesForm.controls.fromBack.setValue(true);
+      }
+      if (this.data.nakladaciPriestorZVrchu[0] !== ''){
+        this.privesForm.controls.fromUp.setValue(true);
+      }
+      this.privesForm.controls.ecv.disable();
+    }
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
   savePrives(){
@@ -148,6 +207,12 @@ export class AddPrivesDialogComponent implements OnInit {
       nosnost: this.privesForm.get('nosnost').value,
       nakladaciaHrana: nakladaciaHrana,
     };
+  }
+
+  updatePrives(){
+    this.privesService.updatePrives(this.assignToPrives(), this.data.id);
+    this.dialogRef.close();
+    return;
   }
 
 }

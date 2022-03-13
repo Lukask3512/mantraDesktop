@@ -3,3 +3,13 @@
 .potvrd{
   @include smallButton(limegreen)
 }
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

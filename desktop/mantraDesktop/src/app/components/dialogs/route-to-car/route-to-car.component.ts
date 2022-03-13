@@ -60,6 +60,10 @@ export class RouteToCarComponent implements OnInit {
       }
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
   choosenCar(car){
     this.chosenCar = car;
     this.myStepper.next();

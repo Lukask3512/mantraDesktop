@@ -1,4 +1,8 @@
 <mat-dialog-content class="wrapper">
+  <div class="headerWrapper">
+    <div></div>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
 <app-get-info-about-company  (sendCompanyToParent)="getCompanyZadavatel($event)" [masterId]="this.route.createdBy"></app-get-info-about-company>
 <app-get-info-about-company *ngIf="this.route.price" (sendCompanyToParent)="getCompanyPrepravca($event)" [masterId]="this.route.takenBy"></app-get-info-about-company>
 <div id="allWrapper">

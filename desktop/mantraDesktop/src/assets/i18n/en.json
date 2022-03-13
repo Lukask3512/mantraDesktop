@@ -82,7 +82,8 @@
     "pristupKuVozidlam": "Access to vehicles",
     "pristupKuVsetkymVozidlam": "Access to all vehicles",
     "pristupKuPrivesom": "Access to trailers",
-    "pristupKuVsetkymPrivesom": "Access to all trailers"
+    "pristupKuVsetkymPrivesom": "Access to all trailers",
+    "pridatDispecera": "Add a dispatcher"
   },
   "CAR": {
     "car": "Vehicle",
@@ -135,7 +136,7 @@
     "sirkaNakOtvoru": "Loading opening width",
     "dlzkaNakOtvoru": "Loading opening length",
 
-    "navesASpecRezimy": "Trailer + special requirements",
+    "navesASpecRezimy": "Special requirements",
     "moznostPripojitNaves": "Able to attach trailer",
     "teplotnyRezim": "Set temperature mode",
     "minTeplota": "Minimum temperature",
@@ -157,19 +158,23 @@
     "udajeO": "Driver's info",
     "pristupKVozidlam": "Access to vehicles",
     "pristupKuVsetkymVozidlam": "Access to all vehicles",
-    "pridatMoze": "You are not authorized to add a driver."
+    "pridatMoze": "You are not authorized to add a driver.",
+    "pridatVodica": "Add a driver"
 
   },
   "PRIVES": {
     "prives": "Trailer",
     "addPrives": "Add a trailer",
+    "updatePrives": "Edit a trailer",
     "pripojitPrives": "Attach a trailer",
     "size": "Parameters",
     "sizeOfPrives": "Trailer's size",
     "vahaPrivesu": "Trailer's weight",
     "nostnost": "Trailer's load capacity",
-    "odpojeniezVozidla": "Are you sure you want to detach the trailer from the vehicle?"
-
+    "odpojeniezVozidla": "Are you sure you want to detach the trailer from the vehicle?",
+    "vyskaPrivesu": "Trailer's height",
+    "sirkaPrivesu": "Trailer's width",
+    "dlzkaPrivesu": "Trailer's length"
   },
   "COMPANIES": {
     "comapnies": "Companies",
@@ -228,13 +233,15 @@
     "deleteDispecer": "Are you sure you want to delete this dispatcher",
     "deleteDriver": "Are you sure you want to delete driver",
     "deleteRoute": "Are you sure you want to delete this route?",
+    "deleteOffer": "Naozaj chcete vymazať ponuku?",
     "max": "max",
     "min": "min",
     "teplota": "Temperature",
     "prevozRizikovehoTovaru": "Transport of dangerous goods (ADR)",
     "skratkaKs": "pcs",
-    "prijateSuVPrepravach": "Accepted offers are displayed in Transports -> Offers."
-
+    "prijateSuVPrepravach": "Accepted offers are displayed in Transports -> Offers.",
+    "infoVCakarni": "Ponuky ktoré ste prevzali od tretích strán, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Dopravca a tretia strana ako Zadávateľ.",
+    "infoVCakarniPreMoje": "Vaše ponuky prevzaté tretími stranami, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Zadávateľ a tretia strana ako Dopravca."
   },
 
   "PACKAGES": {

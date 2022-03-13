@@ -275,7 +275,9 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
 
   vymazatPonuku(){
     const dialogConfig = new MatDialogConfig();
-
+    dialogConfig.data = {
+      deleteOffer: true
+    };
 
     const dialogRef = this.dialog.open(DeleteRouteComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
@@ -498,6 +500,9 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
 
   upravCenuPonuky(){
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      changePrice: true
+    };
 
 
     const dialogRef = this.dialog.open(OfferPriceComponent, dialogConfig);

@@ -1,7 +1,11 @@
 <div class="wrapper">
-  <h2>
-    {{'HINT.deleteAdress' | translate}} {{data.adresa.nameOfTown}}  {{'HINT.deleteAdressMore' | translate}}?
-  </h2>
+  <div class="headerWrapper">
+    <h2>
+      {{'HINT.deleteAdress' | translate}} {{data.adresa.nameOfTown}}  {{'HINT.deleteAdressMore' | translate}}?
+    </h2>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
+
 
   <button class="yesButton" (click)="deleteAddress()">
     {{'OFTEN.ano' | translate}}

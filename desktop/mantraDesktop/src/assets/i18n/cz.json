@@ -82,7 +82,8 @@
     "pristupKuVozidlam": "Přístup k vozidlům",
     "pristupKuVsetkymVozidlam": "Přístup ke všem vozidlům",
     "pristupKuPrivesom": "Přístup k přívesům",
-    "pristupKuVsetkymPrivesom": "Přístup ke všem přívěsům"
+    "pristupKuVsetkymPrivesom": "Přístup ke všem přívěsům",
+    "pridatDispecera": "Přidat dispečera"
   },
   "CAR": {
     "car": "Vozidlo",
@@ -135,7 +136,7 @@
     "sirkaNakOtvoru": "Šířka nak. otvoru",
     "dlzkaNakOtvoru": "Délka nak. otvoru",
 
-    "navesASpecRezimy": "Přívěs + speciální režimy",
+    "navesASpecRezimy": "Speciální režimy",
     "moznostPripojitNaves": "Možnost připojit přívěs",
     "teplotnyRezim": "Teplotní režim",
     "minTeplota": "Minimální teplota",
@@ -157,19 +158,23 @@
     "udajeO": "Údaje o řidiči",
     "pristupKVozidlam": "Přístup k vozidlům",
     "pristupKuVsetkymVozidlam": "Přístup ke všem vozidlům",
-    "pridatMoze": "Nemáte oprávnění vytvářet nové řidiče"
+    "pridatMoze": "Nemáte oprávnění vytvářet nové řidiče",
+    "pridatVodica": "Přidat řidiče"
 
   },
   "PRIVES": {
     "prives": "Přívěs",
     "addPrives": "Přidat přívěs",
+    "updatePrives": "Upravit přívěs",
     "pripojitPrives": "Připojit přívěs",
     "size": "Velikost přívěsu",
     "sizeOfPrives": "Velikost přívěsu",
     "vahaPrivesu": "Hmotnost přívěsu",
     "nostnost": "Nosnost přívěsu",
-    "odpojeniezVozidla": "Skutečně chcete odpojit přívěs od vozidla?"
-
+    "odpojeniezVozidla": "Skutečně chcete odpojit přívěs od vozidla?",
+    "vyskaPrivesu": "Výška přívěsu",
+    "sirkaPrivesu": "Šířka přívěsu",
+    "dlzkaPrivesu": "Délka přívěsu"
   },
   "COMPANIES": {
     "comapnies": "Společnosti",
@@ -228,13 +233,15 @@
     "deleteDispecer": "Skutečně chcete odstranit dispečera",
     "deleteDriver": "Skutečně chcete odstranit řidiče",
     "deleteRoute": "Skutečně chcete odstranit trasu?",
+    "deleteOffer": "Naozaj chcete vymazať ponuku?",
     "max": "max",
     "min": "min",
     "teplota": "Teplota",
     "prevozRizikovehoTovaru": "Převoz rizikového zboží",
     "skratkaKs": "ks",
-    "prijateSuVPrepravach": "Přijaté nabídky sa nacházejí v sekci Přepravy -> Nabídky."
-
+    "prijateSuVPrepravach": "Přijaté nabídky sa nacházejí v sekci Přepravy -> Nabídky.",
+    "infoVCakarni": "Ponuky ktoré ste prevzali od tretích strán, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Dopravca a tretia strana ako Zadávateľ.",
+    "infoVCakarniPreMoje": "Vaše ponuky prevzaté tretími stranami, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Zadávateľ a tretia strana ako Dopravca."
   },
 
   "PACKAGES": {

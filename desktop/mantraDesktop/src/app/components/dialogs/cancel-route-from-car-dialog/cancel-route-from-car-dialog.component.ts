@@ -10,13 +10,19 @@ import {NewCarComponent} from '../../cars/new-car/new-car.component';
 export class CancelRouteFromCarDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<CancelRouteFromCarDialogComponent>) { }
+              public dialogRef: MatDialogRef<CancelRouteFromCarDialogComponent>) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
   }
 
   yes(){
     this.dialogRef.close(true);
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
   close(){

@@ -24,4 +24,8 @@ export class EditInfoComponent implements OnInit {
     this.dialogRef.close({routeInfo: this.routeInfo.get('info').value});
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
 }

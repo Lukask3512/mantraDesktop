@@ -1,6 +1,10 @@
 <mat-dialog-content class="wrapper">
-  <h1 *ngIf="!this.data" class="header">{{'OFTEN.add' | translate}} {{'CAR.car' | translate}}</h1>
-  <h1 *ngIf="this.data" class="header">{{'OFTEN.update' | translate}} {{'CAR.car' | translate}}</h1>
+  <div class="headerWrapper">
+    <h1 *ngIf="!this.data" class="header">{{'OFTEN.add' | translate}} {{'CAR.car' | translate}}</h1>
+    <h1 *ngIf="this.data" class="header">{{'OFTEN.update' | translate}} {{'CAR.car' | translate}}</h1>
+    <button (click)="closeDialog()" class="closeButton">X</button>
+  </div>
+
   <form class="gridContainer" [formGroup]="carForm">
 
     <mat-vertical-stepper #stepper>
@@ -285,8 +289,10 @@
     </mat-vertical-stepper>
 
   </form>
-  <button *ngIf="!this.data" (click)="saveCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.add' | translate}}</button>
-  <button *ngIf="this.data" (click)="updateCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.update' | translate}}</button>
+  <div class="buttonsWrapper">
+    <button *ngIf="!this.data" (click)="saveCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.potvrdit' | translate}}</button>
+    <button *ngIf="this.data" (click)="updateCar()" type="submit" class="example_c" [disabled]="!carForm.valid">{{'OFTEN.potvrdit' | translate}}</button>
+  </div>
 
 </mat-dialog-content>
 

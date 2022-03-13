@@ -1,7 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {OfferRouteService} from "../../../services/offer-route.service";
 import Route from "../../../models/Route";
 import {PackageService} from '../../../services/package.service';
+import {ChoosCarToMoveComponent} from '../../transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
+import {MatAccordion, MatExpansionPanel} from '@angular/material/expansion';
 
 
 @Component({
@@ -31,6 +33,8 @@ export class FilterComponent implements OnInit {
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
   @Output() carsToShow = new EventEmitter<any[]>();
+
+  @ViewChild(MatExpansionPanel) mat: MatExpansionPanel;
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -63,6 +67,7 @@ export class FilterComponent implements OnInit {
 
     if (this.offers.length > 0){
       if (!this.checked){
+        this.mat.close();
         this.offersToMap.emit(null);
         localStorage.setItem('showOffers', 'false');
       }else{
@@ -85,6 +90,14 @@ export class FilterComponent implements OnInit {
 
   whichCars(carsId: string[]){
     this.carsToShow.emit(carsId);
+  }
+
+  catchOpen(){
+    console.log('som otvoril');
+    if (!this.checked){
+      this.checked = true;
+      this.filterOffers(true);
+    }
   }
 
 }

@@ -1,10 +1,16 @@
 @import "./src/sccs/shared/mixins";
 
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .buttonAdd{
   @include button(limegreen)
 }
 
-.buttonWrapper{
-  display: flex;
-  justify-content: flex-end;
-}

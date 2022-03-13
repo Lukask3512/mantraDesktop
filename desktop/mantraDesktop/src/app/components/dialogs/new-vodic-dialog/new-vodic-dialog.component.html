@@ -1,5 +1,8 @@
 <mat-dialog-content class="wrapper">
-  <h1 class="header">{{'VODIC.vodic' | translate}}</h1>
+  <div class="headerWrapper">
+    <h1 class="header">{{'VODIC.vodic' | translate}}</h1>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
 
 
   <mat-vertical-stepper #stepper>

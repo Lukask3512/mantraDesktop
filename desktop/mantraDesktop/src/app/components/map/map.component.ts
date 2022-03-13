@@ -294,7 +294,7 @@ export class MapComponent implements AfterViewInit {
               if (feature.get('features').length === 1){ // ak som klikol na 1 auto
                 this.onClickFindInfo(feature.get('features')[0].get('name'));
                 // this.zoomToAddressOrCar(feature);
-                this.zoomToCarAndIti(feature.get('features')[0].get('name'));
+                this.zoomToCarAndIti(feature.get('features')[0]);
                 this.scrollToInfo();
 
               }else{ // ak som klikol na viacero aut
@@ -307,7 +307,7 @@ export class MapComponent implements AfterViewInit {
             if (feature.get('features').length === 1){ // ak som klikol na 1 auto
               this.onClickFindInfoOffer(feature.get('features')[0].get('name'), feature);
               // this.zoomToAddressOrCar(feature);
-              this.zoomToCarAndIti(feature.get('features')[0].get('name'));
+              this.zoomToCarAndIti(feature.get('features')[0]);
               this.scrollToInfo();
 
             }else{ // ak som klikol na viacero ponuk
@@ -320,7 +320,7 @@ export class MapComponent implements AfterViewInit {
         else if (type === 'car'){
           this.onClickFindInfo(feature.get('name'));
           // this.zoomToAddressOrCar(feature);
-          this.zoomToCarAndIti(feature.get('features')[0].get('name'));
+          this.zoomToCarAndIti(feature.get('features')[0]);
           this.scrollToInfo();
         }
 

@@ -1,5 +1,18 @@
+@import "./src/sccs/shared/mixins";
+
 .bednaWrapper{
   display: flex;
+}
+
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .bedna{

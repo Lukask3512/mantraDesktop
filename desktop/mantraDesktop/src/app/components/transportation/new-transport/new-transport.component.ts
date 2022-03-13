@@ -143,6 +143,16 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
       if (route != null){
         this.spinner.show();
         this.route = route;
+        this.routeService.routes$.subscribe(allRoutes => {
+          const myRoute = allRoutes.find(oneRoute => oneRoute.id === route.id);
+          if (myRoute){
+            this.route = myRoute;
+          }else{
+            this.routeService.finishedRoutes$.subscribe(allFinished => {
+              this.route = allFinished.find(oneRoute => oneRoute.id === route.id);
+            });
+          }
+        });
         this.addressService.address$.subscribe(alAdd => {
 
           let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
@@ -197,7 +207,9 @@ export class NewTransportComponent implements AfterViewInit, OnInit {
 
           setTimeout(() =>
             {
-              this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+              if (this.mainDetailAboutComponent){
+                this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+              }
             },
             300);
 
@@ -601,7 +613,17 @@ else{
 
   getNewRoute(idRouty){
     setTimeout(() => {
-      this.route = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.id === idRouty);
+      this.routeService.routes$.subscribe(allRoutes => {
+        // this.route = allRoutes.find(oneRoute => oneRoute.id === idRouty);
+        const myRoute = allRoutes.find(oneRoute => oneRoute.id === idRouty);
+        if (myRoute){
+          this.route = myRoute;
+        }else{
+          this.routeService.finishedRoutes$.subscribe(allFinished => {
+            this.route = allFinished.find(oneRoute => oneRoute.id === idRouty);
+          });
+        }
+      });
       if (!this.route){
         setTimeout(() => {
           this.getNewRoute(idRouty);
@@ -623,7 +645,9 @@ else{
 
         setTimeout(() =>
           {
-            this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+            if (this.mainDetailAboutComponent){
+              this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+            }
           },
           300);
 
