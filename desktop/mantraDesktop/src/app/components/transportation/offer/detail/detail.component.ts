@@ -33,6 +33,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {MainDetailAboutComponent} from '../../main-detail-about/main-detail-about.component';
 import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
+import {ComapnyContantsDialogComponent} from '../../../dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
 
 
 @Component({
@@ -576,6 +577,19 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
     if (this.currentRouteUns){
       this.currentRouteUns.unsubscribe();
     }
+  }
+
+  openContats(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = this.route;
+    const dialogRef = this.dialog.open(ComapnyContantsDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
   }
 
 

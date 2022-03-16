@@ -76,11 +76,19 @@ input.example-right-align {
   align-items: center;
 }
 
+.chooseCar{
+  margin-bottom: 5px;
+  max-width: 50%;
+}
+
 @media (max-width: 1000px) {
   .detalWrapper{
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+  }
+  .chooseCar{
+    max-width: 100%;
   }
 }
 
@@ -89,9 +97,7 @@ input.example-right-align {
   margin: 0;
 }
 
-.chooseCar{
-  margin-bottom: 5px;
-}
+
 
 .distanceWrapper{
   display: flex;

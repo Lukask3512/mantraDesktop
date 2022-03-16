@@ -3,6 +3,9 @@ import {DataService} from '../../../../../data/data.service';
 import {OfferRouteService} from '../../../../../services/offer-route.service';
 import Dispecer from '../../../../../models/Dispecer';
 import {DispecerService} from '../../../../../services/dispecer.service';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {AddCarDialogComponent} from '../../../../dialogs/add-car-dialog/add-car-dialog.component';
+import {ComapnyContantsDialogComponent} from '../../../../dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
 
 @Component({
   selector: 'app-posli-ponuku',
@@ -26,7 +29,7 @@ export class PosliPonukuComponent implements OnInit {
   @Output() offerConfirm = new EventEmitter<string>();
 
   constructor(private dataService: DataService, private offerService: OfferRouteService,
-              private dispecerService: DispecerService) { }
+              private dispecerService: DispecerService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     // natiahnem si original offere lebo z mapy mam upravenu
@@ -55,9 +58,18 @@ export class PosliPonukuComponent implements OnInit {
     this.listenToROute();
   }
 
-  // setOffer(offer){
-  //   this.offer = offer;
-  // }
+  openContats(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = this.route;
+    const dialogRef = this.dialog.open(ComapnyContantsDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
+  }
 
   setRoute(route){
     this.route = route;

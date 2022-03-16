@@ -5,4 +5,12 @@
 .checkboxWrapper{
   display: flex;
   gap: 2px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: 2px;
+}
+
+.carsWrapper{
+  width: 100%;
 }

@@ -1,12 +1,12 @@
 <mat-accordion>
-  <mat-expansion-panel [disabled]="this.fewSecDisable" #mep="matExpansionPanel">
+  <mat-expansion-panel [disabled]="this.fewSecDisable" #mep="matExpansionPanel" (opened)="catchOpen()">
 
 <!--<div class="filterWrapper">-->
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-slide-toggle [disabled]="fewSecDisable" [(ngModel)]="checked" (change)="filterOffers(true)">{{'MAP.zobrazitPonuky' | translate}}</mat-slide-toggle>
     </mat-panel-title>
-    <mat-panel-description (click)="catchOpen()">
+    <mat-panel-description>
 
     </mat-panel-description>
   </mat-expansion-panel-header>

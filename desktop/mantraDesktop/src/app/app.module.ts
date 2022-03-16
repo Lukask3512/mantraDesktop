@@ -58,6 +58,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {CustomRouteReuseStrategy} from './services/customRouteStrategy/custom-route-reuse-strategy';
+import {RouteReuseStrategy} from '@angular/router';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -144,7 +146,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ],
   providers: [
     HttpClient,
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy}
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

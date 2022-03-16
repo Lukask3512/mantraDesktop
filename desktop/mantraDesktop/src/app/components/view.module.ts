@@ -90,6 +90,7 @@ import { ShowCoorOnMapComponent } from './dialogs/show-coor-on-map/show-coor-on-
 import { PopUpMapComponent } from './google/map/pop-up-map/pop-up-map.component';
 import { ZmenVyskuPoistkyUAutaComponent } from './dialogs/zmen-vysku-poistky-uauta/zmen-vysku-poistky-uauta.component';
 import { DeletePrivesComponent } from './dialogs/delete-prives/delete-prives.component';
+import { ComapnyContantsDialogComponent } from './dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
 
 
 @NgModule({
@@ -114,7 +115,7 @@ import { DeletePrivesComponent } from './dialogs/delete-prives/delete-prives.com
       AllDetailAboutRouteDialogComponent, NewDispecerComponent, RepeatRouteDialogComponent,
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
-      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent, PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, DeletePrivesComponent
+      MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent, PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, DeletePrivesComponent, ComapnyContantsDialogComponent
     ],
     exports: [
         OpenlayerComponent,

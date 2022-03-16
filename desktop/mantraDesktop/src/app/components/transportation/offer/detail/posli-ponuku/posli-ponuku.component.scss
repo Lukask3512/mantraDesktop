@@ -8,6 +8,10 @@
   @include button(limegreen)
 }
 
+.kontantButt{
+  @include button(gray);
+}
+
 button{
   margin: 8px;
 }

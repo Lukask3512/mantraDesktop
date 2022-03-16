@@ -10,3 +10,7 @@ th.mat-sort-header-sorted {
 .button{
   @include tableButton();
 }
+
+.delete{
+  cursor: pointer;
+}

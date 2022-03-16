@@ -17,6 +17,7 @@
       <ng-template #elseCancel>
         <button class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
       </ng-template>
+      <button class="kontantButt" (click)="openContats()">{{'MAP.kontakt' | translate}}</button>
     </div>
     <h2  *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!!</h2>
 
@@ -150,6 +151,8 @@
       {{this.route.price}}€
     </h4>
     <div *ngIf="!isCancel() && !this.route.finished">
+      <button class="kontantButt" (click)="openContats()">{{'MAP.kontakt' | translate}}</button>
+
       <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznamPrepravca' | translate}}.</h2>
       <div class="deleteButtons">
