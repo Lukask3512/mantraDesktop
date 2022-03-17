@@ -518,6 +518,9 @@ else{
   openOfferDialog() {
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '23em';
+    dialogConfig.data = {
+      changePrice: false
+    };
     const dialogRef = this.dialog.open(OfferPriceComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){

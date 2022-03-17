@@ -27,7 +27,9 @@ export class DipecerPravaComponent implements OnInit {
               private dispecerService: DispecerService,  private fb: FormBuilder,
               private accountService: AccountService, public dialogRef: MatDialogRef<DipecerPravaComponent>,
               private emailService: EmailService, private translation: TranslateService,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar) {
+    dialogRef.disableClose = true;
+  }
   cars: Cars[];
   prives: Prives[];
   displayedColumns: string[] = ['ecv', 'prava'];

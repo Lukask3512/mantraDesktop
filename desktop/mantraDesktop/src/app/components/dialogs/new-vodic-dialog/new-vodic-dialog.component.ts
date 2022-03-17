@@ -20,7 +20,9 @@ export class NewVodicDialogComponent implements OnInit {
   constructor(private dataService: DataService, @Inject(MAT_DIALOG_DATA) public data: any,
               private vodicService: VodicService,  private fb: FormBuilder,
               private accountService: AccountService, public dialogRef: MatDialogRef<NewVodicDialogComponent>,
-              private carService: CarService) { }
+              private carService: CarService) {
+    dialogRef.disableClose = true;
+  }
   displayedColumns: string[] = ['ecv', 'prava'];
   vodic: Vodic;
   cars: Cars[];

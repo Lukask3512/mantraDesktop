@@ -49,13 +49,25 @@
 <div class="greenYelRedWrapper">
   <div class="greenMat">
     <mat-checkbox class="matCheboxGreen" [disabled]="!checked" [(ngModel)]="vyhovuje"  (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
+    <mat-icon class="material-icons" matSuffix
+              matTooltip="{{'FILTER.vyhovujuceHint' | translate}}">
+      info
+    </mat-icon>
   </div>
 
   <div class="yellowMat">
     <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
+    <mat-icon class="material-icons" matSuffix
+              matTooltip="{{'FILTER.zlteHint' | translate}}">
+      info
+    </mat-icon>
   </div>
   <div class="redMat">
     <mat-checkbox  [disabled]="!checked" [(ngModel)]="prekrocenie"  (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
+    <mat-icon class="material-icons" matSuffix
+              matTooltip="{{'FILTER.redHint' | translate}}">
+      info
+    </mat-icon>
   </div>
 </div>
 

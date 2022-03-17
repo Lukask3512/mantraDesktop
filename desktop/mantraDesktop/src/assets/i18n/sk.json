@@ -322,6 +322,7 @@
     "rozdiel": "Rozdiel",
     "vasaPonuka": "Vaša ponuka",
     "zrusitPonuku": "Zrušiť reakciu",
+    "anulovatZrusenie": "Anulovať zrušenie reakcie",
     "ponukniteCenu": "Ponúknite cenu",
     "pridatPonuku": "Zareagovať na prepravu",
     "upravitCenu": "Upraviť cenu",
@@ -368,7 +369,10 @@
     "vyberAuta": "Vyberte vozidlá, pre ktoré chcete zobraziť vhodné ponuky",
     "vsetkyvozidla": "Všetky vozidlá",
     "mestoSpolocnost": "Mesto, spoločnosť",
-    "zadajMestoSpolocnost": "Zadaj mesto/spoločnosť"
+    "zadajMestoSpolocnost": "Zadaj mesto/spoločnosť",
+    "vyhovujuceHint": "Vyhovujúce parametrom zvolených vozidiel",
+    "zlteHint": "S možným prekročením hmotnosti alebo veľkosti nákladu zvolených vozidiel",
+    "redHint": "Ostatné ponuky, ktoré zvoleným parametrom nevyhovujú"
   },
   "MAP": {
     "informacie": "Informácie",
@@ -378,7 +382,7 @@
     "celkovaVzdialenost": "Celková vzdialenosť",
     "vyberVozidlo": "Vyberte vozidlo",
     "ulozeneUlozenieVoVozidlach": "Predbežne uložené prepravy",
-    "viacNezobrazovat": "Viac nezobrazovať",
+    "viacNezobrazovat": "Skryť ponuku",
     "ukazatPonuku": "Ukázať ponuku",
     "mamZaujem": "Mám záujem",
     "nechcemZrusit": "Nechcem zrušiť",

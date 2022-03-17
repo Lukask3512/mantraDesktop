@@ -6,6 +6,7 @@ import {DispecerService} from '../../../../../services/dispecer.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {AddCarDialogComponent} from '../../../../dialogs/add-car-dialog/add-car-dialog.component';
 import {ComapnyContantsDialogComponent} from '../../../../dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-posli-ponuku',
@@ -29,7 +30,7 @@ export class PosliPonukuComponent implements OnInit {
   @Output() offerConfirm = new EventEmitter<string>();
 
   constructor(private dataService: DataService, private offerService: OfferRouteService,
-              private dispecerService: DispecerService, private dialog: MatDialog) { }
+              private dispecerService: DispecerService, private dialog: MatDialog, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     // natiahnem si original offere lebo z mapy mam upravenu
@@ -146,13 +147,15 @@ export class PosliPonukuComponent implements OnInit {
 
   addPriceWithDelay(){
     this.runningInterval = true;
-    setTimeout(() => {
-      this.runningInterval = false;
-      if (this.stopInterval === false){
-        this.addPrice();
-      }
-      this.stopInterval = false;
-    }, 3000);
+      setTimeout(() => {
+        this.runningInterval = false;
+        if (this.stopInterval === false){
+          this.addPrice();
+        }
+        this.stopInterval = false;
+      }, 3000);
+
+
   }
 
   deleteMyPriceIfRunning(){

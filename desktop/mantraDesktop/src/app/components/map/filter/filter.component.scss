@@ -8,27 +8,30 @@
 }
 
 .greenMat{
-  display: inline-block;
+  display: flex;
   padding: 2px;
   border-bottom: 2px solid limegreen;
   border-radius: 4px;
   margin-left: 6px;
+  gap: 2px;
 }
 
 .yellowMat{
-  display: inline-block;
+  display: flex;
   padding: 2px;
   border-bottom: 2px solid orange;
   border-radius: 4px;
   margin-left: 6px;
+  gap: 2px;
 }
 
 .redMat{
-  display: inline-block;
+  display: flex;
   padding: 2px;
   border-bottom: 2px solid red;
   border-radius: 4px;
   margin-left: 6px;
+  gap: 2px;
 }
 
 .okButton{
@@ -79,6 +82,11 @@ input.example-right-align {
 .chooseCar{
   margin-bottom: 5px;
   max-width: 50%;
+}
+
+.greenYelRedWrapper{
+  display: flex;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 1000px) {

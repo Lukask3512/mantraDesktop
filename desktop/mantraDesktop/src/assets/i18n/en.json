@@ -322,6 +322,7 @@
     "rozdiel": "Difference",
     "vasaPonuka": "Your offer",
     "zrusitPonuku": "Cancel",
+    "anulovatZrusenie": "Anulovať zrušenie reakcie",
     "ponukniteCenu": "Offer a price",
     "pridatPonuku": "Express your interest",
     "upravitCenu": "Edit price",
@@ -368,7 +369,10 @@
     "vyberAuta": "Choose vehicles to show their suitable offers",
     "vsetkyvozidla": "All vehicles",
     "mestoSpolocnost": "City, company",
-    "zadajMestoSpolocnost": "Enter city/company"
+    "zadajMestoSpolocnost": "Enter city/company",
+    "vyhovujuceHint": "Vyhovujúce parametrom zvolených vozidiel",
+    "zlteHint": "S možným prekročením hmotnosti alebo veľkosti nákladu zvolených vozidiel",
+    "redHint": "Ostatné ponuky, ktoré zvoleným parametrom nevyhovujú"
   },
   "MAP": {
     "informacie": "Information",
