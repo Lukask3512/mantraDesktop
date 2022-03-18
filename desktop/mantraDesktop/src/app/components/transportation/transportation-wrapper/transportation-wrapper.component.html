@@ -82,7 +82,7 @@
         </div>
         <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
       </div>
-      <div *ngIf="route.carId == null">
+      <div *ngIf="route.carId == null && route.takenBy === this.getDispecerId()">
         <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
       </div>
 

@@ -93,28 +93,28 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
           if (this.route === undefined) {
             this.route = this.fakeRoute;
           }
-          setTimeout(() => {
-              this.dataSource = new MatTableDataSource(this.route.offerFrom);
-              this.dataSource.paginator = this.paginator;
-              setTimeout(() => {
-                this.dataSource.sort = this.sort;
+          // setTimeout(() => {
+          this.dataSource = new MatTableDataSource(this.route.offerFrom);
+          this.dataSource.paginator = this.paginator;
+              // setTimeout(() => {
+          this.dataSource.sort = this.sort;
 
-              }, 1000);
-            }, 1000);
+              // }, 1000);
+            // }, 1000);
 
 
-         this.offerAddUns = this.addressesService.offerAddresses$.subscribe(alAdd => {
+          this.offerAddUns = this.addressesService.offerAddresses$.subscribe(alAdd => {
             let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
             adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
             this.address = adresy;
             // this.childDropList.setAddresses(this.address);
             this.address.forEach(oneAddress => {
-              let myPackages = [];
-              let detailAr = {detailArray: [], townsArray: [], packageId: []};
+              const myPackages = [];
+              const detailAr = {detailArray: [], townsArray: [], packageId: []};
               if (oneAddress){
                 oneAddress.packagesId.forEach(oneId => {
                   if (oneAddress.type === 'nakladka') {
-                    let balik = this.packageService.getOnePackage(oneId);
+                    const balik = this.packageService.getOnePackage(oneId);
                     myPackages.push(balik);
                   } else {
                     // tu by som mal vlozit len indexy do vykladky
@@ -185,7 +185,7 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
       const routeID = this.offerService.getSkontrolovanePonuky().find(route => route === this.route.id);
       if (!routeID && this.route){
         this.offerService.setSkontrolovanePonuky(this.route.id);
-        console.log('zapisujem')
+        console.log('zapisujem');
       }
     }
     }
@@ -220,7 +220,7 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
         if (!this.route.carId){
           resolve(null);
         }
-        let car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
+        const car = this.carService.getAllCars().find(oneCar => oneCar.id === this.route.carId);
         if (!car) {
           this.carService.getCar(this.route.carId).pipe(take(1)).subscribe(oneCar => {
             resolve(oneCar);

@@ -44,11 +44,19 @@ export class PosliPonukuComponent implements OnInit {
       this.route = allRoutes.find(oneOffer => oneOffer.id === this.offerId);
 
       if (this.route && this.route.offerFrom !== undefined){
+        if (this.route.offerFrom.length === 0){
+          this.offer = undefined;
+        }
+        let nasielSom = false;
         this.route.offerFrom.forEach((offer, index) => {
           if (offer === this.getDispecerId()){
             this.offer = this.route.priceFrom[index];
+            nasielSom = true;
           }
         });
+        if (nasielSom === false){
+          this.offer = undefined;
+        }
       }
     });
   }

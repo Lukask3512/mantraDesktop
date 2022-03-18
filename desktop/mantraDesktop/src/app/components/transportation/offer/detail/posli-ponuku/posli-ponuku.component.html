@@ -46,7 +46,7 @@
 
       </ng-template>
     <ng-template #elseUpdate>
-      <button class="pridatPonuku" *ngIf="this.offer.ponuknuteTo === ''"  (click)="addPriceWithDelay()">{{'OFFER.upravitCenu' | translate}}</button>
+      <button class="pridatPonuku" *ngIf="this.offer && this.offer.ponuknuteTo === ''"  (click)="addPriceWithDelay()">{{'OFFER.upravitCenu' | translate}}</button>
     </ng-template>
       <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >{{'OFFER.finalnePrijatie' | translate}}</h2>
       <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>
