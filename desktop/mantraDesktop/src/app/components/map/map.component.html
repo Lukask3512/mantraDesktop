@@ -3,7 +3,7 @@
 
 
   <div #filterElement class="filter">
-    <app-filter (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
+    <app-filter (changeSize)="resizeMap()" (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
   </div>
   <div class="wrapper">
     <div id="map"></div>

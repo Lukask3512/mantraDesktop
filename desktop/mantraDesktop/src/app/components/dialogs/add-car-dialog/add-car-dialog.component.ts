@@ -120,6 +120,7 @@ export class AddCarDialogComponent implements OnInit {
         this.carForm.controls.vodici.setValue(this.data.vodici);
         this.myVodici = this.data.vodici;
 
+        this.carForm.controls.pripojitNaves.setValue(this.data.naves);
 
         this.carForm.controls.minTeplota.setValue(this.data.minTeplota);
         this.carForm.controls.maxTeplota.setValue(this.data.maxTeplota);

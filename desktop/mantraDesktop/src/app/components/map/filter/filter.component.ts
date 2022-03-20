@@ -33,6 +33,7 @@ export class FilterComponent implements OnInit {
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
   @Output() carsToShow = new EventEmitter<any[]>();
+  @Output() changeSize = new EventEmitter<boolean>();
 
   @ViewChild(MatExpansionPanel) mat: MatExpansionPanel;
 
@@ -100,6 +101,10 @@ export class FilterComponent implements OnInit {
       this.filterOffers(true);
       this.mat.open();
     }
+  }
+
+  catchClose(){
+    this.changeSize.emit(true);
   }
 
 }

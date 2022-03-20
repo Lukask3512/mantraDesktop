@@ -1,5 +1,5 @@
 <mat-accordion>
-  <mat-expansion-panel [disabled]="this.fewSecDisable" #mep="matExpansionPanel" (opened)="catchOpen()">
+  <mat-expansion-panel [disabled]="this.fewSecDisable" #mep="matExpansionPanel" (opened)="catchOpen()" (closed)="catchClose()">
 
 <!--<div class="filterWrapper">-->
   <mat-expansion-panel-header>

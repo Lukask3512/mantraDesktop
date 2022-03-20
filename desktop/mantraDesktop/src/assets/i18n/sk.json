@@ -242,7 +242,6 @@
     "prijateSuVPrepravach": "Prijaté ponuky sa nachádzajú v sekcii Prepravy -> Ponuky.",
     "infoVCakarni": "Ponuky ktoré ste prevzali od tretích strán, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Dopravca a tretia strana ako Zadávateľ.",
     "infoVCakarniPreMoje": "Vaše ponuky prevzaté tretími stranami, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Zadávateľ a tretia strana ako Dopravca."
-
   },
 
   "PACKAGES": {
@@ -437,7 +436,6 @@
     "zrusenie2": "súradnice vozidla ",
     "zrusenie3": "súhlasila s návrhom, preprava bola zrušená.",
     "odmiernutie1": "s návrhom nesúhlasila, preprava pokračuje. "
-
   },
   "POPUPS": {
     "nolicence": "Licencia vypršala",

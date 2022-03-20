@@ -1293,12 +1293,17 @@ export class MapComponent implements AfterViewInit {
     const routa = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.addresses.includes(idAdresy));
     const vectorSource = this.vectorLayerAdress.getSource();
     const features = vectorSource.getFeatures();
-    const featuresToShow = [];
-    for (let i = 0; i < features.length; i++) {
-      if (routa.addresses.includes(features[i].get('name'))) {
-        featuresToShow.push(features[i]);
+    let featuresToShow = [];
+    if (routa){
+      for (let i = 0; i < features.length; i++) {
+        if (routa.addresses.includes(features[i].get('name'))) {
+          featuresToShow.push(features[i]);
+        }
       }
+    }else{
+      featuresToShow = features;
     }
+
     if (featuresToShow.length === 1){
       const poloha = featuresToShow[0].getGeometry().getCoordinates();
       this.view.animate({

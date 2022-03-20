@@ -1,5 +1,5 @@
 
-<div *ngIf="address">
+<div *ngIf="this.address">
   <span *ngIf="this.address.type == 'nakladka'" matTooltip="{{'CAR.nakladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaN' | translate}}</span>
   <span *ngIf="this.address.type == 'vykladka'" matTooltip="{{'CAR.vykladka' | translate}}" class="nakaldkaVykladka">{{'OFTEN.skratkaV' | translate}}</span>
   <p class="nameOfTown">{{this.address.nameOfTown}}
