@@ -201,6 +201,12 @@
   left: 10px;
 }
 
+.carsWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .sideButton{
   position: absolute;
   right: 5px;

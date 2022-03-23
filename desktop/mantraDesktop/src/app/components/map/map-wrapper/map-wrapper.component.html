@@ -4,7 +4,10 @@
 
   <div #filterElement class="filter">
     <app-filter (carsToShow)="reDrawOffers($event)" (offersToMap)="this.offersUpdate($event)" (owhichToShow)="offersShow($event)"></app-filter>
-    <app-choose-car-to-map (carEmitter)="whichCarsToShow($event)"></app-choose-car-to-map>
+    <div class="carsWrapper">
+      <app-choose-car-to-map (carEmitter)="whichCarsToShow($event)"></app-choose-car-to-map>
+      <app-other-cars (otherCarsToShow)="otherCarsToShow($event)"></app-other-cars>
+    </div>
   </div>
   <div class="wrapper">
     <div id="mapWrapper" class="mapWrapper">

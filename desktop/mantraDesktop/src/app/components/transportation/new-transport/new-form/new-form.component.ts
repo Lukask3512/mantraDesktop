@@ -18,10 +18,12 @@ export class NewFormComponent implements OnInit {
   address: Address = new Address();
   labelPosition: 'nakladka' | 'vykladka';
 
+  adressOrGps: 'address' | 'gps' = 'address';
+
   casPrichodu: 'rozhoduje' | 'nerozhoduje' | '';
   datumPrichodu: 'rozhoduje' | 'nerozhoduje'| '';
 
-  lastAddedPackage: DeatilAboutAdresses
+  lastAddedPackage: DeatilAboutAdresses;
 
   transportForm = this.fb.group({
     sizeD: ['', Validators.required],
@@ -41,6 +43,15 @@ export class NewFormComponent implements OnInit {
     fromBackSide: [false],
     fromSide: [false],
     fromUpSide: [false],
+  });
+
+  gpsFrom = this.fb.group({
+    lattitude: [''],
+    longtitude: [''],
+  });
+
+  placeNameForm = this.fb.group({
+    placeName: ['', Validators.required],
   });
 
   detailsArray: DeatilAboutAdresses[] = [];
@@ -66,7 +77,7 @@ export class NewFormComponent implements OnInit {
 
   latFromGoogle;
   lonFromGoogle;
-  routeFromGoogle;
+  routeFromGoogle = null;
 
   addressIndexUpdate: number;
 
@@ -94,6 +105,8 @@ export class NewFormComponent implements OnInit {
   @Output() detailOut = new EventEmitter<any>();
   @Output() detailPositionOut = new EventEmitter<any>();
   @Output() adressOutUpdate = new EventEmitter<any>();
+  @Output() actualAddressToMap = new EventEmitter<any>();
+
   constructor(private fb: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
@@ -122,6 +135,14 @@ export class NewFormComponent implements OnInit {
     document.getElementById('vahaText').setAttribute('value', this.transportForm.get('weight').value + 't');
   }
 
+  onSearchChange(){
+    const lat = this.gpsFrom.get('longtitude').value;
+    const lon = this.gpsFrom.get('lattitude').value;
+    if (lat && lon){
+      this.actualAddressToMap.emit({lat, lon});
+    }
+  }
+
   // ci mozem pridat dalsiu adresu
   checkIfCanAddNextAdress(update: boolean){
     // if (this.addressIndexUpdate){
@@ -130,6 +151,21 @@ export class NewFormComponent implements OnInit {
     //   }
     // }
     if (this.datumPrichodu !== 'rozhoduje' && this.datumPrichodu !== 'nerozhoduje'){
+      return true;
+    }
+    if (this.adressOrGps === 'gps'){
+      this.gpsFrom.get('lattitude').setValidators([Validators.required]);
+      this.gpsFrom.get('longtitude').setValidators([Validators.required]);
+      this.gpsFrom.get('lattitude').updateValueAndValidity();
+      this.gpsFrom.get('longtitude').updateValueAndValidity();
+    }else{
+      this.gpsFrom.get('lattitude').clearValidators();
+      this.gpsFrom.get('longtitude').clearValidators();
+      if (!this.routeFromGoogle || this.routeFromGoogle === '') {
+      return true;
+      }
+    }
+    if (!this.gpsFrom.valid || !this.placeNameForm.valid){
       return true;
     }
     if (this.datumPrichodu === 'rozhoduje'){
@@ -165,12 +201,12 @@ export class NewFormComponent implements OnInit {
         }
       }
     }
-    if (this.labelPosition == 'nakladka') {
+    if (this.labelPosition === 'nakladka') {
 
-      if (this.detailsArray != undefined) {
-        if (this.transportForm.valid && this.detailsArray.length == this.numberOfItems && this.labelPosition) {
+      if (this.detailsArray !== undefined) {
+        if (this.transportForm.valid && this.detailsArray.length === this.numberOfItems && this.labelPosition) {
           return false;
-        } else if (this.transportForm.valid && this.actualItemInForm + 1 == this.numberOfItems && this.labelPosition) { // ak som na poslednom
+        } else if (this.transportForm.valid && this.actualItemInForm + 1 === this.numberOfItems && this.labelPosition) { // ak som na poslednom
           return false;
         } else {
           return true;
@@ -181,12 +217,12 @@ export class NewFormComponent implements OnInit {
         return true;
       }
 
-    }else if (this.labelPosition == 'vykladka'){
-      if (this.detailsArray != undefined  && this.transportForm.get('sizeS').value > 0 &&
-        (this.detailsArray.length == this.numberOfItems || this.actualItemInForm + 1 == this.numberOfItems)){
+    }else if (this.labelPosition === 'vykladka'){
+      if (this.detailsArray !== undefined  && this.transportForm.get('sizeS').value > 0 &&
+        (this.detailsArray.length === this.numberOfItems || this.actualItemInForm + 1 === this.numberOfItems)){
         return false;
       }
-      else if (this.detailsArray == undefined && this.transportForm.get('sizeS').value > 0 && this.numberOfItems == 1){
+      else if (this.detailsArray === undefined && this.transportForm.get('sizeS').value > 0 && this.numberOfItems === 1){
         return false;
       }else{
         return true;
@@ -232,8 +268,7 @@ export class NewFormComponent implements OnInit {
   }
   getLon(lon){
     this.lonFromGoogle = lon;
-    // this.routesLon.push(lon);
-    // this.child.notifyMe(this.routesLat, this.routesLon, null);
+    this.actualAddressToMap.emit({lon: this.lonFromGoogle, lat: this.latFromGoogle});
   }
 
   checkFinished(){
@@ -241,7 +276,7 @@ export class NewFormComponent implements OnInit {
   }
 
   checkCompletedForDate(){
-    if (this.routeFromGoogle && this.latFromGoogle){
+    if (((this.routeFromGoogle && this.latFromGoogle) || this.gpsFrom.valid) && this.placeNameForm.valid){
       return true;
     }else{
       return false;
@@ -297,10 +332,16 @@ export class NewFormComponent implements OnInit {
     this.address.adr = this.specForm.get('adr').value;
     this.address.ruka = this.specForm.get('ruka').value;
 
-
+    this.address.nameOfCompany = this.placeNameForm.get('placeName').value;
     this.address.nameOfTown = this.routeFromGoogle;
-    this.address.coordinatesOfTownsLon = this.lonFromGoogle;
-    this.address.coordinatesOfTownsLat = this.latFromGoogle;
+    if (this.adressOrGps === 'address'){
+      this.address.coordinatesOfTownsLon = this.lonFromGoogle;
+      this.address.coordinatesOfTownsLat = this.latFromGoogle;
+    }else{
+      this.address.coordinatesOfTownsLon = this.gpsFrom.get('lattitude').value;
+      this.address.coordinatesOfTownsLat = this.gpsFrom.get('longtitude').value;
+    }
+
     this.address.type = this.labelPosition;
     this.address.aboutRoute = this.infoAboutRoute;
     this.infoAboutRoute = '';
@@ -319,7 +360,9 @@ export class NewFormComponent implements OnInit {
     this.detailsArray = [];
     this.townIndex = [];
     this.detailIndex = [];
-    this.childGoogle.resetGoogle();
+    if (this.childGoogle){
+      this.childGoogle.resetGoogle();
+    }
     this.labelPosition = undefined;
 
 
@@ -335,6 +378,8 @@ export class NewFormComponent implements OnInit {
     this.routeFromGoogle = null;
     this.latFromGoogle = null;
     this.lonFromGoogle = null;
+    this.placeNameForm.reset();
+
     this.dataService.setActualDetailsInAddress(null);
     this.closeAllAndOpenFirst();
   }
@@ -672,6 +717,7 @@ export class NewFormComponent implements OnInit {
       this.casPrichodu = '';
       this.datumPrichodu = '';
       this.dateRange.controls.obsluznyCas.setValue(1);
+      this.gpsFrom.reset();
     }
   }
 

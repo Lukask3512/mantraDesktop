@@ -70,6 +70,7 @@ export class MapComponent implements AfterViewInit {
   map;
   vectorLayerAdress = new VectorLayer();
   vectorLayerCars = new VectorLayer();
+  vectorLayerOtherCars = new VectorLayer();
   vectorLayerOffersGreen = new VectorLayer();
   vectorLayerOffersRed = new VectorLayer();
   vectorLayerOffersYellow = new VectorLayer();
@@ -182,6 +183,9 @@ export class MapComponent implements AfterViewInit {
   carVectorSource: VectorSource;
   carClusterSource: Cluster;
 
+  otherCarVectorSource: VectorSource;
+  otherCarClusterSource: Cluster;
+
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
 
@@ -243,10 +247,19 @@ export class MapComponent implements AfterViewInit {
         this.carVectorSource = new VectorSource({
         });
 
+        this.otherCarVectorSource = new VectorSource({
+        });
+
         this.carClusterSource = new Cluster({
           distance: 40,
           minDistance: 20,
           source: this.carVectorSource,
+        });
+
+        this.otherCarClusterSource = new Cluster({
+          distance: 40,
+          minDistance: 20,
+          source: this.otherCarVectorSource,
         });
 
         this.overlay = new Overlay({
@@ -307,7 +320,6 @@ export class MapComponent implements AfterViewInit {
 
           if (feature) {
             const type = feature.get('type');
-            console.log(feature.get('features'))
             if (feature.get('features')){
               if (feature.get('features')[0].get('type') === 'car'){
                 if (feature.get('features').length === 1){ // ak som klikol na 1 auto
@@ -340,6 +352,9 @@ export class MapComponent implements AfterViewInit {
                   this.overlayOffer.setPosition(coordinate);
                   this.chooseOfferPoUp.setOffers(feature.get('features'));
                 }
+              }
+              if (feature.get('features')[0].get('type') === 'otherCar'){
+                // console.log('ostatne');
               }
             }else{ // ked to nie je cluster - ciary medzdi ponukami
               if (feature.get('type') === 'offer'){
@@ -624,7 +639,7 @@ export class MapComponent implements AfterViewInit {
       iconFeature.setStyle(iconStyle);
       this.places.push(iconFeature);
     });
-
+    this.zoomToAddressInRouteAndCar(this.places);
     if (!this.addressVectorSource){
       this.addressVectorSource = new VectorSource({
         // features: [this.places]
@@ -1143,6 +1158,156 @@ export class MapComponent implements AfterViewInit {
     //   this.vectorSourcePreTrasy.clear();
     //   this.addressVectorSource.clear();
     // }
+  }
+
+  otherCarsToShow(car: Cars[]){
+    if (!car){
+      if (this.map && this.vectorLayerOtherCars){
+        this.map.removeLayer(this.vectorLayerOtherCars);
+      }
+      return;
+    }
+    if (!this.map){
+      setTimeout(() => {
+        this.otherCarsToShow(car);
+      }, 200);
+      return;
+    }
+
+    const otherCarsFeature = [];
+
+    if (car !== undefined){
+      for (let i = 0; i < car.length; i++){
+
+
+        if (car[i].lattitude !== undefined){
+
+          const carFeature = new Feature({
+            geometry: new Point(fromLonLat([car[i].longtitude, car[i].lattitude])),
+            name: car[i].id,
+            type: 'otherCar'
+          });
+          otherCarsFeature.push(carFeature);
+        }
+      }
+
+
+
+    }
+
+    // this.map.removeLayer(this.vectorLayerCars);
+    if (this.otherCarVectorSource){
+      this.otherCarVectorSource.clear();
+    }
+    this.otherCarVectorSource.addFeatures(otherCarsFeature);
+
+
+
+    if (this.cars && this.cars.length > 0){
+
+
+
+      const styleCache = {};
+      if (this.map && this.vectorLayerOtherCars){
+        this.map.removeLayer(this.vectorLayerOtherCars);
+      }
+      this.vectorLayerOtherCars = new VectorLayer({
+        source: this.otherCarClusterSource,
+        style: (feature) => {
+          const size = feature.get('features').length;
+          let style = styleCache[size];
+          if (!style){
+            if (size > 1) {
+              style = new Style({
+                image: new Icon({
+                  color: '#8959A8',
+                  crossOrigin: 'anonymous',
+                  src: 'assets/logo/truck.png',
+                  scale: 0.05
+                }),
+                text: new Text({
+                  text: size.toString(),
+                  fill: new Fill({
+                    color: '#fff',
+                  }),
+                }),
+              });
+              styleCache[size] = style;
+            }else{
+                style = new Style({
+                  image: new Icon({
+                    color: '#8959A8',
+                    crossOrigin: 'anonymous',
+                    src: 'assets/logo/truck.png',
+                    scale: 0.05
+                  }),
+                });
+                styleCache[size] = style;
+            }
+          }
+
+          return style;
+        },
+      });
+
+      this.vectorLayerOtherCars.setZIndex(3);
+
+      this.map.addLayer(this.vectorLayerOtherCars);
+
+    }
+
+  }
+
+  zoomToCarAndIti(carFeatureFrom){
+    const carFeature = carFeatureFrom;
+    const idAuta = carFeatureFrom.get('name');
+    const vozidlo: Cars = this.carsFromDatabase.find(allCars => allCars.id === idAuta);
+    const vectorSource = this.vectorLayerAdress.getSource();
+    const features = vectorSource.getFeatures();
+    const featuresToShow = [];
+    featuresToShow.push(carFeature);
+    for (let i = 0; i < features.length; i++) {
+      if (vozidlo.itinerar.includes(features[i].get('name'))) {
+        featuresToShow.push(features[i]);
+      }
+    }
+    if (featuresToShow.length === 1){
+      const poloha = featuresToShow[0].getGeometry().getCoordinates();
+      this.view.animate({
+        center: poloha,
+        duration: 500,
+        zoom: 15
+      });
+    }else{
+      const vectorSourceToZoom = new VectorSource({
+        features: featuresToShow
+      });
+      this.view.fit(vectorSourceToZoom.getExtent(), {
+        padding: [80, 80, 80, 80],
+        duration: 800
+      });
+    }
+  }
+
+  zoomToAddressInRouteAndCar(addressesFeature){
+    const features =  addressesFeature;
+
+      const vectorSourceToZoom = new VectorSource({
+        features: features
+      });
+      this.view.fit(vectorSourceToZoom.getExtent(), {
+        padding: [80, 80, 80, 80],
+        duration: 800
+      });
+  }
+
+  zoomToRoute(address){
+    const celaCesta = address.getGeometry().getExtent();
+
+    this.view.fit(celaCesta, {padding: [80, 80, 80, 80],
+      minResolution: 50,
+      duration: 800} );
+
   }
 
 }

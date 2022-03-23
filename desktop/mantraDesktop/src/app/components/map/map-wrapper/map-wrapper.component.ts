@@ -496,7 +496,11 @@ export class MapWrapperComponent implements AfterViewInit {
     this.mapComponent.whichCarsToShow(cars);
   }
 
-  closeInfo(){
+  otherCarsToShow(cars) {
+    this.mapComponent.otherCarsToShow(cars);
+  }
+
+    closeInfo(){
     this.closeAll();
     this.showAddressesByRoute(null);
     document.getElementById('mapWrapper').style.width = '100%';

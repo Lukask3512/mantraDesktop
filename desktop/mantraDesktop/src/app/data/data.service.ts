@@ -110,7 +110,7 @@ export class DataService {
     this.loggedDispecer = dispecer;
   }
 
-  getDispecer(){
+  getDispecer(): Dispecer{
     return this.loggedDispecer;
   }
 

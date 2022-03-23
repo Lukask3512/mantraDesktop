@@ -843,4 +843,11 @@ else{
       }
     });
   }
+
+  getActualAddressTomap(coordinates){
+    const lat = coordinates.lat;
+    const lon = coordinates.lon;
+    this.child.addActualAddress(lon, lat);
+
+  }
 }

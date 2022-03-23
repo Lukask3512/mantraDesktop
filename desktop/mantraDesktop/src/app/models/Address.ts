@@ -3,6 +3,7 @@ export default class Address {
   carId?: string;
   createdBy?: string;
   nameOfTown: string; // nazov mesta
+  nameOfCompany: string; // nazov mesta
   coordinatesOfTownsLat: string;
   coordinatesOfTownsLon: string;
   type: string; // nakladka vykladka V/N

@@ -4,11 +4,41 @@
   <mat-vertical-stepper linear #stepper>
     <mat-step [completed]="checkCompletedForDate()">
       <ng-template matStepLabel> {{'NEWADDRESSFORM.vyberMestoATyp' | translate}}</ng-template>
-      <div class="velkosti">
-        <app-adresses #childGoogle *ngIf="checkFinished()"  (placeName)="getAdress($event)"
+      <header class="velkosti">
+        <h3>Nazov miesta na dorucenie (spolocnost, obchod...)</h3>
+        <form [formGroup]="placeNameForm">
+          <mat-form-field appearance="standard" class="sizeInput">
+            <mat-label>Nazov</mat-label>
+            <input type="text" formControlName="placeName" matInput placeholder="Nazov....">
+          </mat-form-field>
+        </form>
+
+      </header>
+      <section class="velkosti2">
+        <mat-radio-group (change)="formUpdate()"  class="radioButtons" [(ngModel)]="adressOrGps">
+          <mat-radio-button class="radios" value="address">Adresa</mat-radio-button>
+          <mat-radio-button class="radios" value="gps">GPS</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <div *ngIf="checkFinished()" class="velkosti">
+        <app-adresses #childGoogle *ngIf="adressOrGps === 'address'"  (placeName)="getAdress($event)"
                       (placeLat)="getLat($event)"
                       (placeLon)="getLon($event)">
         </app-adresses>
+
+
+        <form *ngIf="adressOrGps === 'gps'" [formGroup]="gpsFrom">
+          <mat-form-field appearance="standard" class="sizeInput">
+            <mat-label>Zem sirka</mat-label>
+            <input type="number"  step="0.1" (input)="onSearchChange()" formControlName="lattitude" matInput placeholder="Zem sirka....">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" class="sizeInput">
+            <mat-label>Zem dlzka</mat-label>
+            <input type="number"  step="0.1" (input)="onSearchChange()" formControlName="longtitude" matInput placeholder="Zem dlzka....">
+          </mat-form-field>
+        </form>
+
       </div>
 
       <div class="velkosti2">

@@ -43,6 +43,7 @@ import {RouteCoordinatesService} from '../../../../services/route/route-coordina
 export class OpenlayerComponent implements AfterViewInit, OnDestroy{
   map;
   vectorLayer = new VectorLayer();
+  vectorLayerNew = new VectorLayer();
   vectorLayerRoute = new VectorLayer();
 
   // vectorLayer;
@@ -73,6 +74,7 @@ export class OpenlayerComponent implements AfterViewInit, OnDestroy{
   routeSubs: Subscription;
 
   vectorSource: VectorSource;
+  vectorSourceNew: VectorSource;
 
   @ViewChild('mapContainer') elWrapper: ElementRef;
 
@@ -152,6 +154,52 @@ export class OpenlayerComponent implements AfterViewInit, OnDestroy{
       }, 200);
   }
 
+  addActualAddress(lon, lat){
+    const iconFeature = new Feature({
+      geometry: new Point(fromLonLat([lon, lat])),
+      name: 'place'
+    });
+
+    const iconStyle = new Style({
+      image: new CircleStyle({
+        radius: 8,
+        stroke: new Stroke({
+          color: '#fff'
+        }),
+        fill: new Fill({
+          color: '#00FF00'
+        }),
+      }),
+      // text: new Text({
+      //   text: 'New',
+      //   fill: new Fill({
+      //     color: '#fff',
+      //   }),
+      // }),
+    });
+    iconFeature.setStyle(iconStyle);
+    this.vectorSourceNew = new VectorSource({
+      features: [iconFeature],
+    });
+
+    if (this.map && this.vectorSourceNew){
+      this.map.removeLayer(this.vectorLayerNew);
+    }
+
+
+    this.vectorLayerNew = new VectorLayer({
+      source: this.vectorSourceNew,
+    });
+    this.vectorLayerNew.setZIndex(2);
+    this.map.addLayer(this.vectorLayerNew);
+    const poloha = this.vectorSourceNew.getFeatures()[0].getGeometry().getCoordinates();
+    this.view.animate({
+      center: poloha,
+      duration: 500,
+      zoom: 15
+    });
+  }
+
   addRoute(car){
     if (car && car.id){
       this.routeSubs = this.routeCoordinates.getRoute(car.id).subscribe((nasolSom) => {
@@ -225,6 +273,9 @@ export class OpenlayerComponent implements AfterViewInit, OnDestroy{
   }
 
   addMarker(addresses: Address[], car){
+    if (this.map && this.vectorSourceNew){
+      this.map.removeLayer(this.vectorLayerNew);
+    }
     this.places = [];
 
     if (this.coordinatesFeature != null || this.coordinatesFeature !== undefined){
