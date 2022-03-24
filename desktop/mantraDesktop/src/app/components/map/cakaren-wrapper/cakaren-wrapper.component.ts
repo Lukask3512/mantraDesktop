@@ -45,15 +45,18 @@ export class CakarenWrapperComponent implements OnInit {
   whatIsActive = 1;
   ngOnInit(): void {
     this.offerService.routes$.subscribe(routes => {
-      this.routes = routes.filter(oneRoute => oneRoute.finished === false);
-
-      this.finishedRoutes = routes.filter(oneRoute => oneRoute.finished === true);
+      this.routes = routes.filter(oneRoute => oneRoute.finished === false && oneRoute.takenBy === '');
       this.reClickOnTab();
     });
   }
 
   filterTowns(text){
-    const zFiltra = text.target.value.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    let zFiltra;
+    if (text.target){
+      zFiltra = text.target.value.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    }else{
+      zFiltra = text.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    }
     const routyNaZombrazenie = [];
     let adresy;
 
@@ -89,6 +92,11 @@ export class CakarenWrapperComponent implements OnInit {
       this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.offerFrom.includes(this.getDispecerId()) && !oneRoute.finished));
       this.routesToShow = this.routesToShow.filter(oneRoute => routyNaZombrazenie.find(oneRouteToShow => oneRouteToShow.id === oneRoute.id));
     }
+  }
+
+  clearFilter(){
+    this.inputFilter.nativeElement.value = '';
+    this.filterTowns('');
   }
 
   routeDetail(route){
@@ -146,21 +154,22 @@ export class CakarenWrapperComponent implements OnInit {
 
   // ked sa mi updatnu routy aby ma neprekliklo na iny tab
   reClickOnTab(){
-    if (this.whatIsActive === 0){
-      this.allActive();
-    }else if (this.whatIsActive === 1){
+    // if (this.whatIsActive === 0){
+    //   this.allActive();
+    // }else
+      if (this.whatIsActive === 1){
       this.mine();
     }else if (this.whatIsActive === 2){
       this.assigned();
     }
   }
 
-  allActive(){
-    this.finishedRoutesToShow = null;
-    this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
-      && oneRoute.createdBy !== this.getDispecerId());
-    this.whatIsActive = 0;
-  }
+  // allActive(){
+  //   this.finishedRoutesToShow = null;
+  //   this.routesToShow = this.routes.filter(oneRoute => oneRoute.takenBy === '' && !oneRoute.offerFrom.includes(this.getDispecerId())
+  //     && oneRoute.createdBy !== this.getDispecerId());
+  //   this.whatIsActive = 0;
+  // }
   mine(){
     this.routesToShow = this.routes.filter(oneRoute => (oneRoute.takenBy === '' && oneRoute.createdBy === this.getDispecerId() && !oneRoute.finished));
     this.whatIsActive = 1;

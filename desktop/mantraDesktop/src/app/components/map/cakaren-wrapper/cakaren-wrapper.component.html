@@ -10,6 +10,9 @@
     <mat-form-field  appearance="standard" class="gridItem">
       <mat-label>{{'FILTER.filter' | translate}}</mat-label>
       <input #inputFilter (input)="filterTowns($event)" matInput placeholder="{{'FILTER.mestoSpolocnost' | translate}}...">
+      <button *ngIf="inputFilter.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-hint>{{'FILTER.zadajMestoSpolocnost' | translate}}</mat-hint>
     </mat-form-field>
   </section>

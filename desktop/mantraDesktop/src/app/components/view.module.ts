@@ -98,6 +98,7 @@ import { OfferCreatorDetailComponent } from './map/offer-creator-detail/offer-cr
 import { MyRouteDetailComponent } from './map/my-route-detail/my-route-detail.component';
 import { MyOfferDetailComponent } from './map/my-offer-detail/my-offer-detail.component';
 import { OtherCarsComponent } from './map/other-cars/other-cars.component';
+import {MatButtonModule} from '@angular/material/button';
 
 
 
@@ -161,30 +162,31 @@ import { OtherCarsComponent } from './map/other-cars/other-cars.component';
         MyOfferDetailComponent,
         OtherCarsComponent
     ],
-  imports: [
-    CommonModule,
-    ViewRoutingModule,
-    MatTableModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MatStepperModule,
-    DragDropModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatSortModule,
-    MatExpansionModule,
-    CommonModule,
-    MatDialogModule,
-    MatIconModule,
-    TranslateModule,
-    MatPaginatorModule,
-    NgxSpinnerModule,
-  ],
+    imports: [
+        CommonModule,
+        ViewRoutingModule,
+        MatTableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatStepperModule,
+        DragDropModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatDatepickerModule,
+        MatSortModule,
+        MatExpansionModule,
+        CommonModule,
+        MatDialogModule,
+        MatIconModule,
+        TranslateModule,
+        MatPaginatorModule,
+        NgxSpinnerModule,
+        MatButtonModule,
+    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ViewModule { }

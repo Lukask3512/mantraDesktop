@@ -70,7 +70,12 @@ export class TransportWrapperComponent implements OnInit {
   }
 
   filterTowns(text){
-    const zFiltra = text.target.value.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    let zFiltra;
+    if (text.target){
+      zFiltra = text.target.value.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    }else{
+      zFiltra = text.replace(/[^a-zA-Z ]/g, '').toLowerCase();
+    }
     const routyNaZombrazenie = [];
     let adresy;
     if (this.active){
@@ -110,6 +115,11 @@ export class TransportWrapperComponent implements OnInit {
     }else{
       this.routesToShowOffers = adresy.filter(oneRoute => routyNaZombrazenie.find(oneRouteToShow => oneRouteToShow.id === oneRoute.id));
     }
+  }
+
+  clearFilter(){
+    this.inputFilter.nativeElement.value = '';
+    this.filterTowns('');
   }
 
   routeDetail(route: Route){
