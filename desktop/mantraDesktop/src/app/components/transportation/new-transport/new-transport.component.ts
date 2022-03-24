@@ -136,7 +136,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
     setTimeout(() => { // pre exoressionchanged error...
     const loggedDispecer = this.dataService.getDispecer();
     let dispecerId;
-    if (loggedDispecer.createdBy == 'master'){
+    if (loggedDispecer.createdBy === 'master'){
       dispecerId = loggedDispecer.id;
     }else {
       dispecerId = loggedDispecer.createdBy;
@@ -213,7 +213,9 @@ export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
 
           setTimeout(() =>
             {
-              this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+              if (this.mainDetailAboutComponent){
+                this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+              }
             },
             300);
 
@@ -368,7 +370,7 @@ else{
     }
     const dialogConfig = new MatDialogConfig();
 
-    if (this.route.id == undefined){
+    if (this.route.id === undefined){
       dialogConfig.data = {
         carId: this.carId,
         addresses: this.addresses,
@@ -378,7 +380,7 @@ else{
       };
     }
 
-    else if (this.route.id == null) {
+    else if (this.route.id === null) {
       dialogConfig.data = {
         carId: this.carId,
         addresses: this.addresses,
@@ -443,7 +445,7 @@ else{
       console.log(value);
       if (value === undefined){
         return;
-      }else if (value.event == true) {
+      }else if (value.event === true) {
         console.log(value.carId);
         this.carId = value.carId;
         this.change = false;
@@ -492,7 +494,7 @@ else{
   checkFinished(){
     if (this.route !== undefined && this.route.finished){
       return false;
-    }else if (this.route == undefined){
+    }else if (this.route === undefined){
       return true;
     }else {
       return true;
@@ -524,6 +526,9 @@ else{
   openOfferDialog() {
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '23em';
+    dialogConfig.data = {
+      changePrice: false
+    };
     const dialogRef = this.dialog.open(OfferPriceComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){
@@ -542,7 +547,7 @@ else{
     for (const [idTown, oneDetail] of this.detail.entries()) {
       if (oneDetail.townsArray !== undefined){
         for (const [idDetail, onePackage] of oneDetail.townsArray.entries()) {
-          if (oneDetail.townsArray[idDetail] == townId && oneDetail.detailArray[idDetail] == detailId){
+          if (oneDetail.townsArray[idDetail] === townId && oneDetail.detailArray[idDetail] === detailId){
             return {idTown, idDetail};
           }
         }
@@ -554,7 +559,7 @@ else{
 
     const carItinerarAddresses: Address[] = [];
     for (const [idTown, oneDetail] of this.detail.entries()) {
-      if (oneDetail.townsArray == undefined){
+      if (oneDetail.townsArray === undefined){
         for (const [idPackage, onePackage] of oneDetail.entries()) {
           const packageId = this.packageService.createPackageWithId(onePackage);
 
@@ -619,7 +624,17 @@ else{
 
   getNewRoute(idRouty){
     setTimeout(() => {
-      this.route = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.id === idRouty);
+      this.routeService.routes$.subscribe(allRoutes => {
+        // this.route = allRoutes.find(oneRoute => oneRoute.id === idRouty);
+        const myRoute = allRoutes.find(oneRoute => oneRoute.id === idRouty);
+        if (myRoute){
+          this.route = myRoute;
+        }else{
+          this.routeService.finishedRoutes$.subscribe(allFinished => {
+            this.route = allFinished.find(oneRoute => oneRoute.id === idRouty);
+          });
+        }
+      });
       if (!this.route){
         setTimeout(() => {
           this.getNewRoute(idRouty);
@@ -641,7 +656,9 @@ else{
 
         setTimeout(() =>
           {
-            this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+            if (this.mainDetailAboutComponent){
+              this.mainDetailAboutComponent.setRoute(this.routeToDetail);
+            }
           },
           300);
 
@@ -656,9 +673,7 @@ else{
 
   cancelFromCarDialog(){
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-
-    }
+    // dialogConfig.width = '23em';
     const dialogRef = this.dialog.open(CancelRouteFromCarDialogComponent);
     dialogRef.afterClosed().subscribe(value => {
       if (value === undefined){

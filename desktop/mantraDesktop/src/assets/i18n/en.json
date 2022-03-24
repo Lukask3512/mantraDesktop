@@ -82,7 +82,8 @@
     "pristupKuVozidlam": "Access to vehicles",
     "pristupKuVsetkymVozidlam": "Access to all vehicles",
     "pristupKuPrivesom": "Access to trailers",
-    "pristupKuVsetkymPrivesom": "Access to all trailers"
+    "pristupKuVsetkymPrivesom": "Access to all trailers",
+    "pridatDispecera": "Add a dispatcher"
   },
   "CAR": {
     "car": "Vehicle",
@@ -135,7 +136,7 @@
     "sirkaNakOtvoru": "Loading opening width",
     "dlzkaNakOtvoru": "Loading opening length",
 
-    "navesASpecRezimy": "Trailer + special requirements",
+    "navesASpecRezimy": "Special requirements",
     "moznostPripojitNaves": "Able to attach trailer",
     "teplotnyRezim": "Set temperature mode",
     "minTeplota": "Minimum temperature",
@@ -157,19 +158,23 @@
     "udajeO": "Driver's info",
     "pristupKVozidlam": "Access to vehicles",
     "pristupKuVsetkymVozidlam": "Access to all vehicles",
-    "pridatMoze": "You are not authorized to add a driver."
+    "pridatMoze": "You are not authorized to add a driver.",
+    "pridatVodica": "Add a driver"
 
   },
   "PRIVES": {
     "prives": "Trailer",
     "addPrives": "Add a trailer",
+    "updatePrives": "Edit a trailer",
     "pripojitPrives": "Attach a trailer",
     "size": "Parameters",
     "sizeOfPrives": "Trailer's size",
     "vahaPrivesu": "Trailer's weight",
     "nostnost": "Trailer's load capacity",
-    "odpojeniezVozidla": "Are you sure you want to detach the trailer from the vehicle?"
-
+    "odpojeniezVozidla": "Are you sure you want to detach the trailer from the vehicle?",
+    "vyskaPrivesu": "Trailer's height",
+    "sirkaPrivesu": "Trailer's width",
+    "dlzkaPrivesu": "Trailer's length"
   },
   "COMPANIES": {
     "comapnies": "Companies",
@@ -201,7 +206,6 @@
     "maxDispecerov": "Max. dispatchers",
     "maxJazdcov": "Max. drivers",
     "emailMaster": "Master account e-mail has been changed. The original Master account will lose its rights and the new e-mail will be assigned as a Master account."
-
   },
 
   "HINT": {
@@ -228,13 +232,16 @@
     "deleteDispecer": "Are you sure you want to delete this dispatcher",
     "deleteDriver": "Are you sure you want to delete driver",
     "deleteRoute": "Are you sure you want to delete this route?",
+    "deleteOffer": "Are you sure you want to delete this offer?",
+    "deletePrives": "Are you sure you want to delete trailer",
     "max": "max",
     "min": "min",
     "teplota": "Temperature",
     "prevozRizikovehoTovaru": "Transport of dangerous goods (ADR)",
     "skratkaKs": "pcs",
-    "prijateSuVPrepravach": "Accepted offers are displayed in Transports -> Offers."
-
+    "prijateSuVPrepravach": "Accepted offers are displayed in Transports -> Offers.",
+    "infoVCakarni": "Offers you accepted from third parties are displayed in Transports -> Transports from marketplace. You are the Transporter and the third party is the Customer.",
+    "infoVCakarniPreMoje": "Your offers, accepted by third parties, are displayed in Transports -> Transports from marketplace. You are the Customer and the third party is the Transporter."
   },
 
   "PACKAGES": {
@@ -314,6 +321,7 @@
     "rozdiel": "Difference",
     "vasaPonuka": "Your offer",
     "zrusitPonuku": "Cancel",
+    "anulovatZrusenie": "Revoke reaction cancellation",
     "ponukniteCenu": "Offer a price",
     "pridatPonuku": "Express your interest",
     "upravitCenu": "Edit price",
@@ -360,7 +368,10 @@
     "vyberAuta": "Choose vehicles to show their suitable offers",
     "vsetkyvozidla": "All vehicles",
     "mestoSpolocnost": "City, company",
-    "zadajMestoSpolocnost": "Enter city/company"
+    "zadajMestoSpolocnost": "Enter city/company",
+    "vyhovujuceHint": "Meeting the parameters of selected vehicles",
+    "zlteHint": "Cargo weight or size excess within parameters set for selected vehicles",
+    "redHint": "Other offers, not meeting your parameters"
   },
   "MAP": {
     "informacie": "Information",

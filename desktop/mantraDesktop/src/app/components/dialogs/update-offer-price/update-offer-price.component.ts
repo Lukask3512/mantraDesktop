@@ -12,4 +12,6 @@ export class UpdateOfferPriceComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+
 }

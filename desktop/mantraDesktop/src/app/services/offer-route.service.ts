@@ -29,6 +29,11 @@ export class OfferRouteService {
 
   // neukazovat pri kazdej zmene ten isty dialog
   dialogForRouteShown = [];
+
+  // neukazovat pri kazdej zmene ten isty dialog
+  dialogForRouteShownCancel = [];
+
+
   constructor(private afs: AngularFirestore, private dataService: DataService, private _snackBar: MatSnackBar,
               private router: Router,  private translate: TranslateService, private oneCompanyService: GetOneCompanyService) {
     this.routesCollection = this.afs.collection<any>('route');
@@ -69,23 +74,30 @@ export class OfferRouteService {
 
         }
         // ked chce tvorca zrusit ponuku
-        if (!oneRoute.dontWannaCancel && oneRoute.cancelByCreator && oneRoute.createdBy !== this.dataService.getMyIdOrMaster() && !oneRoute.cancelByDriver){
-          this.oneCompanyService.getCompanyName(oneRoute.createdBy).then((company) => {
-            setTimeout(() => {
-              this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit'),
-                this.translate.instant('OFTEN.skontrolovat'), oneRoute);
-            }, 9000);
-          });
+        if (!this.aldreadyThereForDecline(oneRoute.id)){
+          if (!oneRoute.dontWannaCancel && oneRoute.cancelByCreator && oneRoute.createdBy !== this.dataService.getMyIdOrMaster() && !oneRoute.cancelByDriver){
+            this.oneCompanyService.getCompanyName(oneRoute.createdBy).then((company) => {
+              this.dialogForRouteShownCancel.push(oneRoute.id);
+              setTimeout(() => {
+                this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit'),
+                  this.translate.instant('OFTEN.skontrolovat'), oneRoute);
+              }, 9000);
+            });
+          }
         }
 
         // ked chce prepravca zrusit ponuku
-        if (!oneRoute.dontWannaCancel && oneRoute.cancelByDriver && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && !oneRoute.cancelByCreator){
-          this.oneCompanyService.getCompanyName(oneRoute.takenBy).then((company) => {
-            setTimeout(() => {
-              this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit')
-                , this.translate.instant('OFTEN.skontrolovat'), oneRoute);
-            }, 9000);
-          });
+        if (!this.aldreadyThereForDecline(oneRoute.id)) {
+          if (!oneRoute.dontWannaCancel && oneRoute.cancelByDriver && oneRoute.createdBy === this.dataService.getMyIdOrMaster() && !oneRoute.cancelByCreator) {
+            this.oneCompanyService.getCompanyName(oneRoute.takenBy).then((company) => {
+              this.dialogForRouteShownCancel.push(oneRoute.id);
+
+              setTimeout(() => {
+                this.openSnackBar(company.name + ' ' + this.translate.instant('OFFER.spolocnostChceZrusit')
+                  , this.translate.instant('OFTEN.skontrolovat'), oneRoute);
+              }, 9000);
+            });
+          }
         }
 
       });
@@ -118,6 +130,15 @@ export class OfferRouteService {
   // uz sa nachadza v poli, aby dialog stale nevcyskakoval
   aldreadyThere(routeId){
     if (this.dialogForRouteShown.find(oneId => oneId === routeId)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  // uz sa nachadza v poli, aby dialog stale nevcyskakoval
+  aldreadyThereForDecline(routeId){
+    if (this.dialogForRouteShownCancel.find(oneId => oneId === routeId)){
       return true;
     }else{
       return false;
@@ -164,7 +185,7 @@ export class OfferRouteService {
 
   openSnackBar(message: string, action: string, route: Route) {
     const snackBarRef = this._snackBar.open(message, action, {
-      duration: 8000
+
     });
     snackBarRef.afterDismissed().subscribe((info) => {
       if (info.dismissedByAction === true){

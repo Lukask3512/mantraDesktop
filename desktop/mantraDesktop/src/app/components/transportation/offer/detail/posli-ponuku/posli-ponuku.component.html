@@ -4,6 +4,7 @@
     <ng-template #elseButton>
       <button class="showButt" (click)="showOnMap()">{{'MAP.ukazatPonuku' | translate}}</button>
     </ng-template>
+    <button class="kontantButt" (click)="openContats()">{{'MAP.kontakt' | translate}}</button>
   </section>
 
 
@@ -25,19 +26,27 @@
     </mat-form-field>
   </div>
 
+<section class="cancelButtons">
+  <button [disabled]="disableButtonAfterAdd" class="deleteOfferBut" *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId() && !this.runningInterval" (click)="this.deleteMyPriceIfRunning()">{{'OFFER.zrusitPonuku' | translate}}</button>
+  <button [disabled]="disableButtonAfterAdd" class="deleteOfferBut" *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId() && !this.runningInterval" (click)="this.deleteMyPriceIfRunning()">{{'OFFER.zrusitPonuku' | translate}}</button>
 
-  <button [disabled]="disableButtonAfterAdd" class="deleteOfferBut" *ngIf="this.offer == 0 && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
-  <button [disabled]="disableButtonAfterAdd" class="deleteOfferBut" *ngIf="this.offer && this.route.ponuknuteTo !== getDispecerId()" (click)="this.deleteMyPriceOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
+  <button [disabled]="stopInterval" class="deleteOfferBut" *ngIf="this.runningInterval" (click)="this.deleteMyPriceIfRunning()">{{'OFFER.zrusitPonuku' | translate}}</button>
+
+  <div *ngIf="this.runningInterval || disableButtonAfterAdd" class="loadingWrapper">
+    <img class="imageSpin" src="assets/spinner.gif">
+  </div>
+</section>
+
 
 
   <div *ngIf="this.route.takenBy == ''">
-      <button [disabled]="disableButtonAfterAdd || !price || price < 1" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0 && this.offer != 0 && !this.offer; else elseIf" (click)="addPrice()">{{'OFFER.pridatPonuku' | translate}}</button>
+      <button [disabled]="disableButtonAfterAdd || !price || price < 1" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price === 0 && this.offer != 0 && !this.offer && this.runningInterval === false; else elseIf" (click)="addPriceWithDelay()">{{'OFFER.pridatPonuku' | translate}}</button>
       <ng-template #elseIf>
-        <button [disabled]="disableButtonAfterAdd" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price !== 0 && this.offer != 0 && !this.offer; else elseUpdate" (click)="addPrice()">{{'MAP.mamZaujem' | translate}}</button>
+        <button [disabled]="disableButtonAfterAdd" class="pridatPonuku" *ngIf="this.route.ponuknuteTo !== getDispecerId() && this.route.price !== 0 && this.offer != 0 && !this.offer && this.runningInterval === false; else elseUpdate" (click)="addPriceWithDelay()">{{'MAP.mamZaujem' | translate}}</button>
 
       </ng-template>
     <ng-template #elseUpdate>
-      <button class="pridatPonuku" *ngIf="this.offer.ponuknuteTo === ''"  (click)="addPrice()">{{'OFFER.upravitCenu' | translate}}</button>
+      <button class="pridatPonuku" *ngIf="this.offer && this.offer.ponuknuteTo === ''"  (click)="addPriceWithDelay()">{{'OFFER.upravitCenu' | translate}}</button>
     </ng-template>
       <h2 *ngIf="this.route.ponuknuteTo == getDispecerId()" >{{'OFFER.finalnePrijatie' | translate}}</h2>
       <button class="pridatPonuku" *ngIf="this.route.ponuknuteTo == getDispecerId()" (click)="confirm()">{{'OFFER.prijatPrepravu' | translate}}</button>

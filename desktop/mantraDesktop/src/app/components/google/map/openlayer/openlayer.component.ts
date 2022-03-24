@@ -111,7 +111,7 @@ export class OpenlayerComponent implements AfterViewInit, OnDestroy{
         });
         // this.map.render();
       // },
-      // 100);
+      // 70);
         setTimeout(() =>
       {
         this.map.updateSize();

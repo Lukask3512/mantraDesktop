@@ -1,6 +1,10 @@
 <mat-dialog-content class="wrapper">
-  <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addComapny' | translate}}</h1>
-  <h1 *ngIf="this.data" class="header">{{'COMPANIES.updateCompany' | translate}}</h1>
+  <div class="headerWrapper">
+    <h1 *ngIf="!this.data" class="header">{{'COMPANIES.addComapny' | translate}}</h1>
+    <h1 *ngIf="this.data" class="header">{{'COMPANIES.updateCompany' | translate}}</h1>
+    <button (click)="closeDialog()" class="closeButton">X</button>
+  </div>
+
     <mat-vertical-stepper>
       <form class="gridContainer" [formGroup]="companyForm">
 

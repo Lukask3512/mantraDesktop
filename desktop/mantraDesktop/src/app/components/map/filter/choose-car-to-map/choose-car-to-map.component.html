@@ -1,6 +1,6 @@
-<section class="example-section">
-
-  <div >
+<section class="carsWrapper">
+<!--  <h4 class="headerNadpis">{{'FILTER.vyberAuta' | translate}}</h4>-->
+  <div class="checkboxWrapper">
     <mat-checkbox [checked]="allCarsChecked" (change)="catchAllCars()" >{{'FILTER.vsetkyvozidla' | translate}}</mat-checkbox>
     <mat-checkbox [disabled]="allCarsChecked"  (change)="catchChange(car.id)" *ngFor="let car of cars">{{car.ecv}}</mat-checkbox>
   </div>

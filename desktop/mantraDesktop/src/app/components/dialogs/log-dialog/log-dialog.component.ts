@@ -45,6 +45,10 @@ export class LogDialogComponent implements OnInit {
     }
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
   thoursLocal(time){
     if (time == null || time === '0'){
       return this.translation.instant('LOG.nezverejneny');

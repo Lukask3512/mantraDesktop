@@ -1,6 +1,10 @@
 <div style="position: relative" class="cat-container">
-  <h1 *ngIf="data.route == false" class="header">{{'HINT.deleteCar' | translate}} {{data.car.ecv}}? </h1>
-  <h1 *ngIf="data.route == true" class="header">{{'HINT.deleteAdress' | translate}}{{data.car}}? </h1>
+  <div class="headerWrapper">
+    <h1 *ngIf="data.route == false" class="header">{{'HINT.deleteCar' | translate}} {{data.car.ecv}}? </h1>
+    <h1 *ngIf="data.route == true" class="header">{{'HINT.deleteAdress' | translate}}{{data.car}}? </h1>
+    <button (click)="closeDialog()" class="closeButton">X</button>
+  </div>
+
 
 <div class="buttons">
   <button *ngIf="data.route == false" class="buttonChoose red" (click)="delete(data.car.id)">{{'OFTEN.ano' | translate}}</button>

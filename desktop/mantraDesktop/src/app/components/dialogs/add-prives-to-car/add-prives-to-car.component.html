@@ -1,4 +1,7 @@
-<h1>{{'PRIVES.pripojitPrives' | translate}}</h1>
+<div class="headerWrapper">
+  <h1>{{'PRIVES.pripojitPrives' | translate}}</h1>
+  <button (click)="closeDialog()" class="closeButton">X</button>
+</div>
 <table class="car" *ngFor="let prives of priveses" >
   <tr>
     <th>{{prives.ecv}}</th>

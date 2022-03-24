@@ -18,8 +18,11 @@ export class CancelRouteFromCarDialogComponent implements OnInit {
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<CancelRouteFromCarDialogComponent>, private carService: CarService,
-              private addressService: AddressService, private routeService: RouteService) { }
+              public dialogRef: MatDialogRef<CancelRouteFromCarDialogComponent>,
+              private carService: CarService,
+              private addressService: AddressService, private routeService: RouteService) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.route = this.data.route;
@@ -28,8 +31,11 @@ export class CancelRouteFromCarDialogComponent implements OnInit {
   }
 
   yes(){
+    this.dialogRef.close(true);
+  }
 
-      this.dialogRef.close(true);
+  closeDialog(){
+    this.dialogRef.close();
   }
 
   close(){

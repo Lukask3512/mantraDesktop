@@ -1,5 +1,8 @@
 <section *ngIf="this.detail">
-  <h2 *ngIf="this.balikIndex">Id. {{this.balikIndex}}</h2>
+  <div class="headerWrapper">
+    <h2 *ngIf="this.balikIndex">Id. {{this.balikIndex}}</h2>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
 
   <p>{{'PACKAGES.sirka' | translate}}: {{this.detail.sizeS}}</p>
   <p>{{'PACKAGES.vyska' | translate}}: {{this.detail.sizeV}}</p>

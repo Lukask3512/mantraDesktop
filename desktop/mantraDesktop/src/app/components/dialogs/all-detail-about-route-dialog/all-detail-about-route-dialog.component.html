@@ -1,4 +1,9 @@
 <mat-dialog-content class="wrapper">
+  <div class="headerWrapper">
+    <div>
+    </div>
+    <button (click)="closeDialog()" class="closeButton">X</button>
+  </div>
 
   <mat-accordion class="example-headers-align" multi>
     <mat-expansion-panel *ngFor="let address of this.addresses; let i = index">

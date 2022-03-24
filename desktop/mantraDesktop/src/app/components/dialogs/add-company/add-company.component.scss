@@ -8,3 +8,13 @@
 .gridItem{
   margin: 5px;
 }
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

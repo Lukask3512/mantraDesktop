@@ -9,14 +9,25 @@
     <div  class="headerFlexer" *ngIf="!isCancel() && !this.route.finished">
       <h2 *ngIf="this.route.cancelByDriver">{{'OFFER.zruseniePrepravyOznam' | translate}}.</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyPotvrdenie' | translate}}</h2>
-      <button class="cancelOffer" *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver ; else elseCancel" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
-      <button *ngIf="this.route.cancelByCreator && !this.route.dontWannaCancel" class="cancelOffer" (click)="nechcemZrusitPonuku()">
-        {{'MAP.nechcemZrusit' | translate}}
+      <button class="cancelOffer" *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver && !this.route.cancelByCreator" (click)="tryCancelOffer()">
+        {{'OFFER.zrusitPonuku' | translate}}
       </button>
+      <div *ngIf="this.route.cancelByCreator && !this.route.dontWannaCancel" class="anoNieButt">
+        <button class="cancelOffer" (click)="tryCancelOffer()">
+          {{'OFTEN.ano' | translate}}
+        </button>
+        <button class="cancelOffer" (click)="nechcemZrusitPonuku()">
+          {{'OFTEN.nie' | translate}}
+        </button>
+      </div>
+
+
       <h3 *ngIf="this.route.dontWannaCancel">  {{'MAP.zrusenieBoloOdmientute' | translate}}</h3>
-      <ng-template #elseCancel>
-        <button class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
-      </ng-template>
+<!--      toto je na zrusenie mnou zadaneho zrusenis-->
+      <div #elseCancel *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel">
+        <button class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.anulovatZrusenie' | translate}}</button>
+      </div>
+      <button class="kontantButt" (click)="openContats()">{{'MAP.kontakt' | translate}}</button>
     </div>
     <h2  *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!!</h2>
 
@@ -88,7 +99,7 @@
 
   <div *ngIf="createdBy() && !isCancel() && this.route.takenBy === ''" class="ponuky">
     <h4 *ngIf="this.route.price != 0">{{'OFTEN.cena' | translate}}: {{this.route.price}}€</h4>
-    <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitPonuku' | translate}}</button>
+    <button class="addPrice" (click)="upravCenuPonuky()" [disabled]="this.route.offerFrom.length > 0">{{'OFFER.upravitCenu' | translate}}</button>
     <button class="deletePrice" (click)="vymazatPonuku()" [disabled]="this.route.takenBy !== ''">{{'OFFER.vymazatPonuku' | translate}}</button>
     <h2>
       {{'HEADER.offers' | translate}}
@@ -150,19 +161,27 @@
       {{this.route.price}}€
     </h4>
     <div *ngIf="!isCancel() && !this.route.finished">
+      <button class="kontantButt" (click)="openContats()">{{'MAP.kontakt' | translate}}</button>
+
       <h2 *ngIf="this.route.cancelByDriver">  {{'OFFER.zruseniePrepravca' | translate}}</h2>
       <h2 *ngIf="this.route.cancelByCreator">{{'OFFER.zruseniePrepravyOznamPrepravca' | translate}}.</h2>
-      <div class="deleteButtons">
-        <button *ngIf="!this.route.cancelByCreator; else elseCancelCompany" class="cancelOffer" (click)="tryCancelOffer()">{{'OFFER.zrusitPonuku' | translate}}</button>
-        <button *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" (click)="nechcemZrusitPonuku()" class="cancelOffer">
-          {{'MAP.nechcemZrusit' | translate}}
+
+      <button class="cancelOffer" *ngIf="this.route.ponuknuteTo != '' && !this.route.cancelByDriver && !this.route.cancelByCreator" (click)="tryCancelOffer()">
+        {{'OFFER.zrusitPonuku' | translate}}
+      </button>
+
+      <div  *ngIf="this.route.cancelByDriver && !this.route.dontWannaCancel" class="deleteButtons">
+        <button class="cancelOffer" (click)="tryCancelOffer()"> {{'OFTEN.ano' | translate}}</button>
+        <button (click)="nechcemZrusitPonuku()" class="cancelOffer">
+          {{'OFTEN.nie' | translate}}
         </button>
       </div>
 
       <h3 *ngIf="this.route.dontWannaCancel">{{'MAP.zrusenieBoloOdmientute' | translate}}</h3>
-      <ng-template #elseCancelCompany>
-        <button  class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.zrusenie' | translate}}</button>
-      </ng-template>
+<!--      ked chcem zrusit vlatne zrusenie-->
+      <div *ngIf="this.route.cancelByCreator && !this.route.dontWannaCancel">
+        <button  class="cancelOffer" (click)="tryCancelOfferCancel()">{{'OFFER.anulovatZrusenie' | translate}}</button>
+      </div>
     </div>
     <h2 *ngIf="isCancel()">{{'OFFER.bolaZrusena' | translate}}!</h2>
 

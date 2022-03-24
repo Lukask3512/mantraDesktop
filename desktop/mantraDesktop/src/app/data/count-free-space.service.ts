@@ -570,7 +570,11 @@ export class CountFreeSpaceService {
     let volnaVaha = 0;
     if (car.naves){
       const prives: Prives = this.privesService.allPrives.find(onePrives => car.navesis.includes(onePrives.id));
-      volnaVaha = (car.nosnost + prives.nosnost) * prekrocenie;
+      if (prives){
+        volnaVaha = (car.nosnost + prives.nosnost) * prekrocenie;
+      }else{
+        volnaVaha = (car.nosnost) * prekrocenie;
+      }
     }else{
       volnaVaha = (car.nosnost) * prekrocenie;
     }

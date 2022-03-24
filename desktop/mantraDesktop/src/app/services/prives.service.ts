@@ -68,6 +68,10 @@ export class PrivesService {
     return this.afs.collection('prives').add(prives);
   }
 
+  updatePrives(updateCar, id) {
+    return this.privesCollection.doc(id).update(updateCar);
+  }
+
   deletePrives(privesId){
     return this.privesCollection.doc(privesId).delete();
   }

@@ -1,0 +1,15 @@
+<div style="position: relative" class="cat-container">
+  <div class="headerWrapper">
+    <h1 *ngIf="data.route == false" class="header">{{'HINT.deletePrives' | translate}} {{data.car.ecv}}? </h1>
+    <h1 *ngIf="data.route == true" class="header">{{'HINT.deleteAdress' | translate}}{{data.car}}? </h1>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
+
+
+  <div class="buttons">
+    <button *ngIf="data.route == false" class="buttonChoose red" (click)="delete(data.car.id)">{{'OFTEN.ano' | translate}}</button>
+    <button *ngIf="data.route == true" class="buttonChoose red" (click)="deleteRoute()">{{'OFTEN.ano' | translate}}</button>
+    <button (click)="close()" class="buttonChoose green" >{{'OFTEN.nie' | translate}}</button>
+  </div>
+
+</div>

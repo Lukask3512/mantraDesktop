@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {map, take} from 'rxjs/operators';
 import {DataService} from '../data/data.service';
+import Company from '../models/Company';
 
 @Injectable({
   providedIn: 'root'
@@ -24,44 +25,44 @@ export class DispecerService {
 
   }
 
-  mozemStiahnutDispecerov(){
+  mozemStiahnutDispecerov() {
     this.getDispecersFire().subscribe(allDispecers => {
       this.allDispecersSource.next(allDispecers);
       this.dispecers = allDispecers;
     });
   }
 
-  setDispecersFromAnotherompanies(dispecer: Dispecer){
-    if (!this.dispecerFromOtherCompanies.find(dispec => dispec.id === dispecer.id)){
+  setDispecersFromAnotherompanies(dispecer: Dispecer) {
+    if (!this.dispecerFromOtherCompanies.find(dispec => dispec.id === dispecer.id)) {
       this.dispecerFromOtherCompanies.push(dispecer);
     }
   }
 
-  getDispecerFromAnotherCompanies(dispecerID){
+  getDispecerFromAnotherCompanies(dispecerID) {
     return this.dispecerFromOtherCompanies.find(dispec => dispec.id === dispecerID);
   }
 
-  getDispecers(){
+  getDispecers() {
     return this.allDispecers;
   }
 
-  getNoSub(): Dispecer[]{
+  getNoSub(): Dispecer[] {
     return this.dispecers;
   }
 
-  getMasterAcc(){
+  getMasterAcc() {
     return this.masterDispecer;
   }
 
 
-  getDispecersFire(): Observable<Dispecer[]>{
+  getDispecersFire(): Observable<Dispecer[]> {
     let createdBy;
-    if (this.dataService.getDispecer().createdBy !== 'master'){
-        createdBy = this.dataService.getDispecer().createdBy;
-        this.getDispecerById(createdBy).pipe(take(1)).subscribe(masterDispecer => {
-          this.masterDispecer = masterDispecer;
-        });
-    }else{
+    if (this.dataService.getDispecer().createdBy !== 'master') {
+      createdBy = this.dataService.getDispecer().createdBy;
+      this.getDispecerById(createdBy).pipe(take(1)).subscribe(masterDispecer => {
+        this.masterDispecer = masterDispecer;
+      });
+    } else {
       createdBy = this.dataService.getDispecer().id;
       this.masterDispecer = this.dataService.getDispecer();
     }
@@ -80,7 +81,7 @@ export class DispecerService {
     );
   }
 
-  getDispecersByMasterId(masterId){
+  getDispecersByMasterId(masterId) {
     return this.afs.collection<Dispecer>('dispecers', ref => {
       let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('createdBy', '==', masterId);
@@ -96,41 +97,41 @@ export class DispecerService {
     );
   }
 
-  getOneDispecer(email){
-      return this.afs.collection<Dispecer>('dispecers', ref => {
-        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-        query = query.where('email', '==', email);
-        return query;
-      }).snapshotChanges().pipe(
-        map(actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return {id, ...data};
-          });
-        })
-      );
+  getOneDispecer(email) {
+    return this.afs.collection<Dispecer>('dispecers', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('email', '==', email);
+      return query;
+    }).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+      })
+    );
   }
 
-   getMasterDispecerByCompany(companyId){
-      return this.afs.collection<Dispecer>('dispecers', ref => {
-        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-        query = query.where('companyId', '==', companyId)
-          .where('createdBy', '==', 'master');
-        return query;
-      }).snapshotChanges().pipe(
-        map(actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return {id, ...data};
-          });
-        })
-      );
+  getMasterDispecerByCompany(companyId) {
+    return this.afs.collection<Dispecer>('dispecers', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('companyId', '==', companyId)
+        .where('createdBy', '==', 'master');
+      return query;
+    }).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        });
+      })
+    );
   }
 
 
-  getAllDispecersWithNoShowRoute(routeId){
+  getAllDispecersWithNoShowRoute(routeId) {
     return this.afs.collection<Dispecer>('dispecers', ref => {
       let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
       query = query.where('nezobrazovatPonuky', 'array-contains', routeId);
@@ -151,20 +152,28 @@ export class DispecerService {
     return this.dispecerCollection.doc(id).valueChanges();
   }
 
-  createDispecer(dispecer: Dispecer){
+  createDispecer(dispecer: Dispecer) {
     return this.dispecerCollection.add({...dispecer});
   }
 
-  deleteDispecer(dispecerID){
+  deleteDispecer(dispecerID) {
     return this.dispecerCollection.doc(dispecerID).delete();
   }
 
-  updateDispecer(dispecer: Dispecer){
+  updateDispecer(dispecer: Dispecer) {
     return this.dispecerCollection.doc(dispecer.id).update(dispecer);
   }
 
-  updateDispecerWithOldIdAndNewDispecer(dispecer: Dispecer, id){
+  updateDispecerWithOldIdAndNewDispecer(dispecer: Dispecer, id) {
     return this.dispecerCollection.doc(id).update(dispecer);
+  }
+
+  getDispecersByCompany(company: Company) {
+    return this.afs.collection<Dispecer>('dispecers', ref => {
+      let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+      query = query.where('companyId', '==', company.id);
+      return query;
+    }).valueChanges();
   }
 
 }

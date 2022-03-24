@@ -32,7 +32,7 @@
     <div *ngIf="routesToShow.length" class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
 
       <ng-container *ngFor="let town of route.addresses; index as i">
-        <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+        <app-one-address-info *ngIf="town" [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
       </ng-container>
 
     </div>
@@ -57,7 +57,7 @@
     <div *ngIf="!route.finished" class="nakladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
       <!--      <h2>Vykládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
-        <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+        <app-one-address-info *ngIf="town" [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
       </ng-container>
     </div>
     <div class="vykladka">
@@ -82,7 +82,7 @@
         </div>
         <app-find-car-by-id [carId]="route.carId"></app-find-car-by-id>
       </div>
-      <div *ngIf="route.carId == null">
+      <div *ngIf="route.carId == null && route.takenBy === this.getDispecerId()">
         <button (click)="routeDetail(route)" routerLink="/view/newRoute" class="buttonG" >{{'TRANSPORT.priraditDoVozidla' | translate}}</button>
       </div>
 
@@ -101,7 +101,7 @@
     <div class="nakladka" (click)="routeDetail(route)" routerLink="/view/newRoute">
       <!--      <h2>Nakládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
-        <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+        <app-one-address-info *ngIf="town" [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
       </ng-container>
     </div>
 
@@ -121,7 +121,7 @@
     <div *ngIf="route.finished" class="nakladka" (click)="routeDetail(route)"  routerLink="/view/offerDetail">
       <!--      <h2>Vykládky</h2>-->
       <ng-container *ngFor="let town of route.addresses; index as i">
-        <app-one-address-info [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
+        <app-one-address-info *ngIf="town" [allAddressesIds]="route.addresses" [addressaId]="town" [addressIndex]="i"></app-one-address-info>
       </ng-container>
     </div>
     <div class="vykladka">

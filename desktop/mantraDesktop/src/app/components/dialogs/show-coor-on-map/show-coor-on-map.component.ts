@@ -24,4 +24,8 @@ export class ShowCoorOnMapComponent implements AfterViewInit {
     this.cdref.detectChanges();
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
 }

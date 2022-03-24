@@ -1,7 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {OfferRouteService} from "../../../services/offer-route.service";
-import Route from "../../../models/Route";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {OfferRouteService} from '../../../services/offer-route.service';
+import Route from '../../../models/Route';
 import {PackageService} from '../../../services/package.service';
+import {ChoosCarToMoveComponent} from '../../transportation/offer/offer-to-route/choos-car-to-move/choos-car-to-move.component';
+import {MatAccordion, MatExpansionPanel} from '@angular/material/expansion';
 
 
 @Component({
@@ -31,6 +33,9 @@ export class FilterComponent implements OnInit {
   @Output() offersToMap = new EventEmitter<any>();
   @Output() owhichToShow = new EventEmitter<any>();
   @Output() carsToShow = new EventEmitter<any[]>();
+  @Output() changeSize = new EventEmitter<boolean>();
+
+  @ViewChild(MatExpansionPanel) mat: MatExpansionPanel;
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -63,28 +68,46 @@ export class FilterComponent implements OnInit {
 
     if (this.offers.length > 0){
       if (!this.checked){
+        this.mat.close();
         this.offersToMap.emit(null);
-        localStorage.setItem('showOffers', 'false');
+
       }else{
         this.offersToMap.emit({offers : this.offers, minDistance: this.minDistance * 1000, maxDistance: this.maxDistance * 1000,
           weight: this.vypocitajPrekrocenie(this.weight), size:  this.vypocitajPrekrocenie(this.size), typeDistance: this.typeDistance,
           ukazat: ukazatPonuky} );
-        localStorage.setItem('showOffers', 'true');
+
+        this.fewSecDisable = true;
+        setTimeout(() => {
+          this.fewSecDisable = false;
+        }, 100);
       }
     }
   }
 
   vypocitajPrekrocenie(prekrocenie){
-    var percentaNaCislo = (100 + prekrocenie) / 100;
+    const percentaNaCislo = (100 + prekrocenie) / 100;
     return percentaNaCislo;
   }
 
   updateMatLabelForm(){
-    this.owhichToShow.emit({vyhovuje: this.vyhovuje, trocha: this.povPre, nie: this.prekrocenie})
+    this.owhichToShow.emit({vyhovuje: this.vyhovuje, trocha: this.povPre, nie: this.prekrocenie});
   }
 
   whichCars(carsId: string[]){
     this.carsToShow.emit(carsId);
+  }
+
+  catchOpen(){
+    console.log('som otvoril');
+    if (!this.checked){
+      this.checked = true;
+      this.filterOffers(true);
+      this.mat.open();
+    }
+  }
+
+  catchClose(){
+    this.changeSize.emit(true);
   }
 
 }

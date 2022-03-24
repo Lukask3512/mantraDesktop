@@ -1,5 +1,16 @@
 @import "./src/sccs/shared/mixins";
 
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 .oneLog{
   border-bottom: 2px solid black;
   display: flex;

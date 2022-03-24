@@ -12,7 +12,7 @@
 
       <ng-container class="tbl-header" matColumnDef="update">
         <th mat-header-cell *matHeaderCellDef> {{'OFTEN.update' | translate}} </th>
-        <td mat-cell *matCellDef="let element"> <button [disabled]="getDispecer()" class="button">{{'OFTEN.update' | translate}}</button>  </td>
+        <td mat-cell *matCellDef="let element"> <button (click)="updateCar(element)" [disabled]="getDispecer()" class="button">{{'OFTEN.update' | translate}}</button>  </td>
       </ng-container>
 
       <ng-container class="tbl-header" matColumnDef="delete">

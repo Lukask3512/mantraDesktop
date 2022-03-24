@@ -29,4 +29,8 @@ export class DeleteCarDialogComponent implements OnInit {
     this.dialogRef.close({event: true});
   }
 
+  closeDialog(){
+    this.dialogRef.close();
+  }
+
 }

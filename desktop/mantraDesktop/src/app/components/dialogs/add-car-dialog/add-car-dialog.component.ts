@@ -76,7 +76,10 @@ export class AddCarDialogComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private carService: CarService, public dialogRef: MatDialogRef<NewCarComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, private dataServce: DataService, private snackBar: MatSnackBar,
-              private vodiciService: VodicService) { }
+              private vodiciService: VodicService) {
+    dialogRef.disableClose = true;
+
+  }
 
   ngOnInit(): void {
     this.vodiciService.allVodici$.subscribe(allVodici => {
@@ -117,6 +120,7 @@ export class AddCarDialogComponent implements OnInit {
         this.carForm.controls.vodici.setValue(this.data.vodici);
         this.myVodici = this.data.vodici;
 
+        this.carForm.controls.pripojitNaves.setValue(this.data.naves);
 
         this.carForm.controls.minTeplota.setValue(this.data.minTeplota);
         this.carForm.controls.maxTeplota.setValue(this.data.maxTeplota);
@@ -138,6 +142,7 @@ export class AddCarDialogComponent implements OnInit {
         if (this.data.nakladaciPriestorZVrchu[0] !== ''){
         this.carForm.controls.fromUp.setValue(true);
       }
+        this.carForm.controls.ecv.disable();
 
     }
   }
@@ -204,7 +209,7 @@ export class AddCarDialogComponent implements OnInit {
 
   catchChange(id){
     if (this.myVodici){
-      var jeTam = this.myVodici.find(carsId => carsId === id);
+      const jeTam = this.myVodici.find(carsId => carsId === id);
       if (jeTam){
         this.myVodici = this.myVodici.filter(cars => cars !== id);
       }else{
@@ -223,7 +228,7 @@ export class AddCarDialogComponent implements OnInit {
       return true;
     }
   }
-  //TODO upravit pridavanie / mazanie aut s cislom k dispecerovi s tel. cislom a naopak
+  // TODO upravit pridavanie / mazanie aut s cislom k dispecerovi s tel. cislom a naopak
   checkBox(vodic: Vodic){
     // ked ma vodic pristup ku vsetkym vozidlam
     if (vodic.allCars && (this.assignToCar().phoneNumber || vodic.phone)){
@@ -239,8 +244,8 @@ export class AddCarDialogComponent implements OnInit {
       return true;
     }
 
-      if (!this.carForm.get('allVodici').value){
-        var idcko = this.myVodici.find(oneCarId => oneCarId === vodic.id);
+    if (!this.carForm.get('allVodici').value){
+        const idcko = this.myVodici.find(oneCarId => oneCarId === vodic.id);
         if (idcko){
           return true;
         }else{
@@ -305,15 +310,56 @@ export class AddCarDialogComponent implements OnInit {
 
   updateCar(){
     console.log(this.assignToCar());
-    let auto: Cars = this.assignToCar();
-    if (this.assignToCar().phoneNumber === '' || this.assignToCar().allVodici){
-      auto.vodici = []; // ak nemam cislo tak auto priradim k vodicovi len
-      this.datPravaVodicom(this.data.id);
+    const auto: Cars = this.assignToCar();
+    console.log(this.data);
+
+    if (this.data.phoneNumber === this.assignToCar().phoneNumber){
+      if (this.assignToCar().phoneNumber === '' || this.assignToCar().allVodici){
+        auto.vodici = []; // ak nemam cislo tak auto priradim k vodicovi len
+        this.datPravaVodicom(this.data.id);
+      }
+      console.log(auto);
+      this.carService.updateCar(auto, this.data.id);
+
+      this.dialogRef.close();
+    }
+    else if (this.assignToCar().phoneNumber !== ''){
+      this.carService.getCarByNumber(this.assignToCar().phoneNumber).pipe(take(1)).subscribe(carByNumber => {
+        if (carByNumber.length > 0) {
+          this.snackBar.open('Vložené tel. číslo sa už nachádza v databáze', 'Ok', {
+            duration: 5000
+          });
+          return;
+        }
+        else{
+          if (this.assignToCar().phoneNumber === '' || this.assignToCar().allVodici){
+            auto.vodici = []; // ak nemam cislo tak auto priradim k vodicovi len
+            this.datPravaVodicom(this.data.id);
+          }
+          this.carService.updateCar(auto, this.data.id);
+          this.dialogRef.close();
+          return;
+
+        }
+      });
+    }else{
+
+      if (this.assignToCar().phoneNumber === '' || this.assignToCar().allVodici){
+        auto.vodici = []; // ak nemam cislo tak auto priradim k vodicovi len
+        this.datPravaVodicom(this.data.id);
+      }
+      this.carService.updateCar(auto, this.data.id);
+      this.dialogRef.close();
+      return;
     }
     this.carService.updateCar(auto, this.data.id);
 
     this.dialogRef.close();
     return;
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
   // TODO ked vytvori auto nie master, tak nech sa mu idcko ulozi do databazy aby ho mohol ovladat rovno
@@ -364,7 +410,7 @@ export class AddCarDialogComponent implements OnInit {
   }
 
   datPravaVodicom(idAuta){
-    var auto: Cars = this.assignToCar();
+    const auto: Cars = this.assignToCar();
     auto.vodici = [];
     this.vodiciService.allVodici$.pipe(take(1)).subscribe(allVodici => {
       allVodici.forEach(oneVodic => {
@@ -387,29 +433,29 @@ export class AddCarDialogComponent implements OnInit {
     else {
       createdBy = this.dataServce.getDispecer().id;
     }
-    let rozmeryVozidla = [
+    const rozmeryVozidla = [
       this.carForm.get('autoVyska').value ,
       this.carForm.get('autoSirka').value,
       this.carForm.get('autoDlzka').value];
 
-    let rozmeryPriestoru = [
+    const rozmeryPriestoru = [
       this.carForm.get('priestorVyska').value ,
       this.carForm.get('priestorSirka').value,
       this.carForm.get('priestorDlzka').value];
 
-    let rozmeryNaklZLava = [
+    const rozmeryNaklZLava = [
       this.carForm.get('zLavaVyska').value ,
       this.carForm.get('zLavaSirka').value];
 
-    let rozmeryNaklZPrava = [
+    const rozmeryNaklZPrava = [
       this.carForm.get('zPravaVyska').value ,
       this.carForm.get('zPravaSirka').value];
 
-    let rozmeryNaklZVrchu = [
+    const rozmeryNaklZVrchu = [
       this.carForm.get('zHoraVyska').value ,
       this.carForm.get('zHoraSirka').value];
 
-    let rozmeryNaklZoZadu = [
+    const rozmeryNaklZoZadu = [
       this.carForm.get('zoZaduVyska').value ,
       this.carForm.get('zoZaduSirka').value];
 

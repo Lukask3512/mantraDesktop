@@ -8,27 +8,30 @@
 }
 
 .greenMat{
-  display: inline-block;
+  display: flex;
   padding: 2px;
   border-bottom: 2px solid limegreen;
   border-radius: 4px;
   margin-left: 6px;
+  gap: 2px;
 }
 
 .yellowMat{
-  display: inline-block;
+  display: flex;
   padding: 2px;
   border-bottom: 2px solid orange;
   border-radius: 4px;
   margin-left: 6px;
+  gap: 2px;
 }
 
 .redMat{
-  display: inline-block;
+  display: flex;
   padding: 2px;
   border-bottom: 2px solid red;
   border-radius: 4px;
   margin-left: 6px;
+  gap: 2px;
 }
 
 .okButton{
@@ -69,10 +72,49 @@ input.example-right-align {
 }
 
 .detalWrapper{
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.chooseCar{
+  margin-bottom: 5px;
+  max-width: 50%;
+}
+
+.greenYelRedWrapper{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1000px) {
+  .detalWrapper{
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .chooseCar{
+    max-width: 100%;
+  }
 }
 
 .filterWrapper{
   @include table();
   margin: 0;
+}
+
+
+
+.distanceWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.radioButtons{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 

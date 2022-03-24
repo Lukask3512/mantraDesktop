@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AddressService} from '../../../../services/address.service';
 import Address from '../../../../models/Address';
 import {RouteStatusService} from '../../../../data/route-status.service';
@@ -6,13 +6,14 @@ import {OfferRouteService} from '../../../../services/offer-route.service';
 import {PackageService} from '../../../../services/package.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {DataService} from '../../../../data/data.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-one-address-info',
   templateUrl: './one-address-info.component.html',
   styleUrls: ['./one-address-info.component.scss']
 })
-export class OneAddressInfoComponent implements OnInit {
+export class OneAddressInfoComponent implements OnInit, OnDestroy {
 
   @Input() addressaId: string;
   @Input() addressIndex: number;
@@ -21,28 +22,41 @@ export class OneAddressInfoComponent implements OnInit {
   address: Address;
   detail = [];
 
+  subMyRoutes: Subscription;
+  subOfferRoutes: Subscription;
+
   constructor(private addressService: AddressService, public routeStatusService: RouteStatusService,
               private offerService: OfferRouteService, private packageService: PackageService,
               private spinner: NgxSpinnerService, private dataService: DataService) { }
 
   ngOnInit(): void {
     this.spinner.show();
-    this.addressService.address$.subscribe(allAddresses => {
+    this.subMyRoutes = this.addressService.address$.subscribe(allAddresses => {
      this.address = allAddresses.find(address => address.id === this.addressaId);
      if (!this.address){
        this.getOffersAdd();
      }else{
        this.allAddresses = allAddresses;
+       if (this.subOfferRoutes){
+         this.subOfferRoutes.unsubscribe();
+       }
        this.getMyAddresses();
      }
 
     });
   }
   getOffersAdd(){
-    this.addressService.offerAddresses$.subscribe(addresses => {
-      this.address = addresses.find(address => address.id == this.addressaId);
-      this.allAddresses = addresses;
-      this.getMyAddresses();
+    this.subOfferRoutes = this.addressService.offerAddresses$.subscribe(addresses => {
+      if (!this.address){
+        this.address = addresses.find(address => address.id === this.addressaId);
+        this.allAddresses = addresses;
+        this.getMyAddresses();
+        if (this.address){
+          if (this.subMyRoutes){
+            this.subMyRoutes.unsubscribe();
+          }
+        }
+      }
     });
   }
 
@@ -65,6 +79,11 @@ export class OneAddressInfoComponent implements OnInit {
         oneAddress.packagesId.forEach( oneId => {
           if (oneAddress.type === 'nakladka'){
             let balik = this.packageService.getOnePackage(oneId);
+            if (!balik){
+              setTimeout(() => {
+                this.getDetailsAboutAllAddresses();
+              }, 1000);
+            }
             myPackages.push(balik);
           }else{
             // tu by som mal vlozit len indexy do vykladky
@@ -115,6 +134,15 @@ export class OneAddressInfoComponent implements OnInit {
     }
     indexBedne += detailIndex + 1;
     return this.dataService.getLetter(indexBedne);
+  }
+
+  ngOnDestroy(): void {
+    if (this.subMyRoutes){
+      this.subMyRoutes.unsubscribe();
+    }
+    if (this.subOfferRoutes){
+      this.subOfferRoutes.unsubscribe();
+    }
   }
 
 }

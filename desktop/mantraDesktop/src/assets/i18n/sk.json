@@ -82,7 +82,8 @@
     "pristupKuVozidlam": "Prístup k vozidlám",
     "pristupKuVsetkymVozidlam": "Prístup ku všetkým vozidlám",
     "pristupKuPrivesom": "Prístup k prívesom",
-    "pristupKuVsetkymPrivesom": "Prístup ku všetkým prívesom"
+    "pristupKuVsetkymPrivesom": "Prístup ku všetkým prívesom",
+    "pridatDispecera": "Pridať dispečera"
   },
   "CAR": {
     "car": "Vozidlo",
@@ -135,7 +136,7 @@
     "sirkaNakOtvoru": "Šírka nak. otvoru",
     "dlzkaNakOtvoru": "Dĺžka nak. otvoru",
 
-    "navesASpecRezimy": "Príves + špeciálne režimy",
+    "navesASpecRezimy": "Špeciálne režimy",
     "moznostPripojitNaves": "Možnosť pripojiť príves",
     "teplotnyRezim": "Teplotný režim",
     "minTeplota": "Minimálna teplota",
@@ -157,19 +158,23 @@
     "udajeO": "Údaje o vodičovi",
     "pristupKVozidlam": "Prístup k vozidlám",
     "pristupKuVsetkymVozidlam": "Prístup ku všetkým vozidlám",
-    "pridatMoze": "Nemáte povolenie vytvárať nových vodičov"
+    "pridatMoze": "Nemáte povolenie vytvárať nových vodičov",
+    "pridatVodica": "Pridať vodiča"
 
   },
   "PRIVES": {
     "prives": "Príves",
     "addPrives": "Pridať príves",
+    "updatePrives": "Upraviť príves",
     "pripojitPrives": "Pripojiť príves",
     "size": "Veľkosť prívesu",
     "sizeOfPrives": "Veľkosť prívesu",
     "vahaPrivesu": "Hmotnosť prívesu",
     "nostnost": "Nosnosť prívesu",
-    "odpojeniezVozidla": "Naozaj chcete odpojiť príves od vozidla?"
-
+    "odpojeniezVozidla": "Naozaj chcete odpojiť príves od vozidla?",
+    "vyskaPrivesu": "Výška prívesu",
+    "sirkaPrivesu": "Šírka prívesu",
+    "dlzkaPrivesu": "Dĺžka prívesu"
   },
   "COMPANIES": {
     "comapnies": "Spoločnosti",
@@ -227,13 +232,16 @@
     "deleteDispecer": "Naozaj chcete odstrániť dispečera",
     "deleteDriver": "Naozaj chcete odstrániť vodiča",
     "deleteRoute": "Naozaj chcete odstrániť trasu?",
+    "deleteOffer": "Naozaj chcete vymazať ponuku?",
+    "deletePrives": "Naozaj chcete vymazať príves",
     "max": "max",
     "min": "min",
     "teplota": "Teplota",
     "prevozRizikovehoTovaru": "Prevoz rizikového tovaru",
     "skratkaKs": "ks",
-    "prijateSuVPrepravach": "Prijaté ponuky sa nachádzajú v sekcii Prepravy -> Ponuky."
-
+    "prijateSuVPrepravach": "Prijaté ponuky sa nachádzajú v sekcii Prepravy -> Ponuky.",
+    "infoVCakarni": "Ponuky, ktoré ste prevzali od tretích strán, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Dopravca a tretia strana ako Zadávateľ.",
+    "infoVCakarniPreMoje": "Vaše ponuky, prevzaté tretími stranami, sa nachádzajú v sekcii Prepravy – Prepravy z trhoviska. Figurujete v nich ako Zadávateľ a tretia strana ako Dopravca."
   },
 
   "PACKAGES": {
@@ -313,6 +321,7 @@
     "rozdiel": "Rozdiel",
     "vasaPonuka": "Vaša ponuka",
     "zrusitPonuku": "Zrušiť reakciu",
+    "anulovatZrusenie": "Anulovať zrušenie reakcie",
     "ponukniteCenu": "Ponúknite cenu",
     "pridatPonuku": "Zareagovať na prepravu",
     "upravitCenu": "Upraviť cenu",
@@ -359,7 +368,10 @@
     "vyberAuta": "Vyberte vozidlá, pre ktoré chcete zobraziť vhodné ponuky",
     "vsetkyvozidla": "Všetky vozidlá",
     "mestoSpolocnost": "Mesto, spoločnosť",
-    "zadajMestoSpolocnost": "Zadaj mesto/spoločnosť"
+    "zadajMestoSpolocnost": "Zadaj mesto/spoločnosť",
+    "vyhovujuceHint": "Vyhovujúce parametrom zvolených vozidiel",
+    "zlteHint": "S možným prekročením hmotnosti alebo veľkosti nákladu zvolených vozidiel",
+    "redHint": "Ostatné ponuky, ktoré zvoleným parametrom nevyhovujú"
   },
   "MAP": {
     "informacie": "Informácie",
@@ -369,7 +381,7 @@
     "celkovaVzdialenost": "Celková vzdialenosť",
     "vyberVozidlo": "Vyberte vozidlo",
     "ulozeneUlozenieVoVozidlach": "Predbežne uložené prepravy",
-    "viacNezobrazovat": "Viac nezobrazovať",
+    "viacNezobrazovat": "Skryť ponuku",
     "ukazatPonuku": "Ukázať ponuku",
     "mamZaujem": "Mám záujem",
     "nechcemZrusit": "Nechcem zrušiť",
@@ -391,7 +403,7 @@
     "teplotaRukaAdr": "Teplotný režim / Hydraulická ruka / ADR",
     "potrebnaTeplota": "Potrebná teplota",
     "velkostiBalikov": "Veľkosti balíkov / paliet",
-    "zadajteVelkostiNakladu": "Zadajte veľkosť jednotlivých balíkov / paliet",
+    "zadajteVelkostiNakladu": "Zadajte počet a veľkosť jednotlivých balíkov / paliet (položiek)",
     "pocetKusov": "Počet položiek",
     "poslednePridanyBalik": "Naposledy pridaná položka",
     "pocet": "Počet",
@@ -424,7 +436,6 @@
     "zrusenie2": "súradnice vozidla ",
     "zrusenie3": "súhlasila s návrhom, preprava bola zrušená.",
     "odmiernutie1": "s návrhom nesúhlasila, preprava pokračuje. "
-
   },
   "POPUPS": {
     "nolicence": "Licencia vypršala",

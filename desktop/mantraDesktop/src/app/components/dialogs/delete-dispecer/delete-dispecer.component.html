@@ -1,5 +1,8 @@
 <div style="position: relative" class="cat-container">
-  <h1  class="header">{{'HINT.deleteDispecer' | translate}} {{data.dispecer.name}}? </h1>
+  <div class="headerWrapper">
+    <h1  class="header">{{'HINT.deleteDispecer' | translate}} {{data.dispecer.name}}? </h1>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
 
   <div class="buttons">
     <button class="buttonChoose red" (click)="deleteDispecer()">{{'OFTEN.ano' | translate}}</button>

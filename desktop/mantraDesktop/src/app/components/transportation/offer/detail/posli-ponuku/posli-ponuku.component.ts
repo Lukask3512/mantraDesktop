@@ -3,6 +3,10 @@ import {DataService} from '../../../../../data/data.service';
 import {OfferRouteService} from '../../../../../services/offer-route.service';
 import Dispecer from '../../../../../models/Dispecer';
 import {DispecerService} from '../../../../../services/dispecer.service';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {AddCarDialogComponent} from '../../../../dialogs/add-car-dialog/add-car-dialog.component';
+import {ComapnyContantsDialogComponent} from '../../../../dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-posli-ponuku',
@@ -10,6 +14,9 @@ import {DispecerService} from '../../../../../services/dispecer.service';
   styleUrls: ['./posli-ponuku.component.scss']
 })
 export class PosliPonukuComponent implements OnInit {
+
+  runningInterval = false;
+  stopInterval = false;
 
   offer; // ponuku ktoru som dal
   @Input() route; // ponuka
@@ -23,7 +30,7 @@ export class PosliPonukuComponent implements OnInit {
   @Output() offerConfirm = new EventEmitter<string>();
 
   constructor(private dataService: DataService, private offerService: OfferRouteService,
-              private dispecerService: DispecerService) { }
+              private dispecerService: DispecerService, private dialog: MatDialog, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     // natiahnem si original offere lebo z mapy mam upravenu
@@ -37,11 +44,19 @@ export class PosliPonukuComponent implements OnInit {
       this.route = allRoutes.find(oneOffer => oneOffer.id === this.offerId);
 
       if (this.route && this.route.offerFrom !== undefined){
+        if (this.route.offerFrom.length === 0){
+          this.offer = undefined;
+        }
+        let nasielSom = false;
         this.route.offerFrom.forEach((offer, index) => {
           if (offer === this.getDispecerId()){
             this.offer = this.route.priceFrom[index];
+            nasielSom = true;
           }
         });
+        if (nasielSom === false){
+          this.offer = undefined;
+        }
       }
     });
   }
@@ -52,9 +67,18 @@ export class PosliPonukuComponent implements OnInit {
     this.listenToROute();
   }
 
-  // setOffer(offer){
-  //   this.offer = offer;
-  // }
+  openContats(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = this.route;
+    const dialogRef = this.dialog.open(ComapnyContantsDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(value => {
+      if (value === undefined){
+        return;
+      }else {
+
+      }
+    });
+  }
 
   setRoute(route){
     this.route = route;
@@ -89,7 +113,7 @@ export class PosliPonukuComponent implements OnInit {
     this.disableButtonAfterAdd = true;
     setTimeout(() => {
       this.disableButtonAfterAdd = false;
-    }, 5000);
+    }, 3000);
   }
 
   addPrice(){
@@ -126,7 +150,28 @@ export class PosliPonukuComponent implements OnInit {
     this.disableButtonAfterAdd = true;
     setTimeout(() => {
       this.disableButtonAfterAdd = false;
-    }, 5000);
+    }, 3000);
+  }
+
+  addPriceWithDelay(){
+    this.runningInterval = true;
+      setTimeout(() => {
+        this.runningInterval = false;
+        if (this.stopInterval === false){
+          this.addPrice();
+        }
+        this.stopInterval = false;
+      }, 3000);
+
+
+  }
+
+  deleteMyPriceIfRunning(){
+    if (this.runningInterval){
+      this.stopInterval = true;
+    }else{
+      this.deleteMyPriceOffer();
+    }
   }
 
   confirm(){

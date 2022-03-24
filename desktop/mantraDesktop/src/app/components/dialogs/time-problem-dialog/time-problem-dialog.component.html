@@ -1,5 +1,8 @@
 <div class="wrapper">
+  <div class="headerWrapper">
     <h2>{{'TRANSPORT.casoveKonflikty' | translate}}</h2>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
   <div *ngIf="!offer">
     <ul>
       <li [class]="getColorForTime(i)" *ngFor="let address of addresses; let i = index" >

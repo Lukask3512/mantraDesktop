@@ -1,5 +1,8 @@
 <div >
-  <h1 class="header">{{'DISPATCHER.dispatcher' | translate}}</h1>
+  <div class="headerWrapper">
+    <h1 class="header">{{'DISPATCHER.dispatcher' | translate}}</h1>
+    <button (click)="close()" class="closeButton">X</button>
+  </div>
 
 
     <mat-vertical-stepper #stepper>

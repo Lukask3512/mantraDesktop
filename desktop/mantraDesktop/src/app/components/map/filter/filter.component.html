@@ -1,5 +1,5 @@
 <mat-accordion>
-  <mat-expansion-panel>
+  <mat-expansion-panel [disabled]="this.fewSecDisable" #mep="matExpansionPanel" (opened)="catchOpen()" (closed)="catchClose()">
 
 <!--<div class="filterWrapper">-->
   <mat-expansion-panel-header>
@@ -12,7 +12,21 @@
   </mat-expansion-panel-header>
 
   <div class="detalWrapper" *ngIf="checked">
-    <section class="example-section">
+    <div class="chooseCar">
+      <app-choose-car-to-map (carEmitter)="whichCars($event)"></app-choose-car-to-map>
+      <mat-form-field>
+        <mat-label>{{'FILTER.maxPrekrocenieVahy' | translate}}</mat-label>
+        <input [disabled]="!checked" (change)="filterOffers(true)" matInput [(ngModel)]="weight" type="number" placeholder="{{'FILTER.maxPrekrocenieVahy' | translate}}..." class="example-right-align">
+        <span *ngIf="checked" matSuffix> %</span>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>{{'FILTER.maxPrekrocenieVelkosti' | translate}}</mat-label>
+        <input [disabled]="!checked" (change)="filterOffers(true)" matInput [(ngModel)]="size" type="number" placeholder="{{'FILTER.maxPrekrocenieVelkosti' | translate}}..." class="example-right-align">
+        <span *ngIf="checked" matSuffix> %</span>
+      </mat-form-field>
+    </div>
+    <section class="distanceWrapper">
       <label class="distanceType">{{'FILTER.typVzialenosti' | translate}}</label>
       <mat-radio-group class="radioButtons" (change)="filterOffers(true)" [disabled]="!checked" [(ngModel)]="typeDistance">
         <mat-radio-button  class="radioButon" value="maxAll">
@@ -22,43 +36,45 @@
           {{'FILTER.max1Bodu' | translate}}
         </mat-radio-button>
       </mat-radio-group>
+      <mat-form-field>
+        <mat-label> {{'FILTER.maxVzdialenost' | translate}}</mat-label>
+        <input [disabled]="!checked" (change)="filterOffers(true)" matInput [(ngModel)]="maxDistance" type="number" placeholder="{{'FILTER.maxVzdialenost' | translate}}" class="example-right-align">
+        <span *ngIf="checked" matSuffix> km</span>
+      </mat-form-field>
     </section>
 
-    <mat-form-field>
-      <mat-label> {{'FILTER.maxVzdialenost' | translate}}</mat-label>
-      <input [disabled]="!checked" (change)="filterOffers(true)" matInput [(ngModel)]="maxDistance" type="number" placeholder="{{'FILTER.maxVzdialenost' | translate}}" class="example-right-align">
-      <span *ngIf="checked" matSuffix> km</span>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>{{'FILTER.maxPrekrocenieVahy' | translate}}</mat-label>
-      <input [disabled]="!checked" (change)="filterOffers(true)" matInput [(ngModel)]="weight" type="number" placeholder="{{'FILTER.maxPrekrocenieVahy' | translate}}..." class="example-right-align">
-      <span *ngIf="checked" matSuffix> %</span>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>{{'FILTER.maxPrekrocenieVelkosti' | translate}}</mat-label>
-      <input [disabled]="!checked" (change)="filterOffers(true)" matInput [(ngModel)]="size" type="number" placeholder="{{'FILTER.maxPrekrocenieVelkosti' | translate}}..." class="example-right-align">
-      <span *ngIf="checked" matSuffix> %</span>
-    </mat-form-field>
 
 
-    <div class="greenMat">
-      <mat-checkbox class="matCheboxGreen" [disabled]="!checked" [(ngModel)]="vyhovuje"  (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
-    </div>
 
-    <div class="yellowMat">
-      <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
-    </div>
-    <div class="redMat">
-      <mat-checkbox  [disabled]="!checked" [(ngModel)]="prekrocenie"  (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
-    </div>
+<div class="greenYelRedWrapper">
+  <div class="greenMat">
+    <mat-checkbox class="matCheboxGreen" [disabled]="!checked" [(ngModel)]="vyhovuje"  (change)="updateMatLabelForm()">{{'FILTER.vyhovujuce' | translate}}</mat-checkbox>
+    <mat-icon class="material-icons" matSuffix
+              matTooltip="{{'FILTER.vyhovujuceHint' | translate}}">
+      info
+    </mat-icon>
+  </div>
+
+  <div class="yellowMat">
+    <mat-checkbox [disabled]="!checked" [(ngModel)]="povPre" (change)="updateMatLabelForm()">{{'FILTER.povolenePrekrocenie' | translate}}</mat-checkbox>
+    <mat-icon class="material-icons" matSuffix
+              matTooltip="{{'FILTER.zlteHint' | translate}}">
+      info
+    </mat-icon>
+  </div>
+  <div class="redMat">
+    <mat-checkbox  [disabled]="!checked" [(ngModel)]="prekrocenie"  (change)="updateMatLabelForm()">{{'FILTER.ostatne' | translate}}</mat-checkbox>
+    <mat-icon class="material-icons" matSuffix
+              matTooltip="{{'FILTER.redHint' | translate}}">
+      info
+    </mat-icon>
+  </div>
+</div>
+
+
 
     <button class="okButton" [disabled]="!checked">{{'OFTEN.potvrdit' | translate}}</button>
-    <div class="chooseCar">
-      <h4>{{'FILTER.vyberAuta' | translate}}</h4>
-      <app-choose-car-to-map (carEmitter)="whichCars($event)"></app-choose-car-to-map>
-    </div>
+
   </div>
 
 <!--</div>-->

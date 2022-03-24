@@ -1,3 +1,6 @@
-<h1>{{'PRIVES.odpojeniezVozidla' | translate}} {{this.car.ecv}}?</h1>
+<div class="headerWrapper">
+  <h1>{{'PRIVES.odpojeniezVozidla' | translate}} {{this.car.ecv}}?</h1>
+  <button (click)="close()" class="closeButton">X</button>
+</div>
 <button (click)="removeNaves()">{{'OFTEN.ano' | translate}}</button>
 <button (click)="close()">{{'OFTEN.nie' | translate}}</button>

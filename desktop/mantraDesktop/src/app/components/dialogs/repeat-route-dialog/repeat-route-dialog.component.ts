@@ -46,6 +46,10 @@ export class RepeatRouteDialogComponent implements OnInit {
     }
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
   getDatum(datum){
     if (datum === '0'){
       return false;

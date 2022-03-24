@@ -1,5 +1,7 @@
-
-<h1 class="header">{{'TRANSPORT.upravitPoznamku' | translate}}</h1>
+<div class="headerWrapper">
+  <h1 class="header">{{'TRANSPORT.upravitPoznamku' | translate}}</h1>
+  <button (click)="close()" class="closeButton">X</button>
+</div>
 <mat-form-field [formGroup]="routeInfo">
   <label>{{'TRANSPORT.info' | translate}}</label>
   <input matInput formControlName="info">

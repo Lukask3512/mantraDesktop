@@ -100,6 +100,8 @@ import { MyOfferDetailComponent } from './map/my-offer-detail/my-offer-detail.co
 import { OtherCarsComponent } from './map/other-cars/other-cars.component';
 import {MatButtonModule} from '@angular/material/button';
 
+import { DeletePrivesComponent } from './dialogs/delete-prives/delete-prives.component';
+import { ComapnyContantsDialogComponent } from './dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
 
 
 @NgModule({
@@ -125,7 +127,9 @@ import {MatButtonModule} from '@angular/material/button';
       CancelRouteFromCarDialogComponent, ProfileComponent, TimeProblemDialogComponent,
       GetNameOfComapnyByMasterIdComponent, CarsPopUpComponent, OffersPopUpComponent, ChooseCarToMapComponent,
       MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent,
-      PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent, OfferDetailComponent, OfferToCarDialogComponent, CakarenWrapperComponent, OfferCreatorDetailComponent, MyRouteDetailComponent, MyOfferDetailComponent, OtherCarsComponent
+      PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent, OfferDetailComponent,
+      OfferToCarDialogComponent, CakarenWrapperComponent, OfferCreatorDetailComponent, MyRouteDetailComponent, MyOfferDetailComponent,
+      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent
     ],
     exports: [
         OpenlayerComponent,

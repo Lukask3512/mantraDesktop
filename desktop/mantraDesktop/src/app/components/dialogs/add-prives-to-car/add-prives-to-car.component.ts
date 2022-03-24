@@ -12,7 +12,9 @@ import Cars from "../../../models/Cars";
 export class AddPrivesToCarComponent implements OnInit {
 
   constructor(private privesService: PrivesService, public dialogRef: MatDialogRef<AddPrivesToCarComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, private carService: CarService) { }
+              @Inject(MAT_DIALOG_DATA) public data: any, private carService: CarService) {
+    dialogRef.disableClose = true;
+  }
 priveses;
   ngOnInit(): void {
 
@@ -36,6 +38,10 @@ priveses;
       autoSNavesom.navesis.push(prives.id)
     this.carService.addNavesToCar(autoSNavesom, autoSNavesom.id);
       this.dialogRef.close();
+  }
+
+  closeDialog(){
+    this.dialogRef.close();
   }
 
 }

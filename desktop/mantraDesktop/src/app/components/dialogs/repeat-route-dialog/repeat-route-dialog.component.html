@@ -1,4 +1,7 @@
-<h2>{{'TRANSPORT.zopakovatPrepravu' | translate}}?</h2>
+<div class="headerWrapper">
+  <h2>{{'TRANSPORT.zopakovatPrepravu' | translate}}?</h2>
+  <button (click)="close()" class="closeButton">X</button>
+</div>
 <p>{{'TRANSPORT.upravitDatumy' | translate}}</p>
 <mat-accordion *ngIf="this.addresses" class="example-headers-align">
   <mat-expansion-panel [expanded]="isFirst" (opened)="catchOpen(this, i)" *ngFor="let address of this.addresses; let i = index; first as isFirst">

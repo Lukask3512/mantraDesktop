@@ -54,3 +54,13 @@ h1{
   margin-right: 10px;
   color: white;
 }
+
+.closeButton{
+  @include closeButton();
+}
+
+.headerWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

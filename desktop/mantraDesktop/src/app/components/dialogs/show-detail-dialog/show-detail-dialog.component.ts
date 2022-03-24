@@ -30,6 +30,9 @@ export class ShowDetailDialogComponent implements OnInit {
     this.zobrazBednuVAframe();
   }
 
+  close(){
+    this.dialogRef.close();
+  }
   zobrazBednuVAframe(){
     const x = this.detail.sizeS;
     const y = this.detail.sizeV;

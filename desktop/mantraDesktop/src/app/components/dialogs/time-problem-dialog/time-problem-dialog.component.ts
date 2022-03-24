@@ -25,6 +25,10 @@ export class TimeProblemDialogComponent implements OnInit {
     }
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
   estimatedTimeToLocal(dateUtc){
     var date = (new Date(dateUtc));
     if (dateUtc == null){

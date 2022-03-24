@@ -99,3 +99,19 @@
   border-radius: 8px;
   transition: transform 0.2s;
 }
+
+
+@mixin closeButton(){
+  color: white;
+  background: red;
+  border-radius: 3px;
+  padding: {
+    top: 2px;
+    bottom: 2px;
+    left: 8px;
+    right: 8px;
+  }
+  border: none;
+  margin-left: 5px;
+}
+
