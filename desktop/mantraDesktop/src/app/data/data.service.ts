@@ -126,6 +126,10 @@ export class DataService {
     return this.cars.find(car => car.id === id);
   }
 
+  // getOneCarBy(id){
+  //   return this.cars.find(car => car.id === id);
+  // }
+
   setRoutes(routes){
     this.routes = routes;
   }

@@ -1,7 +1,5 @@
 <div *ngIf="allActiveRoutes" class="wrapper">
-  <div class="repetRoute">
-    <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonG green ">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}</button>
-  </div>
+
 
   <section class="activeNonActive">
     <button class="buttonTab" [class]="getClass('mine')"  (click)="mineRoutes()">{{'TRANSPORT.vlastnePrepravy' | translate}}</button>

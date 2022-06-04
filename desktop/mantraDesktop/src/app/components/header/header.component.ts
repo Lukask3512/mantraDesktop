@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
 
   lang;
 
-  company: Company;
+
 
   constructor(location: Location,  private element: ElementRef,
               private router: Router, private dataService: DataService,
@@ -36,7 +36,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'sk';
-    this.company = this.dataService.getLoggedInCompany();
   }
 
   getDispecer(){

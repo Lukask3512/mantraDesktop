@@ -561,23 +561,23 @@ export class MapComponent implements AfterViewInit {
 
 
 
-      // if (this.firstZoomCars === false){
-      //   const vectorNaZobrazenieAllFeatures =  new VectorSource({
-      //     features: this.cars
-      //   });
-      //
-      //
-      //   this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
-      //     duration: 800} );
-      //   this.firstZoomCars = true;
-      //   setTimeout(() => {
-      //     this.lastZoom = this.map.getView().getZoom();
-      //     localStorage.setItem('zoomLevel', this.lastZoom);
-      //     this.centerOfZoom = transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
-      //     localStorage.setItem('zoomCenter', this.centerOfZoom);
-      //   }, 2000);
-      //
-      // }
+      if (this.firstZoomCars === false){
+        const vectorNaZobrazenieAllFeatures =  new VectorSource({
+          features: this.cars
+        });
+
+
+        this.view.fit(vectorNaZobrazenieAllFeatures.getExtent(), {padding: [100, 100, 100, 100], minResolution: 50,
+          duration: 800} );
+        this.firstZoomCars = true;
+        setTimeout(() => {
+          this.lastZoom = this.map.getView().getZoom();
+          localStorage.setItem('zoomLevel', this.lastZoom);
+          this.centerOfZoom = transform(this.map.getView().getCenter(), 'EPSG:3857', 'EPSG:4326');
+          localStorage.setItem('zoomCenter', this.centerOfZoom);
+        }, 2000);
+
+      }
     }
 
   }

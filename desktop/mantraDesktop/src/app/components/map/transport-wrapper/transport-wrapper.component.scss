@@ -3,9 +3,10 @@
 
 .wrapper{
   min-height: auto;
-  overflow-y: auto;
-  height: 100%;
-  overflow-x: hidden;
+  //overflow-y: auto;
+  //height: 100%;
+  //overflow-x: hidden;
+  margin-bottom: 5px;
 }
 
 .companyNameTogether{
@@ -26,7 +27,8 @@
 .oneRoute{
 
   margin: 10px;
-  display: flex;
+  //display: flex;
+  //gap: 5px;
   padding: 10px;
   border-radius: 3px;
   transition: transform  0.2s;
@@ -114,13 +116,13 @@ table {
 }
 
 .nakladka{
-  max-width: 65%;
-  min-width: 65%;
+  //max-width: 65%;
+  //min-width: 65%;
   cursor: pointer;
 }
 .vykladka{
-  max-width: 35%;
-  min-width: 35%;
+  //max-width: 35%;
+  //min-width: 35%;
   cursor: pointer;
   display: flex;
   flex-direction: column;

@@ -100,4 +100,8 @@ export class CarService {
   addNavesToCar(updateCar, id) {
     return this.carsCollection.doc(id).update(updateCar);
   }
+
+  getOneCarById(id){
+    return this.allCars.find(car => car.id === id);
+  }
 }

@@ -115,3 +115,12 @@
   margin-left: 5px;
 }
 
+@mixin buttonVytvor(){
+  margin-right: 10px;
+  color: white;
+  padding: 9px 17px;
+  border-radius: 10px;
+  white-space: nowrap;
+  background: #22282f;
+}
+

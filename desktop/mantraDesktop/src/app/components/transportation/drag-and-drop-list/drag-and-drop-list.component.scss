@@ -15,6 +15,14 @@
   @include button(darkorange);
 }
 
+.companyName{
+  font-weight: bold;
+  margin: {
+    left: 3px;
+    right: 5px;
+  }
+}
+
 .noWrap{
   white-space: nowrap;
 }

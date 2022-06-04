@@ -166,7 +166,7 @@ export class NewTransportComponent implements AfterViewInit, OnInit, OnDestroy {
           this.addresses = adresy;
 
 
-          // this.child.notifyMe(this.addresses,  this.dataService.getOneCarById(this.carId), this.car);
+          this.detail = [];
           this.addresses.forEach(oneAddress => {
             const myPackages = [];
             const detailAr = {detailArray: [], townsArray: [], packageId: []};

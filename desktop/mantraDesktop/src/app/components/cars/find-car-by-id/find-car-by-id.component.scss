@@ -10,6 +10,8 @@ p,h2{
 
 .ecvAndStatus{
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   column-gap: 5px;
   align-items: center;
 }

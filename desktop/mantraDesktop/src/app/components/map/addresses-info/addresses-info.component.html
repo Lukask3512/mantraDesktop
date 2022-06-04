@@ -1,0 +1,35 @@
+<div class="wrapper">
+  <section class="fullRouteWrap" *ngIf="addresses && addresses.length > 0">
+    <div class="routeWrapper" *ngFor="let town of this.addresses; index as i">
+      <div *ngIf="town">
+        <div class="oneTownWrapper">
+          <p>{{toDate(town.datumLastPrijazdy)}}</p>
+
+
+          <div class="nested">
+            <div class="townWithDot">
+              <img class="dot" src="./assets/logo/blackDot.png">
+              <p class="addressName">{{town.nameOfTown}}</p>
+            </div>
+
+            <div class="townWithDot">
+              <div class="vertLine"></div>
+              <p class="opisMesta">{{town.nameOfCompany}}</p>
+            </div>
+
+          </div>
+          <p>{{town.casLastPrijazdu}}</p>
+        </div>
+      </div>
+    </div>
+    <footer class="infoRoute">
+      <div class="carPrice">
+        <p class="grayColor">Vozidlo</p>
+        <p class="grayColor">Cena</p>
+        <p *ngIf="this.car">{{this.car.ecv}}</p>
+        <p>1200</p>
+      </div>
+      <button class="buttonDetail">Detail prepravy</button>
+    </footer>
+  </section>
+</div>

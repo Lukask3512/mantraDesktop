@@ -41,11 +41,30 @@ import {OfferCreatorDetailComponent} from '../offer-creator-detail/offer-creator
 import {NewTransportComponent} from '../../transportation/new-transport/new-transport.component';
 import {MyRouteDetailComponent} from '../my-route-detail/my-route-detail.component';
 import {MyOfferDetailComponent} from '../my-offer-detail/my-offer-detail.component';
+import Dispecer from '../../../models/Dispecer';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-map-wrapper',
   templateUrl: './map-wrapper.component.html',
-  styleUrls: ['./map-wrapper.component.scss']
+  styleUrls: ['./map-wrapper.component.scss'],
+  animations: [
+    trigger('openClose', [
+      // ...
+      state('open', style({
+        width: '70%'
+      })),
+      state('closed', style({
+        width: '100%'
+      })),
+      transition('open => closed', [
+        animate('0.1s')
+      ]),
+      transition('closed => open', [
+        animate('0.2s')
+      ]),
+    ]),
+  ],
 })
 export class MapWrapperComponent implements AfterViewInit {
 
@@ -71,6 +90,8 @@ export class MapWrapperComponent implements AfterViewInit {
   offerDetailOpen = false;
 
   allCountedOffers;
+  isOpen = false;
+
 
   @ViewChild('dragDrop')
   private dragComponent: DragAndDropListComponent;
@@ -158,6 +179,10 @@ export class MapWrapperComponent implements AfterViewInit {
   }
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  getDispecer(): Dispecer{
+    return this.dataService.getDispecer();
   }
 
   addRouteNewSystem() {
@@ -379,7 +404,7 @@ export class MapWrapperComponent implements AfterViewInit {
 
   openInfoMoje(){
     this.closeAll();
-    document.getElementById('mapWrapper').style.width = '70%';
+    this.isOpen = true;
     this.transportationElement.nativeElement.style.display = 'block';
     this.mapComponent.onResize();
     this.myTransportOpen = true;
@@ -396,7 +421,7 @@ export class MapWrapperComponent implements AfterViewInit {
 
   openInfoCakaren(){
     this.closeAll();
-    document.getElementById('mapWrapper').style.width = '70%';
+    this.isOpen = true;
     this.cakarenElement.nativeElement.style.display = 'block';
     this.mapComponent.onResize();
     this.myCakarenOpen = true;
@@ -409,20 +434,21 @@ export class MapWrapperComponent implements AfterViewInit {
   }
 
   openInfoOfferDetail(){
-    document.getElementById('mapWrapper').style.width = '70%';
+    this.isOpen = true;
     this.offerDetailElement.nativeElement.style.display = 'block';
     this.mapComponent.onResize();
     this.offerDetailOpen = true;
   }
 
   closeInfoDetail(){
+    this.isOpen = false;
     this.offerDetailElement.nativeElement.style.display = 'none';
     this.mapComponent.onResize();
     this.offerDetailOpen = false;
   }
 
   openInfoOfferCreatorDetail(){
-    document.getElementById('mapWrapper').style.width = '70%';
+    this.isOpen = true;
     this.offerCreatorDetailElement.nativeElement.style.display = 'block';
     this.mapComponent.onResize();
     this.offerDetailOpen = true;
@@ -500,14 +526,27 @@ export class MapWrapperComponent implements AfterViewInit {
     this.mapComponent.otherCarsToShow(cars);
   }
 
-    closeInfo(){
-    this.closeAll();
+  closeDetailOffer(){
     this.showAddressesByRoute(null);
-    document.getElementById('mapWrapper').style.width = '100%';
+    this.closeInfoCreatorDetail();
+    this.closeInfoRouteDetail();
+    this.openInfoCakaren();
+  }
+
+  closeDetail(){
+    // this.closeAll();
+    this.showAddressesByRoute(null);
+    this.closeInfoCreatorDetail();
+    this.closeInfoRouteDetail();
+    this.openInfoMoje();
   }
 
   addNewRoute(){
     this.dataService.changeRealRoute(null);
+  }
+
+  toggle() {
+    this.isOpen = !this.isOpen;
   }
 
 

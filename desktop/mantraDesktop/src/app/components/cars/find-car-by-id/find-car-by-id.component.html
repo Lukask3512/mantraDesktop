@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="ecvAndStatus">
     <h2 *ngIf="carName">{{carName.ecv}}</h2>
-    <p *ngIf="carName">{{this.routeStatusService.getStatus(carName.status)}}</p>
+    <p *ngIf="carName && !dontShowStatus">{{this.routeStatusService.getStatus(carName.status)}}</p>
   </div>
 
 <p *ngIf="carUndefined === true">{{'OFTEN.nepriradene' | translate}}</p>

@@ -1,12 +1,17 @@
 <div class="allWrapper" >
   <div class="imgAndName">
-    <img class="logo" src="./assets/logo/Mantra-Horizontal-White.svg">
-    <h4 class="companyName" *ngIf="this.company">{{this.company.name}}</h4>
+    <img class="logo" src="./assets/logo/Mantra-Horizontal-Black.svg">
   </div>
 
 
   <div class="logout-btn">
     <div class="flexking">
+      <div class="repetRoute">
+        <button (click)="routeDetail(null)" routerLink="/view/newRoute" class="buttonVytvor">{{'NEWADDRESSFORM.vytvoritPrepravu' | translate}}
+          <span class="plusInBut">+</span>
+        </button>
+      </div>
+
       <select class="selectLanguage" (change)="changeLang($event.target.value)">
         <option value="en" [selected]="lang == 'en'">English</option>
         <option value="sk" [selected]="lang == 'sk'">Slovenčina</option>

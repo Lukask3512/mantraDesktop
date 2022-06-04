@@ -50,6 +50,7 @@
   flex-direction: column;
   align-items: center;
   display: flex;
+  margin: 0;
 }
 
 .ponukaWrapper{
@@ -72,6 +73,7 @@
 
 .tableArountAddresses{
   @include tableBorder();
+  margin: 0;
 
 }
 

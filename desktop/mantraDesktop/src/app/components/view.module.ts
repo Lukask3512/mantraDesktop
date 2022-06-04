@@ -102,6 +102,7 @@ import {MatButtonModule} from '@angular/material/button';
 
 import { DeletePrivesComponent } from './dialogs/delete-prives/delete-prives.component';
 import { ComapnyContantsDialogComponent } from './dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
+import { AddressesInfoComponent } from './map/addresses-info/addresses-info.component';
 
 
 @NgModule({
@@ -129,7 +130,7 @@ import { ComapnyContantsDialogComponent } from './dialogs/comapny-contants-dialo
       MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent,
       PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent, OfferDetailComponent,
       OfferToCarDialogComponent, CakarenWrapperComponent, OfferCreatorDetailComponent, MyRouteDetailComponent, MyOfferDetailComponent,
-      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent
+      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent, AddressesInfoComponent
     ],
     exports: [
         OpenlayerComponent,

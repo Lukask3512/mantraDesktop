@@ -11,6 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class FindCarByIdComponent implements OnInit {
 
   @Input() carId: string;
+  @Input() dontShowStatus = false;
   carName;
   carUndefined;
   constructor(public routeStatusService: RouteStatusService, private carService: CarService, private translation: TranslateService) { }

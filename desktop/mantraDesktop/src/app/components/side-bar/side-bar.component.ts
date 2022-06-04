@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../../data/data.service';
 import Route from '../../models/Route';
+import Company from '../../models/Company';
 
 @Component({
   selector: 'app-side-bar',
@@ -11,7 +12,11 @@ export class SideBarComponent implements OnInit {
 
   constructor(private dataService: DataService) { }
 
+  company: Company;
+
   ngOnInit(): void {
+    this.company = this.dataService.getLoggedInCompany();
+
   }
 
   getCompany(){

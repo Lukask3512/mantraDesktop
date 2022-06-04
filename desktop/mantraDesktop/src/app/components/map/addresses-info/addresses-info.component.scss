@@ -1,0 +1,66 @@
+@import "./src/sccs/shared/mixins";
+
+.oneTownWrapper{
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+}
+
+.nested{
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.townWithDot{
+  display: grid;
+  grid-template-columns: 0.4fr 2fr;
+}
+
+.opisMesta{
+  grid-column: 2;
+  color: gray;
+}
+
+.grayColor{
+  color: gray;
+}
+
+.dot{
+  width: 30px;
+  justify-self: center;
+}
+
+.vertLine{
+  justify-self: center;
+  border-left: 4px solid limegreen;
+  height: 30px;
+}
+p{
+  margin: 0;
+}
+.addressName{
+  font-weight: 600;
+}
+
+.carPrice{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.infoRoute{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.fullRouteWrap{
+  border: 1px solid black;
+}
+
+.routeWrapper{
+  border-bottom: 1px solid black;
+}
+
+.buttonDetail{
+  @include buttonVytvor();
+}

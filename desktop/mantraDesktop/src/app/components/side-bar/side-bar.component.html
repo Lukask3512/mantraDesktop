@@ -1,15 +1,28 @@
 
 <nav class="main-nav" role="navigation">
-    <ul class="unstyled list-hover-slide">
-      <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/map" class="nav">{{'HEADER.trhovisko' | translate}}</a></li>
+  <h4 class="companyName" *ngIf="this.company">{{this.company.name}}</h4>
+
+  <ul class="unstyled list-hover-slide">
+      <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/map" class="nav">
+        <p>{{'HEADER.trhovisko' | translate}}</p>
+      </a></li>
 
 <!--        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}}</a></li>-->
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/cars" class="nav">{{'HEADER.cars' | translate}}</a></li>
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/vodici" class="nav">{{'HEADER.drivers' | translate}}</a></li>
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">{{'HEADER.dispatcher' | translate}}</a></li>
-      <li *ngIf="!getCompany()"><a routerLinkActive="active"  routerLink="/view/transport" class="nav">Archiv</a></li>
-
-      <li *ngIf="getCompany()"><a routerLinkActive="active" routerLink="/view/companies" class="nav">{{'HEADER.companies' | translate}}</a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/cars" class="nav">
+          <p>{{'HEADER.cars' | translate}}</p>
+        </a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/vodici" class="nav">
+          <p>{{'HEADER.drivers' | translate}}</p>
+        </a></li>
+        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">
+          <p>{{'HEADER.dispatcher' | translate}}</p>
+        </a></li>
+         <li *ngIf="!getCompany()"><a routerLinkActive="active"  routerLink="/view/transport" class="nav">
+           <p>Archiv</p>
+         </a></li>
+        <li *ngIf="getCompany()"><a routerLinkActive="active" routerLink="/view/companies" class="nav">
+          <p>{{'HEADER.companies' | translate}}</p>
+        </a></li>
     </ul>
 </nav>
 
