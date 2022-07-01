@@ -8,7 +8,7 @@
 
 .mapWrapper{
   position: relative;
-  width: 100%;
+  width: 65%;
 
 }
 
@@ -226,9 +226,8 @@
 }
 
 .info{
-  @include table();
   //height: auto;
-  width: max-content;
+  width: 35%;
   flex-direction: column;
   align-items: center;
   margin-left: 10px;

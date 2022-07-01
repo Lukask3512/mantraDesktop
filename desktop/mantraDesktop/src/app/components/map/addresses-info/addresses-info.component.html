@@ -1,33 +1,41 @@
 <div class="wrapper">
   <section class="fullRouteWrap" *ngIf="addresses && addresses.length > 0">
+    <div [class]="chooseBorderDown()">
+      <div *ngIf="!forCar" class="header">
+        <p class="specialTypes">ADR</p>
+        <p class="specialTypes">Tepelný režim</p>
+        <p class="specialTypes">Hydraulická ruka</p>
+      </div>
     <div class="routeWrapper" *ngFor="let town of this.addresses; index as i">
       <div *ngIf="town">
         <div class="oneTownWrapper">
-          <p>{{toDate(town.datumLastPrijazdy)}}</p>
+          <p class="dateOfLastArrival">{{toDate(town.datumLastPrijazdy)}}</p>
 
 
           <div class="nested">
             <div class="townWithDot">
-              <img class="dot" src="./assets/logo/blackDot.png">
+<!--              <img class="dot" src="./assets/logo/blackDot.png">-->
+              <i [class]="chooseColor(town.status)" class="material-icons dotIcon">fiber_manual_record</i>
               <p class="addressName">{{town.nameOfTown}}</p>
             </div>
 
             <div class="townWithDot">
-              <div class="vertLine"></div>
+              <div *ngIf="i +1 < this.addresses.length" [class]="chooseColorForLine(town.status)" class="vertLine"></div>
               <p class="opisMesta">{{town.nameOfCompany}}</p>
             </div>
 
           </div>
-          <p>{{town.casLastPrijazdu}}</p>
+          <p *ngIf="town.estimatedTimeArrival">{{town.estimatedTimeArrival}}</p>
         </div>
       </div>
+      </div>
     </div>
-    <footer class="infoRoute">
+    <footer *ngIf="!forCar" class="infoRoute">
       <div class="carPrice">
         <p class="grayColor">Vozidlo</p>
         <p class="grayColor">Cena</p>
-        <p *ngIf="this.car">{{this.car.ecv}}</p>
-        <p>1200</p>
+        <p class="carEcv" *ngIf="this.car">{{this.car.ecv}}</p>
+        <p class="routePrice">{{route.price}} €</p>
       </div>
       <button class="buttonDetail">Detail prepravy</button>
     </footer>

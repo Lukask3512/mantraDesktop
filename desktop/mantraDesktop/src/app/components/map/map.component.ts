@@ -372,7 +372,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   clickedOnCar(carId){
-    this.carInfo.setCarId(carId);
+    // this.carInfo.setCarId(carId);
     this.carIdEmitter.emit(carId);
   }
 
@@ -528,6 +528,12 @@ export class MapComponent implements AfterViewInit {
                   }),
                 });
               }else{
+                var fontColor = "black";
+                var backgroundColor = "#212529";
+                var backgroundFill = new Fill({
+                  color: backgroundColor
+                });
+
                 style = new Style({
                   image: new Icon({
                     color: '#8959A8',
@@ -539,12 +545,15 @@ export class MapComponent implements AfterViewInit {
                     text: carToShow.ecv,
                     font: 15 + 'px sans-serif',
                     fill: new Fill({
-                      color: '#000000',
+                      color: '#ffffff',
                     }),
-                    offsetY: 20
+                    offsetY: 25,
+                    padding: [2, 4, 2, 4],
+                    backgroundFill: backgroundFill
                   }),
                 });
               }
+
 
               styleCache[size] = style;
             }

@@ -18,11 +18,14 @@ import {CarService} from '../../../services/car.service';
 export class AddressesInfoComponent implements OnInit {
 
   @Input() route: Route;
+  @Input() carItinerar: string[];
+  @Input() forCar = false;
   addresses: Address[];
 
   addressesUns;
 
   car: Cars;
+
 
   constructor(private addressService: AddressService, public routeStatusService: RouteStatusService,
               private offerService: OfferRouteService, private packageService: PackageService,
@@ -35,25 +38,55 @@ export class AddressesInfoComponent implements OnInit {
 
   getAddresses(){
     this.addressesUns = this.addressService.address$.subscribe(alAdd => {
+      let adresy;
+      if (this.route){
+        adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
+        adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
+      }else if (this.carItinerar.length > 0){
+        adresy = alAdd.filter(jednaAdresa => this.carItinerar.includes(jednaAdresa.id));
+        adresy = this.carItinerar.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
+      }
 
-      let adresy = alAdd.filter(jednaAdresa => this.route.addresses.includes(jednaAdresa.id));
-      adresy = this.route.addresses.map((i) => adresy.find((j) => j.id === i)); // ukladam ich do poradia
       this.addresses = adresy;
 
     });
   }
 
   toDate(date){
+    if (date === '0'){
+      return 'Nerozhoduje';
+    }
     const datum = new Date(date);
-    return datum.getDate();
+    return datum.getUTCDate();
   }
 
-  getCar(){
-    this.car = this.carService.getOneCarById(this.route.carId);
-    if (!this.car){
-      setTimeout(() => {
-        this.car = this.carService.getOneCarById(this.route.carId);
-      }, 2000);
+  getCar() {
+    if (this.route.carId) {
+      this.carService.cars$.subscribe(allCars => {
+        this.car = allCars.find(oneCar => oneCar.id === this.route.carId);
+      });
+    }
+  }
+
+
+  chooseColor(status: number){
+    if (status === 3){
+      return 'green';
+    }
+    if (status === 4 || status === 5 || status === 6){
+      return 'red';
+    }
+  }
+
+  chooseColorForLine(status: number){
+    if (status === 1){
+      return 'green';
+    }
+  }
+
+  chooseBorderDown(){
+    if (!this.forCar){
+      return 'townsWrapper';
     }
   }
 

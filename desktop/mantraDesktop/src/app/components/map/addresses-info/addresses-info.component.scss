@@ -3,7 +3,9 @@
 .oneTownWrapper{
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
+  //border-bottom: 1px solid black;
 }
+
 
 .nested{
   display: grid;
@@ -20,6 +22,10 @@
   color: gray;
 }
 
+.townsWrapper{
+  border-bottom: 1px solid black;
+}
+
 .grayColor{
   color: gray;
 }
@@ -31,7 +37,7 @@
 
 .vertLine{
   justify-self: center;
-  border-left: 4px solid limegreen;
+  border-left: 4px solid black;
   height: 30px;
 }
 p{
@@ -44,6 +50,7 @@ p{
 .carPrice{
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-column-gap: 8px;
 }
 
 .infoRoute{
@@ -54,13 +61,56 @@ p{
 }
 
 .fullRouteWrap{
-  border: 1px solid black;
+  border: 1px solid gray;
+  padding: 8px;
 }
 
 .routeWrapper{
-  border-bottom: 1px solid black;
+  //border-bottom: 1px solid black;
 }
 
 .buttonDetail{
   @include buttonVytvor();
+}
+
+.header{
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 10px;
+}
+
+.green{
+  color: limegreen;
+}
+
+.red{
+  color: red;
+}
+
+.onWayLine{
+  border-left: 4px solid limegreen;
+}
+
+.dotIcon{
+  justify-self: center;
+}
+
+.specialTypes{
+  background: #E8E8E8;
+  padding: 5px 6px;
+  border-radius: 20px;
+}
+
+.carEcv{
+  grid-column: 1;
+}
+
+.routePrice{
+  grid-column: 2;
+}
+
+.dateOfLastArrival{
+  color: gray;
+  font-size: small;
 }

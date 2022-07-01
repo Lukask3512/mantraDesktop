@@ -43,6 +43,7 @@ import {MyRouteDetailComponent} from '../my-route-detail/my-route-detail.compone
 import {MyOfferDetailComponent} from '../my-offer-detail/my-offer-detail.component';
 import Dispecer from '../../../models/Dispecer';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {CarJustInfoComponent} from "../car-just-info/car-just-info.component";
 
 @Component({
   selector: 'app-map-wrapper',
@@ -105,6 +106,9 @@ export class MapWrapperComponent implements AfterViewInit {
   @ViewChild('offerDetailElement')
   private offerDetailElement: ElementRef;
 
+  @ViewChild('oneCarElement')
+  private oneCarElement: ElementRef;
+
   @ViewChild('offerCreatorDetailElement')
   private offerCreatorDetailElement: ElementRef;
 
@@ -137,8 +141,8 @@ export class MapWrapperComponent implements AfterViewInit {
   @ViewChild(CarsPopUpComponent)
   private chooseCarPopup: CarsPopUpComponent;
 
-  @ViewChild(CarInfoComponent)
-  private carInfo: CarInfoComponent;
+  @ViewChild(CarJustInfoComponent)
+  private carInfo: CarJustInfoComponent;
 
   @ViewChild(OffersPopUpComponent)
   private chooseOfferPoUp: OffersPopUpComponent;
@@ -148,6 +152,7 @@ export class MapWrapperComponent implements AfterViewInit {
 
   @ViewChild(MapComponent)
   private mapComponent: MapComponent;
+
 
 
   constructor(private http: HttpClient, private storage: AngularFireStorage, private dataService: DataService,
@@ -258,6 +263,9 @@ export class MapWrapperComponent implements AfterViewInit {
     const routeToShow = this.routes.find(oneFeature => oneFeature.getId() === carId);
     this.mapComponent.drawRoute(routeToShow);
     this.mapComponent.drawAddresses(adresy);
+    this.closeAll();
+    this.openInfoOneCar();
+    this.carInfo.setCarId(carId);
   }
 
   sendAddressesToMapByCar(car: Cars): Address[]{
@@ -300,6 +308,7 @@ export class MapWrapperComponent implements AfterViewInit {
     this.closeInfoCakaren();
     this.closeInfoMoje();
     this.closeInfoRouteDetail();
+    this.closeInfoOneCar();
   }
 
   vysunBocneInfo() {
@@ -443,6 +452,20 @@ export class MapWrapperComponent implements AfterViewInit {
   closeInfoDetail(){
     this.isOpen = false;
     this.offerDetailElement.nativeElement.style.display = 'none';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = false;
+  }
+
+  openInfoOneCar(){
+    this.isOpen = true;
+    this.oneCarElement.nativeElement.style.display = 'block';
+    this.mapComponent.onResize();
+    this.offerDetailOpen = true;
+  }
+
+  closeInfoOneCar(){
+    this.isOpen = false;
+    this.oneCarElement.nativeElement.style.display = 'none';
     this.mapComponent.onResize();
     this.offerDetailOpen = false;
   }
