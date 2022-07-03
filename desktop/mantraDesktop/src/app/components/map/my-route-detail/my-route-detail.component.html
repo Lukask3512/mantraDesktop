@@ -1,5 +1,28 @@
 <header class="headerCar">
-  <app-find-car-by-id *ngIf="this.route && this.route.carId != undefined" [carId]="this.carId"></app-find-car-by-id>
+  <div class="editExit">
+    <i class="material-icons">edit</i>
+    <i class="material-icons" routerLink="/view/map/transport">close</i>
+  </div>
+  <div class="headerFlex">
+    <div class="companyName">
+      <label>Zadavatel</label>
+      <h3>
+        <app-get-name-of-comapny-by-master-id *ngIf="route && route.createdBy !== this.getDispecerId() else myCompany" [masterId]="this.route.createdBy"></app-get-name-of-comapny-by-master-id>
+        <ng-template #myCompany>{{getMyCompany()}}</ng-template>
+      </h3>
+    </div>
+
+    <div>
+<!--      <i class="material-icons">edit</i>-->
+<!--      <i class="material-icons" routerLink="/view/map/transport">close</i>-->
+      <label>Vozidlo</label>
+      <h2><app-find-car-by-id *ngIf="this.route && this.route.carId != undefined" [carId]="this.carId" [dontShowStatus]="true"></app-find-car-by-id></h2>
+
+    </div>
+  </div>
+  <div *ngIf="this.route && this.route.id" class="mainDetailAbout">
+    <app-main-detail-about></app-main-detail-about>
+  </div>
 </header>
 <div class="wrapperWithMap">
 
@@ -20,16 +43,9 @@
     </div>
     <!--  <button (click)="buttonForExampleData()">Exapmle</button>-->
     <div class="addresses" *ngIf="this.addresses">
-      <app-drag-and-drop-list class="dropList" #dropList
-                              [address]="this.addresses"
-                              [draggable]="true"
-                              [updatable]="true"
-                              (outputRoute)="onDropListChange($event)"
-                              (outputDetails)="onDropListDetailChange($event)"
-                              (deleteFromIti)="deleteAddress($event)"
-                              (clickedOnRoute)="getAddressFromDragAndSend($event)">
+      <label class="trasaPrepravy">Trasa prepravy</label>
 
-      </app-drag-and-drop-list>
+      <app-addresses-info *ngIf="this.route" [route]="this.route" [forCar]="true"></app-addresses-info>
 
       <div class="changeButtons" *ngIf="checkFinished()" (click)="vylozeneBaliky()" >
         <!--      <button class="buttonDriver" *ngIf="carId != null" [disabled]="!change" (click)="this.updateDetails()">Odoslať vodičovi</button>-->
@@ -49,9 +65,9 @@
 
     </div>
 
-    <div *ngIf="this.route && this.route.id" class="mainDetailAbout">
-      <app-main-detail-about></app-main-detail-about>
-    </div>
+<!--    <div *ngIf="this.route && this.route.id" class="mainDetailAbout">-->
+<!--      <app-main-detail-about></app-main-detail-about>-->
+<!--    </div>-->
 
   </div>
 

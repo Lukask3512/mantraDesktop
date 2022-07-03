@@ -20,6 +20,7 @@ import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component'
 import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {CountOffersService} from '../count-offers.service';
 import {OfferToCarDialogComponent} from '../../dialogs/offer-to-car-dialog/offer-to-car-dialog.component';
+import {MapWrapperComponent} from "../map-wrapper/map-wrapper.component";
 
 @Component({
   selector: 'app-transport-wrapper',
@@ -61,7 +62,8 @@ export class TransportWrapperComponent implements OnInit {
               private carServise: CarService, private dialog: MatDialog, private dataService: DataService, private router: Router,
               private addressService: AddressService, private offerService: OfferRouteService,
               private dispecerService: DispecerService, private companyService: CompanyService,
-              private packageService: PackageService, private countOfferService: CountOffersService) {
+              private packageService: PackageService, private countOfferService: CountOffersService,
+              private mapWrapper: MapWrapperComponent) {
 
   }
 
@@ -324,7 +326,8 @@ export class TransportWrapperComponent implements OnInit {
   }
 
   prejdiDoDetailuPrepravy(route: Route){
-    this.otvorPrepravuEmitter.emit(route);
+    // this.otvorPrepravuEmitter.emit(route);
+    this.dataService.changeRealRoute(route);
     setTimeout(() =>
       {
         this.sendRouteToMap(route);
@@ -344,6 +347,7 @@ export class TransportWrapperComponent implements OnInit {
   sendRouteToMap(route: Route){
     const routeToDetail = this.countOfferService.getRouteWithEverything(route);
     this.addressesEmitter.emit(routeToDetail.adresyVPonuke);
+    this.mapWrapper.showAddressesByRoute(routeToDetail.adresyVPonuke);
     setTimeout(() =>
       {
         this.mainDetailAboutComponent.setRoute(routeToDetail);

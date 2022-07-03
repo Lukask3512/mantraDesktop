@@ -44,6 +44,7 @@ import {MyOfferDetailComponent} from '../my-offer-detail/my-offer-detail.compone
 import Dispecer from '../../../models/Dispecer';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CarJustInfoComponent} from "../car-just-info/car-just-info.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-map-wrapper',
@@ -162,7 +163,8 @@ export class MapWrapperComponent implements AfterViewInit {
               private addressService: AddressService, private packageService: PackageService,
               private drawOffer: DrawOfferService, private vodicService: VodicService,
               private routeCoordinates: RouteCoordinatesService, private _snackBar: MatSnackBar,
-              private translation: TranslateService, private countOffersService: CountOffersService) {
+              private translation: TranslateService, private countOffersService: CountOffersService,
+              private router: Router) {
   }
 
   routeDetail(route) {
@@ -263,9 +265,11 @@ export class MapWrapperComponent implements AfterViewInit {
     const routeToShow = this.routes.find(oneFeature => oneFeature.getId() === carId);
     this.mapComponent.drawRoute(routeToShow);
     this.mapComponent.drawAddresses(adresy);
-    this.closeAll();
-    this.openInfoOneCar();
-    this.carInfo.setCarId(carId);
+    // this.closeAll();
+    // this.openInfoOneCar();
+    // this.carInfo.setCarId(carId);
+    this.dataService.changeCarId(carId);
+    this.router.navigate(['/view/map/myCar']);
   }
 
   sendAddressesToMapByCar(car: Cars): Address[]{

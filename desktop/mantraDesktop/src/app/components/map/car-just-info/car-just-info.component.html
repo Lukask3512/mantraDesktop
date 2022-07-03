@@ -2,21 +2,40 @@
   <!--  <button (click)="closePopUp()"></button>-->
   <div id="popup-content">
     <section *ngIf="this.car" class="carInfo">
-      <h2>
-        {{this.car.ecv}}
-      </h2>
-      <span>{{this.statusService.getStatus(this.car.status)}}</span>
+      <div class="carAndStatus">
+        <div class="headerFlex">
+          <h2>
+            {{this.car.ecv}}
+          </h2>
+          <div>
+            <i class="material-icons">edit</i>
+            <i class="material-icons" routerLink="/view/map/transport">close</i>
+          </div>
+
+        </div>
+
+        <span class="smallFont">{{this.statusService.getStatus(this.car.status)}}</span>
+        <h3 class="smallFont" *ngIf="this.car.lastUpdate">{{'CAR.poslednaAktualizacia' | translate}} {{toDateLastUpdateOfCar(this.car.lastUpdate)}}</h3>
+        <div class="moreInfo">
+
+        </div>
+      </div>
+
 
       <section class="driverInfo">
         <app-get-name-of-driver [car]="this.car"></app-get-name-of-driver>
-        <span *ngIf="this.car.phoneNumber">{{this.car.phoneNumber}}</span>
+        <div>
+          <i class="material-icons">phone</i>
+          <span *ngIf="this.car.phoneNumber">{{this.car.phoneNumber}}</span>
+        </div>
       </section>
 
-      <h3 *ngIf="this.car.lastUpdate">{{'CAR.poslednaAktualizacia' | translate}} {{toDateLastUpdateOfCar(this.car.lastUpdate)}}</h3>
 
       <app-car-naklad [car]="this.car"></app-car-naklad>
     </section>
     <section class="itinerar" *ngIf="this.myAddresses">
+      <span class="smallFont">Trasa prepravy</span>
+
       <app-addresses-info [carItinerar]="this.car.itinerar" [forCar]="true"></app-addresses-info>
     </section>
   </div>

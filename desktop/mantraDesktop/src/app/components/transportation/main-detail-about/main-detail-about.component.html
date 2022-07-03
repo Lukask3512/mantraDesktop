@@ -1,27 +1,42 @@
 <div class="wrapper" *ngIf="this.route && this.route.adresyVPonuke[0]">
-  <div class="oneAddress" *ngIf="this.route.adresyVPonuke[0]">
-    <h3>
-      <img class="imgFlag" src="assets/logo/startPoint.png">
-      {{this.route.adresyVPonuke[0].nameOfTown}}
-    </h3>
-    <span>
-      <i class="material-icons">date_range</i>
-      {{this.timeToLocal(this.route.adresyVPonuke[0].datumLastPrijazdy)}}</span>
-  </div>
+<!--  <div class="oneAddress" *ngIf="this.route.adresyVPonuke[0]">-->
+<!--    <h3>-->
+<!--      <img class="imgFlag" src="assets/logo/startPoint.png">-->
+<!--      {{this.route.adresyVPonuke[0].nameOfTown}}-->
+<!--    </h3>-->
+<!--    <span>-->
+<!--      <i class="material-icons">date_range</i>-->
+<!--      {{this.timeToLocal(this.route.adresyVPonuke[0].datumLastPrijazdy)}}</span>-->
+<!--  </div>-->
 
-  <div *ngIf="this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1]" class="oneAddress">
-    <img class="imgFlag" src="assets/logo/finishFlag.png">
-    <h3>
-      {{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}
-    </h3>
-    <span>
-      <i class="material-icons">date_range</i>
-      {{this.timeToLocal(this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].datumLastPrijazdy)}}</span>
-  </div>
+<!--  <div *ngIf="this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1]" class="oneAddress">-->
+<!--    <img class="imgFlag" src="assets/logo/finishFlag.png">-->
+<!--    <h3>-->
+<!--      {{this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].nameOfTown}}-->
+<!--    </h3>-->
+<!--    <span>-->
+<!--      <i class="material-icons">date_range</i>-->
+<!--      {{this.timeToLocal(this.route.adresyVPonuke[this.route.adresyVPonuke.length - 1].datumLastPrijazdy)}}</span>-->
+<!--  </div>-->
 
-  <div>
-    <p>{{'PACKAGES.maxVaha' | translate}}: {{this.maxVaha()}} t</p>
-    <p>{{'PACKAGES.najvacsiBalik' | translate}}: {{this.najvacsiBalik().sizeS}} X {{this.najvacsiBalik().sizeD}} X {{this.najvacsiBalik().sizeV}} m</p>
-    <p>{{'PACKAGES.celkovyObjem' | translate}}: {{this.objemBalikov()}} m³</p>
+  <div class="infoAbout">
+    <div>
+      <label>{{'PACKAGES.maxVaha' | translate}}</label>
+      <p>{{this.maxVaha()}} t</p>
+    </div>
+
+    <div>
+      <label>
+        {{'PACKAGES.najvacsiBalik' | translate}}
+      </label>
+      <p>{{this.najvacsiBalik().sizeS}} X {{this.najvacsiBalik().sizeD}} X {{this.najvacsiBalik().sizeV}} m</p>
+    </div>
+
+    <div>
+      <label>
+        {{'PACKAGES.celkovyObjem' | translate}}
+      </label>
+      <p>{{this.objemBalikov()}} m³</p>
+    </div>
   </div>
 </div>

@@ -17,6 +17,13 @@ import {VodiciWrapperComponent} from './components/vodici/vodici-wrapper/vodici-
 import {CompaniesWrapperComponent} from './components/companies/companies-wrapper/companies-wrapper.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {MapWrapperComponent} from './components/map/map-wrapper/map-wrapper.component';
+import {CarJustInfoComponent} from './components/map/car-just-info/car-just-info.component';
+import {TransportWrapperComponent} from './components/map/transport-wrapper/transport-wrapper.component';
+import {OfferDetailComponent} from './components/map/offer-detail/offer-detail.component';
+import {MyOfferDetailComponent} from './components/map/my-offer-detail/my-offer-detail.component';
+import {MyRouteDetailComponent} from './components/map/my-route-detail/my-route-detail.component';
+import {CakarenWrapperComponent} from './components/map/cakaren-wrapper/cakaren-wrapper.component';
+import {DetailAddressInfoComponent} from "./components/map/detail-address-info/detail-address-info.component";
 
 
 
@@ -26,82 +33,74 @@ const routes: Routes = [
     children: [{
     path: 'cars',
       component: CarsWrapperComponent
-    }]
+    },
+      {
+        path: 'map',
+        component: MapWrapperComponent,
+        children: [{
+            path: 'myCar',
+            component: CarJustInfoComponent
+        },
+          {
+            path: 'transport',
+            component: TransportWrapperComponent
+          },
+          {
+            path: 'offerDetail',
+            component: OfferDetailComponent
+          },
+          {
+            path: 'myOfferDetail',
+            component: MyOfferDetailComponent
+          },
+          {
+            path: 'myRouteDetail',
+            component: MyRouteDetailComponent
+          },
+          {
+            path: 'cakaren',
+            component: CakarenWrapperComponent
+          }
+        ]
+      },
+      {
+        path: 'vodici',
+        component: VodiciWrapperComponent
+      },
+      {
+        path: 'cars/detail',
+        component: CarDetailComponent
+      },
+      {
+        path: 'dispecer',
+        component: DispecerComponent
+      },
+      {
+        path: 'transport',
+        component: TransportationWrapperComponent
+      },
+      {
+        path: 'newRoute',
+        component: NewTransportComponent
+      },
+      {
+        path: 'offerRoute',
+        component: WrapperComponent
+      },
+      {
+        path: 'companies',
+        component: CompaniesWrapperComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
+        path: 'offerDetail',
+        component: DetailComponent
+      }
+    ]
   },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'map',
-      component: MapWrapperComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'vodici',
-      component: VodiciWrapperComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'cars/detail',
-      component: CarDetailComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'dispecer',
-      component: DispecerComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'transport',
-      component: TransportationWrapperComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'newRoute',
-      component: NewTransportComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'offerRoute',
-      component: WrapperComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'offerDetail',
-      component: DetailComponent
-    }]
-  },
-  { path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'companies',
-      component: CompaniesWrapperComponent
-    }]
-  },
-  {
-    path: 'view', component: ViewComponent,
-    canActivate: [AuthGuard],
-    children: [{
-      path: 'profile',
-      component: ProfileComponent
-    }]
-  },
-
-
-
   { path: '', component: RegisterComponent },
 
   // otherwise redirect to home

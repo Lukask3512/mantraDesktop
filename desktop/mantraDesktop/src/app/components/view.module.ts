@@ -104,6 +104,7 @@ import { DeletePrivesComponent } from './dialogs/delete-prives/delete-prives.com
 import { ComapnyContantsDialogComponent } from './dialogs/comapny-contants-dialog/comapny-contants-dialog.component';
 import { AddressesInfoComponent } from './map/addresses-info/addresses-info.component';
 import { CarJustInfoComponent } from './map/car-just-info/car-just-info.component';
+import { DetailAddressInfoComponent } from './map/detail-address-info/detail-address-info.component';
 
 
 @NgModule({
@@ -131,7 +132,7 @@ import { CarJustInfoComponent } from './map/car-just-info/car-just-info.componen
       MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent,
       PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent, OfferDetailComponent,
       OfferToCarDialogComponent, CakarenWrapperComponent, OfferCreatorDetailComponent, MyRouteDetailComponent, MyOfferDetailComponent,
-      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent, AddressesInfoComponent, CarJustInfoComponent
+      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent, AddressesInfoComponent, CarJustInfoComponent, DetailAddressInfoComponent
     ],
     exports: [
         OpenlayerComponent,

@@ -10,61 +10,62 @@
     </div>
   </div>
   <div class="wrapper">
-    <div #transportationElement class="info">
-      <!--      <div class="closeButtonWrapper">-->
-      <!--        <button (click)="closeInfo()" class="closeInfo">x</button>-->
-      <!--      </div>-->
+    <router-outlet></router-outlet>
+<!--    <div #transportationElement class="info">-->
+<!--      &lt;!&ndash;      <div class="closeButtonWrapper">&ndash;&gt;-->
+<!--      &lt;!&ndash;        <button (click)="closeInfo()" class="closeInfo">x</button>&ndash;&gt;-->
+<!--      &lt;!&ndash;      </div>&ndash;&gt;-->
 
-      <app-transport-wrapper (otvorPonukuEmitter)="otvorPonuku($event)" (addressesEmitter)="showAddressesByRoute($event)"
-                             (otvorPrepravuEmitter)="otvorPrepravu($event)">
+<!--      <app-transport-wrapper (otvorPonukuEmitter)="otvorPonuku($event)" (addressesEmitter)="showAddressesByRoute($event)"-->
+<!--                             (otvorPrepravuEmitter)="otvorPrepravu($event)">-->
 
-      </app-transport-wrapper>
-    </div>
+<!--      </app-transport-wrapper>-->
+<!--    </div>-->
 
-    <div #oneCarElement class="info">
-      <div class="closeButtonWrapper">
-        <button (click)="closeDetail()" class="closeInfo">x</button>
-      </div>
-      <app-car-just-info></app-car-just-info>
-    </div>
+<!--    <div #oneCarElement class="info">-->
+<!--      <div class="closeButtonWrapper">-->
+<!--        <button (click)="closeDetail()" class="closeInfo">x</button>-->
+<!--      </div>-->
+<!--      <app-car-just-info></app-car-just-info>-->
+<!--    </div>-->
 
-    <div #offerDetailElement class="info">
-      <div class="closeButtonWrapper">
-        <button (click)="closeDetail()" class="closeInfo">x</button>
-      </div>
+<!--    <div #offerDetailElement class="info">-->
+<!--      <div class="closeButtonWrapper">-->
+<!--        <button (click)="closeDetail()" class="closeInfo">x</button>-->
+<!--      </div>-->
 
-      <app-offer-detail  (uspesnePriradenie)="successfullAddedToCar()"></app-offer-detail>
-    </div>
+<!--      <app-offer-detail  (uspesnePriradenie)="successfullAddedToCar()"></app-offer-detail>-->
+<!--    </div>-->
 
-    <div #offerCreatorDetailElement class="info">
-      <div class="closeButtonWrapper">
-        <button (click)="closeDetail()" class="closeInfo">x</button>
-      </div>
+<!--    <div #offerCreatorDetailElement class="info">-->
+<!--      <div class="closeButtonWrapper">-->
+<!--        <button (click)="closeDetail()" class="closeInfo">x</button>-->
+<!--      </div>-->
 
-      <app-my-offer-detail></app-my-offer-detail>
-    </div>
+<!--      <app-my-offer-detail></app-my-offer-detail>-->
+<!--    </div>-->
 
-    <div #myRouteElement class="info">
-      <div class="closeButtonWrapper">
-        <button (click)="closeDetail()" class="closeInfo">x</button>
-      </div>
+<!--    <div #myRouteElement class="info">-->
+<!--      <div class="closeButtonWrapper">-->
+<!--        <button (click)="closeDetail()" class="closeInfo">x</button>-->
+<!--      </div>-->
 
-      <app-my-route-detail></app-my-route-detail>
-    </div>
+<!--      <app-my-route-detail></app-my-route-detail>-->
+<!--    </div>-->
 
-    <div #cakarenElement class="info">
-      <!--      <div class="closeButtonWrapper">-->
-      <!--        <button (click)="closeDetail()" class="closeInfo">x</button>-->
-      <!--      </div>-->
+<!--    <div #cakarenElement class="info">-->
+<!--      &lt;!&ndash;      <div class="closeButtonWrapper">&ndash;&gt;-->
+<!--      &lt;!&ndash;        <button (click)="closeDetail()" class="closeInfo">x</button>&ndash;&gt;-->
+<!--      &lt;!&ndash;      </div>&ndash;&gt;-->
 
-      <app-cakaren-wrapper (otvorPonukuEmitter)="otvorPonukuZCakarne($event)" (addressesEmitter)="showAddressesByRoute($event)"></app-cakaren-wrapper>
-    </div>
+<!--      <app-cakaren-wrapper (otvorPonukuEmitter)="otvorPonukuZCakarne($event)" (addressesEmitter)="showAddressesByRoute($event)"></app-cakaren-wrapper>-->
+<!--    </div>-->
 
 
     <div id="mapWrapper" class="mapWrapper" [@openClose]="isOpen ? 'open' : 'closed'">
       <app-map (carIdEmitter)="sendRoute($event)" (offerIdEmitter)="displayOffer($event)"></app-map>
       <button class="addButton" (click)="addNewRoute()" routerLink="/view/newRoute">Add</button>
-      <button class="sideButton" (click)="vysunBocneInfo()">Vysun</button>
+      <button class="sideButton" (click)="vysunBocneInfo()" routerLink="/view/map/transport">Vysun</button>
       <button class="trhovikoButton" (click)="vysunCakaren()">Cakaren</button>
     </div>
 

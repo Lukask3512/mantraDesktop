@@ -281,7 +281,7 @@ export class MyOfferDetailComponent implements AfterViewInit, OnDestroy {
   }
 
   sendCar(car){
-    this.dataService.changRoute(car);
+    this.dataService.changeCar(car);
   }
 
   vymazatPonuku(){

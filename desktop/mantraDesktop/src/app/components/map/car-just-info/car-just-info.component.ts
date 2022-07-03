@@ -5,6 +5,7 @@ import {ItinerarDaDComponent} from '../../cars/car-detail/itinerar-da-d/itinerar
 import {CarService} from '../../../services/car.service';
 import {RouteStatusService} from '../../../data/route-status.service';
 import {AddressService} from '../../../services/address.service';
+import {DataService} from "../../../data/data.service";
 
 @Component({
   selector: 'app-car-just-info',
@@ -18,9 +19,11 @@ export class CarJustInfoComponent implements OnInit {
   @Output() carEmitter = new EventEmitter<Cars>();
 
 
-  constructor(private carsSerevice: CarService, public statusService: RouteStatusService, private addressesService: AddressService) { }
+  constructor(private carsSerevice: CarService, public statusService: RouteStatusService, private addressesService: AddressService,
+              private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.setCarId();
   }
 
   closePopUp(){
@@ -44,8 +47,8 @@ export class CarJustInfoComponent implements OnInit {
     });
   }
 
-  setCarId(carId){
-    console.log('setol som car');
+  setCarId(){
+    const carId = this.dataService.getCarId();
     this.carsSerevice.cars$.subscribe(allCars => {
       this.car = allCars.find(allCarsDb => allCarsDb.id === carId);
       this.getAddresses();

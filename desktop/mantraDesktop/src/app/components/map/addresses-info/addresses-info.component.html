@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <section class="fullRouteWrap" *ngIf="addresses && addresses.length > 0">
+  <section [ngClass]="{'fullRouteWrap' : !forCar}" *ngIf="addresses && addresses.length > 0">
     <div [class]="chooseBorderDown()">
       <div *ngIf="!forCar" class="header">
         <p class="specialTypes">ADR</p>
@@ -37,7 +37,7 @@
         <p class="carEcv" *ngIf="this.car">{{this.car.ecv}}</p>
         <p class="routePrice">{{route.price}} €</p>
       </div>
-      <button class="buttonDetail">Detail prepravy</button>
+      <button class="buttonDetail" (click)="changeRoute()" routerLink="/view/map/myRouteDetail">Detail prepravy</button>
     </footer>
   </section>
 </div>

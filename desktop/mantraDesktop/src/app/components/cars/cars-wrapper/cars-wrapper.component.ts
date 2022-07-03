@@ -130,7 +130,7 @@ export class CarsWrapperComponent implements OnInit, AfterViewInit {
   }
 
   sendCar(car){
-    this.dataSerice.changRoute(car);
+    this.dataSerice.changeCar(car);
   }
 
   deleteCar(car){

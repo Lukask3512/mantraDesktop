@@ -83,8 +83,6 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
 
   @Input() showMapAndBoz = true;
 
-  @ViewChild('dropList')
-  private childDropList: DragAndDropListComponent;
 
   @ViewChild('child')
   private child: OpenlayerComponent;
@@ -129,11 +127,19 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
   ngOnInit() {
   }
 
+  getDispecerId(){
+    return this.dataService.getMyIdOrMaster();
+  }
+
+  getMyCompany(){
+    return this.dataService.getLoggedInCompany().name;
+  }
+
   ngAfterViewInit(): void {
     setTimeout(() => { // pre exoressionchanged error...
       const loggedDispecer = this.dataService.getDispecer();
       let dispecerId;
-      if (loggedDispecer.createdBy == 'master'){
+      if (loggedDispecer.createdBy === 'master'){
         dispecerId = loggedDispecer.id;
       }else {
         dispecerId = loggedDispecer.createdBy;
@@ -195,13 +201,8 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
 
             });
 
-            if (this.route && this.route.id){
-              this.childDropList.setDragable(false);
-              this.childDropList.setUpdatable(true);
-            }
             this.spinner.hide();
-            this.childDropList.setDetails(this.detail);
-            this.childDropList.setAddresses(this.addresses);
+
 
             this.routeToDetail = {
               adresyVPonuke: this.addresses,
@@ -239,104 +240,15 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
           }
 
 
-        }else{
-          this.childDropList.setAddresses(null);
         }
       });
     });
   }
 
-  getAddressFromDragAndSend(townIndex){
-    const adresa = this.addresses[townIndex];
-    const detail = this.detail[townIndex];
-    this.newFormChild.setAddress(adresa, townIndex);
-    this.newFormChild.setDetail(detail);
-    this.clickedOnIndexDetail = townIndex;
-  }
 
-  receiveAddressUpdate(adreesIndex){
-    console.log(adreesIndex);
-    this.addresses[adreesIndex.index] = adreesIndex.adresa;
-  }
-
-  updateDetailOnTown(index: number){
-    console.log(this.detail);
-    if (this.detail[index][0] !== undefined){
-      this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
-      this.newFormChild.setAddress(this.addresses[index], index);
-    }
-    else{
-
-      this.newFormChild.setDetail({detail: this.detail[index][0], indexBedne: 0, indexMesta: 0});
-      this.newFormChild.setAddress(this.addresses[index], index);
-    }
-  }
 
   setDetailForm(detail){
     this.newFormChild.setDetailFromBaliky(detail);
-  }
-
-
-  onDropListDetailChange(detail){
-    this.detail = detail;
-    this.detailChild.setDetails(this.detail);
-    this.dataService.setDetailSource(this.detail);
-  }
-
-
-
-
-  onDropListChange(changedRoute: Address[]){
-    this.addresses = changedRoute;
-    // this.dataService.checkAddressesTime(this.addresses);
-    this.clickedOnIndexDetail = undefined;
-    this.change = true;
-  }
-
-
-  receiveAddress(address: Address){
-    if (this.clickedOnIndexDetail !== undefined && this.clickedOnIndexDetail !== null){
-      this.addresses[this.clickedOnIndexDetail] = address;
-    }else{
-      this.addresses.push(address);
-    }
-    this.clickedOnIndexDetail = undefined;
-    this.checkAllDetails();
-
-  }
-
-  receiveDetail(detail){
-    if (this.clickedOnIndexDetail !== undefined && this.clickedOnIndexDetail !== null){
-      this.detail[this.clickedOnIndexDetail] = detail;
-    }else{
-      this.detail.push(detail);
-    }
-    this.detailChild.setDetails(this.detail);
-    this.dataService.setDetailSource(this.detail);
-    this.childDropList.setDetails(this.detail);
-  }
-
-  // tu si kontrolujem, ci som nahodou nezmenil baliky, a ci nevykladam taky ktory uz nemam
-  checkAllDetails(){
-    for (let i = 0; i < this.detail.length; i++) {
-      if (this.addresses[i].type === 'vykladka'){ // tak hladam jej baliky
-        for (let j = 0; j < this.detail[i].townsArray.length; j++) {
-          console.log(this.detail[this.detail[i].townsArray[i]]);
-          // console.log(this.detail[this.detail[i].townsArray[this.detail[i].detailArray]]);
-          if (this.detail[this.detail[i].townsArray[j]][this.detail[i].detailArray[j]]){
-
-          }else{
-            console.log('som nanasiel a mal by tom to vyrantat');
-            this.detail[i].townsArray.splice(j, 1);
-            this.detail[i].detailArray.splice(j, 1);
-          }
-        }
-      }
-    }
-  }
-
-  receiveDetailPosition(detailPositions){
-    this.arrayOfDetailsPositions.push(detailPositions);
   }
 
 
@@ -350,7 +262,7 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     }
     const dialogConfig = new MatDialogConfig();
 
-    if (this.route.id == undefined){
+    if (this.route.id === undefined){
       dialogConfig.data = {
         carId: this.carId,
         addresses: this.addresses,
@@ -388,93 +300,11 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     });
   }
 
-  async saveAddresses(){
-    const addressesId: string[] = [];
-    for (const oneAddres of this.addresses){
-      if (oneAddres.id){
-        addressesId.push(oneAddres.id);
-      }else{
-        const createdBy = this.dataService.getMyIdOrMaster();
-        const idcko = await this.addressService.createAddressWithId({...oneAddres});
-        addressesId.push(idcko);
-      }
-    }
-    this.route.addresses = addressesId;
-  }
-
-  sendToAllDispecers(price){
-    this.route.forEveryone = true;
-    this.route.offerFrom = [];
-    this.route.priceFrom = [];
-    this.route.price = price;
-
-    console.log(this.route);
-    this.routeService.createRoute({...this.route});
-
-  }
-
-
-  openAddDialogChangeCar() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      route: this.route,
-      newRoute: false
-    };
-    const dialogRef = this.dialog.open(RouteToCarComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(value => {
-      console.log(value);
-      if (value === undefined){
-        return;
-      }else if (value.event == true) {
-        console.log(value.carId);
-        this.carId = value.carId;
-        this.change = false;
-      }
-    });
-  }
-
-  // just update route
-  sendToDriver(){
-
-    const route = {
-      // carId: this.carId,
-      // createdBy: this.createdById,
-      route: this.route,
-      // createdAt: (Date.now()/1000)
-    };
-    console.log(route);
-    this.routeService.updateRoute(route);
-    this.change = false;
-  }
-
-  //  updateDetails(){
-  //   var poleDetailov = [...this.arrayOfDetailsAbRoute];
-  //   console.log(this.arrayOfDetailsAbRoute)
-  //   var bar = new Promise((resolve, reject) => {
-  //     poleDetailov.forEach((route, index) => {
-  //       console.log(index);
-  //       console.log(route)
-  //       if (this.arrayOfDetailsAbRoute[index].id != undefined) {
-  //         console.log("updatujem");
-  //         this.detailAboutService.updateDetail(route, route.id)
-  //       } else {
-  //         console.log("mal by som vytvorit a pushnut do details");
-  //         this.route.detailsAboutAdresses.splice(index, 0, "ric");
-  //         this.detailAboutService.createDetail(route);
-  //       }
-  //     })
-  //   });
-  //   console.log(this.route.detailsAboutAdresses);
-  //   bar.then(() => {
-  //     this.sendToDriver();
-  //   });
-  // }
-
 
   checkFinished(){
     if (this.route !== undefined && this.route.finished){
       return false;
-    }else if (this.route == undefined){
+    }else if (this.route === undefined){
       return true;
     }else {
       return true;
@@ -486,23 +316,6 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     return date.toLocaleString();
   }
 
-
-
-  checkAllDetailsInserted(){
-    this.detailAboutRoute.sizeV.forEach((oneSize, index) => {
-      if (this.detailAboutRoute.sizeV[index] >= 0){
-        if (this.detailAboutRoute.sizeS[index] >= 0){
-          if (this.detailAboutRoute.sizeD[index] >= 0){
-            if (this.detailAboutRoute.weight[index] >= 0){
-              if (this.detailAboutRoute.sizeV[index] >= 0){
-
-              }
-            }
-          }
-        }
-      }
-    });
-  }
   openOfferDialog() {
     const dialogConfig = new MatDialogConfig();
     // dialogConfig.width = '23em';
@@ -524,7 +337,7 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     for (const [idTown, oneDetail] of this.detail.entries()) {
       if (oneDetail.townsArray !== undefined){
         for (const [idDetail, onePackage] of oneDetail.townsArray.entries()) {
-          if (oneDetail.townsArray[idDetail] == townId && oneDetail.detailArray[idDetail] == detailId){
+          if (oneDetail.townsArray[idDetail] === townId && oneDetail.detailArray[idDetail] === detailId){
             return {idTown, idDetail};
           }
         }
@@ -576,29 +389,6 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     // vratit id novych adries a ulozit ich do routy + ulozit routu a je dokonane
   }
 
-  createMyRoute(){
-    this.spinner.show();
-    this.addPonuka().then(() => {
-      let route: Route;
-      route = JSON.parse(JSON.stringify(this.route));
-      route.createdAt = (new Date()).toString();
-      route.carId = null;
-      route.finished = false;
-      route.forEveryone = false;
-      route.createdBy = this.dataService.getMyIdOrMaster();
-      route.offerFrom = [];
-      route.priceFrom = [];
-      this.routeService.createRoute(route).then(resolve => {
-        this.getNewRoute(resolve);
-        this.childDropList.setDragable(false);
-      });
-    });
-  }
-
-  getCar(id){
-
-  }
-
   getNewRoute(idRouty){
     setTimeout(() => {
       this.route = this.routeService.getRoutesNoSub().find(oneRoute => oneRoute.id === idRouty);
@@ -631,10 +421,6 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
         this.spinner.hide();
       });
     }, 100);
-  }
-
-  changeToOffer(){
-
   }
 
   cancelFromCarDialog(){
@@ -693,43 +479,6 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     }
   }
 
-  ciMozemVylozitBednu(detail, indexMesta, indexBedne){
-    const moznyPocetVylozenia = 0;
-    const pocetnalozeni = 0;
-    const nakladky = [];
-    // if (this.labelPosition == 'nakladka'){
-    //   // this.fakeArrayOfDetailsAbRoute
-    //   for (let i = 0; i < this.fakeArrayOfDetailsAbRoute.length; i++) {
-    //     for (let j = 0; j < this.fakeArrayOfDetailsAbRoute[i].sizeS; j++) {
-    //       if (indexMesta != i && indexBedne != j){ // aby som nenasiel sam seba
-    //         if (this.arrayOfDetailsAbRoute[indexMesta].sizeS[indexBedne] ==  this.arrayOfDetailsAbRoute[i].sizeS[j]  &&
-    //           this.arrayOfDetailsAbRoute[indexMesta].sizeD[indexBedne] ==  this.arrayOfDetailsAbRoute[i].sizeD[j] &&
-    //           this.arrayOfDetailsAbRoute[indexMesta].sizeV[indexBedne] ==  this.arrayOfDetailsAbRoute[i].sizeV[j] &&
-    //           this.arrayOfDetailsAbRoute[indexMesta].weight[indexBedne] ==  this.arrayOfDetailsAbRoute[i].weight[j] &&
-    //           this.arrayOfDetailsAbRoute[indexMesta].polohaNakladania[indexBedne] ==  this.arrayOfDetailsAbRoute[i].polohaNakladania[j] &&
-    //           this.arrayOfDetailsAbRoute[indexMesta].stohovatelnost[indexBedne] ==  this.arrayOfDetailsAbRoute[i].stohovatelnost[j]){
-    //           if (this.route.type[i] == 'nakladka'){
-    //             pocetnalozeni++;
-    //             nakladky.push({mesto: i, bedna: j});
-    //           }
-    //           if (this.route.type[i] == 'vykladka'){
-    //             moznyPocetVylozenia++;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    //   if (moznyPocetVylozenia != 0){
-    //     for (let j = 0; j < moznyPocetVylozenia; j++) {
-    //       this.fakeArrayOfDetailsAbRoute[nakladky[0].mesto].vylozene
-    //
-    //     }
-    //   }
-    //
-    // }
-
-    return true;
-  }
 
   openLog(){
     const dialogConfig = new MatDialogConfig();
@@ -754,23 +503,6 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     });
   }
 
-  vylozeneVsetko(){
-    if (this.addresses.length <= 0 || this.addresses == null){
-      return true;
-    }
-
-    const vylozene = this.dataService.vsetkoVylozeneGet;
-    if (this.dataService.actualDetailGet !== null){
-      return true;
-    }
-    if (vylozene){
-      return false;
-    }else{
-      return true;
-    }
-
-
-  }
 
   vylozeneBaliky(){
     const vylozene = this.dataService.vsetkoVylozeneGet;
@@ -781,37 +513,7 @@ export class MyRouteDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     }
   }
 
-  deleteAddress(address: Address){
-    console.log(this.detail);
-    console.log(this.addresses);
-    const deleteIndexis = [];
-    const indexOfTown = this.addresses.findIndex(oneAddress => oneAddress.nameOfTown === address.nameOfTown && oneAddress.type === address.type);
-    if (address.type === 'nakladka'){ // ak to je nakladka tak musim vymazat aj s nou suvisiace vykladky
-      for (let i = indexOfTown; i < this.detail.length; i++) {
-        if (this.detail[i].townsArray){
-          for (let balikIndex = 0; balikIndex < this.detail[i].townsArray.length; balikIndex++) {
-            if (this.detail[i].townsArray[balikIndex] === indexOfTown){
-              deleteIndexis.push(i);
-            }
-          }
-        }
 
-      }
-    }
-    deleteIndexis.slice().reverse().forEach(oneIndex => {
-      this.addresses.splice(oneIndex, 1);
-      this.detail.splice(oneIndex, 1);
-    });
-
-    this.addresses.splice(indexOfTown, 1);
-    this.detail.splice(indexOfTown, 1);
-    this.childDropList.setDetails(this.detail);
-    this.childDropList.setAddresses(this.addresses);
-    this.detailChild.setDetails(this.detail);
-
-    this.dataService.setDetailSource(this.detail);
-    this.newFormChild.deletePackages();
-  }
 
   openAllDetailDialog(){
     const dialogConfig = new MatDialogConfig();

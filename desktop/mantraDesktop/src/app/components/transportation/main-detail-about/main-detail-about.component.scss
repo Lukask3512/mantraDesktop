@@ -18,3 +18,12 @@ span{
   margin-left: 5px;
   white-space: nowrap;
 }
+
+.infoAbout{
+  display: flex;
+  justify-content: space-around;
+}
+
+label{
+  font-size: small;
+}

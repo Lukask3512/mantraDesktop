@@ -286,7 +286,7 @@ export class DetailComponent implements AfterViewInit, OnDestroy {
   }
 
   sendCar(car){
-    this.dataService.changRoute(car);
+    this.dataService.changeCar(car);
   }
 
   vymazatPonuku(){

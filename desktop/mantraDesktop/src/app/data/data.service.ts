@@ -17,6 +17,11 @@ export class DataService {
   private carSource = new BehaviorSubject<string>('empty');
   currentCar = this.carSource.asObservable();
 
+  private carSourceId = new BehaviorSubject<string>('empty');
+  currentCarId = this.carSourceId.asObservable();
+
+  carId: string;
+
   private vylozeneSource = new BehaviorSubject<boolean>(false);
   vsetkoVylozene$ = this.vylozeneSource.asObservable();
   vsetkoVylozeneGet;
@@ -96,9 +101,17 @@ export class DataService {
 
   constructor() { }
 
-  changRoute(car: any) {
-    // console.log(message)
+  changeCar(car: any) {
     this.carSource.next(car);
+  }
+
+  changeCarId(carId: string) {
+    this.carSourceId.next(carId);
+    this.carId = carId;
+  }
+
+  getCarId(){
+    return this.carId;
   }
 
   changeRealRoute(route: any) {

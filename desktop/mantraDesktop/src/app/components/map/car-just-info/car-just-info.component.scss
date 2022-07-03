@@ -1,4 +1,23 @@
 .driverInfo{
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid gray;
+}
+
+.carAndStatus{
+  border-bottom: 1px solid gray;
+}
+
+h2{
+  margin-bottom: 0px;
+}
+
+.smallFont{
+  font-size: small;
+}
+
+.headerFlex{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

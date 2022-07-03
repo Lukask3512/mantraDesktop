@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AddressService} from '../../../services/address.service';
 import {RouteStatusService} from '../../../data/route-status.service';
 import {OfferRouteService} from '../../../services/offer-route.service';
@@ -15,7 +15,7 @@ import {CarService} from '../../../services/car.service';
   templateUrl: './addresses-info.component.html',
   styleUrls: ['./addresses-info.component.scss']
 })
-export class AddressesInfoComponent implements OnInit {
+export class AddressesInfoComponent implements OnInit, OnDestroy {
 
   @Input() route: Route;
   @Input() carItinerar: string[];
@@ -61,7 +61,7 @@ export class AddressesInfoComponent implements OnInit {
   }
 
   getCar() {
-    if (this.route.carId) {
+    if (this.route && this.route.carId) {
       this.carService.cars$.subscribe(allCars => {
         this.car = allCars.find(oneCar => oneCar.id === this.route.carId);
       });
@@ -87,6 +87,17 @@ export class AddressesInfoComponent implements OnInit {
   chooseBorderDown(){
     if (!this.forCar){
       return 'townsWrapper';
+    }
+  }
+
+  changeRoute(){
+    this.dataService.changeRealRoute(this.route);
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.addressesUns){
+      this.addressesUns.unsubscribe();
     }
   }
 
