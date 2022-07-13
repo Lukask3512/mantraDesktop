@@ -161,12 +161,14 @@ export class MapComponent implements AfterViewInit {
   overlay;
   overlayOffer;
   overlayCar;
+  overlayCarPopUp;
 
   content;
   closer;
   container;
   containerOffer;
   carContainer;
+  carContainerPopUp;
 
   carsToDisplay;
 
@@ -208,6 +210,9 @@ export class MapComponent implements AfterViewInit {
   @ViewChild(CarsPopUpComponent)
   private chooseCarPopup: CarsPopUpComponent;
 
+  @ViewChild(CarsPopUpComponent)
+  private carPopUp: CarsPopUpComponent;
+
   @ViewChild(CarInfoComponent)
   private carInfo: CarInfoComponent;
 
@@ -239,7 +244,8 @@ export class MapComponent implements AfterViewInit {
 
         this.container = document.getElementById('popup');
         this.containerOffer = document.getElementById('offerPopUp');
-        this.carContainer = document.getElementById('carPopup');
+        // this.carContainer = document.getElementById('carPopup');
+        this.carContainerPopUp = document.getElementById('carPopUp');
         this.content = document.getElementById('popup-content');
         this.closer = document.getElementById('popup-closer');
 
@@ -286,6 +292,14 @@ export class MapComponent implements AfterViewInit {
           },
         });
 
+        this.overlayCarPopUp = new Overlay({
+          element: this.carContainerPopUp,
+          autoPan: true,
+          autoPanAnimation: {
+            duration: 250,
+          },
+        });
+
         this.lastZoom = localStorage.getItem('zoomLevel');
         this.centerOfZoom = localStorage.getItem('zoomCenter');
 
@@ -308,14 +322,14 @@ export class MapComponent implements AfterViewInit {
           layers: [
             this.tileLayer, this.vectorLayerAdress
           ],
-          overlays: [this.overlay, this.overlayOffer, this.overlayCar],
+          overlays: [this.overlay, this.overlayOffer, this.overlayCar, this.overlayCarPopUp],
           view: this.view
         });
 
         // onlick
         this.map.on('click', evt => {
-          const feature = this.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-            return feature;
+          const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature2) => {
+            return feature2;
           });
 
           if (feature) {
@@ -382,15 +396,22 @@ export class MapComponent implements AfterViewInit {
 
   checkFeatureUnderMouse() {
     this.map.on('pointermove', (evt) => {
-      const hit = this.map.forEachFeatureAtPixel(evt.pixel, (feature, layer) => true);
+      const hit = this.map.forEachFeatureAtPixel(evt.pixel, (feature2, layer2) => true);
+      const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature2) => {
+        return feature2;
+      });
+
       if (hit) {
         this.map.getViewport().style.cursor = 'pointer';
+        console.log('tu je uauto', feature);
+        console.log(evt);
         // this.newInfoForFeature(evt);
+        const coordinate = evt.coordinate;
+        this.overlayCarPopUp.setPosition(feature.getGeometry().getCoordinates());
       } else {
         this.map.getViewport().style.cursor = '';
-        // if (this.carUnderMouse){
-        //   this.carUnderMouse = null;
-        // }
+        this.overlayCarPopUp.setPosition(undefined);
+        this.closer.blur();
       }
     });
   }
@@ -1125,6 +1146,7 @@ export class MapComponent implements AfterViewInit {
     this.overlay.setPosition(undefined);
     this.carToShow  = null;
     this.closer.blur();
+
     this.overlayOffer.setPosition(undefined);
     this.overlayCar.setPosition(undefined);
     if (this.vectorSourcePreTrasy){
