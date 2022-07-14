@@ -1,4 +1,5 @@
 <div class="allWrap" >
+  <app-new-vodic *ngIf="!this.getDispecer()"></app-new-vodic>
 
   <div class="dispecerWrapper">
       <app-the-vodic class="vodiciTabulka" [vodici]="allVodici"></app-the-vodic>

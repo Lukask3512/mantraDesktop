@@ -39,7 +39,8 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
               {
-                "input": "node_modules/ol/ol.css"
+                "input": "node_modules/ol/ol.css",
+                "inject": true
               }
             ],
             "scripts": []
@@ -54,8 +55,12 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": { "scripts": false, "styles": false, "hidden": true, "vendor": true },
-              "extractCss": true,
+              "sourceMap": {
+                "scripts": false,
+                "styles": false,
+                "hidden": true,
+                "vendor": true
+              },
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -76,7 +81,6 @@
             "development": {
               "optimization": true,
               "outputHashing": "all",
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,

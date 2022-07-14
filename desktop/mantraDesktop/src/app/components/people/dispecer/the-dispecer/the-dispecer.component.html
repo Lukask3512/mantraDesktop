@@ -80,7 +80,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <app-new-dispecer *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-dispecer>
   <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">
     {{'DISPATCHER.infoAboutAdd' | translate}}
   </h2>

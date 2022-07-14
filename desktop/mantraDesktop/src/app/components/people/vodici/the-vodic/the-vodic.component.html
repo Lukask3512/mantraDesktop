@@ -1,5 +1,4 @@
 <div class="vodiciWrapper">
-  <h2>{{'HEADER.drivers' | translate}}</h2>
   <table mat-table [dataSource]="dataSource" matSort class="tabulka">
     <!-- Name Column -->
     <ng-container class="blackHeader" matColumnDef="meno">
@@ -38,7 +37,4 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <app-new-vodic *ngIf="!this.getDispecer()"></app-new-vodic>
-<!--  <h2 *ngIf="this.dataService.getDispecer().createdBy != 'master'">-->
-<!--    {{'VODIC.pridatMoze' | translate}}</h2>-->
 </div>

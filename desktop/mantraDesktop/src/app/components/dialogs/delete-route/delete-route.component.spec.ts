@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DeleteRouteComponent } from './delete-route.component';
 
@@ -6,7 +6,7 @@ describe('DeleteRouteComponent', () => {
   let component: DeleteRouteComponent;
   let fixture: ComponentFixture<DeleteRouteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DeleteRouteComponent ]
     })

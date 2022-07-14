@@ -45,6 +45,7 @@ import Dispecer from '../../../models/Dispecer';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CarJustInfoComponent} from "../car-just-info/car-just-info.component";
 import {Router} from "@angular/router";
+import {DataForSendingService} from "../../../data/data-for-sending.service";
 
 @Component({
   selector: 'app-map-wrapper',
@@ -164,7 +165,7 @@ export class MapWrapperComponent implements AfterViewInit {
               private drawOffer: DrawOfferService, private vodicService: VodicService,
               private routeCoordinates: RouteCoordinatesService, private _snackBar: MatSnackBar,
               private translation: TranslateService, private countOffersService: CountOffersService,
-              private router: Router) {
+              private router: Router, private dataForSending: DataForSendingService) {
   }
 
   routeDetail(route) {
@@ -183,6 +184,7 @@ export class MapWrapperComponent implements AfterViewInit {
           });
         });
         this.addRouteNewSystem();
+        this.showAddressesByRoute();
   }
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -280,13 +282,15 @@ export class MapWrapperComponent implements AfterViewInit {
     return addressesToMap;
   }
 
-  showAddressesByRoute(address: Address[]){
-    if (address === null){
-      this.mapComponent.closePopUp();
-    }
-    const routeToShow = this.routes.find(oneFeature => oneFeature.getId() === address[0].carId);
-    this.mapComponent.drawRoute(routeToShow);
-    this.mapComponent.drawAddresses(address);
+  showAddressesByRoute(){
+    this.dataForSending.$adress.subscribe(address => {
+      if (address === null){
+        this.mapComponent.closePopUp();
+      }
+      const routeToShow = this.routes.find(oneFeature => oneFeature.getId() === address[0].carId);
+      this.mapComponent.drawRoute(routeToShow);
+      this.mapComponent.drawAddresses(address);
+    });
   }
 
   getColorByIndex(index) {
@@ -554,7 +558,7 @@ export class MapWrapperComponent implements AfterViewInit {
   }
 
   closeDetailOffer(){
-    this.showAddressesByRoute(null);
+    // this.showAddressesByRoute(null);
     this.closeInfoCreatorDetail();
     this.closeInfoRouteDetail();
     this.openInfoCakaren();
@@ -562,7 +566,7 @@ export class MapWrapperComponent implements AfterViewInit {
 
   closeDetail(){
     // this.closeAll();
-    this.showAddressesByRoute(null);
+    // this.showAddressesByRoute(null);
     this.closeInfoCreatorDetail();
     this.closeInfoRouteDetail();
     this.openInfoMoje();

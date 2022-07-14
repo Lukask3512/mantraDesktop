@@ -1,4 +1,5 @@
 <div class="allWrap" >
+  <app-new-dispecer *ngIf="this.dataService.getDispecer().createdBy == 'master'"></app-new-dispecer>
 
 <div class="dispecerWrapper">
     <app-the-dispecer class="tableComponent" [dispecer]="allDispeces" ></app-the-dispecer>

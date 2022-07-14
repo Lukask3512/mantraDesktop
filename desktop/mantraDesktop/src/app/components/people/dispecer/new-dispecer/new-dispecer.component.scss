@@ -1,12 +1,13 @@
 @import "../../../../../sccs/shared/mixins";
 
 .buttonG {
-  @include tableAddButton();
+  @include buttonVytvor();
 }
 .buttonG:hover{
   background-color: #4CAF50;
 }
 .allWrap{
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  margin: 10px;
 }

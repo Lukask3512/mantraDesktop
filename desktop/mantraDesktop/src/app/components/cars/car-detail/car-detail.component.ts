@@ -106,7 +106,7 @@ export class CarDetailComponent implements AfterViewInit, OnDestroy {
                 this.child.notifyMe(this.myAddresses, this.car);
               }
             }
-            resolve();
+            resolve(true);
           });
         });
       }).then(() => {
@@ -114,7 +114,7 @@ export class CarDetailComponent implements AfterViewInit, OnDestroy {
        if (this.myAddresses.length === 0){
          this.findMyAdresses(allAddresses);
        }
-       resolve();
+       resolve(true);
      }).then(resolve => {
        this.dragComponent.setAddress(this.myAddresses, this.car);
        setTimeout(() =>

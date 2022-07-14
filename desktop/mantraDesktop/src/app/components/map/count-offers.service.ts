@@ -128,7 +128,7 @@ export class CountOffersService {
                 }
                 else if (k === oneAdressDetail.length - 1 && j === detailVPonuke.length - 1){
                   setTimeout(() => {
-                    resolve();
+                    resolve(true);
                   }, 500);
                 }
               }
