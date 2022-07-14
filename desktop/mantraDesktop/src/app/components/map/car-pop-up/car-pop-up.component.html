@@ -2,7 +2,21 @@
 <!--  <button (click)="closePopUp()" id="popup-closer" class="ol-popup-closer"></button>-->
   <div id="popup-content">
     <div class="carsWrapper">
-      <button class="carButton" *ngFor="let car of this.cars">{{car.ecv}}</button>
+<!--      <button class="carButton" *ngFor="let car of this.cars">{{car.ecv}}</button>-->
+      <div class="oneCar" *ngFor="let car of this.cars">
+        <section class="carNameStatus">
+          <h3>{{car.ecv}}</h3>
+          <p>{{this.routeStatus.getStatus(car.status)}}</p>
+        </section>
+        <section class="kapacita">
+          <h3>Kapacita</h3>
+          <p>20%</p>
+        </section>
+        <section class="doCiela">
+          <h3>Do ciela</h3>
+          <p>1,2km</p>
+        </section>
+      </div>
     </div>
 
   </div>

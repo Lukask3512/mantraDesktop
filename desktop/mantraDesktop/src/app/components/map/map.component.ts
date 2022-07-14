@@ -59,6 +59,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogDialogComponent} from '../dialogs/log-dialog/log-dialog.component';
 import {TranslateService} from '@ngx-translate/core';
 import {CarInfoComponent} from './car-info/car-info.component';
+import {CarPopUpComponent} from "./car-pop-up/car-pop-up.component";
 
 
 @Component({
@@ -213,6 +214,9 @@ export class MapComponent implements AfterViewInit {
   @ViewChild(CarsPopUpComponent)
   private carPopUp: CarsPopUpComponent;
 
+  @ViewChild(CarPopUpComponent)
+  private oneCarPopUp: CarPopUpComponent;
+
   @ViewChild(CarInfoComponent)
   private carInfo: CarInfoComponent;
 
@@ -328,6 +332,8 @@ export class MapComponent implements AfterViewInit {
 
         // onlick
         this.map.on('click', evt => {
+          this.overlayCarPopUp.setPosition(undefined);
+          this.closer.blur();
           const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature2) => {
             return feature2;
           });
@@ -396,18 +402,26 @@ export class MapComponent implements AfterViewInit {
 
   checkFeatureUnderMouse() {
     this.map.on('pointermove', (evt) => {
-      const hit = this.map.forEachFeatureAtPixel(evt.pixel, (feature2, layer2) => true);
+      const hit = this.map.forEachFeatureAtPixel(evt.pixel, (feature2, layer2) => {
+        return true;
+      });
       const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature2) => {
         return feature2;
       });
 
       if (hit) {
         this.map.getViewport().style.cursor = 'pointer';
-        console.log('tu je uauto', feature);
-        console.log(evt);
-        // this.newInfoForFeature(evt);
-        const coordinate = evt.coordinate;
-        this.overlayCarPopUp.setPosition(feature.getGeometry().getCoordinates());
+        // console.log('tu je uauto', feature.get('features')[0].get('name'));
+        if (feature.get('features') && feature.get('features')[0].get('type') === 'car'){
+          this.overlayCarPopUp.setPosition(undefined);
+          this.closer.blur();
+          this.overlayCarPopUp.setPosition(feature.getGeometry().getCoordinates());
+          const carIds = [];
+          feature.get('features').forEach(oneFeature => {
+            carIds.push(oneFeature.get('name'));
+          });
+          this.oneCarPopUp.setCars(carIds);
+        }
       } else {
         this.map.getViewport().style.cursor = '';
         this.overlayCarPopUp.setPosition(undefined);

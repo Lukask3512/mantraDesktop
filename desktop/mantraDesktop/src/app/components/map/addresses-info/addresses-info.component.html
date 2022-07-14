@@ -1,10 +1,10 @@
 <div class="wrapper">
   <section [ngClass]="{'fullRouteWrap' : !forCar}" *ngIf="addresses && addresses.length > 0">
     <div [class]="chooseBorderDown()">
-      <div *ngIf="!forCar" class="header">
-        <p class="specialTypes">ADR</p>
-        <p class="specialTypes">Tepelný režim</p>
-        <p class="specialTypes">Hydraulická ruka</p>
+      <div *ngIf="!forCar && getSpecial() &&  (getSpecial().teplota || getSpecial().adr || getSpecial().ruka)" class="header">
+        <p *ngIf="getSpecial().adr" class="specialTypes">ADR</p>
+        <p *ngIf="getSpecial().teplota" class="specialTypes">Tepelný režim</p>
+        <p *ngIf="getSpecial().ruka" class="specialTypes">Hydraulická ruka</p>
       </div>
     <div class="routeWrapper" *ngFor="let town of this.addresses; index as i">
       <div *ngIf="town">

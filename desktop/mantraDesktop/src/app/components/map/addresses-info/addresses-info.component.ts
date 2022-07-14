@@ -101,4 +101,26 @@ export class AddressesInfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  getSpecial(){
+    let whichSpecial: {
+      adr: boolean,
+      ruka: boolean,
+      teplota: boolean,
+    };
+    this.addresses.forEach(oneAddress => {
+      if (oneAddress){
+        if (oneAddress.adr){
+          whichSpecial.adr = true;
+        }
+        if (oneAddress.ruka){
+          whichSpecial.ruka = true;
+        }
+        if (oneAddress.teplota){
+          whichSpecial.teplota = true;
+        }
+      }
+    });
+    return whichSpecial;
+  }
+
 }

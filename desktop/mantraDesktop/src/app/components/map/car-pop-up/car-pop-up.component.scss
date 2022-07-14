@@ -60,3 +60,13 @@
   @include smallButton(#343a40);
   margin: 2px;
 }
+
+.oneCar{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+p{
+  font-size: small;
+  color: gray;
+}
