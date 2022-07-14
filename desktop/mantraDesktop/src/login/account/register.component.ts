@@ -12,7 +12,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {EmailService} from '../../app/services/email/email.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {TranslateService} from '@ngx-translate/core';
-import {CookieService} from 'ngx-cookie-service';
+
 
 
 @Component({
@@ -44,7 +44,6 @@ export class RegisterComponent implements OnInit {
     private emailService: EmailService,
     private spinner: NgxSpinnerService,
     private translateService: TranslateService,
-    private cookieService: CookieService,
     private translate: TranslateService
   ) { }
 
@@ -54,17 +53,7 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  deleteAllCookies() {
-    // this.cookieService.deleteAll();
-    // let cookies = document.cookie.split(';');
-    //
-    // for (let i = 0; i < cookies.length; i++) {
-    //   let cookie = cookies[i];
-    //   let eqPos = cookie.indexOf('=');
-    //   let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    //   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    // }
-  }
+
 
   changeLang(lang){
     localStorage.setItem('lang', lang);
