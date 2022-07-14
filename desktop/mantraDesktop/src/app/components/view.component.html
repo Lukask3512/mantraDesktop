@@ -1,18 +1,36 @@
-<header class="header">
-  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-<!--  <meta content="utf-8" http-equiv="">-->
-  <nav class="navHeader">
-    <app-header></app-header>
-  </nav>
-</header>
-<div class="sideBarAndContentWrapper">
-  <div class="sideNavWrapper">
-    <app-side-bar class="sideBar"></app-side-bar>
+<!--<header class="header">-->
+<!--  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">-->
+<!--&lt;!&ndash;  <meta content="utf-8" http-equiv="">&ndash;&gt;-->
+<!--  <nav class="navHeader">-->
+<!--    <app-header></app-header>-->
+<!--  </nav>-->
+<!--</header>-->
+<!--<div class="sideBarAndContentWrapper">-->
+<!--  <div class="sideNavWrapper">-->
+<!--    <app-side-bar class="sideBar"></app-side-bar>-->
+<!--  </div>-->
+
+<!--  <div class="wrapper">-->
+<!--    <router-outlet></router-outlet>-->
+<!--  </div>-->
+
+
+<!--</div>-->
+
+<div class="allWrapper">
+    <div class="sideNavWrapper">
+      <app-side-bar class="sideBar"></app-side-bar>
+    </div>
+  <div class="mainContent">
+    <header class="header">
+      <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <!--  <meta content="utf-8" http-equiv="">-->
+      <nav class="navHeader">
+        <app-header></app-header>
+      </nav>
+    </header>
+      <div class="wrapper">
+        <router-outlet></router-outlet>
+      </div>
   </div>
-
-  <div class="wrapper">
-    <router-outlet></router-outlet>
-  </div>
-
-
 </div>

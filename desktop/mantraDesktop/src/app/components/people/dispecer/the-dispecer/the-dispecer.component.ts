@@ -1,11 +1,11 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import Dispecer from '../../../models/Dispecer';
-import {DispecerService} from '../../../services/dispecer.service';
+import Dispecer from '../../../../models/Dispecer';
+import {DispecerService} from '../../../../services/dispecer.service';
 import {FormBuilder} from '@angular/forms';
-import {DataService} from '../../../data/data.service';
+import {DataService} from '../../../../data/data.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {DeleteDispecerComponent} from '../../dialogs/delete-dispecer/delete-dispecer.component';
-import {DipecerPravaComponent} from '../../dialogs/dipecer-prava/dipecer-prava.component';
+import {DeleteDispecerComponent} from '../../../dialogs/delete-dispecer/delete-dispecer.component';
+import {DipecerPravaComponent} from '../../../dialogs/dipecer-prava/dipecer-prava.component';
 import {MatTableDataSource} from '@angular/material/table';
 
 @Component({

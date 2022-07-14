@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DispecerService} from '../../../services/dispecer.service';
-import {DataService} from '../../../data/data.service';
+import {DispecerService} from '../../../../services/dispecer.service';
+import {DataService} from '../../../../data/data.service';
 
 @Component({
   selector: 'app-dispecer',

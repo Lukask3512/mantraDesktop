@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {AccountService} from '../../../../login/_services/account.service';
-import {DataService} from '../../../data/data.service';
-import {VodicService} from '../../../services/vodic.service';
-import Vodic from '../../../models/Vodic';
-import {NewVodicDialogComponent} from '../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
-import {CompanyService} from '../../../services/company.service';
-import Company from '../../../models/Company';
+import {AccountService} from '../../../../../login/_services/account.service';
+import {DataService} from '../../../../data/data.service';
+import {VodicService} from '../../../../services/vodic.service';
+import Vodic from '../../../../models/Vodic';
+import {NewVodicDialogComponent} from '../../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
+import {CompanyService} from '../../../../services/company.service';
+import Company from '../../../../models/Company';
 
 @Component({
   selector: 'app-new-vodic',

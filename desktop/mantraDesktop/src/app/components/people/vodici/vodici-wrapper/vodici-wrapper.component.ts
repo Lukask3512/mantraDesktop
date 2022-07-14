@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {DispecerService} from '../../../services/dispecer.service';
-import {DataService} from '../../../data/data.service';
-import {VodicService} from '../../../services/vodic.service';
+import {DispecerService} from '../../../../services/dispecer.service';
+import {DataService} from '../../../../data/data.service';
+import {VodicService} from '../../../../services/vodic.service';
 
 @Component({
   selector: 'app-vodici-wrapper',

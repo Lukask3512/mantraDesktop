@@ -20,7 +20,7 @@ import {LogDialogComponent} from '../../dialogs/log-dialog/log-dialog.component'
 import {CancelRouteFromCarDialogComponent} from '../../dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {CountOffersService} from '../count-offers.service';
 import {OfferToCarDialogComponent} from '../../dialogs/offer-to-car-dialog/offer-to-car-dialog.component';
-import {MapWrapperComponent} from "../map-wrapper/map-wrapper.component";
+// import {MapWrapperComponent} from "../map-wrapper/map-wrapper.component";
 
 @Component({
   selector: 'app-transport-wrapper',
@@ -63,7 +63,8 @@ export class TransportWrapperComponent implements OnInit {
               private addressService: AddressService, private offerService: OfferRouteService,
               private dispecerService: DispecerService, private companyService: CompanyService,
               private packageService: PackageService, private countOfferService: CountOffersService,
-              private mapWrapper: MapWrapperComponent) {
+              // private mapWrapper: MapWrapperComponent
+  ) {
 
   }
 
@@ -347,7 +348,7 @@ export class TransportWrapperComponent implements OnInit {
   sendRouteToMap(route: Route){
     const routeToDetail = this.countOfferService.getRouteWithEverything(route);
     this.addressesEmitter.emit(routeToDetail.adresyVPonuke);
-    this.mapWrapper.showAddressesByRoute(routeToDetail.adresyVPonuke);
+    // this.mapWrapper.showAddressesByRoute(routeToDetail.adresyVPonuke);
     setTimeout(() =>
       {
         this.mainDetailAboutComponent.setRoute(routeToDetail);

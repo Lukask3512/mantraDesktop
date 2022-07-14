@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {DispecerService} from '../../../services/dispecer.service';
+import {DispecerService} from '../../../../services/dispecer.service';
 import {FormBuilder, Validators} from '@angular/forms';
-import {DataService} from '../../../data/data.service';
-import {AccountService} from '../../../../login/_services/account.service';
+import {DataService} from '../../../../data/data.service';
+import {AccountService} from '../../../../../login/_services/account.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {DipecerPravaComponent} from '../../dialogs/dipecer-prava/dipecer-prava.component';
-import Company from '../../../models/Company';
+import {DipecerPravaComponent} from '../../../dialogs/dipecer-prava/dipecer-prava.component';
+import Company from '../../../../models/Company';
 
 @Component({
   selector: 'app-new-dispecer',

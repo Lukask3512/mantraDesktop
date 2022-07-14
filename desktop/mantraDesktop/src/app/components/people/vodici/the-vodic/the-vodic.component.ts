@@ -1,12 +1,12 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {DataService} from '../../../data/data.service';
+import {DataService} from '../../../../data/data.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import Vodic from '../../../models/Vodic';
-import {VodicService} from '../../../services/vodic.service';
-import {NewVodicDialogComponent} from '../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
+import Vodic from '../../../../models/Vodic';
+import {VodicService} from '../../../../services/vodic.service';
+import {NewVodicDialogComponent} from '../../../dialogs/new-vodic-dialog/new-vodic-dialog.component';
 import {MatTableDataSource} from '@angular/material/table';
-import {DeleteVodicComponent} from '../../dialogs/delete-vodic/delete-vodic.component';
+import {DeleteVodicComponent} from '../../../dialogs/delete-vodic/delete-vodic.component';
 
 @Component({
   selector: 'app-the-vodic',

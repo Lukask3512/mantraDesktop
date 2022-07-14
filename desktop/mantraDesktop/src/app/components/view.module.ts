@@ -5,7 +5,7 @@ import { ViewRoutingModule } from './view-routing.module';
 import { OpenlayerComponent } from './google/map/openlayer/openlayer.component';
 
 import { DeleteCarDialogComponent } from './dialogs/delete-car-dialog/delete-car-dialog.component';
-import { TheDispecerComponent } from './dispecer/the-dispecer/the-dispecer.component';
+import { TheDispecerComponent } from './people/dispecer/the-dispecer/the-dispecer.component';
 import { TransportationWrapperComponent } from './transportation/transportation-wrapper/transportation-wrapper.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { RouteToCarComponent } from './dialogs/route-to-car/route-to-car.component';
@@ -53,9 +53,9 @@ import { UlozeniePonukyComponent } from './transportation/ulozenie-ponuky/ulozen
 import { DeleteFromItiComponent } from './dialogs/delete-from-iti/delete-from-iti.component';
 import { ItinerarDaDComponent } from './cars/car-detail/itinerar-da-d/itinerar-da-d.component';
 import { CarNakladComponent } from './cars/car-detail/car-naklad/car-naklad.component';
-import { VodiciWrapperComponent } from './vodici/vodici-wrapper/vodici-wrapper.component';
-import { TheVodicComponent } from './vodici/the-vodic/the-vodic.component';
-import { NewVodicComponent } from './vodici/new-vodic/new-vodic.component';
+import { VodiciWrapperComponent } from './people/vodici/vodici-wrapper/vodici-wrapper.component';
+import { TheVodicComponent } from './people/vodici/the-vodic/the-vodic.component';
+import { NewVodicComponent } from './people/vodici/new-vodic/new-vodic.component';
 import { NewVodicDialogComponent } from './dialogs/new-vodic-dialog/new-vodic-dialog.component';
 import { LogDialogComponent } from './dialogs/log-dialog/log-dialog.component';
 import { CompaniesWrapperComponent } from './companies/companies-wrapper/companies-wrapper.component';
@@ -63,12 +63,12 @@ import { AddCompanyComponent } from './dialogs/add-company/add-company.component
 import { OneCompanyComponent } from './companies/one-company/one-company.component';
 import { GetInfoAboutCompanyComponent } from './companies/get-info-about-company/get-info-about-company.component';
 import { ShowDetailDialogComponent } from './dialogs/show-detail-dialog/show-detail-dialog.component';
-import { GetNameOfDriverComponent } from './vodici/get-name-of-driver/get-name-of-driver.component';
+import { GetNameOfDriverComponent } from './people/vodici/get-name-of-driver/get-name-of-driver.component';
 import { UpdateOfferPriceComponent } from './dialogs/update-offer-price/update-offer-price.component';
 import {MatSortModule} from '@angular/material/sort';
 import { AllDetailAboutRouteDialogComponent } from './dialogs/all-detail-about-route-dialog/all-detail-about-route-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {NewDispecerComponent} from './dispecer/new-dispecer/new-dispecer.component';
+import {NewDispecerComponent} from './people/dispecer/new-dispecer/new-dispecer.component';
 import { RepeatRouteDialogComponent } from './dialogs/repeat-route-dialog/repeat-route-dialog.component';
 import { CancelRouteFromCarDialogComponent } from './dialogs/cancel-route-from-car-dialog/cancel-route-from-car-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -106,6 +106,7 @@ import { AddressesInfoComponent } from './map/addresses-info/addresses-info.comp
 import { CarJustInfoComponent } from './map/car-just-info/car-just-info.component';
 import { DetailAddressInfoComponent } from './map/detail-address-info/detail-address-info.component';
 import { CarPopUpComponent } from './map/car-pop-up/car-pop-up.component';
+import { PeopleComponent } from './people/people.component';
 
 
 @NgModule({
@@ -133,7 +134,7 @@ import { CarPopUpComponent } from './map/car-pop-up/car-pop-up.component';
       MainDetailAboutComponent, CompanyDetailComponent, CompanyDetailAboutComponent, DeleteVodicComponent, ShowCoorOnMapComponent,
       PopUpMapComponent, ZmenVyskuPoistkyUAutaComponent, CarInfoComponent, TransportWrapperComponent, OfferDetailComponent,
       OfferToCarDialogComponent, CakarenWrapperComponent, OfferCreatorDetailComponent, MyRouteDetailComponent, MyOfferDetailComponent,
-      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent, AddressesInfoComponent, CarJustInfoComponent, DetailAddressInfoComponent, CarPopUpComponent
+      OtherCarsComponent, ComapnyContantsDialogComponent, DeletePrivesComponent, AddressesInfoComponent, CarJustInfoComponent, DetailAddressInfoComponent, CarPopUpComponent, PeopleComponent
     ],
   exports: [
     OpenlayerComponent,

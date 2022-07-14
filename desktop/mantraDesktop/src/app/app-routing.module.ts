@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {MapComponent} from './components/map/map.component';
-import {DispecerComponent} from './components/dispecer/dispecer-wrapper/dispecer.component';
+import {DispecerComponent} from './components/people/dispecer/dispecer-wrapper/dispecer.component';
 import {CarsWrapperComponent} from './components/cars/cars-wrapper/cars-wrapper.component';
 import {CarDetailComponent} from './components/cars/car-detail/car-detail.component';
 
@@ -13,7 +13,7 @@ import {TransportationWrapperComponent} from './components/transportation/transp
 import {NewTransportComponent} from './components/transportation/new-transport/new-transport.component';
 import {WrapperComponent} from './components/transportation/offer/wrapper/wrapper.component';
 import {DetailComponent} from './components/transportation/offer/detail/detail.component';
-import {VodiciWrapperComponent} from './components/vodici/vodici-wrapper/vodici-wrapper.component';
+import {VodiciWrapperComponent} from './components/people/vodici/vodici-wrapper/vodici-wrapper.component';
 import {CompaniesWrapperComponent} from './components/companies/companies-wrapper/companies-wrapper.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {MapWrapperComponent} from './components/map/map-wrapper/map-wrapper.component';
@@ -24,16 +24,17 @@ import {MyOfferDetailComponent} from './components/map/my-offer-detail/my-offer-
 import {MyRouteDetailComponent} from './components/map/my-route-detail/my-route-detail.component';
 import {CakarenWrapperComponent} from './components/map/cakaren-wrapper/cakaren-wrapper.component';
 import {DetailAddressInfoComponent} from "./components/map/detail-address-info/detail-address-info.component";
+import {PeopleComponent} from './components/people/people.component';
 
 
 
 const routes: Routes = [
   { path: 'view', component: ViewComponent,
     canActivate: [AuthGuard],
-    children: [{
-    path: 'cars',
-      component: CarsWrapperComponent
-    },
+    children: [
+      {
+      path: 'cars', component: CarsWrapperComponent
+      },
       {
         path: 'map',
         component: MapWrapperComponent,
@@ -64,16 +65,22 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'vodici',
-        component: VodiciWrapperComponent
-      },
-      {
         path: 'cars/detail',
         component: CarDetailComponent
       },
       {
-        path: 'dispecer',
-        component: DispecerComponent
+        path: 'people',
+        component: PeopleComponent,
+        children: [
+          {
+          path: 'drivers',
+            component: VodiciWrapperComponent
+          },
+          {
+            path: 'dispatchers',
+            component: DispecerComponent
+          }
+        ]
       },
       {
         path: 'transport',

@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import Cars from '../../../models/Cars';
-import {CarService} from '../../../services/car.service';
-import {VodicService} from '../../../services/vodic.service';
-import Vodic from '../../../models/Vodic';
+import Cars from '../../../../models/Cars';
+import {CarService} from '../../../../services/car.service';
+import {VodicService} from '../../../../services/vodic.service';
+import Vodic from '../../../../models/Vodic';
 
 @Component({
   selector: 'app-get-name-of-driver',

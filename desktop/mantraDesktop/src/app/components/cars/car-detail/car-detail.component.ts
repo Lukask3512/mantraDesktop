@@ -18,7 +18,7 @@ import Address from '../../../models/Address';
 import {DragAndDropListComponent} from '../../transportation/drag-and-drop-list/drag-and-drop-list.component';
 import {DeleteFromItiComponent} from '../../dialogs/delete-from-iti/delete-from-iti.component';
 import {ItinerarDaDComponent} from './itinerar-da-d/itinerar-da-d.component';
-import {GetNameOfDriverComponent} from '../../vodici/get-name-of-driver/get-name-of-driver.component';
+import {GetNameOfDriverComponent} from '../../people/vodici/get-name-of-driver/get-name-of-driver.component';
 
 @Component({
   selector: 'app-car-detail',

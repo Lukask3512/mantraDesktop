@@ -1,28 +1,61 @@
 
 <nav class="main-nav" role="navigation">
-  <h4 class="companyName" *ngIf="this.company">{{this.company.name}}</h4>
+  <div class="imgAndName">
+    <img *ngIf="this.sideBarOpen" class="logo" src="./assets/logo/Mantra-Horizontal-Black.svg">
+    <img *ngIf="!this.sideBarOpen" class="smallLogo" src="./assets/logo/Mantra-Symbol-Black.svg">
+  </div>
+
+  <div class="comapnyWrapper">
+    <h4 class="companyName" *ngIf="this.company">{{this.cutLongCompanyName(this.company.name)}}</h4>
+  </div>
+
+  <div *ngIf="!this.sideBarOpen" (click)="changeSideBar()" class="expandIcon">
+    <i class="material-icons">arrow_circle_right</i>
+  </div>
+
+  <div *ngIf="this.sideBarOpen" class="expandIcon" (click)="changeSideBar()">
+    <i class="material-icons">arrow_circle_left</i>
+  </div>
 
   <ul class="unstyled list-hover-slide">
-      <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/map" class="nav">
-        <p>{{'HEADER.trhovisko' | translate}}</p>
+      <li *ngIf="!getCompany()">
+        <a routerLinkActive="active" routerLink="/view/map" [ngClass]="this.sideBarOpen ? 'nav' : 'closedNav'">
+        <i class="material-icons">map</i>
+        <p [ngClass]="this.sideBarOpen ? 'normalSize' : 'smallSize'">{{'HEADER.trhovisko' | translate}}</p>
       </a></li>
 
+    <li *ngIf="!getCompany()">
+      <a routerLinkActive="active" [ngClass]="this.sideBarOpen ? 'nav' : 'closedNav'">
+      <i class="material-icons">bar_chart</i>
+      <p [ngClass]="this.sideBarOpen ? 'normalSize' : 'smallSize'">Statistiky</p>
+    </a></li>
+
 <!--        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/offerRoute" class="nav">{{'HEADER.mojePonuky' | translate}}</a></li>-->
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/cars" class="nav">
-          <p>{{'HEADER.cars' | translate}}</p>
-        </a></li>
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/vodici" class="nav">
-          <p>{{'HEADER.drivers' | translate}}</p>
-        </a></li>
-        <li *ngIf="!getCompany()"><a routerLinkActive="active" routerLink="/view/dispecer" class="nav">
-          <p>{{'HEADER.dispatcher' | translate}}</p>
-        </a></li>
-         <li *ngIf="!getCompany()"><a routerLinkActive="active"  routerLink="/view/transport" class="nav">
-           <p>Archiv</p>
-         </a></li>
-        <li *ngIf="getCompany()"><a routerLinkActive="active" routerLink="/view/companies" class="nav">
-          <p>{{'HEADER.companies' | translate}}</p>
-        </a></li>
+        <li *ngIf="!getCompany()">
+            <a routerLinkActive="active" [ngClass]="this.sideBarOpen ? 'nav' : 'closedNav'" routerLink="/view/cars">
+            <i class="material-icons">directions_car_filled</i>
+            <p [ngClass]="this.sideBarOpen ? 'normalSize' : 'smallSize'">{{'HEADER.cars' | translate}}</p>
+          </a>
+        </li>
+         <li *ngIf="!getCompany()">
+             <a routerLinkActive="active" [ngClass]="this.sideBarOpen ? 'nav' : 'closedNav'"  routerLink="/view/transport" >
+             <i class="material-icons">format_list_bulleted</i>
+             <p [ngClass]="this.sideBarOpen ? 'normalSize' : 'smallSize'">Archiv</p>
+           </a>
+         </li>
+        <li *ngIf="getCompany()">
+            <a routerLinkActive="active" [ngClass]="this.sideBarOpen ? 'nav' : 'closedNav'" routerLink="/view/companies">
+            <p [ngClass]="this.sideBarOpen ? 'normalSize' : 'smallSize'">{{'HEADER.companies' | translate}}</p>
+          </a>
+          </li>
+
+    <li *ngIf="!getCompany()">
+        <a routerLinkActive="active" [ngClass]="this.sideBarOpen ? 'nav' : 'closedNav'" routerLink="/view/people/drivers">
+        <i class="material-icons">people</i>
+        <p [ngClass]="this.sideBarOpen ? 'normalSize' : 'smallSize'">Ludia</p>
+      </a>
+    </li>
+
     </ul>
 </nav>
 

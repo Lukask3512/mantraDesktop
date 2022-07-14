@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { MapComponent } from './components/map/map.component';
-import { DispecerComponent } from './components/dispecer/dispecer-wrapper/dispecer.component';
+import { DispecerComponent } from './components/people/dispecer/dispecer-wrapper/dispecer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
@@ -144,7 +144,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatInputModule,
         AdressesComponent,
         NewFormComponent,
-        MapComponent
+        MapComponent,
+        DispecerComponent
 
     ],
   providers: [

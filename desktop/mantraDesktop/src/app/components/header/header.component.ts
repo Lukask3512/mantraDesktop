@@ -1,12 +1,13 @@
 import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { Router } from '@angular/router';
-import {DataService} from "../../data/data.service";
-import {AccountService} from "../../../login/_services/account.service";
+import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
+import {DataService} from '../../data/data.service';
+import {AccountService} from '../../../login/_services/account.service';
 import {TranslateService} from '@ngx-translate/core';
 import Company from '../../models/Company';
 import Route from '../../models/Route';
-import {DispecerService} from '../../services/dispecer.service';
+import {filter} from 'rxjs/operators';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -22,12 +23,12 @@ export class HeaderComponent implements OnInit {
 
   lang;
 
-
+  url;
 
   constructor(location: Location,  private element: ElementRef,
               private router: Router, private dataService: DataService,
               private accountService: AccountService,
-              private translateService: TranslateService,
+              private translateService: TranslateService
   ) {
     this.location = location;
   }
@@ -36,7 +37,37 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.lang = localStorage.getItem('lang') || 'sk';
+    // this.router.events.pipe(
+    //   filter(event => event instanceof NavigationEnd)
+    // ).subscribe((event: NavigationEnd) => {
+    //   this.writeUrl(event.url);
+    // });
+
   }
+
+  writeUrl(mojaUrl){
+    let url = mojaUrl;
+    if (!url){
+      url = this.router.url;
+    }
+    if (url.includes('/view/people') ){
+        return 'Ludia';
+      }
+    if (url.includes('/view/transport')){
+        return 'Archiv';
+      }
+    if (url.includes('/view/people')){
+        return 'Ludia';
+      }
+    if (url.includes('/view/map')){
+        return 'Mapa';
+      }
+    if (url.includes('/view/cars')){
+        return 'Vozidla';
+      }
+
+  }
+
 
   getDispecer(){
     const dispecer = this.dataService.getDispecer();
@@ -67,13 +98,13 @@ export class HeaderComponent implements OnInit {
   }
 
   getTitle(){
-    var titlee = this.location.prepareExternalUrl(this.location.path());
+    let titlee = this.location.prepareExternalUrl(this.location.path());
     if (titlee.charAt(0) === '#'){
       titlee = titlee.slice( 1 );
     }
 
-    for(var item = 0; item < this.listTitles.length; item++){
-      if(this.listTitles[item].path === titlee){
+    for (let item = 0; item < this.listTitles.length; item++){
+      if (this.listTitles[item].path === titlee){
         return this.listTitles[item].title;
       }
     }
@@ -93,5 +124,6 @@ export class HeaderComponent implements OnInit {
   routeDetail(route: Route){
     this.dataService.changeRealRoute(route);
   }
+
 
 }

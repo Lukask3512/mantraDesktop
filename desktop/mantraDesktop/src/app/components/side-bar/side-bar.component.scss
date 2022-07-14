@@ -8,7 +8,7 @@
 //tu sa styluje aktivny header
 .active{
   background: #efefef;
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 *, :before, :after{ box-sizing: border-box; }  ;
@@ -20,16 +20,65 @@ $gray-shine: #343a40;
 $white-off: #DFDBD9;
 
 
+.imgAndName{
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid gray;
+}
+.logo{
+  width: auto;
+  margin: {
+    left: 10px;
+    top: 5px;
+    bottom: 5px;
+    right: 35px;
+  };
+  height: 35px;
+}
+
+.smallLogo{
+  width: auto;
+  margin: {
+    left: 20px;
+    top: 20px;
+    bottom: 20px;
+    right: 20px;
+  };
+  height: 35px;
+}
+
+.nav{
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.closedNav{
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.smallSize{
+  font-size: small;
+  margin: 0;
+}
+
+.normalSize{
+  font-size: medium;
+}
 
 
 // MAIN NAV
 .main-nav{
-
+  position: relative;
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
   font-family: Candara;
   font-weight: bold;
   font-size: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
   ul{
     //border-bottom: solid 1px $gray-shine;
     margin-top: 15%;
@@ -59,6 +108,25 @@ $white-off: #DFDBD9;
 
 
 
+.expandIcon{
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  z-index: 100;
+
+}
+
+.comapnyWrapper{
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid gray;
+}
+h4{
+  margin: 0;
+}
+
 // HOVER SLIDE EFFECT
 .list-hover-slide{
 
@@ -68,7 +136,7 @@ $white-off: #DFDBD9;
   }
 
   a{
-    display: block;
+    //display: block;
     position: relative;
     z-index: 1;
     transition: .35s ease color;
@@ -78,7 +146,7 @@ $white-off: #DFDBD9;
       display: block;
       z-index: -1;
       position: absolute;
-      left: -100%; top: 0;
+      left: -111%; top: 0;
       width: 100%; height: 100%;
       //border-right: solid 5px #343a40;
       background: #efefef;
@@ -96,10 +164,6 @@ $white-off: #DFDBD9;
 }
 
 
-.companyName{
-  margin-left: 13px;
-
-}
 
 // REUSABLE STYLES
 .unstyled{ list-style: none; padding: 0; margin: 0;

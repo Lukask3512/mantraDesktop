@@ -1,4 +1,4 @@
-@import "./src/sccs/shared/mixins";
+@import "../../../../../sccs/shared/mixins";
 
 .wrapper{
   border: 2px solid black;
@@ -70,22 +70,28 @@ p{
 
 }
 
-.button{
-  @include tableButton();
-}
-
 .buttonR:hover{
   background-color: #f44336;
   transition: 0.2s, 0.2s;
 }
 
-.vodiciWrapper{
+.dispecerWrapper{
   @include table();
-  width: 98%;
+  width: 100%;
 }
 
 .tabulka{
   width: 100%;
 }
+
+.button{
+  @include tableButton();
+}
+
+h2{
+  margin: 0;
+  margin-top: 20px;
+}
+
 
 

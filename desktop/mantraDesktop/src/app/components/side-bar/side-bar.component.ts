@@ -14,6 +14,8 @@ export class SideBarComponent implements OnInit {
 
   company: Company;
 
+  sideBarOpen = true;
+
   ngOnInit(): void {
     this.company = this.dataService.getLoggedInCompany();
 
@@ -30,5 +32,24 @@ export class SideBarComponent implements OnInit {
 
   routeDetail(route: Route){
     this.dataService.changeRealRoute(route);
+  }
+
+  changeSideBar(){
+    console.log(this.sideBarOpen)
+    this.sideBarOpen = !this.sideBarOpen;
+  }
+
+  cutLongCompanyName(companyName){
+    let shortCompany = companyName;
+    if (this.sideBarOpen){
+      if (companyName.length > 13) {
+        shortCompany = companyName.substring(0, 10) + '...';
+      }
+    }else{
+      if (companyName.length > 7) {
+        shortCompany = companyName.substring(0, 5) + '...';
+      }
+    }
+    return shortCompany;
   }
 }
